@@ -1,0 +1,5 @@
+
+COPY PASTE ALL BELOW THE BAR TO SET UP YOUR EMACS ENVIRONMENT
+##############################################################
+(setq show-paren-delay 0)
+(show-paren-mode 1)

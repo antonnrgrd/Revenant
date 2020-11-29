@@ -1,0 +1,38 @@
+/*This file is part of Revnant.
+
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Revenant is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+#include <stdlib.h>
+#include <float.h>
+#include <limits.h>
+
+typedef struct Entry{
+  float val_modif;
+  float dmg_modif;
+  int key;
+  struct Modifier_Entry *next_entry;
+}Modifier_Entry;
+
+typedef struct U_Hashtable{
+  uint16_t size;
+  Modifier_entry *entries;
+  uint16_t a;
+  uint16_t b;
+}U_Hashtable;
+
+U_Hashtable *uh_init_table();
+
+void uh_destroy_table(U_Hashtabel *hashtable);
+
+Modifier_Entry *uh_lookup(U_Hashtable *hashtable);
+
+void uh_insert(Modifier_Entry *entry);

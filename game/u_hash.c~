@@ -1,0 +1,33 @@
+/*This file is part of Revnant.
+
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Revenant is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+#include "u_hash.h"
+
+/*
+Generously provided by Laurence Gonsalves from StackOverflow from a related question
+Although C has a built-in random number generator, it is piss-poor and so i choose to use this
+instead. Has a small chance of running for quite a while or return 0. Might need to fix this
+*/						
+int uh_rand_num(int range,int min){
+  int end = RAND_MAX/range;
+  assert(end >0);
+  end *=n;
+  int r;
+  while((r = rand()) >= end);
+  return r%n+1; //add one to result, to ensure it is non zero. Bit of a hack, need to reconsider l8r
+}
+U_Hashtable *uh_init_table(int size){
+  U_Hashtable *table = malloc(sizeof(U_Hashtable));
+  table->size = size;
+  table->entries = malloc( size * sizeof(Modifier_Entry));
+}
