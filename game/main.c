@@ -11,7 +11,6 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
-
 #include "dialogue.h"
 #include "u_hash.h"
 #include "creature.h"
@@ -34,19 +33,12 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define DELAY 30000
 //#define OUTERLOOP(x,y) for(int i = 0; i < x; i++ )
 //#define INNERLOOP(x,y)OUTERLOOP(x,y)for(int j = 0; j < y; j++ )
-int main(int argc, char *argv[]){
-  
- 
-
+int main(int argc, char *argv[]){   
   //Game_World *game_world = g_generate_game_world(10,10);
   // INNERLOOP(10,10)
-  // printf("%s",game_world->tiles[i][j].content);
- 
-    
+  // printf("%s",game_world->tiles[i][j].content);    
   initscr();
-  start_color();
-  
-  
+  start_color();    
   Game_World *game_world = g_generate_game_world(1000,1000);
   Creature *c = c_random_player(0,0, game_world);
   initscr();
@@ -57,6 +49,7 @@ int main(int argc, char *argv[]){
   srand(time(NULL));
   raw();
   game_loop(c, game_world);
-  endwin(); 
-    
+  endwin();
+  printf("%d", c->position.local_y);
+  
 }

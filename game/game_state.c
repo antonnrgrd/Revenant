@@ -25,10 +25,12 @@ void game_loop(Creature *c, Game_World *current_zone){
   int rows;
   int cols;
   getmaxyx(stdscr, cols,rows);
+  SPAWN_AT(c,current_zone,c->position.local_x,c->position.local_y);
   REDRAW_MAP(c,current_zone, c->position.global_x,c->position.global_y,rows, cols);
-  SPAWN_AT(c,c->position.local_x,c->position.local_y);
-  refresh();	
+  refresh();
+  printf("%d", cols);
   while(1){
+   
     refresh(); 
     ch = getch();
     switch(ch){
@@ -48,7 +50,12 @@ void game_loop(Creature *c, Game_World *current_zone){
       return;
       break;
     case 's':
-      SPAWN_AT(c,10,10);
+      c->position.local_y = 10;
+      c->position.local_x = 20;
+      mvprintw(10,20, c->representation);
+      c->standing_on[0] = mvinch(10,20);
+      move(10,20);
+      break;
     default:
       break;
     }

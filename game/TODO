@@ -1,1 +1,3 @@
 Remember to free up old table when rehashing
+check for memory leaks
+LIKELY ERROR: we are constantly redrawing the map. For some reason, the program doesn ot recognize the fact that the coordinates are reset properly and continously calls for the map to eb redrawn, because the coordinates of the player is out of bounds. This might be caused by the fact that the max values get messed up when redrawing the camera for some reason. Need to inspect if this is the case

@@ -210,8 +210,8 @@ Creature *c_random_player(unsigned y, unsigned x,Game_World *world){
   c->name = s_create_text("maranax");
   c->position.global_x = x;
   c->position.global_y = y;
-  c->position.local_x = c->position.global_x - (world->max_x);
-  c->position.local_y = c->position.global_y - (world->max_y);
+  c->position.local_x = c->position.global_x - (world->max_x -1);
+  c->position.local_y = c->position.global_y - (world->max_y -1 );
   c->representation = malloc(sizeof(char));
   c->representation[0] = '@';
   c->color = malloc(sizeof(Color));
