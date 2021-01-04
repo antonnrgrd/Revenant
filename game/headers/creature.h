@@ -223,6 +223,7 @@ typedef struct Creature{
   Color *color;
   Position position;
   char *standing_on;
+  int flip:1;
 }Creature;
 
 

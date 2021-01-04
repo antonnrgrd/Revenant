@@ -50,6 +50,4 @@ int main(int argc, char *argv[]){
   raw();
   game_loop(c, game_world);
   endwin();
-  printf("%d", c->position.local_y);
-  
 }
