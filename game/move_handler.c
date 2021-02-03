@@ -1,5 +1,5 @@
 /*This file is part of Revenant.
-1;5202;0ca
+
 Revenant is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
@@ -17,37 +17,58 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
   //  mvprintw(max_y, max_x ,world->tiles[x][y].content);
   
 
-void mv_check_move_handler(int x, int y, Creature *c,Game_World *current_zone){
-  char tile = mvinch(y,x);
+void mv_check_move_handler(int global_x, int global_y, int local_x, int local_y, Creature *c,Game_World *current_zone){
+  char tile = mvinch(local_y,local_x);
   int response = numerical_responses[tile];
-  (*move_response_handler[response])(x,y,c,current_zone);
+  
+  (*move_response_handler[response])(global_x,global_y,local_x,local_y,c,current_zone);
 }
 
 
-void (*move_response_handler[2])(int x, int y, Creature *c,Game_World *current_zone) =  {move_response_move_character,move_response_halt_character};
+void (*move_response_handler[2])(int global_x, int global_y, int local_x, int local_y, Creature *c,Game_World *current_zone) =  {move_response_move_character,move_response_halt_character};
 
-  void move_response_move_character(int x, int y, Creature *c,Game_World *current_zone){
-    if( mvinch(y,x) > 255 ){
-      c->position.global_x = x;
-      c->position.global_y = y;
+  void move_response_move_character(int global_x, int global_y, int local_x, int local_y, Creature *c,Game_World *current_zone){
+    int y_max;
+    int x_max;
+    getmaxyx(stdscr, y_max, x_max);
+    
+    if(local_y  <  0){
+      printf("%d", c->position.local_y);
+    REDRAW_MAP(c,current_zone, c->position.global_x,c->position.global_y,x_max, y_max);
+    }
+
+    else if(local_y  >  y_max - 1){
+      
       REDRAW_MAP(c,current_zone, c->position.global_x,c->position.global_y,x_max, y_max);
     }
 
-    if(c->position.local_y  <  0)){
-
+    else if(local_x  <  0){
+      
+      REDRAW_MAP(c,current_zone, c->position.global_x,c->position.global_y,x_max, y_max);
     }
 
-    if(c->position.local_y  >  y_max - 1)){
-
+    else if(local_x  >  x_max - 1){
+      
+      REDRAW_MAP(c,current_zone, c->position.global_x,c->position.global_y,x_max, y_max);
     }
-
-    if(c->position.local_x  <  0){
-
+    else{
+      //printf("%s", c->standing_on);
+      /* current_zone->tiles[global_y][global_x].content[0] = c->standing_on[0];*/
+       mvprintw(c->position.local_y,c->position.local_x, c->standing_on);
+    c->standing_on[0] = mvinch(local_y,local_x);
+  /*  current_zone->tiles[global_y][global_x].content[0] = c->representation[0]; */
+  mvprintw(local_y,local_x,c->representation);
+  //printf("%d%s", global_x, "\n");
+    c->position.global_x = global_x;
+  // c->position.global_y = global_y;
+  c->position.local_x = local_x;
+  c->position.local_y = local_y;
+  move(c->position.local_y,c->position.local_x);
     }
-
-    if(){
-
-    }
+    
+    
+  
+    
     /*
   current_zone->tiles[y][x].content[0] = c->standing_on[0];
   mvprintw(c->position.local_y,c->position.local_x, c->standing_on);
@@ -98,7 +119,7 @@ void (*move_response_handler[2])(int x, int y, Creature *c,Game_World *current_z
     */
 }
 
-void move_response_halt_character(int x, int y, Creature *c,Game_World *current_zone){
+void move_response_halt_character(int global_x, int global_y,int local_x, int local_y, Creature *c,Game_World *current_zone){
   ;
 }
 void redraw_map(Creature *c, Game_World *world, int x, int y, int max_x, int max_y){

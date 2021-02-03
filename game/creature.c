@@ -199,7 +199,7 @@ Color *c_copy_color(Color color){
   return c;
 }
 /* A tester function to help test cases */
-Creature *c_random_player(unsigned y, unsigned x,Game_World *world){
+Creature *c_random_player(int y, int x,Game_World *world){
   Creature *c = malloc(sizeof(Creature));
   c->standing_on = malloc(sizeof(char));
   c->weight = 80.5;
@@ -210,8 +210,30 @@ Creature *c_random_player(unsigned y, unsigned x,Game_World *world){
   c->name = s_create_text("maranax");
   c->position.global_x = x;
   c->position.global_y = y;
-  c->position.local_x = c->position.global_x - (world->max_x -1);
-  c->position.local_y = c->position.global_y - (world->max_y -1 );
+  if(x <= world->max_x-1){
+    c->position.local_x = x;
+  }
+  else{
+    if(world->max_x % 2 == 0){
+      c->position.local_x = world->max_x/2;
+    }
+    else{
+      c->position.local_x = (world->max_x - 1)/2;
+    }
+  }
+  if(y <= world->max_y-1){
+    c->position.local_y = y;
+  }
+  else{
+    if(world->max_x % 2 == 0){
+      c->position.local_x = world->max_x/2;
+    }
+    else{
+      c->position.local_x = (world->max_x - 1)/2;
+    }
+  }
+  
+  
   c->representation = malloc(sizeof(char));
   c->representation[0] = '@';
   c->color = malloc(sizeof(Color));

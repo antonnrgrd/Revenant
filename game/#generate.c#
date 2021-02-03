@@ -39,6 +39,7 @@ Game_World *g_generate_game_world(int width, int height){
   world->width = width;
   world->height = height;
   getmaxyx(stdscr, world->max_y,world->max_x);
+  if()
   world->tiles = malloc(height * sizeof(Tile *));
   for(int i = 0; i < width; i++){
     world->tiles[i]= malloc( width * sizeof(Tile));

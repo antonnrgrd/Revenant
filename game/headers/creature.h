@@ -258,5 +258,5 @@ void (*creature_initializer[6])(Creature *c, int id);
 
 Color *c_copy_color(Color color);
 
-Creature *c_random_player(unsigned y, unsigned x ,Game_World *world);
+Creature *c_random_player(int y, int x ,Game_World *world);
 #endif
