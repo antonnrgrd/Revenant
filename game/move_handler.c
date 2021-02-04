@@ -31,36 +31,44 @@ void (*move_response_handler[2])(int global_x, int global_y, int local_x, int lo
     int y_max;
     int x_max;
     getmaxyx(stdscr, y_max, x_max);
-    
+    c->position.global_x = global_x;
+    c->position.global_y = global_y;
     if(local_y  <  0){
-      printf("%d", c->position.local_y);
-    REDRAW_MAP(c,current_zone, c->position.global_x,c->position.global_y,x_max, y_max);
+      c->position.local_y = y_max-1;
+      c->position.local_x = local_x;
+      REDRAW_MAP(c,current_zone, c->position.global_x,c->position.global_y,x_max, y_max);
+      c->standing_on[0] = mvinch(local_y,local_x);
+      mvprintw(local_y,local_x,c->representation);
+      move(c->position.local_y,c->position.local_x);
+      
     }
 
     else if(local_y  >  y_max - 1){
-      
+      c->position.local_y = 0;
+      c->position.local_x = local_x;
       REDRAW_MAP(c,current_zone, c->position.global_x,c->position.global_y,x_max, y_max);
+      c->standing_on[0] = mvinch(local_y,local_x);
+      mvprintw(local_y,local_x,c->representation);
+      move(c->position.local_y,c->position.local_x);
     }
 
     else if(local_x  <  0){
-      
+      c->position.local_y = x_max - 1;
       REDRAW_MAP(c,current_zone, c->position.global_x,c->position.global_y,x_max, y_max);
     }
 
     else if(local_x  >  x_max - 1){
-      
+      c->position.local_x = 0;
       REDRAW_MAP(c,current_zone, c->position.global_x,c->position.global_y,x_max, y_max);
     }
     else{
-      //printf("%s", c->standing_on);
+      
       /* current_zone->tiles[global_y][global_x].content[0] = c->standing_on[0];*/
        mvprintw(c->position.local_y,c->position.local_x, c->standing_on);
     c->standing_on[0] = mvinch(local_y,local_x);
   /*  current_zone->tiles[global_y][global_x].content[0] = c->representation[0]; */
   mvprintw(local_y,local_x,c->representation);
-  //printf("%d%s", global_x, "\n");
-    c->position.global_x = global_x;
-  // c->position.global_y = global_y;
+  c->position.global_x = global_x;
   c->position.local_x = local_x;
   c->position.local_y = local_y;
   move(c->position.local_y,c->position.local_x);
