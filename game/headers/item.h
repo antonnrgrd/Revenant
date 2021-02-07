@@ -75,6 +75,7 @@ typedef union Specifier{
 typedef struct Item{
   Specifier specifier;
   char *name;
+  char *representation;
   uint32_t value;
   char *description;
   Item_Kind kind;

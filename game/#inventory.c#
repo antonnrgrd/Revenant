@@ -26,7 +26,7 @@ int inv_add_item(Item_Holder *item, U_Hashtable *inventory, Creature *player){
   }
 }
 
-void inv_remove_item(char *name, int amount, U_Hashtable *inventory, *Creature player){
+int inv_remove_item(char *name, int amount, U_Hashtable *inventory, *Creature player){
   removed_weight = u_remove_item()
   player->current_carry -= removed_weight;
 }

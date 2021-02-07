@@ -217,7 +217,8 @@ typedef struct Creature{
   uint32_t curr_health;
   char *name;
   char *description;
-  float carryweight;
+  float max_carry;
+  float current_carry;
   Creature_Instance instance;
   char *representation;
   Color *color;

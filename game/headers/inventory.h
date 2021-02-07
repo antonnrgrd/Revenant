@@ -13,12 +13,11 @@ You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 #ifndef INVENTORY
-#define INVENTORY
-#define DELETION 0
-#define NONDELETION 1
+#define SUCCESS_ADDITION 0
+#define WEIGHT_LIMIT_EXCEEDED 1
 #include "u_hash.h"
 #include "creature.h"
-#include "cuckoohash.h"
+
 
 
 typedef struct Item_Msg{ //a struct for an item and how many of that item currently is in the inventory
@@ -27,18 +26,6 @@ typedef struct Item_Msg{ //a struct for an item and how many of that item curren
 }Item_Msg;
 
 
-extern const char* inventory_response[];
-
-void inv_move_items(Cuckoo_T *from_table,Cuckoo_T *to_table, unsigned amount, char *item);
-
-void inv_add_item(Cuckoo_T *table, unsigned amount, Item_Msg msg);
-
-Item_Msg inv_remove_item(Cuckoo_T *table,char *name, unsigned amount);
-
-void inv_equip_item(Item *i);
-
-void inv_equip_item_from_inv(char *name);
-
-Cuckoo_T *reshash(Cuckoo_T *table);
+int inv_add_item(Item_Holder *item, U_Hashtable *inventory, Creature *player);
 
 #endif
