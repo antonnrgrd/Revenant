@@ -1,6 +1,6 @@
 GCC = gcc
 
-SRC =  main.c item.c modifier.c strings.c inventory.c cuckoohash.c  generate.c creature.c test_runs.c game_state.c move_handler.c tiles.c #  u_hash.c item.c  u_hash.c creature.c
+SRC =  main.c item.c modifier.c strings.c inventory.c u_hash.c  generate.c creature.c test_runs.c game_state.c move_handler.c tiles.c 
 IDIR = headers
 #OBJS := $(patsubst %.c, build/%.o, $(SRC))
 #OBJ_MAIN = build/main.o

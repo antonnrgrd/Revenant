@@ -222,3 +222,10 @@ void i_swap_pointers(Item_Holder *i,Item_Holder *j){
   i = j;
   j = k;
 }
+
+Item_Holder *i_make_item_holder(Item *item, unsigned amount){
+  Item_Holder *item_holder = malloc(sizeof(Item_Holder));
+  item_holder->item = item;
+  item_holder->amount = amount;
+  
+}

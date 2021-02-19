@@ -205,6 +205,8 @@ Creature *c_random_player(int y, int x,Game_World *world){
   c->weight = 80.5;
   c->height = 1.80;
   c->species = humanoid;
+  c->max_carry = 5000.0;
+  c->current_carry = 0.0;
   c->disposition = undefined;
   c->attributes = malloc(sizeof(Attributes));
   c->name = s_create_text("maranax");

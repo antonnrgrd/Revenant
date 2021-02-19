@@ -24,18 +24,30 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "item.h"
 #include "strings.h"
 #include "modifier.h"
-#include "cuckoohash.h"
 #include "generate.h"
 #include "game_state.h"
 #include "move_handler.h"
 #include "tiles.h"
 #include <time.h>
 #define DELAY 30000
-//#define OUTERLOOP(x,y) for(int i = 0; i < x; i++ )
-//#define INNERLOOP(x,y)OUTERLOOP(x,y)for(int j = 0; j < y; j++ )
+
 int main(int argc, char *argv[]){
-  printf("%d", 10/3);
+  Game_World *game_world = g_generate_game_world(1000,1000);
+  Creature *c = c_random_player(5,3, game_world);
+  Item *first_loot = i_make_mele_weapon(poor, steel,one_hand, sword);
+  Item *second_loot = i_make_mele_weapon(legendary, granite,one_hand, mace);
+  Item *third_loot = i_make_mele_weapon(high,silver, two_hand, axe);
   
+  U_Hashtable *inventory = u_initalize_hashtable(10);
+  Item_Holder *first_loot_ = i_make_item_holder(first_loot,3);
+  Item_Holder *second_loot_ = i_make_item_holder(second_loot,3);
+  Item_Holder *third_loot_ = i_make_item_holder(third_loot,3);
+
+  inv_add_item(first_loot_, inventory,c);
+  inv_add_item(second_loot_, inventory,c);
+  inv_add_item(third_loot_, inventory,c);
+  u_print_inventory(inventory);
+  /*
   initscr();
   start_color();    
   Game_World *game_world = g_generate_game_world(1000,1000);
@@ -48,7 +60,6 @@ int main(int argc, char *argv[]){
   srand(time(NULL));
   raw();
   game_loop(c, game_world);
-  // printf("%d", c->position.local_y);
   endwin();
-  
+  */
 }

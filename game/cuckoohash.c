@@ -19,9 +19,7 @@ Cuckoo_T *generate_table(unsigned size){
 }
 
 
-unsigned generate_value(unsigned long long min, unsigned long long max){
-  return (unsigned) (rand() % (max - min ) +1 );
-}
+
 
 
 

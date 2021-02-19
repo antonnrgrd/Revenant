@@ -89,6 +89,7 @@ typedef struct Item_Holder{ //a struct for an item and how many of that item cur
   unsigned amount;
 }Item_Holder;
 
+Item_Holder *i_make_item_holder(Item *item, unsigned amount);
 void i_swap_pointers(Item_Holder *i,Item_Holder *j);
 
 Item *i_make_mele_weapon(Quality_Level q, Material material, Variant v,Mele_Weapon_Kind kind);

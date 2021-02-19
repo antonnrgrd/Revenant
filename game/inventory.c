@@ -13,10 +13,12 @@ You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "inventory.h"
 #include "creature.h"
+#include "u_hash.h"
 #include <stdlib.h>
 
 int inv_add_item(Item_Holder *item, U_Hashtable *inventory, Creature *player){
   if((player->current_carry + (item->amount * item->item->weight)) > player->max_carry ){
+    printf("%s", "Weight limit exeeded \n");
     return WEIGHT_LIMIT_EXCEEDED;
   }
   else{
@@ -26,7 +28,7 @@ int inv_add_item(Item_Holder *item, U_Hashtable *inventory, Creature *player){
   }
 }
 
-void inv_remove_item(char *name, int amount, U_Hashtable *inventory, *Creature player){
-  removed_weight = u_remove_item()
-  player->current_carry -= removed_weight;
+void inv_remove_item(char *name, int amount, U_Hashtable *inventory, Creature *player){
+  Item_Weight removed_weight = u_remove_item(name,amount,inventory);
+  player->current_carry -= removed_weight.weight_loss;
 }

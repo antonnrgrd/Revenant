@@ -33,7 +33,7 @@ typedef struct C_Entry{
 }C_entry;
 
 
-unsigned generate_value(unsigned long long min, unsigned long long max);
+
 
 void insert_item(Item_Holder *item,Cuckoo_T *table);
 
