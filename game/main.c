@@ -38,7 +38,7 @@ int main(int argc, char *argv[]){
   Item *second_loot = i_make_mele_weapon(legendary, granite,one_hand, mace);
   Item *third_loot = i_make_mele_weapon(high,silver, two_hand, axe);
   
-  U_Hashtable *inventory = u_initalize_hashtable(10);
+  U_Hashtable *inventory = u_initalize_hashtable(5);
   Item_Holder *first_loot_ = i_make_item_holder(first_loot,3);
   Item_Holder *second_loot_ = i_make_item_holder(second_loot,3);
   Item_Holder *third_loot_ = i_make_item_holder(third_loot,3);

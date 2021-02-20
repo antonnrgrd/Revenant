@@ -49,15 +49,14 @@ Maybe delete item at this point, maybe not since we might not use it after addin
   }
   if(table->entries[index] == NULL){
     table->entries[index] = malloc(sizeof(Entry));
-    table->entries[index]->item_holder = malloc(sizeof(Item_Holder));
-    table->entries[index]->item_holder->amount = amount;
+    table->entries[index]->item_holder = item;
     printf("%s", "Second case, \n");
   }
   if( table->entries[index] != NULL &&  table->entries[index]->item_holder->item->name != item->item->name){
     printf("%s", "Third case, \n");
     Entry *current_entry = table->entries[index]->next_entry;
     while(current_entry->next_entry != NULL){
-      if(table->entries[index]->item_holder->item->name == item->item->name){
+      if(current_entry->item_holder->item->name == item->item->name){
 	table->entries[index]->item_holder->amount += amount;
 	return;
       }
