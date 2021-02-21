@@ -57,15 +57,13 @@ Maybe delete item at this point, maybe not since we might not use it after addin
     Entry *current_entry = table->entries[index]->next_entry;
     while(current_entry->next_entry != NULL){
       if(current_entry->item_holder->item->name == item->item->name){
-	table->entries[index]->item_holder->amount += amount;
+	current_entry->item_holder->amount += amount;
 	return;
       }
       current_entry = current_entry->next_entry;
     }
-    table->entries[index]->next_entry = malloc(sizeof(Entry));
-    table->entries[index]->next_entry->item_holder = malloc(sizeof(Item_Holder));
-    table->entries[index]->next_entry->item_holder->item = item;
-    table->entries[index]->next_entry->item_holder->amount = amount;
+    current_entry->next_entry = malloc(sizeof(Entry));
+    current_entry->next_entry->item_holder->item = item;
   }
 }
 
