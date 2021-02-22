@@ -23,8 +23,7 @@ U_Hashtable *u_initalize_hashtable(int initial_size){
   U_Hashtable *table = malloc(sizeof(U_Hashtable));
   table->size = initial_size;
   table->item_count = 0;
-  table->entries =  malloc(sizeof(Entry *) * initial_size);
-  
+  table->entries =  malloc(sizeof(Entry *) * initial_size);  
   table->a = generate_value(1,BFP);
   table->b = generate_value(0,BFP);
   for(int i = 0; i < initial_size; i++){
@@ -47,7 +46,7 @@ Maybe delete item at this point, maybe not since we might not use it after addin
     table->entries[index]->item_holder->amount += amount;
     printf("%s", "First case, \n");
   }
-  if(table->entries[index] == NULL){
+  if(table->entries[index]->item_holder == NULL){
     table->entries[index] = malloc(sizeof(Entry));
     table->entries[index]->item_holder = item;
     printf("%s", "Second case, \n");

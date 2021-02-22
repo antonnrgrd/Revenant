@@ -38,7 +38,8 @@ int main(int argc, char *argv[]){
   Item *second_loot = i_make_mele_weapon(legendary, granite,one_hand, mace);
   Item *third_loot = i_make_mele_weapon(high,silver, two_hand, axe);
   
-  U_Hashtable *inventory = u_initalize_hashtable(5);
+  U_Hashtable *inventory = u_initalize_hashtable(3);
+  u_print_inventory(inventory);
   Item_Holder *first_loot_ = i_make_item_holder(first_loot,3);
   Item_Holder *second_loot_ = i_make_item_holder(second_loot,3);
   Item_Holder *third_loot_ = i_make_item_holder(third_loot,3);
@@ -46,7 +47,7 @@ int main(int argc, char *argv[]){
   inv_add_item(first_loot_, inventory,c);
   inv_add_item(second_loot_, inventory,c);
   inv_add_item(third_loot_, inventory,c);
-  u_print_inventory(inventory);
+  
   /*
   initscr();
   start_color();    
