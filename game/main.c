@@ -47,7 +47,7 @@ int main(int argc, char *argv[]){
   inv_add_item(first_loot_, inventory,c);
   inv_add_item(second_loot_, inventory,c);
   inv_add_item(third_loot_, inventory,c);
-  
+  u_print_inventory(inventory);
   /*
   initscr();
   start_color();    
