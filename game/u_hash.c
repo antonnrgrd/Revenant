@@ -46,7 +46,7 @@ Maybe delete item at this point, maybe not since we might not use it after addin
     table->entries[index]->item_holder->amount += amount;
     printf("%s", "First case, \n");
   }
-  if(table->entries[index]->item_holder == NULL){
+  if(table->entries[index] == NULL){
     table->entries[index] = malloc(sizeof(Entry));
     table->entries[index]->item_holder = item;
     printf("%s", "Second case, \n");
