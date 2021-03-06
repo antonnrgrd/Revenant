@@ -76,55 +76,7 @@ void (*move_response_handler[2])(int global_x, int global_y, int local_x, int lo
     
     
   
-    
-    /*
-  current_zone->tiles[y][x].content[0] = c->standing_on[0];
-  mvprintw(c->position.local_y,c->position.local_x, c->standing_on);
-  printf("%lu%s", mvinch(y,x), " ");
-  c->standing_on[0] = mvinch(y,x);
-  current_zone->tiles[y][x].content[0] = c->representation[0];
-  mvprintw(y,x,c->representation);
-  c->position.global_x = x;
-  c->position.global_y = y;
-  c->position.local_x = x;
-  c->position.local_y = y;
-  move(c->position.local_y,c->position.local_x);
-  //  current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
-  int y_max;
-  int x_max;
-  getmaxyx(stdscr, y_max, x_max);
-  if(c->position.local_y  <  0){
-    REDRAW_MAP(c,current_zone, c->position.global_x,c->position.global_y,x_max, y_max);
-    c->position.local_y = y_max -1 ;
-    SPAWN_AT(c,current_zone,x,y);
-      }
-  if(c->position.local_x < 0){
-    c->position.local_x = x_max -1;
-    redraw_map(c,current_zone, c->position.global_x,c->position.global_y,x_max, y_max);
-    SPAWN_AT(c,current_zone,x,y);
-  }
-
-  
-
-  if(c->position.local_y > y_max -1 ){
-     printf("%s", "True");
-     printf("%d",y_max);
-    
-    c->position.local_y -= y_max;
-    c->standing_on[0] = " ";
-    REDRAW_MAP(c,current_zone, c->position.global_x,c->position.global_y,x_max, y_max);
-    //    SPAWN_AT(c,current_zone,20,20);
-    getmaxyx(stdscr,current_zone->max_y, current_zone->max_x);
-    move(c->position.local_y,c->position.local_x);
-    
-  }
-
-  if(c->position.local_x > x_max - 1){
-    c->position.local_x = 0;
-    redraw_map(c,current_zone, c->position.global_x,c->position.global_y,x_max, y_max);
-    
-  }
-    */
+ 
 }
 
 void move_response_halt_character(int global_x, int global_y,int local_x, int local_y, Creature *c,Game_World *current_zone){
@@ -136,6 +88,20 @@ void redraw_map(Creature *c, Game_World *world, int x, int y, int max_x, int max
       mvprintw(i,j,(world->tiles[(c->position.global_y - (c->position.local_y))+i][(c->position.global_x - (c->position.local_x))+j].content));
     }
   }
+}
+
+void gw_add_to_pile(Item_Holder *item, Entry *item_pile){
+  Entry *current_entry = item_pile;
+  if(current_entry == NULL ){
+    current_entry = malloc(sizeof(Entry));
+    current_entry->item_holder = item;
+    return;
+  }
+  while(current_entry->next_entry != NULL){
+    current_entry = current_entry->next_entry;
+  }
+  current_entry->next_entry = malloc(sizeof(Entry));
+  current_entry->next_entry = item;
 }
 
 /*

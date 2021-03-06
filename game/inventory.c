@@ -16,6 +16,17 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "u_hash.h"
 #include <stdlib.h>
 
+void inv_see_equipment(){
+
+}
+
+void inv_acces_inv(){
+  WINDOW* inventory_screen = newwin(2,2,2,2);
+
+
+  delwin(inventory_screen);
+}
+
 int inv_add_item(Item_Holder *item, U_Hashtable *inventory, Creature *player){
   if((player->current_carry + (item->amount * item->item->weight)) > player->max_carry ){
     printf("%s", "Weight limit exeeded \n");

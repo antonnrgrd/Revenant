@@ -17,7 +17,7 @@ along with Foobar.  If not, see <https://www.gnu.org/licenses/>. */
 #include <ncurses.h>
 #include <stdlib.h>
 /*A giant jumptable. The basic idea is that when the player makes a move in a direction, the response should be based on the tiles kind. they way this hsould be handled is that we check the character at a location. The character has a decimal representation. That deciaml representation will represent an index in this lookup table. The returned value will then act as yet antoher offset to an array of functions that handle said behavior */    /*        ignore whatever is in here                             */
-extern int numerical_responses[36] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0, 1, 1};
+extern int numerical_responses[255] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0, 1, 1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
 Room *tiles_generate_room(unsigned x, unsigned y, unsigned height, unsigned width){
   Room *room = malloc(sizeof(Room));

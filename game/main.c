@@ -23,15 +23,16 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "inventory.h" 
 #include "item.h"
 #include "strings.h"
+#include "placeholder.h"
 #include "modifier.h"
 #include "generate.h"
 #include "game_state.h"
-#include "move_handler.h"
 #include "tiles.h"
 #include <time.h>
-#define DELAY 30000
+
 
 int main(int argc, char *argv[]){
+  /*
   Game_World *game_world = g_generate_game_world(1000,1000);
   Creature *c = c_random_player(5,3, game_world);
   Item *first_loot = i_make_mele_weapon(poor, steel,one_hand, sword);
@@ -48,7 +49,13 @@ int main(int argc, char *argv[]){
   inv_add_item(second_loot_, inventory,c);
   inv_add_item(third_loot_, inventory,c);
   u_print_inventory(inventory);
-  /*
+  u_remove_item(second_loot->name,1,inventory);
+  u_print_inventory(inventory);
+  */
+
+  
+
+  
   initscr();
   start_color();    
   Game_World *game_world = g_generate_game_world(1000,1000);
@@ -62,5 +69,5 @@ int main(int argc, char *argv[]){
   raw();
   game_loop(c, game_world);
   endwin();
-  */
+  
 }

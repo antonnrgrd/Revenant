@@ -11,22 +11,19 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
-#include "inventory.h"
-#include "creature.h"
-#include <stdlib.h>
 
-int inv_add_item(Item_Holder *item, U_Hashtable *inventory, Creature *player){
-  if((player->current_carry + (item->amount * item->item->weight)) > player->max_carry ){
-    return WEIGHT_LIMIT_EXCEEDED;
-  }
-  else{
-    u_add_item(item, item->amount, inventory);
-    player->current_carry += (item->amount * item->item->weight);
-    return SUCCESS_ADDITION;
-  }
-}
+#include "placeholder.h"
 
-int inv_remove_item(char *name, int amount, U_Hashtable *inventory, *Creature player){
-  removed_weight = u_remove_item()
-  player->current_carry -= removed_weight;
+void gw_add_to_pile(Entry *item, Entry *item_pile){
+  Entry *current_entry = item_pile;
+  if(current_entry == NULL ){
+    current_entry = malloc(sizeof(Entry));
+    current_entry->item_holder = item;
+    return;
+  }
+  while(current_entry->next != NULL){
+    current_entry = current_entry->next_entry;
+  }
+  current_entry->next_entry = malloc(sizeof(Entry));
+  current_entry->next_entry->item_holder;
 }

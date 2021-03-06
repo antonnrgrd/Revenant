@@ -43,4 +43,6 @@ extern const char *quality_name_modifier[];
 extern const char *armorslot_name_modifier[];
 
 extern const char *mele_weapon_name_modifier[];
+
+extern const char *weapon_representations[];
 #endif

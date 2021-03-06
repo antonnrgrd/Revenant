@@ -14,7 +14,6 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #ifndef GENERATE
 #define GENERATE
 #include <ncurses.h>
-#include "cuckoohash.h"
 #include "tiles.h"
 extern const char *alphabet;
 void g_tileset();

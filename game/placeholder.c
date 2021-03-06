@@ -11,24 +11,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
-#ifndef GAME_STATE
-#define GAME_STATE
-#include "move_handler.h"
-/*The main struct that will encapsulate all information about the game currently present */
-typedef struct Game_State{
-  int screen_
-}Game_State;
 
-typedef struct Game_World{
-  /* local coordinates that represents where the player is on
-the screen. Used for testing if the player has reached the boundaries of the screen */
-  int player_screen_x;
-  int player_screen_y;
-  WINDOW *game_world;
-}Game_World;
-
-Game_World *game_generate_world(Creature *player, int x_size, int y_size);
+#include "placeholder.h"
 
 
-void game_loop(Creature *c, Game_World *current_zone);
-#endif

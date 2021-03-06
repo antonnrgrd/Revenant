@@ -28,3 +28,5 @@ Variant_Modifier variant_modifiers[] = {{1.2,1,1},{1.5,1.2,1.5}}; //modifier for
 
 
 extern Variant_Modifier itemslot_modifiers[] = {{0.3, 1.1, 1.3},{0.1, 0.5, 0.3},{0.1, 0.5, 0.3},{4, 5, 10},{3, 4, 8},{2, 1.75, 1.5}}; //abuse of struct name but whatev. a modifier for the slot name i.e how the equipment being a helmet, leggings, etc. affect the stats
+
+extern const char *weapon_representations[] = {"{", "|"};

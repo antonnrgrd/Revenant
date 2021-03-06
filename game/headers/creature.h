@@ -14,13 +14,10 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #ifndef CREATURE
 #define CREATURE
 #include <inttypes.h>
-#include "item.h"
 #include "strings.h"
 #include "u_hash.h"
 #include <ncurses.h>
-#include "cuckoohash.h"
 #include "placeholder.h"
-#include "tiles.h"
 #include "tiles.h"
 typedef enum Creature_Kind{animal, humanoid,cyborg,mechanical,mathematical,vegetative,player_character}Creature_Kind;
 typedef enum Environment{cavern,forest,aquatic,plains,mountain}Environment;
@@ -179,7 +176,6 @@ typedef struct Humanoid{
 }Humanoid;
 
 typedef struct Player_Character{
-  Cuckoo_T *inventory;
   char *description;
   Limb *head;
   Limb *torso;

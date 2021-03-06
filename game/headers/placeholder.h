@@ -1,4 +1,4 @@
-/*This file is part of Revnant.
+/*This file is part of Revenant.
 
 Revenant is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
@@ -13,6 +13,7 @@ You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #ifndef PLACEHOLDER
 #define PLACEHOLDER
+#include "u_hash.h"
 typedef struct Position{
   /* Each creature will have two coordinate types, local and global. Global indicates where they are globally on the map, local
    refers to where they are on the screen*/
@@ -24,7 +25,9 @@ typedef struct Position{
 
 typedef struct Tile{
   char *content;
+  Entry *entry;
 }Tile;
+
 
 typedef struct Game_World{
   int width;

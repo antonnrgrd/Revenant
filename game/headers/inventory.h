@@ -20,10 +20,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 
 
-typedef struct Item_Msg{ //a struct for an item and how many of that item currently is in the inventory
-  Item *item;
-  unsigned flag;
-}Item_Msg;
+void inv_access_inv();
 
 
 int inv_add_item(Item_Holder *item, U_Hashtable *inventory, Creature *player);

@@ -15,10 +15,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "move_handler.h"
 #include "creature.h"
 
-//#define LOOP_HEIGHT(world, x,y, max_x, max_y) for(int i = y; y < max_y && i+y < world->height; i++)
-//#define LOOP_WIDTH(world, x,y, max_x, max_y)LOOP_HEIGHT(world, x,y, max_x, max_y) for(int j = x; x < max_x && j+x < world->width; j++)
-//#define REDRAW_MAP(world, x,y, max_x, max_y) LOOP_WIDTH(world, x,y, max_x, max_y) 
-//mvprintw(max_y, max_x ,world->tiles[x][y].content); 
+
 
 void game_loop(Creature *c, Game_World *current_zone){
   int ch;

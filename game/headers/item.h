@@ -29,7 +29,6 @@ typedef enum Equipment_Kind{armor, weaponry}Equipment_Kind;
 typedef enum Item_Kind{interactable,valuable,reagent,consumable,equippable}Item_Kind;
 typedef enum Reagent_Kind{cooking,smithing,fishing,herb,computer}Reagent_Kind;
 typedef enum Mele_Weapon_Kind{sword,mace,axe}Mele_Weapon_Kind;
-
 typedef struct Armor{
   uint64_t armor;
   Worn_in slot; //in which item slot will the item be worn in
@@ -76,6 +75,7 @@ typedef struct Item{
   Specifier specifier;
   char *name;
   char *representation;
+  char *standing_on;
   uint32_t value;
   char *description;
   Item_Kind kind;
@@ -88,6 +88,7 @@ typedef struct Item_Holder{ //a struct for an item and how many of that item cur
   Item *item;
   unsigned amount;
 }Item_Holder;
+
 
 Item_Holder *i_make_item_holder(Item *item, unsigned amount);
 void i_swap_pointers(Item_Holder *i,Item_Holder *j);
