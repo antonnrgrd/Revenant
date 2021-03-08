@@ -14,6 +14,12 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "generate.h"
 #include <ncurses.h>
 #include "tiles.h"
+
+int gen_int(int min,int max){
+  
+  return rand() % (max - min + 1) + min;
+}
+
 void g_tileset(){
   int max_y = 0;
   int max_x = 0;
@@ -46,7 +52,7 @@ Game_World *g_generate_game_world(int width, int height){
   for(int j = 0; j < height; j++){
     for(int k = 0; k < width; k++){
       world->tiles[j][k].content = malloc(sizeof(char));
-      world->tiles[j][k].content[0] = alphabet[generate_value(0,14)];
+      world->tiles[j][k].content[0] = alphabet[gen_int(0,10)];
     }
    }
   for(int a = 100; a < 200; a++){
@@ -60,5 +66,5 @@ Game_World *g_generate_game_world(int width, int height){
 
 
 
-extern const char *alphabet = "              #";
+extern const char *alphabet = "          #";
 

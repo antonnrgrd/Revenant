@@ -20,6 +20,9 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "item.h"
 #include "tiles.h"
 #include "inventory.h"
+/*These are the dimensions that our computer screen should AT LEAST have. If it does not possess these, something is quite fishy */
+#define DEFAULT_MAX_Y 80
+#define DEFAULT_MAX_X 24
 #define TEST(c,world, x,y, max_x, max_y) REDRAW_MAP(c,world, x,y, max_x, max_y) printf("%s" "done \n");
 #define SPAWN_AT(creature,world, x,y) /*creature->standing_on[0] = mvinch(y,x);*/ mvprintw(c->position.local_y,c->position.local_x, c->representation);  move(c->position.local_y,c->position.local_x); /* world->tiles[c->position.global_y][c->position.global_y].content[0] = c->representation[0] */ c->position.local_x = x; c->position.local_y = y; c->position.global_x = 42; c->position.global_y = y; 
 #define ASSERT_COORDINATES()
