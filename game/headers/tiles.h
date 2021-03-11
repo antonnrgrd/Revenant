@@ -16,7 +16,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include <time.h>
 #include "creature.h"
 #include "placeholder.h"
-extern int numerical_responses[255];
+extern int numerical_responses[256];
 /*36 previously */
 
 

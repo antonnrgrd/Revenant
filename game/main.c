@@ -3,12 +3,12 @@
 Revenant is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
-,,,
+ 
 Revenant is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
-
+        
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "dialogue.h"
@@ -29,8 +29,8 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "game_state.h"
 #include "tiles.h"
 #include <time.h>
-
-
+//can be removed 
+#include <sys/ioctl.h>
 int main(int argc, char *argv[]){
   /*
   Game_World *game_world = g_generate_game_world(1000,1000);
@@ -52,14 +52,20 @@ int main(int argc, char *argv[]){
   u_remove_item(second_loot->name,1,inventory);
   u_print_inventory(inventory);
   */
+  /*
+  struct winsize w;
+    ioctl(0, TIOCGWINSZ, &w);
 
+    printf ("lines %d\n", w.ws_row);
+    printf ("columns %d\n", w.ws_col);
+    return 0;
+  */
   
-
   
   initscr();
   start_color();    
   Game_World *game_world = g_generate_game_world(1000,1000);
-  Creature *c = c_random_player(5,3, game_world);
+  Creature *c = c_random_player(0,0, game_world);
   initscr();
   start_color();
   noecho();
@@ -67,7 +73,11 @@ int main(int argc, char *argv[]){
   keypad(stdscr, TRUE);
   srand(time(NULL));
   raw();
+  mvprintw(0,0, c->name);
   game_loop(c, game_world);
   endwin();
+  
+  
+
   
 }

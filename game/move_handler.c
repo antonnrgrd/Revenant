@@ -3,7 +3,7 @@
 Revenant is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
-
+ 
 Revenant is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -28,47 +28,42 @@ void mv_check_move_handler(int global_x, int global_y, int local_x, int local_y,
 void (*move_response_handler[2])(int global_x, int global_y, int local_x, int local_y, Creature *c,Game_World *current_zone) =  {move_response_move_character,move_response_halt_character};
 
   void move_response_move_character(int global_x, int global_y, int local_x, int local_y, Creature *c,Game_World *current_zone){
-    int y_max;
-    int x_max;
-    getmaxyx(stdscr, y_max, x_max);
+    
     c->position.global_x = global_x;
     c->position.global_y = global_y;
-    if(local_y  <  0){
-      c->position.local_y = y_max-1;
-      c->position.local_x = local_x;
+    if(local_y  <  1){
+      c->position.local_y = DEFAULT_MAX_Y - 1;
       REDRAW_MAP(c,current_zone, c->position.global_x,c->position.global_y,x_max, y_max);
       c->standing_on[0] = mvinch(local_y,local_x);
-      mvprintw(local_y,local_x,c->representation);
       move(c->position.local_y,c->position.local_x);
       
     }
 
-    else if(local_y  >  y_max - 1){
-      c->position.local_y = 0;
-      c->position.local_x = local_x;
+    else if(local_y  >  DEFAULT_MAX_Y - 1){
+     
+      c->position.local_y = 1;
       REDRAW_MAP(c,current_zone, c->position.global_x,c->position.global_y,x_max, y_max);
-      c->standing_on[0] = mvinch(local_y,local_x);
-      mvprintw(local_y,local_x,c->representation);
-      move(c->position.local_y,c->position.local_x);
+      // c->standing_on[0] = mvinch(local_y,local_x);
+      // mvprintw(local_y,local_x,c->representation);
+      // move(c->position.local_y,c->position.local_x);
     }
 
-    else if(local_x  <  0){
-      c->position.local_y = x_max - 1;
+    else if(local_x  <  DEFAULT_MAX_INFOBAR_WIDTH){
+      c->position.local_x = DEFAULT_MAX_INFOBAR_WIDTH;
       REDRAW_MAP(c,current_zone, c->position.global_x,c->position.global_y,x_max, y_max);
     }
 
-    else if(local_x  >  x_max - 1){
-      c->position.local_x = 0;
+    else if(local_x  >  DEFAULT_MAX_X - 1){
+      c->position.local_x = DEFAULT_MAX_INFOBAR_WIDTH;
       REDRAW_MAP(c,current_zone, c->position.global_x,c->position.global_y,x_max, y_max);
     }
     else{
       
       /* current_zone->tiles[global_y][global_x].content[0] = c->standing_on[0];*/
-       mvprintw(c->position.local_y,c->position.local_x, c->standing_on);
-    c->standing_on[0] = mvinch(local_y,local_x);
+  mvprintw(c->position.local_y,c->position.local_x, c->standing_on);
+  c->standing_on[0] = mvinch(local_y,local_x);
   /*  current_zone->tiles[global_y][global_x].content[0] = c->representation[0]; */
   mvprintw(local_y,local_x,c->representation);
-  c->position.global_x = global_x;
   c->position.local_x = local_x;
   c->position.local_y = local_y;
   move(c->position.local_y,c->position.local_x);
@@ -104,22 +99,7 @@ void gw_add_to_pile(Item_Holder *item, Entry *item_pile){
   current_entry->next_entry = item;
 }
 
-/*
-void move_response_move_character(int x, int y, Creature *c, unsigned coordinate_flag){
-  if(coordinate_flag == MOVE_X){
-    c->x = x;
-    c->y = y;
-  }
-
-  else{
-    c->y = y;
-    c->x = x;
-  }
-  
+void move_response_loot_item(int global_x, int global_y,int local_x, int local_y, Creature *c,Game_World *current_zone){
+  char buffer[strlen(current_zone->tiles[global_y][global_x]->entry->item_holder->item->name) + strlen(" in amount ") + strlen(current_zone->tiles[global_y][global_x]->entry->item_holder->amount + '0')];
+  mvprintw(0,0 "Pickup")
 }
-
-void move_response_halt_character(int x, int y, Creature *c, unsigned coordinate_flag){
-  ;
-}
-
-*/
