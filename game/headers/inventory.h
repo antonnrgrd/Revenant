@@ -23,6 +23,6 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 void inv_access_inv();
 
 
-int inv_add_item(Item_Holder *item, U_Hashtable *inventory, Creature *player);
+int inv_add_item(Item_Holder *item_h, U_Hashtable *inventory, Creature *player);
 
 #endif

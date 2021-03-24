@@ -194,6 +194,7 @@ typedef struct Player_Character{
   Item *backgear;
   Item *mainhand;
   Item *offhand;
+  U_Hashtable *inventory;
 }Player_Character;
  
 

@@ -59,7 +59,7 @@ unsigned long long u_hash(char *name,U_Hashtable *table);
 
 unsigned long long generate_value(unsigned long long min, unsigned long long max);
 
-U_Hashtable *u_initalize_hashtable(int initial_size);
+U_Hashtable *u_initialize_hashtable(int initial_size);
 
 void u_add_item(Item_Holder *item, int amount,U_Hashtable *table);
 

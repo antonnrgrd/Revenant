@@ -27,14 +27,16 @@ void inv_acces_inv(){
   delwin(inventory_screen);
 }
 
-int inv_add_item(Item_Holder *item, U_Hashtable *inventory, Creature *player){
-  if((player->current_carry + (item->amount * item->item->weight)) > player->max_carry ){
-    printf("%s", "Weight limit exeeded \n");
+int inv_add_item(Item_Holder *item_h, U_Hashtable *inventory, Creature *player){
+  
+  if((player->current_carry + (item_h->amount * item_h->item->weight)) > player->max_carry ){
     return WEIGHT_LIMIT_EXCEEDED;
   }
+  
+  
   else{
-    u_add_item(item, item->amount, inventory);
-    player->current_carry += (item->amount * item->item->weight);
+    u_add_item(item_h, item_h->amount, inventory);
+    player->current_carry += (item_h->amount * item_h->item->weight);
     return SUCCESS_ADDITION;
   }
 }

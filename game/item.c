@@ -124,7 +124,9 @@ Item *i_make_mele_weapon(Quality_Level q, Material material, Variant v, Mele_Wea
   i->quest_item = 0;
   i->specifier.equipment.kind = weaponry;
   i->specifier.equipment.weapon = w;
-  strcpy(i->representation, weapon_representations[1]);
+  i-> representation = s_create_text_const(weapon_representations[1]);
+  i->standing_on = malloc(sizeof(char));
+  //strcpy(i->representation, weapon_representations[1]);
   return i;
 }
 

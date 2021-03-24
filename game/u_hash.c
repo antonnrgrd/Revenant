@@ -19,40 +19,34 @@ unsigned long long u_hash(char *name,U_Hashtable *table){
   return((table->a * s_uint_from_string(name) + table->b) % BFP) % table->size;
 }
 
-U_Hashtable *u_initalize_hashtable(int initial_size){
+U_Hashtable *u_initialize_hashtable(int initial_size){
   U_Hashtable *table = malloc(sizeof(U_Hashtable));
   table->size = initial_size;
   table->item_count = 0;
   table->entries =  malloc(sizeof(Entry *) * initial_size);  
   table->a = generate_value(1,BFP);
   table->b = generate_value(0,BFP);
-  for(int i = 0; i < initial_size; i++){
-    if(table->entries[i] == NULL){
-      printf("%s","Yup, NULL \n");
-      
-    }
-  }
   return table;
 }
 
 void u_add_item(Item_Holder *item, int amount,U_Hashtable *table){
   unsigned long long index = u_hash(item->item->name, table);
-  printf("%s%lld%s", "Index is: ", index, "\n");
-  printf("%s%s%s", "Item we are adding is: ", item->item->name, "\n");
+  //  printf("%s%lld%s", "Index is: ", index, "\n");
+  //  printf("%s%s%s", "Item we are adding is: ", item->item->name, "\n");
   /*Item already present in inventory 
 Maybe delete item at this point, maybe not since we might not use it after adding to inventory??
 */
   if(table->entries[index] != NULL && table->entries[index]->item_holder->item->name == item->item->name){
     table->entries[index]->item_holder->amount += amount;
-    printf("%s", "First case, \n");
+    // printf("%s", "First case, \n");
   }
   if(table->entries[index] == NULL){
     table->entries[index] = malloc(sizeof(Entry));
     table->entries[index]->item_holder = item;
-    printf("%s", "Second case, \n");
+    // printf("%s", "Second case, \n");
   }
   if( table->entries[index] != NULL &&  table->entries[index]->item_holder->item->name != item->item->name){
-    printf("%s", "Third case, \n");
+    // printf("%s", "Third case, \n");
     if(table->entries[index]->next_entry == NULL){
       table->entries[index]->next_entry = malloc(sizeof(Entry));
       table->entries[index]->next_entry->item_holder = item;

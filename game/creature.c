@@ -240,5 +240,8 @@ Creature *c_random_player(int y, int x,Game_World *world){
   c->representation[0] = '@';
   c->color = malloc(sizeof(Color));
   c->standing_on[0] = ' ';
+  c->instance.character = malloc(sizeof(Player_Character));
+  c->instance.character->inventory = u_initialize_hashtable(10);
   return c;
+  
 }
