@@ -29,10 +29,6 @@ Attributes *c_generate_attributes(uint32_t stamina,uint32_t strength,uint32_t de
 }
 
 
-extern  Animal_Definition animal_definitions[] = {{"Short-faced bear","A large brown bear. It has a disproportionately short face",900,3.4,1.5 , {12,12,12,12,12,12,12}, {hhead,healthy, 100, 100},{ttorso,healthy, 100, 100}, {lleg,healthy, 100, 100}, {lleg,healthy, 100, 100}, {lleg,healthy, 100, 100}, {lleg,healthy, 100, 100}, {ttail,healthy, 100, 100}, {COLOR_RED, 0,0,0}}};
-
-extern Humanoid_Definition humanoid_definitions[] = {{"Bandit", "A bandit looking to steal rob and murder you", 65,1.65, iron,iron,iron, leather, leather, steel, one_hand, sword,steel, leather, {15,15,15,15,15,15,15}, {hhead, healthy, 14, 15},{ttorso, healthy, 18, 21},{aarm, healthy, 14, 15} , {aarm, healthy, 14, 15}, {lleg, healthy, 14, 15}, {lleg, healthy, 14, 15},{noone, healthy, 14, 15},{noone, healthy, 14, 15},{noone, healthy, 14, 15}, medium, weaponry, axe}};
-
 Attributes *c_gen_attributes(Attributes src ){
   Attributes *dst = malloc(sizeof(Attributes));
   dst->stamina = src.stamina;
@@ -245,3 +241,7 @@ Creature *c_random_player(int y, int x,Game_World *world){
   return c;
   
 }
+
+extern  Animal_Definition animal_definitions[] = {{"Short-faced bear","A large brown bear. It has a disproportionately short face",900,3.4,1.5 , {12,12,12,12,12,12,12}, {COLOR_RED, 0,0,0}}};
+
+extern Humanoid_Definition humanoid_definitions[] = {{"Bandit", "A bandit looking to steal rob and murder you", 65,1.65, iron,iron,iron, leather, leather, steel, one_hand, sword,steel, leather, {15,15,15,15,15,15,15}, {hhead, healthy, 14, 15},{ttorso, healthy, 18, 21},{aarm, healthy, 14, 15} , {aarm, healthy, 14, 15}, {lleg, healthy, 14, 15}, {lleg, healthy, 14, 15},{noone, healthy, 14, 15},{noone, healthy, 14, 15},{noone, healthy, 14, 15}, medium, weaponry, axe}};

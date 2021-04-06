@@ -27,12 +27,39 @@ typedef enum Limb_Kind{hhead,ttorso,aarm,lleg,ttail,wwing,hhand,ffoot,tthroat,ta
 typedef enum Limb_Status{bleeding,healthy,infected,disabled,frozen,poisons}Limb_Status;
 typedef enum Status{immobile,poisoned,haemorrhaging,unconscious,frostbit}Status;
 typedef enum Animal_ID{short_nosed_bear,elk,}Animal_ID;
+typedef enum body_type{humanoid, humanoid_tail, animal_quad };
+typedef enum current_behavior{stationary, roaming, pursuing, fleeing};
+typedef enum attack_type{biting, }
 typedef struct Limb{
   Limb_Kind kind;
   Limb_Status status;
   int durability;
   int damage;
 }Limb;
+
+typedef struct Humanoid_Body{
+  Limb head;
+  Limb torso;
+  Limb l_arm;
+  Limb r_arm;
+  Limb l_leg;
+  Limb r_leg;
+}Humanoid_Body;
+
+typedef struct Animal_Body{
+  Limb head;
+  Limb torso;
+  Limb l_arm;
+  Limb r_arm;
+  Limb l_leg;
+  Limb r_leg;
+  Limb tail;
+}Animal_Body;
+
+typedef union body_type_holder{
+  Humanoid_Body *humanoid_body;
+  Animal_Body *animal_body;
+}
 
 typedef struct Color{
   /* will be defined by the constants in ncurses i.e COLOR_RED, COLOR_CYAN etc. */
@@ -59,13 +86,6 @@ typedef struct Animal_Definition{ // Anything ending with an Definitions is an a
   float height;
   float width;
   Attributes attributes;
-  Limb head;
-  Limb torso;
-  Limb l_arm;
-  Limb r_arm;
-  Limb l_leg;
-  Limb r_leg;
-  Limb tail;
   Color color;
 }Animal_Definition;
 
@@ -205,6 +225,7 @@ typedef union Creature_Instance{
 }Creature_Instance;
 
 typedef struct Creature{
+  body_type body;
   float weight;
   float height;
   Creature_Kind species;
