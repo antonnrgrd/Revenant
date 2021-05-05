@@ -27,9 +27,9 @@ typedef enum Limb_Kind{hhead,ttorso,aarm,lleg,ttail,wwing,hhand,ffoot,tthroat,ta
 typedef enum Limb_Status{bleeding,healthy,infected,disabled,frozen,poisons}Limb_Status;
 typedef enum Status{immobile,poisoned,haemorrhaging,unconscious,frostbit}Status;
 typedef enum Animal_ID{short_nosed_bear,elk,}Animal_ID;
-typedef enum body_type{humanoid, humanoid_tail, animal_quad };
-typedef enum current_behavior{stationary, roaming, pursuing, fleeing};
-typedef enum attack_type{biting, }
+typedef enum body_type{humanlike, humanlike_tail, animal_quad }body_type;
+typedef enum current_behavior{stationary, roaming, pursuing, fleeing}current_behavior;
+typedef enum attack_type{biting, clawing, charging, headbutting}attack_type;
 typedef struct Limb{
   Limb_Kind kind;
   Limb_Status status;
@@ -59,7 +59,7 @@ typedef struct Animal_Body{
 typedef union body_type_holder{
   Humanoid_Body *humanoid_body;
   Animal_Body *animal_body;
-}
+}body_type_holder;
 
 typedef struct Color{
   /* will be defined by the constants in ncurses i.e COLOR_RED, COLOR_CYAN etc. */
@@ -87,6 +87,7 @@ typedef struct Animal_Definition{ // Anything ending with an Definitions is an a
   float width;
   Attributes attributes;
   Color color;
+  body_type_holder body;
 }Animal_Definition;
 
 typedef struct Humanoid_Definition{ 
@@ -139,13 +140,7 @@ typedef struct Humanoid_Instance{
 }Humanoid_Instance;
 
 typedef struct Animal_Instance{ // Anything ending with an Instance is intended to be the actual instantiations of a given creature type
-  Limb *head;
-  Limb *torso;
-  Limb *l_arm;
-  Limb *r_arm;
-  Limb *l_leg;
-  Limb *r_leg;
-  Limb *tail;
+  
 }Animal_Instance;
 
 
@@ -154,24 +149,6 @@ typedef struct Dragon_Kind{
   char *name;
   char *description;
   Attributes *attributes;
-  Limb *tail;
-  Limb *hhhead;
-  Limb *torso;
-  Limb *throat;
-  Limb *left_wing;
-  Limb *right_wing;
-  Limb *l_foreleg;
-  Limb *r_foreleg;
-  Limb *l_hindleg;
-  Limb *r_hindleg;
-  Limb *l_forehand;
-  Limb *r_forehand;
-  Limb *l_hindhand;
-  Limb *r_hindhand;
-  Limb *l_forefoot;
-  Limb *r_forefoot;
-  Limb *l_hindfoot;
-  Limb *r_hindfoot;
 }Dragon_Kind;
 
 typedef struct Humanoid{
@@ -197,23 +174,6 @@ typedef struct Humanoid{
 
 typedef struct Player_Character{
   char *description;
-  Limb *head;
-  Limb *torso;
-  Limb *throat;
-  Limb *l_leg;
-  Limb *r_leg;
-  Limb *l_foot;
-  Limb *r_foot;
-  Limb *l_hand;
-  Limb *r_hand;
-  Limb *l_arm;
-  Limb *r_arm;
-  Item *headgear;
-  Item *chestgear;
-  Item *leggear;
-  Item *backgear;
-  Item *mainhand;
-  Item *offhand;
   U_Hashtable *inventory;
 }Player_Character;
  
@@ -230,7 +190,7 @@ typedef struct Creature{
   float height;
   Creature_Kind species;
   Disposition disposition;
-  Attributes *attributes;
+  Attributes attributes;
   uint32_t max_health;
   uint32_t curr_health;
   char *name;

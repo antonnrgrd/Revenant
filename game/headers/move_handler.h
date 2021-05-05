@@ -55,4 +55,6 @@ void move_response_move_character(int global_x, int global_y, int local_x, int l
 void move_response_halt_character(int global_x, int global_y,int local_x, int local_y, Creature *c,Game_World *current_zone);
 
 void move_response_loot_item(int global_x, int global_y,int local_x, int local_y, Creature *c,Game_World *current_zone);
+
+
 #endif

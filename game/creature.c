@@ -43,7 +43,7 @@ Attributes *c_gen_attributes(Attributes src ){
 
 
 
-//given a animal definition, return the corresponding instance
+/*
 Animal_Instance *c_generate_animal_instance(Animal_Definition d){
   Animal_Instance *animal = malloc(sizeof(Animal_Instance));
   animal->head = malloc(sizeof(Limb));
@@ -82,6 +82,7 @@ Animal_Instance *c_generate_animal_instance(Animal_Definition d){
   
   return animal;
 }
+*/
 //anything with a free, frees up a creature instance of the named type
 void c_free_animal(Animal_Instance *a){
   free(a->head);
@@ -151,7 +152,7 @@ Humanoid_Instance *humanoid = malloc(sizeof(Humanoid_Instance));
   return humanoid;
 }
 
-
+/*
 void c_initialize_animal_inf(Creature *c,int id){
   Animal_Definition d = animal_definitions[id];
   c->name = s_create_text(d.name);
@@ -164,7 +165,7 @@ void c_initialize_animal_inf(Creature *c,int id){
   c->representation[0] = 'a';
   c->color = c_copy_color(d.color);
 }
-
+*/
 void c_initialize_humanoid_inf(Creature *c, int id){
   Humanoid_Definition d = humanoid_definitions[id];
   c->name = s_create_text(d.name);
