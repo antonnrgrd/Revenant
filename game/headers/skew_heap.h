@@ -11,6 +11,7 @@ Node *holder = left_heap;/
 left_heap = right_heap; /
 right_heap = holder;
        
+#define MAKE_NODE_POSITION(Postion)/
 
 
 
@@ -21,4 +22,6 @@ void sh_add_node(Node *node, Node *root);
 Node *sh_extract_min(Node *root);
 
 void sh_print_heap(Node *root);
+
+void sh_free_heap(Node *root);
 #endif

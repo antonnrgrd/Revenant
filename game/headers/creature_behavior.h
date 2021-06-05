@@ -19,6 +19,12 @@
 #define DOWN 1
 #define LEFT 2
 #define RIGHT 3
+/* We want to avoid looking out of bounds of the current zone we are in and so if the range we attempt to look in when looking for a path around an obstacle, we always make sure that we looking within min-max of the */
+#define MAX_Y_SEARCH_BOUNDARY(c,current_zone,offset)(((offset+c->position.global_y) > (current_zone->height)) ? (current_zone->height): (offset+c->position.global_y)
+#define MIN_Y_SEARCH_BOUNDARY(c,current_zone,offset)(((offset-c->position.global_y) < (0)) ? (0): (offset-c->position.global_y)
+/* We create separate boundary search macros for x and y coordinates. Technically, a single macro that checks wehther it is the y or x boundary that we are testing for could be devised, but i already have enough ugly-ass macros .*/
+#define MAX_X_SEARCH_BOUNDARY(c,current_zone,offset)(((offset+c->position.global_x)> (current_zone->width)) ? (current_zone->width): (offset+c->position.global_x)
+#define MIN_X_SEARCH_BOUNDARY(c,current_zone,offset)(((offset-c->position.global_x) ()) ? (0): (offset-c->position.global_x)
 void cb_pursue_target(Creature *c);
 
 void cb_flee_from_target(Creature *c);
