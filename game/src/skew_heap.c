@@ -12,7 +12,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "skew_heap.h"
-
+/*
 Node *sh_imerge(Node *first_heap, Node *second_heap){
   Node *x, y;
   if(first_heap == NULL){
@@ -54,5 +54,11 @@ void *sh_add_node(Node *node, Node *root){
 }
 
 void sh_print_heap(Node *root){
-  if()
+  sh_print_heap(root->left);
+  if(root != NULL){
+    printf("%d%s", root->key, "\n");
+  }
+  sh_print_heap(root->right);
 }
+
+*/

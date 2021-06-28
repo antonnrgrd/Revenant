@@ -1,5 +1,7 @@
+
 #ifndef SKEW_HEAP
 #define SKEW_HEAP
+/*
 typedef struct Node{
   void *data;
   int key;
@@ -24,4 +26,5 @@ Node *sh_extract_min(Node *root);
 void sh_print_heap(Node *root);
 
 void sh_free_heap(Node *root);
+*/
 #endif

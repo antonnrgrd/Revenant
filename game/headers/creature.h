@@ -19,6 +19,39 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include <ncurses.h>
 #include "placeholder.h"
 #include "tiles.h"
+
+#define COPY_LIMB(creature_limb, source_limb){\
+  creature_limb.kind = source_limb.kind; \
+  creature_limb.status = healthy; \
+  creature_limb.kind = source_limb.kind; \
+  creature_limb.durability = source_limb.durability; \
+  creature_limb.damage = source_limb.damage; \
+    };
+
+#define COPY_ATTRIBUTE_INFORMATION(creature_attributes, creature_information_attributes){ \
+  creature_attributes.stamina =  creature_information_attributes.stamina; \
+  creature_attributes.strength =  creature_information_attributes.strength; \
+  creature_attributes.dexterity =  creature_information_attributes.dexterity; \
+  creature_attributes.luck =  creature_information_attributes.luck; \
+  creature_attributes.charisma =  creature_information_attributes.charisma; \
+  creature_attributes.intelligence =  creature_information_attributes.intelligence; \
+  creature_attributes.wisdom =  creature_information_attributes.intelligence; \
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			  //#define GET_CREATURE_INF(creature)
 typedef enum Creature_Kind{animal, humanoid,cyborg,mechanical,mathematical,vegetative,player_character}Creature_Kind;
 typedef enum Environment{cavern,forest,aquatic,plains,mountain}Environment;
 typedef enum Disposition{friendly,hostile, territorial,neutral,passive,undefined}Disposition;
@@ -28,7 +61,7 @@ typedef enum Limb_Status{bleeding,healthy,infected,disabled,frozen,poisons}Limb_
 typedef enum Status{immobile,poisoned,haemorrhaging,unconscious,frostbit}Status;
 typedef enum Animal_ID{short_nosed_bear,elk,}Animal_ID;
 typedef enum body_type{humanlike, humanlike_tail, animal_quad }body_type;
-typedef enum current_behavior{stationary, roaming, pursuing, fleeing}current_behavior;
+typedef enum behavior{stationary, roaming, pursuing, fleeing}behavior;
 typedef enum attack_type{biting, clawing, charging, headbutting}attack_type;
 typedef struct Limb{
   Limb_Kind kind;
@@ -88,6 +121,8 @@ typedef struct Animal_Definition{ // Anything ending with an Definitions is an a
   Attributes attributes;
   Color color;
   body_type_holder body;
+  behavior behavior;
+  body_type body_type;
 }Animal_Definition;
 
 typedef struct Humanoid_Definition{ 
@@ -118,6 +153,7 @@ typedef struct Humanoid_Definition{
   Quality_Level equipment_quality;
   Equipment_Kind secondary_kind; // a specifier that specifies whether the offhand is a weapon or something else
   Mele_Weapon_Kind secondary_weapon_kind; // in the case that their offhand is a weapon, use this, if not, let it be some arbitrary value
+  behavior behavior;
 }Humanoid_Definition;
 
 
@@ -193,8 +229,6 @@ typedef struct Creature{
   Attributes attributes;
   uint32_t max_health;
   uint32_t curr_health;
-  char *name;
-  char *description;
   float max_carry;
   float current_carry;
   Creature_Instance instance;
@@ -203,22 +237,22 @@ typedef struct Creature{
   Position position;
   char *standing_on;
   int flip:1;
+  int active:1;
+  behavior behavior;
+  behavior default_behavior;
 }Creature;
 
 
 extern Animal_Definition animal_definitions[];
 extern Humanoid_Definition humanoid_definitions[];
 
+inline void c_initialize_animal_body(Creature *c, body_type body_type);
 
 Attributes *c_generate_attributes(uint32_t stamina,uint32_t strength,uint32_t dexterity,uint32_t luck,uint32_t charisma,uint32_t intelligence,uint32_t wisdom);
-
-Limb *c_generate_limb(Limb_Kind kind, int durability, int damage);
 
 Creature *c_generate_creature(Creature_Kind kind, int id,unsigned x,unsigned y);
 
 Animal_Instance *c_generate_animal_instance(Animal_Definition d);
-
-Attributes *c_gen_attributes(Attributes src);
 
 void c_free_(Animal_Instance *a);
 

@@ -10,6 +10,7 @@ You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #ifndef A_STAR
 #define A_STAR
+/*
 #include "skew_heap.h"
 #include "placeholder.h"
 #define CURRENT_POS 0
@@ -18,7 +19,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define MV_L 3
 #define MV_R 4
 
-/* We save the path as a sequences of moves to make in order to reach goal (e.g up, left, down, down etc.) to save memory */
+// We save the path as a sequences of moves to make in order to reach goal (e.g up, left, down, down etc.) to save memory 
 typedef struct Path{
   int pathlength;
   short *moves;
@@ -27,4 +28,5 @@ typedef struct Path{
 Path *reconstruct_path();
 
 Path *a_star(Position start, Position destination);
+*/
 #endif
