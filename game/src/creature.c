@@ -15,90 +15,38 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "item.h"
 #include "tiles.h"
 
-/*
-Animal_Instance *c_generate_animal_instance(Animal_Definition d){
-  Animal_Instance *animal = malloc(sizeof(Animal_Instance));
-  COPY_ATTRIBUTE_INFORMATION(,d.attributes)
-  return animal;
-}
-*/
-//anything with a free, frees up a creature instance of the named type
+
 void c_free_animal(Animal_Instance *a){
   /* remember to free other animal components */
   free(animal);
 }
 
-void c_generate_monster_animal(Creature *c, int id){
-
-}
-
-
-Humanoid_Instance *c_generate_humanoid_instance(Humanoid_Definition d){
-Humanoid_Instance *humanoid = malloc(sizeof(Humanoid_Instance));
-  humanoid->head = malloc(sizeof(Limb));
-  humanoid->torso = malloc(sizeof(Limb));
-  if(d.tail.kind != noone){
-    humanoid->tail = malloc(sizeof(Limb));
-    humanoid->tail->kind = ttail;
-  humanoid->tail->status=healthy;
-  humanoid->tail->durability=d.tail.durability;
-  humanoid->tail->damage=d.tail.damage;
-  }
-  if(d.l_arm.kind != noone){
-  humanoid->l_arm = malloc(sizeof(Limb));
-  humanoid->l_arm->kind = aarm;
-  humanoid->l_arm->status=healthy;
-  humanoid->l_arm->durability=d.tail.durability;
-  humanoid->l_arm->damage=d.l_arm.damage;
-  humanoid->r_arm = malloc(sizeof(Limb));
-  humanoid->r_arm->kind = aarm;
-  humanoid->r_arm->status=healthy;
-  humanoid->r_arm->durability=d.r_arm.durability;
-  humanoid->r_arm->damage=d.r_arm.damage;
-  }
-  if(d.l_leg.kind != noone){
-  humanoid->l_leg = malloc(sizeof(Limb));
-  humanoid->l_leg->kind = lleg;
-  humanoid->l_leg->status=healthy;
-  humanoid->l_leg->durability=d.l_leg.durability;
-  humanoid->l_leg->damage=d.l_leg.damage;
-  humanoid->r_leg = malloc(sizeof(Limb));
-  humanoid->r_leg->kind = lleg;
-  humanoid->r_leg->status=healthy;
-  humanoid->r_leg->durability=d.r_leg.durability;
-  humanoid->r_leg->damage=d.r_leg.damage;
-  }
-  humanoid->head_wear = i_make_armor(d.equipment_quality,d.head_m,head);
-  humanoid->torso_wear = i_make_armor(d.equipment_quality,d.torso_m,torso);
-  humanoid->legs_wear = i_make_armor(d.equipment_quality,d.legs_m,legs);
-  humanoid->main_hand_wear = i_make_mele_weapon(d.equipment_quality,d.main_hand_m, d.main_hand_variant, d.mele_weapon_kind);
-  humanoid->off_hand_wear = i_make_weapon_or_shield(d.secondary_kind,d.off_hand_m, d.main_hand_variant,hand_w, d.equipment_quality, d.secondary_weapon_kind);
-  humanoid->back_wear = i_make_armor(d.equipment_quality,d.back_m,back);
-  humanoid->neck_wear = i_make_armor(d.equipment_quality,d.neck_m,neck);
-  humanoid->finger_wear = i_make_armor(d.equipment_quality,d.finger_m,finger);
-  return humanoid;
-}
-
 /*
-void c_initialize_animal_inf(Creature *c,int id){
-  Animal_Definition d = animal_definitions[id];
-  COPY_ATTRIBUTE_INFORMATION(c.attributes, d.attributes);
-  c->weight = d.weight;
-  c->height = d.height;
-  c->instance.animal = c_generate_animal_instance(d);
-  c->representation = malloc(sizeof(char));
-  c->representation[0] = 'a';
-  c->color = c_copy_color(d.color);
-  INITALIZE_BODY_TYPE_INF(c, d.body_type);
-  c_initialize_animal_body(c, d.body_type);
+void c_generate_monster_animal(int id){
+  c_initialize_animal_inf(c,id);
+  return;
 }
 */
+
+
+
+
+void c_initialize_animal_inf(Creature *c,int id){
+  Animal_Definition d = animal_definitions[id];
+  COPY_ATTRIBUTE_INFORMATION(c->attributes, d.attributes);
+  c->weight = d.weight;
+  c->height = d.height;
+  c->representation = malloc(sizeof(char));
+  c->representation[0] = 'a';
+  c_initialize_animal_body(c, d.body_type);
+}
+
 void c_initialize_humanoid_inf(Creature *c, int id){
   Humanoid_Definition d = humanoid_definitions[id];
   c->weight = d.weight;
   c->height = d.height;
   c->representation[0] = 'h';
-  c->instance.humanoid = c_generate_humanoid_instance(d);
+  // c->instance.humanoid = c_generate_humanoid_instance(d);
 }
 
 Creature *c_generate_creature(Creature_Kind kind, int id,unsigned x,unsigned y){
@@ -108,9 +56,11 @@ Creature *c_generate_creature(Creature_Kind kind, int id,unsigned x,unsigned y){
   c->position.global_y=y;
   c->position.local_x=x;
   c->position.local_y=y;
+  c->species = kind;
   return c;
 }
 
+/*
 Color *c_copy_color(Color color){
   Color *c = malloc(sizeof(Color));
   c->primary_color = color.primary_color;
@@ -119,6 +69,7 @@ Color *c_copy_color(Color color){
   c->fourth_color = color.fourth_color;
   return c;
 }
+*/
 /* A tester function to help test cases */
 Creature *c_random_player(int y, int x,Game_World *world){
   Creature *c = malloc(sizeof(Creature));
@@ -165,10 +116,13 @@ Creature *c_random_player(int y, int x,Game_World *world){
   
 }
 
-inline void c_initialize_animal_body(Creature *c, body_type body_type){
+void c_initialize_animal_body(Creature *c, body_type body_type){
     if(body_type == animal_quad ){
-c->body_type_holder->animal_body = malloc(sizeof(Animal_Body))	} 
+      c->body.animal_body = malloc(sizeof(Animal_Body));
 }
-extern  Animal_Definition animal_definitions[] = {{"Short-faced bear","A large brown bear. It has a disproportionately short face",900,3.4,1.5 , {12,12,12,12,12,12,12}, {COLOR_RED, 0,0,0}}};
+}
+extern  Animal_Definition animal_definitions[] = {{0 ,"Short-faced bear","A large brown bear. It has a disproportionately short face",900,3.4,1.5 , {12,12,12,12,12,12,12}, {COLOR_RED, 0,0,0}, {.animal_body = {{hhead,healthy,100, 100},{ttorso,healthy,100, 100},{aarm,healthy,100, 100},{hhead,healthy,100, 100},{lleg,healthy,100, 100},{lleg,healthy,100, 100},{ttail,healthy,100, 100}}}, animal_quad}};
 
 extern Humanoid_Definition humanoid_definitions[] = {{"Bandit", "A bandit looking to steal rob and murder you", 65,1.65, iron,iron,iron, leather, leather, steel, one_hand, sword,steel, leather, {15,15,15,15,15,15,15}, {hhead, healthy, 14, 15},{ttorso, healthy, 18, 21},{aarm, healthy, 14, 15} , {aarm, healthy, 14, 15}, {lleg, healthy, 14, 15}, {lleg, healthy, 14, 15},{noone, healthy, 14, 15},{noone, healthy, 14, 15},{noone, healthy, 14, 15}, medium, weaponry, axe}};
+
+void (*creature_initializer[1])(Creature *c, int id) = { c_initialize_animal_inf};

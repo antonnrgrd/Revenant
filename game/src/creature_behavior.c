@@ -287,7 +287,9 @@ void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zon
   
 }
 
-      
+void cb_act(Creature *c , Creature *target ,Game_World *current_zone){
+  (*creature_behavior_handler[c->behavior])(c,target, current_zone);
+}
  
 	
   

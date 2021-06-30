@@ -1,28 +1,18 @@
 /*This file is part of Revenant.
-
 Revenant is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
-
-Revenant is distributed in the hope that it will be useful,
+Revenant  is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
-
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
-#ifndef GAME_STATE
-#define GAME_STATE
-#include "move_handler.h"
-#define UPDATE_STATE()
-/*The main struct that will encapsulate all information about the game currently present */
-typedef struct Game_State{
-  Creature *player;
-  Game_World *current_zone;
-}Game_State;
+#include "linked_list.h"
 
-
-
-Game_World *game_generate_world(Creature *player, int x_size, int y_size);
-void game_loop(Creature *c, Game_World *current_zone);
-#endif
+void ll_iter_list(Linked_List *list, Game_World *current_zone){
+  Node *current_node = list->initial_node;
+  while(current_node != NULL) {
+    cb_act(current_node->creature, current_node->creature->target, current_zone);
+  }
+}

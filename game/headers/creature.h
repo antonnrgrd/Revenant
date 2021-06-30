@@ -18,6 +18,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "u_hash.h"
 #include <ncurses.h>
 #include "placeholder.h"
+#include "creature_macros.h"
 #include "tiles.h"
 
 #define COPY_LIMB(creature_limb, source_limb){\
@@ -92,7 +93,9 @@ typedef struct Animal_Body{
 typedef union body_type_holder{
   Humanoid_Body *humanoid_body;
   Animal_Body *animal_body;
-}body_type_holder;
+}body_holder;
+
+
 
 typedef struct Color{
   /* will be defined by the constants in ncurses i.e COLOR_RED, COLOR_CYAN etc. */
@@ -113,6 +116,7 @@ typedef struct Attributes{
 }Attributes;
 /*As a side note i choose the scheme of animal definitions as the specifications of the stats a creature should have and animal instances as the actually initialized structs since C apparenty doesn't allow you to declare AND initialize a pointer at compile time. Instead, what you must do is declare a pointer and then instantiate with something that is NOT a pointer */
 typedef struct Animal_Definition{ // Anything ending with an Definitions is an array that defines the stats of a given creature of a given type
+  int index;
   char *name;
   char *description;
   float weight;
@@ -120,7 +124,7 @@ typedef struct Animal_Definition{ // Anything ending with an Definitions is an a
   float width;
   Attributes attributes;
   Color color;
-  body_type_holder body;
+  body_holder body;
   behavior behavior;
   body_type body_type;
 }Animal_Definition;
@@ -221,7 +225,8 @@ typedef union Creature_Instance{
 }Creature_Instance;
 
 typedef struct Creature{
-  body_type body;
+  body_type body_type;
+  body_holder body;
   float weight;
   float height;
   Creature_Kind species;
@@ -240,15 +245,15 @@ typedef struct Creature{
   int active:1;
   behavior behavior;
   behavior default_behavior;
+  struct Creature *target;
 }Creature;
 
 
 extern Animal_Definition animal_definitions[];
 extern Humanoid_Definition humanoid_definitions[];
 
-inline void c_initialize_animal_body(Creature *c, body_type body_type);
+void c_initialize_animal_body(Creature *c, body_type body_type);
 
-Attributes *c_generate_attributes(uint32_t stamina,uint32_t strength,uint32_t dexterity,uint32_t luck,uint32_t charisma,uint32_t intelligence,uint32_t wisdom);
 
 Creature *c_generate_creature(Creature_Kind kind, int id,unsigned x,unsigned y);
 
@@ -267,7 +272,7 @@ void c_initialize_humanoid_inf(Creature *c, int id);
 
 Creature *c_generate_creature(Creature_Kind kind, int id, unsigned x, unsigned y);
 
-void (*creature_initializer[6])(Creature *c, int id);
+void (*creature_initializer[1])(Creature *c, int id);
 
 Color *c_copy_color(Color color);
 

@@ -35,4 +35,6 @@ void cb_follow_target(Creature *c , Creature *target ,Game_World *current_zone);
 void cb_attack_target(Creature *c , Creature *target ,Game_World *current_zone);
 
 void (*creature_behavior_handler[4])(Creature *c , Creature *target ,Game_World *current_zone);
+
+void cb_act(Creature *c , Creature *target ,Game_World *current_zone);
 #endif

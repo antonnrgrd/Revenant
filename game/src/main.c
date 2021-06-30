@@ -32,40 +32,8 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 //can be removed 
 #include <sys/ioctl.h>
 int main(int argc, char *argv[]){
-  /*
-  Game_World *game_world = g_generate_game_world(1000,1000);
-  Creature *c = c_random_player(5,3, game_world);
-  
-  
-  
-  
-  
-  u_print_inventory(inventory);
-  
-  
-  Item_Holder *third_loot_ = i_make_item_holder(third_loot,3);
-
-  inv_add_item(first_loot_, inventory,c);
-  inv_add_item(second_loot_, inventory,c);
-  inv_add_item(third_loot_, inventory,c);
-  u_print_inventory(inventory);
-  u_remove_item(second_loot->name,1,inventory);
-  u_print_inventory(inventory);
-  */
-  /*
-  struct winsize w;
-    ioctl(0, TIOCGWINSZ, &w);
-
-    printf ("lines %d\n", w.ws_row);
-    printf ("columns %d\n", w.ws_col);
-    return 0;
-  */
-
-  /*
-  Game_World *game_world = g_generate_game_world(1000,1000);
-  Creature *c = c_random_player(13,13, game_world);
-  inv_add_item(first_loot_,c->instance.character->inventory,c);
-  */
+  /* 
+ 
   Item *second_loot = i_make_mele_weapon(legendary, granite,one_hand, mace);
   Item_Holder *second_loot_ = i_make_item_holder(second_loot,3);
   initscr();
@@ -82,6 +50,7 @@ int main(int argc, char *argv[]){
   SPAWN_ITEM(game_world,second_loot_,15,15)
   game_loop(c, game_world);
   endwin();
+  */
   
   
 
