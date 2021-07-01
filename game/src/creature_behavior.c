@@ -1,6 +1,22 @@
 #include "creature_behavior.h"
+
+
+void cb_pursue_target(Creature *c , Creature *target ,Game_World *current_zone){
+  if(c->within_bound == IN_BOUND){
+    cb_pursue_target_inb(c,target,current_zone);
+  }
+
+  else{
+    cb_pursure_target_oob(c,target,current_zone);
+  }
+}
+
 void cb_attack_target(Creature *c, Creature *target ,Game_World *current_zone){
   
+}
+
+void cb_idle(Creature *c, Creature *target ,Game_World *current_zone){
+  ;
 }
 
 void cb_roam(Creature *c, Creature *target ,Game_World *current_zone){
@@ -287,10 +303,12 @@ void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zon
   
 }
 
+
 void cb_act(Creature *c , Creature *target ,Game_World *current_zone){
   (*creature_behavior_handler[c->behavior])(c,target, current_zone);
 }
- 
+
+void (*creature_behavior_handler[4])(Creature *c , Creature *target ,Game_World *current_zone) = {cb_idle, cb_roam,cb_pursue_target, cb_flee_target};
 	
   
   

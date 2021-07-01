@@ -32,10 +32,9 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 //can be removed 
 #include <sys/ioctl.h>
 int main(int argc, char *argv[]){
-  /* 
- 
-  Item *second_loot = i_make_mele_weapon(legendary, granite,one_hand, mace);
-  Item_Holder *second_loot_ = i_make_item_holder(second_loot,3);
+   
+  Creature *oppent = c_generate_creature(animal,0,4,4);
+  
   initscr();
   start_color();    
   Game_World *game_world = g_generate_game_world(1000,1000);
@@ -47,10 +46,10 @@ int main(int argc, char *argv[]){
   keypad(stdscr, TRUE);
   srand(time(NULL));
   raw();
-  SPAWN_ITEM(game_world,second_loot_,15,15)
+  mvprintw(oppent->position.local_y,oppent->position.local_x,oppent->representation);
   game_loop(c, game_world);
   endwin();
-  */
+  
   
   
 

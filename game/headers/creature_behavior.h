@@ -26,6 +26,9 @@
 /* We create separate boundary search macros for x and y coordinates. Technically, a single macro that checks wehther it is the y or x boundary that we are testing for could be devised, but i already have enough ugly-ass macros .*/
 #define MAX_X_SEARCH_BOUNDARY(c,current_zone,offset)(((offset+c->position.global_x)> (current_zone->width)) ? (current_zone->width): (offset+c->position.global_x))
 #define MIN_X_SEARCH_BOUNDARY(c,current_zone,offset)(((offset-c->position.global_x) < (0)) ? (0) : (offset-c->position.global_x))
+
+#define IN_BOUND 0
+#define OUT_OF_BOUND 1
 void cb_pursue_target(Creature *c , Creature *target ,Game_World *current_zone);
 
 void cb_flee_from_target(Creature *c , Creature *target ,Game_World *current_zone);
@@ -33,6 +36,8 @@ void cb_flee_from_target(Creature *c , Creature *target ,Game_World *current_zon
 void cb_follow_target(Creature *c , Creature *target ,Game_World *current_zone);
 
 void cb_attack_target(Creature *c , Creature *target ,Game_World *current_zone);
+
+void cb_idle(Creature *c, Creature *target ,Game_World *current_zone);
 
 void (*creature_behavior_handler[4])(Creature *c , Creature *target ,Game_World *current_zone);
 

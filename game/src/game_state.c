@@ -44,13 +44,6 @@ void game_loop(Creature *c, Game_World *current_zone){
     case 'q':
       return;
       break;
-    case 's':
-      c->position.local_y = 10;
-      c->position.local_x = 20;
-      mvprintw(10,20, c->representation);
-      c->standing_on[0] = mvinch(10,20);
-      move(10,20);
-      break;
     default:
       break;
     }

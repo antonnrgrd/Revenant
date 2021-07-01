@@ -62,7 +62,7 @@ typedef enum Limb_Status{bleeding,healthy,infected,disabled,frozen,poisons}Limb_
 typedef enum Status{immobile,poisoned,haemorrhaging,unconscious,frostbit}Status;
 typedef enum Animal_ID{short_nosed_bear,elk,}Animal_ID;
 typedef enum body_type{humanlike, humanlike_tail, animal_quad }body_type;
-typedef enum behavior{stationary, roaming, pursuing, fleeing}behavior;
+typedef enum behavior{idle, roaming, pursuing, fleeing}behavior;
 typedef enum attack_type{biting, clawing, charging, headbutting}attack_type;
 typedef struct Limb{
   Limb_Kind kind;
@@ -243,6 +243,7 @@ typedef struct Creature{
   char *standing_on;
   int flip:1;
   int active:1;
+  int within_bound:1;
   behavior behavior;
   behavior default_behavior;
   struct Creature *target;

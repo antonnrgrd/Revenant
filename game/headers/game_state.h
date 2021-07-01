@@ -14,11 +14,13 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #ifndef GAME_STATE
 #define GAME_STATE
 #include "move_handler.h"
-#define UPDATE_STATE()
+#include "linked_list.h"
+#define UPDATE_STATE(game_state) ll_iter_list();
 /*The main struct that will encapsulate all information about the game currently present */
 typedef struct Game_State{
   Creature *player;
   Game_World *current_zone;
+  Linked_List *active_creatures;
 }Game_State;
 
 
