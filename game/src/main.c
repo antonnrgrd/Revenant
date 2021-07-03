@@ -34,11 +34,15 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 int main(int argc, char *argv[]){
    
   Creature *oppent = c_generate_creature(animal,0,4,4);
-  
   initscr();
   start_color();    
   Game_World *game_world = g_generate_game_world(1000,1000);
   Creature *c = c_random_player(13,13, game_world);
+  Linked_List *ll = ll_initialize_linked_list();
+  APPEND_NODE_CREATURE(ll,c);
+  Game_State *game_state = gs_create_game_state(c,game_world,ll);
+  c->behavior = pursuing;
+  c->target = c;
   initscr();
   start_color();
   noecho();

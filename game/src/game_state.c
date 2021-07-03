@@ -15,6 +15,12 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "move_handler.h"
 #include "creature.h"
 
+void ll_iter_list_as_creature(Linked_List *list, Game_World *current_zone){
+  Node *current_node = list->initial_node;
+  while(current_node != NULL) {
+    cb_act( (struct Creature *)current_node->value, ((struct Creature *)current_node->value)->target, current_zone);
+  }
+}
 
 
 void game_loop(Creature *c, Game_World *current_zone){
@@ -50,3 +56,10 @@ void game_loop(Creature *c, Game_World *current_zone){
   }
 }
 
+Game_State *gs_create_game_state(Creature *player, Game_World *world,Linked_List *active_creatures){
+  Game_State *state = malloc(sizeof(Game_State));
+  state->player = player;
+  state->current_zone = world;
+  state->active_creatures = active_creatures;
+  return state;
+}

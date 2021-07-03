@@ -15,7 +15,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define GAME_STATE
 #include "move_handler.h"
 #include "linked_list.h"
-#define UPDATE_STATE(game_state) ll_iter_list();
+#define UPDATE_STATE(game_state) ll_iter_list_as_creature(game_state->player,game_state->current_zone,game_state->active_creatures);
 /*The main struct that will encapsulate all information about the game currently present */
 typedef struct Game_State{
   Creature *player;
@@ -23,8 +23,10 @@ typedef struct Game_State{
   Linked_List *active_creatures;
 }Game_State;
 
+Game_State *gs_create_game_state(Creature *player, Game_World *world,Linked_List *active_creatures);
 
 
-Game_World *game_generate_world(Creature *player, int x_size, int y_size);
 void game_loop(Creature *c, Game_World *current_zone);
+
+void ll_iter_list_as_creature(Linked_List *list, Game_World *current_zone);
 #endif

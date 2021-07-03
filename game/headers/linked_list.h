@@ -10,13 +10,10 @@ You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #ifndef LINKED_LIST
 #define LINKED_LIST
-#include "creature_behavior.h"
-#define APPEND_NODE(list, node) list->last_node->next = node; list->count++;
-
 
 typedef struct Node{
   struct Node *next;
-  Creature *creature;
+  void *value;
 }Node;
 
 typedef struct Linked_List{
@@ -24,5 +21,8 @@ typedef struct Linked_List{
   Node *last_node;
 }Linked_List;
 
-void ll_iter_list(Linked_List *list, Game_World *current_zone);
+#define APPEND_NODE_CREATURE(list, c) Node *node = malloc(sizeof(Node));node->value = &c; ( list->initial_node == NULL) ? (list->initial_node = node) : (list->last_node->next = node) list->last_node = node;  
+
+Linked_List *ll_initialize_linked_list();
+
 #endif

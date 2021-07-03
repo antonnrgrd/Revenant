@@ -42,6 +42,7 @@ void g_tileset(){
 
 Game_World *g_generate_game_world(int width, int height){
   Game_World *world = malloc(sizeof(Game_World));
+  world->active_creatures = malloc(sizeof(Linked_List));
   world->width = width;
   world->height = height;
   getmaxyx(stdscr, world->max_y,world->max_x);

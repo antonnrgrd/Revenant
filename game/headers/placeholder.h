@@ -14,6 +14,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #ifndef PLACEHOLDER
 #define PLACEHOLDER
 #include "u_hash.h"
+#include "linked_list.h"
 typedef struct Position{
   /* Each creature will have two coordinate types, local and global. Global indicates where they are globally on the map, local
    refers to where they are on the screen*/
@@ -37,5 +38,6 @@ typedef struct Game_World{
 calls over and over */
   int max_x;
   int max_y;
+  Linked_List *active_creatures;
 }Game_World;
 #endif

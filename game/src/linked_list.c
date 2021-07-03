@@ -10,9 +10,7 @@ You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "linked_list.h"
 
-void ll_iter_list(Linked_List *list, Game_World *current_zone){
-  Node *current_node = list->initial_node;
-  while(current_node != NULL) {
-    cb_act(current_node->creature, current_node->creature->target, current_zone);
-  }
+Linked_List *ll_initialize_linked_list(){
+  *Linked_List *ll = malloc(sizeof(Linked_List));
+  return ll;
 }
