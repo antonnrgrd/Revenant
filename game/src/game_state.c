@@ -23,29 +23,25 @@ void ll_iter_list_as_creature(Linked_List *list, Game_World *current_zone){
 }
 
 
-void game_loop(Creature *c, Game_World *current_zone){
+void game_loop(Game_State *game_state){
   int ch;
-  int rows;
-  int cols;
-  getmaxyx(stdscr, cols,rows);
-  REDRAW_MAP(c,current_zone, c->position.global_x,c->position.global_y,rows, cols);
-  //SPAWN_AT(c,current_zone,c->position.local_x, c->position.local_y);
+  REDRAW_MAP(game_state->player,game_state->current_zone, game_state->player->position.global_x,game_state->player->position.global_y,rows, cols);
   refresh();
   while(1){
     refresh(); 
     ch = getch();
     switch(ch){
     case KEY_UP:
-      mv_check_move_handler(c->position.global_x, c->position.global_y-1,c->position.local_x, c->position.local_y-1, c,current_zone);
+      mv_check_move_handler(game_state->player->position.global_x, game_state->player->position.global_y-1,game_state->player->position.local_x, game_state->player->position.local_y-1, game_state->player,game_state->current_zone);
       break;
     case KEY_DOWN:
-      mv_check_move_handler(c->position.global_x, c->position.global_y+1,c->position.local_x, c->position.local_y+1, c,current_zone);      
+      mv_check_move_handler(game_state->player->position.global_x, game_state->player->position.global_y+1,game_state->player->position.local_x, game_state->player->position.local_y+1, game_state->player,game_state->current_zone);      
       break;
     case KEY_LEFT:
-      mv_check_move_handler(c->position.global_x-1,c->position.global_y ,c->position.local_x-1, c->position.local_y,c,current_zone);
+      mv_check_move_handler(game_state->player->position.global_x-1,game_state->player->position.global_y ,game_state->player->position.local_x-1, game_state->player->position.local_y,game_state->player,game_state->current_zone);
       break;
     case KEY_RIGHT:
-      mv_check_move_handler(c->position.global_x+1, c->position.global_y ,c->position.local_x+1, c->position.local_y, c,current_zone);
+      mv_check_move_handler(game_state->player->position.global_x+1, game_state->player->position.global_y ,game_state->player->position.local_x+1, game_state->player->position.local_y, game_state->player,game_state->current_zone);
       break;
     case 'q':
       return;
@@ -53,6 +49,7 @@ void game_loop(Creature *c, Game_World *current_zone){
     default:
       break;
     }
+        ll_iter_list_as_creature(game_state->active_creatures,game_state->current_zone);
   }
 }
 

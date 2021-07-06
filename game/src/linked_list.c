@@ -11,6 +11,6 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "linked_list.h"
 
 Linked_List *ll_initialize_linked_list(){
-  *Linked_List *ll = malloc(sizeof(Linked_List));
+  Linked_List *ll = malloc(sizeof(Linked_List));
   return ll;
 }

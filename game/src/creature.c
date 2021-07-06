@@ -121,7 +121,7 @@ void c_initialize_animal_body(Creature *c, body_type body_type){
       c->body.animal_body = malloc(sizeof(Animal_Body));
 }
 }
-extern  Animal_Definition animal_definitions[] = {{0 ,"Short-faced bear","A large brown bear. It has a disproportionately short face",900,3.4,1.5 , {12,12,12,12,12,12,12}, {COLOR_RED, 0,0,0}, {.animal_body = {{hhead,healthy,100, 100},{ttorso,healthy,100, 100},{aarm,healthy,100, 100},{hhead,healthy,100, 100},{lleg,healthy,100, 100},{lleg,healthy,100, 100},{ttail,healthy,100, 100}}}, animal_quad}};
+extern  Animal_Definition animal_definitions[] = {{0 ,"Short-faced bear","A large brown bear. It has a disproportionately short face",900,3.4,1.5 , {12,12,12,12,12,12,12}, {COLOR_RED, 0,0,0}, {.animal_body = {{hhead,healthy,100, 100},{ttorso,healthy,100, 100},{aarm,healthy,100, 100},{hhead,healthy,100, 100},{lleg,healthy,100, 100},{lleg,healthy,100, 100},{ttail,healthy,100, 100}}},roaming, animal_quad}};
 
 extern Humanoid_Definition humanoid_definitions[] = {{"Bandit", "A bandit looking to steal rob and murder you", 65,1.65, iron,iron,iron, leather, leather, steel, one_hand, sword,steel, leather, {15,15,15,15,15,15,15}, {hhead, healthy, 14, 15},{ttorso, healthy, 18, 21},{aarm, healthy, 14, 15} , {aarm, healthy, 14, 15}, {lleg, healthy, 14, 15}, {lleg, healthy, 14, 15},{noone, healthy, 14, 15},{noone, healthy, 14, 15},{noone, healthy, 14, 15}, medium, weaponry, axe}};
 

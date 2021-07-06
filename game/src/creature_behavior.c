@@ -20,8 +20,8 @@ void cb_idle(Creature *c, Creature *target ,Game_World *current_zone){
 }
 
 void cb_roam(Creature *c, Creature *target ,Game_World *current_zone){
+  printf("%s", "??");
   int direction =  (rand() % (5 -  0 + 1) + 1);
-
    if(direction == UP){
      if(numerical_responses[current_zone->tiles[c->position.global_y+1][c->position.global_x].content[0]] != 1){
        c->position.global_y++;

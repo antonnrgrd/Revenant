@@ -27,7 +27,7 @@ typedef struct Variant_Modifiers{
   float stats_modifier;
 }Variant_Modifier;
 
-extern  Material_Modifier material_modifiers[];
+extern const Material_Modifier material_modifiers[];
 
 extern  Variant_Modifier variant_modifiers[];
 

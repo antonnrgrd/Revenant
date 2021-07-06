@@ -1,9 +1,9 @@
 /*This file is part of Revenant.
-  
+   
 Revenant is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
-            
+             
 Revenant is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -29,11 +29,12 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "game_state.h"
 #include "tiles.h"
 #include <time.h>
-//can be removed 
+#include "creature_behavior.h"
+//can be removed   
 #include <sys/ioctl.h>
 int main(int argc, char *argv[]){
-   
-  Creature *oppent = c_generate_creature(animal,0,4,4);
+  
+  Creature *opponent = c_generate_creature(animal,0,4,4);
   initscr();
   start_color();    
   Game_World *game_world = g_generate_game_world(1000,1000);
@@ -41,8 +42,8 @@ int main(int argc, char *argv[]){
   Linked_List *ll = ll_initialize_linked_list();
   APPEND_NODE_CREATURE(ll,c);
   Game_State *game_state = gs_create_game_state(c,game_world,ll);
-  c->behavior = pursuing;
-  c->target = c;
+  opponent->behavior = roaming;
+  opponent->target = c;
   initscr();
   start_color();
   noecho();
@@ -50,8 +51,8 @@ int main(int argc, char *argv[]){
   keypad(stdscr, TRUE);
   srand(time(NULL));
   raw();
-  mvprintw(oppent->position.local_y,oppent->position.local_x,oppent->representation);
-  game_loop(c, game_world);
+  mvprintw(opponent->position.local_y,opponent->position.local_x,opponent->representation);
+  game_loop(game_state);
   endwin();
   
   
