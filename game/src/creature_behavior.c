@@ -20,69 +20,76 @@ void cb_idle(Creature *c, Creature *target ,Game_World *current_zone){
 }
 
 void cb_roam(Creature *c, Creature *target ,Game_World *current_zone){
-  printf("%s", "??");
+  
   int direction =  (rand() % (5 -  0 + 1) + 1);
+  
    if(direction == UP){
      if(numerical_responses[current_zone->tiles[c->position.global_y+1][c->position.global_x].content[0]] != 1){
        c->position.global_y++;
-       c->position.local_y++;
-       if(abs(c->position.global_x - target->position.global_x) <= DEFAULT_MAX_X -1){
+       if(abs(c->position.global_x - target->position.global_x) <= DEFAULT_MAX_Y -1){
+	 	 mvprintw(c->position.local_y,c->position.local_x,c->standing_on);
+	 c->position.local_y++;
     mvprintw(c->position.local_y,c->position.local_x,c->representation);
-    return;
     }
-  if( abs(c->position.global_y - target->position.global_y) != DEFAULT_MAX_Y -1){
-    mvprintw(c->position.local_y,c->position.local_x,c->representation);
-    return;
-  }
+       else{
+	 c->position.local_y++;
+       }
+       c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
      }
    }
-
+   
    if(direction == DOWN){
      if(numerical_responses[current_zone->tiles[c->position.global_y-1][c->position.global_x].content[0]] != 1){
        c->position.global_y--;
-       c->position.local_y--;
-       if(abs(c->position.global_x - target->position.global_x) <= DEFAULT_MAX_X -1){
+       if(abs(c->position.global_x - target->position.global_x) <= DEFAULT_MAX_Y -1){
+	  mvprintw(c->position.local_y,c->position.local_x,c->standing_on);
+	  c->position.local_y--;
     mvprintw(c->position.local_y,c->position.local_x,c->representation);
-    return;
     }
-  if( abs(c->position.global_y - target->position.global_y) != DEFAULT_MAX_Y -1){
-    mvprintw(c->position.local_y,c->position.local_x,c->representation);
-    return;
-  }
+       else{
+	 c->position.local_y--;
+       }
      }
    }
+       
+     
+   
+
 
    if(direction == LEFT){
      if(numerical_responses[current_zone->tiles[c->position.global_y][c->position.global_x-1].content[0]] != 1){
-       c->position.global_x--;
-       c->position.local_x--;
+       c->position.global_x--;       
        if(abs(c->position.global_x - target->position.global_x) <= DEFAULT_MAX_X -1){
+	  mvprintw(c->position.local_y,c->position.local_x,c->standing_on);
+	  c->position.local_x--;
     mvprintw(c->position.local_y,c->position.local_x,c->representation);
-    return;
     }
-  if( abs(c->position.global_y - target->position.global_y) != DEFAULT_MAX_Y -1){
-    mvprintw(c->position.local_y,c->position.local_x,c->representation);
-    return;
-  }
+       else{
+	 c->position.local_x--;
+       }
      }
    }
 
+       
+  
+     
+   
    if(direction == RIGHT){
      if(numerical_responses[current_zone->tiles[c->position.global_y][c->position.global_x+1].content[0]] != 1){
        c->position.global_x++;
-       c->position.local_x++;
-       if(abs(c->position.global_x - target->position.global_x) <= DEFAULT_MAX_X -1){
+       if(abs(c->position.global_x - target->position.global_x) <= DEFAULT_MAX_X -1){	 
+	  mvprintw(c->position.local_y,c->position.local_x,c->standing_on);
+	  c->position.local_x++;
     mvprintw(c->position.local_y,c->position.local_x,c->representation);
     return;
     }
-  if( abs(c->position.global_y - target->position.global_y) != DEFAULT_MAX_Y -1){
-    mvprintw(c->position.local_y,c->position.local_x,c->representation);
-    return;
-  }
-       
+       else{
+	 c->position.local_x++;
+       }
      }
    }
 }
+
 
 
 void cb_flee_target(Creature *c, Creature *target ,Game_World *current_zone){

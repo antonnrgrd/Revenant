@@ -1,5 +1,5 @@
 /*This file is part of Revenant.
-   
+       
 Revenant is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
@@ -34,13 +34,13 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include <sys/ioctl.h>
 int main(int argc, char *argv[]){
   
-  Creature *opponent = c_generate_creature(animal,0,4,4);
+  Creature *opponent = c_generate_creature(animal,0,14,14);
   initscr();
   start_color();    
   Game_World *game_world = g_generate_game_world(1000,1000);
   Creature *c = c_random_player(13,13, game_world);
   Linked_List *ll = ll_initialize_linked_list();
-  APPEND_NODE_CREATURE(ll,c);
+  APPEND_NODE_CREATURE(ll,opponent);
   Game_State *game_state = gs_create_game_state(c,game_world,ll);
   opponent->behavior = roaming;
   opponent->target = c;

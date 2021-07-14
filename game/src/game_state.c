@@ -19,6 +19,7 @@ void ll_iter_list_as_creature(Linked_List *list, Game_World *current_zone){
   Node *current_node = list->initial_node;
   while(current_node != NULL) {
     cb_act( (struct Creature *)current_node->value, ((struct Creature *)current_node->value)->target, current_zone);
+    current_node = current_node->next;
   }
 }
 

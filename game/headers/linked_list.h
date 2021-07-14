@@ -21,7 +21,7 @@ typedef struct Linked_List{
   Node *last_node;
 }Linked_List;
 
-#define APPEND_NODE_CREATURE(list, c) Node *node = malloc(sizeof(Node)); node->value = &c; ( list->initial_node == NULL) ? (list->initial_node = node) : (list->last_node->next = node), (list->last_node = node)
+#define APPEND_NODE_CREATURE(list, c) Node *node = malloc(sizeof(Node)); node->value = c; ( list->initial_node == NULL) ? (list->initial_node = node) : (list->last_node->next = node), (list->last_node = node)
 
 Linked_List *ll_initialize_linked_list();
 

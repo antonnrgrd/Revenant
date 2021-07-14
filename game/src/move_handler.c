@@ -14,7 +14,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "move_handler.h"
 #include "tiles.h"
-  //  mvprintw(max_y, max_x ,world->tiles[x][y].content);
+
   
 
 void mv_check_move_handler(int global_x, int global_y, int local_x, int local_y, Creature *c,Game_World *current_zone){

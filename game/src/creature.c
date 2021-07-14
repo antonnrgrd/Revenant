@@ -57,6 +57,8 @@ Creature *c_generate_creature(Creature_Kind kind, int id,unsigned x,unsigned y){
   c->position.local_x=x;
   c->position.local_y=y;
   c->species = kind;
+  c->standing_on = malloc(sizeof(char));
+  c->standing_on[0] = ' ';
   return c;
 }
 
