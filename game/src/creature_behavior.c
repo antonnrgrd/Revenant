@@ -2,7 +2,14 @@
 
 
 void cb_pursue_target(Creature *c , Creature *target ,Game_World *current_zone){
-  if(c->within_bound == IN_BOUND){
+  if(abs(c->position.global_x - target->position.global_x) > 0 && abs(c->position.global_y - target->position.global_y) > 0){
+  if(abs(c->position.global_x - target->position.global_x) <= DEFAULT_MAX_X && abs(c->position.global_y - target->position.global_y) <= DEFAULT_MAX_X){
+    c->target_is_within_bound = WITHIN_BOUND;
+  }
+  else{
+    c->target_is_within_bound = OUT_OF_BOUND;
+  }
+  if(c->target_is_within_bound == WITHIN_BOUND){
     cb_pursue_target_inb(c,target,current_zone);
   }
 
@@ -10,7 +17,7 @@ void cb_pursue_target(Creature *c , Creature *target ,Game_World *current_zone){
     cb_pursure_target_oob(c,target,current_zone);
   }
 }
-
+}
 void cb_attack_target(Creature *c, Creature *target ,Game_World *current_zone){
   
 }
@@ -22,9 +29,9 @@ void cb_idle(Creature *c, Creature *target ,Game_World *current_zone){
 void cb_roam(Creature *c, Creature *target ,Game_World *current_zone){
   
   int direction =  (rand() % (5 -  0 + 1) + 1);
-  
+  /* Important: we evaluate if the change in position exceeds the boundary of the game map, THEN check if the tile we try to move to is validto avoid the possibility of accessing an offset outside of the malloc'ed area to avoid segmentation faults. THis is due to logical and short circuiting (if the first statement is false, don't evluate the second) */
    if(direction == UP){
-     if(numerical_responses[current_zone->tiles[c->position.global_y+1][c->position.global_x].content[0]] != 1){
+     if(c->position.global_y+1 < current_zone->height && numerical_responses[current_zone->tiles[c->position.global_y+1][c->position.global_x].content[0]] != 1 ){
        c->position.global_y++;
        if(abs(c->position.global_x - target->position.global_x) <= DEFAULT_MAX_Y -1){
 	 	 mvprintw(c->position.local_y,c->position.local_x,c->standing_on);
@@ -39,7 +46,7 @@ void cb_roam(Creature *c, Creature *target ,Game_World *current_zone){
    }
    
    if(direction == DOWN){
-     if(numerical_responses[current_zone->tiles[c->position.global_y-1][c->position.global_x].content[0]] != 1){
+     if( c->position.global_y-1 > -1 && numerical_responses[current_zone->tiles[c->position.global_y-1][c->position.global_x].content[0]] != 1){
        c->position.global_y--;
        if(abs(c->position.global_x - target->position.global_x) <= DEFAULT_MAX_Y -1){
 	  mvprintw(c->position.local_y,c->position.local_x,c->standing_on);
@@ -57,7 +64,7 @@ void cb_roam(Creature *c, Creature *target ,Game_World *current_zone){
 
 
    if(direction == LEFT){
-     if(numerical_responses[current_zone->tiles[c->position.global_y][c->position.global_x-1].content[0]] != 1){
+     if( c->position.global_x-1 > -1 && numerical_responses[current_zone->tiles[c->position.global_y][c->position.global_x-1].content[0]] != 1){
        c->position.global_x--;       
        if(abs(c->position.global_x - target->position.global_x) <= DEFAULT_MAX_X -1){
 	  mvprintw(c->position.local_y,c->position.local_x,c->standing_on);
@@ -75,7 +82,7 @@ void cb_roam(Creature *c, Creature *target ,Game_World *current_zone){
      
    
    if(direction == RIGHT){
-     if(numerical_responses[current_zone->tiles[c->position.global_y][c->position.global_x+1].content[0]] != 1){
+     if(c->position.global_x+1 < current_zone->width && numerical_responses[current_zone->tiles[c->position.global_y][c->position.global_x+1].content[0]] != 1){
        c->position.global_x++;
        if(abs(c->position.global_x - target->position.global_x) <= DEFAULT_MAX_X -1){	 
 	  mvprintw(c->position.local_y,c->position.local_x,c->standing_on);
@@ -166,30 +173,42 @@ void cb_pursure_target_oob(Creature *c, Creature *target ,Game_World *current_zo
 
       /*mimmic pursuing behavior when the creature is within the players POW. Now, we HAVE to check if the tile it moves to is valid, because here the creature will be visible to the player */
 void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zone){
+  /*
+  printf("%u%s",(abs(c->position.global_x-1 - target->position.global_x )), " dist if move  ");
+  printf("%u%s",(abs(c->position.global_x - target->position.global_x )), " dist initial THAT WAS FOR L ");
+
+  printf("%u%s",(abs(c->position.global_x+1 - target->position.global_x )), " dist if move  ");
+  printf("%u%s",(abs(c->position.global_x - target->position.global_x )), " dist initial  ");
+  */
   int direction;
-  
-  //Move up
-  if( (abs(c->position.global_y+1 - target->position.global_y ) < abs(c->position.global_y - c->position.global_y ))){
-    direction = UP;
+  //Move Down
+  /*
+  if( (abs(c->position.global_y+1 - target->position.global_y )) < (abs(c->position.global_y - target->position.global_y) )){
+    direction = DOWN;
     if(numerical_responses[current_zone->tiles[c->position.global_y+1][c->position.global_x].content[0]] != 1){
+    mvprintw(c->position.local_y,c->position.local_x,c->standing_on);
     c->position.global_y +=1;
     c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
     if(c->position.local_y+1 >  DEFAULT_MAX_Y - 1){
+      //printf("%s","????");
       c->position.local_y = 0;
     }
     else{
       c->position.local_y += 1;
      }
-    
+    mvprintw(c->position.local_y,c->position.local_x,c->representation);
     }
     return;
 }
   
-  //Moving down 
-  if( (abs(c->position.global_y-1 - target->position.global_y ) < abs(c->position.global_y - c->position.global_y ))){
-    direction = DOWN;
+  //Moving UP 
+  if( (abs(c->position.global_y-1 - target->position.global_y )) < (abs(c->position.global_y - target->position.global_y )) ){
+   
+    direction = UP;
     if(numerical_responses[current_zone->tiles[c->position.global_y-1][c->position.global_x].content[0]] != 1){
-    c->position.global_y -=1;
+      mvprintw(c->position.local_y,c->position.local_x,c->standing_on);
+      c->position.global_y -=1;
+      c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
     if(c->position.local_y-1 <  0){
       c->position.local_y = DEFAULT_MAX_Y - 1;
     }
@@ -198,14 +217,19 @@ void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zon
     }
     }
     mvprintw(c->position.local_y,c->position.local_x,c->representation);
-    return;
+     return;
   }
+  */
   //move right 
   
-  if( (abs(c->position.global_x+1 - target->position.global_x ) < abs(c->position.global_x - c->position.global_x ))){
+  
+  if( (abs(c->position.global_x+1 - target->position.global_x )) < (abs(c->position.global_x - target->position.global_x )) ){
+    printf("%s","????");
     direction = RIGHT;
     if(numerical_responses[current_zone->tiles[c->position.global_y-1][c->position.global_x].content[0]] != 1){
+       mvprintw(c->position.local_y,c->position.local_x,c->representation);
 	c->position.global_x +=1;
+	c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
     if(c->position.local_x+1 >  DEFAULT_MAX_X - 1){
       c->position.local_x = 0;
     }
@@ -214,14 +238,17 @@ void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zon
      }
     }
     mvprintw(c->position.local_y,c->position.local_x,c->representation);
-    return;
+     return;
   }
   // move left 
-
-  if( (abs(c->position.global_x-1 -target->position.global_x ) < abs(c->position.global_x - c->position.global_x ))){
+  
+  if( (abs(c->position.global_x-1 -target->position.global_x )) < (abs(c->position.global_x - target->position.global_x )) ){
+    
     direction = LEFT;
     if(numerical_responses[current_zone->tiles[c->position.global_y][c->position.global_x-1].content[0]] != 1){
+       mvprintw(c->position.local_y,c->position.local_x,c->representation);
     c->position.global_x -=1;
+    c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
     if(c->position.local_x -=1 < 0  ){
       c->position.local_x = DEFAULT_MAX_X - 1;
     }
@@ -306,7 +333,7 @@ void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zon
       }
     }
    }
-  
+   
   
 }
 

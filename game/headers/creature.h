@@ -243,7 +243,7 @@ typedef struct Creature{
   char *standing_on;
   int flip:1;
   int active:1;
-  int within_bound:1;
+  int target_is_within_bound:1;
   behavior behavior;
   behavior default_behavior;
   struct Creature *target;

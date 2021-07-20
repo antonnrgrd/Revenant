@@ -1,5 +1,25 @@
 
 COPY PASTE ALL BELOW THE BAR TO SET UP YOUR EMACS ENVIRONMENT
 ##############################################################
-(setq show-paren-delay 0)
+;; -*- mode: elisp -*-
+
+;;Disable splash screen (to enable it again, replace t with 0)
+(setq inhibit-splash-screen t)
+
+;; Enable transient mark mode
+(transient-mark-mode 1)
+
+;;;;Org mode cinfiguration
+;; Enable Org mode
+(require 'org)
+;;Make Org mode work with files ending in .org
+;; (add-to-lsit 'automode-alsit' '("\\.org$" . org-mode))
+; The above is the default in recent emacsen
+
+
+;;; Enables highlight of matching braces+parenthesis
 (show-paren-mode 1)
+(setq show-pare-delay 0)
+
+
+

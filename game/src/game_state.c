@@ -23,10 +23,19 @@ void ll_iter_list_as_creature(Linked_List *list, Game_World *current_zone){
   }
 }
 
+void gs_print_foes(Game_State *game_state){
+  Node *current_node = game_state->active_creatures->initial_node;
+  /* TBD:consider only creatures within range of the player */
+  while(current_node != NULL) {
+    mvprintw( ((struct Creature *)current_node->value)->position.local_y,((struct Creature *)current_node->value)->position.local_x,((struct Creature *)current_node->value)->representation);
+    current_node = current_node->next;
+  }
+}
 
 void game_loop(Game_State *game_state){
   int ch;
   REDRAW_MAP(game_state->player,game_state->current_zone, game_state->player->position.global_x,game_state->player->position.global_y,rows, cols);
+  gs_print_foes(game_state);
   refresh();
   while(1){
     refresh(); 
@@ -46,6 +55,8 @@ void game_loop(Game_State *game_state){
       break;
     case 'q':
       return;
+    case S:
+      ;
       break;
     default:
       break;

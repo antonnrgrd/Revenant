@@ -16,7 +16,7 @@
 #define MAX_X_SEARCH_BOUNDARY(c,current_zone,offset)(((offset+c->position.global_x)> (current_zone->width)) ? (current_zone->width): (offset+c->position.global_x))
 #define MIN_X_SEARCH_BOUNDARY(c,current_zone,offset)(((offset-c->position.global_x) < (0)) ? (0) : (offset-c->position.global_x))
 
-#define IN_BOUND 0
+#define WITHIN_BOUND 0
 #define OUT_OF_BOUND 1
 void cb_pursue_target(Creature *c , Creature *target ,Game_World *current_zone);
 

@@ -25,6 +25,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define Y 121
 #define N 110
 #define A 97
+#define S 115
 #define DEFAULT_MAX_X 80
 #define DEFAULT_MAX_INFOBAR_WIDTH 13
 #define TEST(c,world, x,y, max_x, max_y) REDRAW_MAP(c,world, x,y, max_x, max_y) printf("%s" "done \n");
