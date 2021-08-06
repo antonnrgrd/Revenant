@@ -30,6 +30,7 @@ void (*move_response_handler[3])(int global_x, int global_y, int local_x, int lo
   void move_response_move_character(int global_x, int global_y, int local_x, int local_y, Creature *c,Game_World *current_zone){
     c->position.global_x = global_x;
     c->position.global_y = global_y;
+    
     if(local_y  <  1){
       c->position.local_y = DEFAULT_MAX_Y - 1;
       REDRAW_MAP(c,current_zone, c->position.global_x,c->position.global_y,x_max, y_max);
@@ -42,9 +43,7 @@ void (*move_response_handler[3])(int global_x, int global_y, int local_x, int lo
      
       c->position.local_y = 1;
       REDRAW_MAP(c,current_zone, c->position.global_x,c->position.global_y,x_max, y_max);
-      // c->standing_on[0] = mvinch(local_y,local_x);
-      // mvprintw(local_y,local_x,c->representation);
-      // move(c->position.local_y,c->position.local_x);
+      
     }
 
     else if(local_x  <  DEFAULT_MAX_INFOBAR_WIDTH){

@@ -67,5 +67,5 @@ Game_World *g_generate_game_world(int width, int height){
 
 
 
-extern const char *alphabet = "           ";
+extern const char *alphabet = "#          ";
 

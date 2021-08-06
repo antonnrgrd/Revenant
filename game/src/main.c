@@ -43,6 +43,7 @@ int main(int argc, char *argv[]){
   APPEND_NODE_CREATURE(ll,opponent);
   Game_State *game_state = gs_create_game_state(c,game_world,ll);
   opponent->behavior = pursuing;
+  // opponent->behavior = idle;
   opponent->target = c;
   initscr();
   start_color();
@@ -54,6 +55,7 @@ int main(int argc, char *argv[]){
   mvprintw(opponent->position.local_y,opponent->position.local_x,opponent->representation);
   game_loop(game_state);
   endwin();
+  
   
   
   
