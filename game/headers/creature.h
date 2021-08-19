@@ -256,7 +256,7 @@ extern Humanoid_Definition humanoid_definitions[];
 void c_initialize_animal_body(Creature *c, body_type body_type);
 
 
-Creature *c_generate_creature(Creature_Kind kind, int id,unsigned x,unsigned y);
+Creature *c_generate_creature(Creature_Kind kind, int id,unsigned x,unsigned y,Game_World *world);
 
 Animal_Instance *c_generate_animal_instance(Animal_Definition d);
 
@@ -271,7 +271,7 @@ void c_initialize_animal_inf(Creature *c, int id);
 
 void c_initialize_humanoid_inf(Creature *c, int id);
 
-Creature *c_generate_creature(Creature_Kind kind, int id, unsigned x, unsigned y);
+Creature *c_generate_creature(Creature_Kind kind, int id, unsigned x, unsigned y,Game_World *world);
 
 void (*creature_initializer[1])(Creature *c, int id);
 

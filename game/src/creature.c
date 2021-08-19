@@ -49,7 +49,7 @@ void c_initialize_humanoid_inf(Creature *c, int id){
   // c->instance.humanoid = c_generate_humanoid_instance(d);
 }
 
-Creature *c_generate_creature(Creature_Kind kind, int id,unsigned x,unsigned y){
+Creature *c_generate_creature(Creature_Kind kind, int id,unsigned x,unsigned y,Game_World *world){
   Creature *c = malloc(sizeof(Creature));
   creature_initializer[kind](c,id);
   c->position.global_x=x;
@@ -58,7 +58,7 @@ Creature *c_generate_creature(Creature_Kind kind, int id,unsigned x,unsigned y){
   c->position.local_y=y;
   c->species = kind;
   c->standing_on = malloc(sizeof(char));
-  c->standing_on[0] = ' ';
+  c->standing_on[0] = world->tiles[c->position.global_y][c->position.global_x].content[0];
   return c;
 }
 
@@ -73,7 +73,7 @@ Color *c_copy_color(Color color){
 }
 */
 /* A tester function to help test cases */
-Creature *c_random_player(int y, int x,Game_World *world){
+Creature *c_random_player(int x, int y,Game_World *world){
   Creature *c = malloc(sizeof(Creature));
   c->standing_on = malloc(sizeof(char));
   c->weight = 80.5;

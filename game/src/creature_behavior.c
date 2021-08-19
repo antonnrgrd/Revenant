@@ -206,6 +206,7 @@ void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zon
   //Moving UP 
     if( (abs(c->position.global_y-1 - target->position.global_y )) < (abs(c->position.global_y - target->position.global_y)) && (abs(c->position.global_y - target->position.global_y)) > 1 ){
     direction = UP;
+    printf("%s", "direction is up");
     if(numerical_responses[current_zone->tiles[c->position.global_y-1][c->position.global_x].content[0]] != 1){
       
       mvprintw(c->position.local_y,c->position.local_x,c->standing_on);
@@ -257,7 +258,8 @@ void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zon
        mvprintw(c->position.local_y,c->position.local_x,c->standing_on);
     c->position.global_x -=1;
     c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
-    if(c->position.local_x -=1 < 0  ){
+    if(c->position.local_x - 1 < 0  ){
+      //printf("%s", "This line was called, 198" );
       c->position.local_x = DEFAULT_MAX_X - 1;
     }
     else{
@@ -268,11 +270,16 @@ void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zon
  }
       }     
   // If we failed to make a move that directly makes progress towards the target it is pursuing, find a "move" that helps us navigate around the obstacle. For the sake of computational effeciency, we do so by checking a max range of 10 tiles (5 tiles either way around the obstacle tile) that could potentially provide a path around. If moving either way aroudn the obstacle eventually provides a clear path, just take it.This very basic scheme is for the sake of simplicity.
-   
+  
   if(direction == LEFT){
-	for(int j = MAX_Y_SEARCH_BOUNDARY(c, current_zone, 1); j <= MAX_Y_SEARCH_BOUNDARY(c, current_zone, 5); j++){
-	  // mvprintw(c->position.local_y+j, c->position.local_x, "X");
-	  if(numerical_responses[current_zone->tiles[c->position.global_y+j][c->position.global_x].content[0]] != 1 && numerical_responses[current_zone->tiles[c->position.global_y+j][c->position.global_x-1].content[0]] != 1){
+    /*Initalize the values using the search boundary macro OUTSIDE of the for loop, rather than inside it. I suspect the macro is continously    evaluated when used to initalize the value inside of it and by all acounts, it seems to work.*/
+    int start_search_boundary = MAX_Y_SEARCH_BOUNDARY(c, current_zone, 1);
+    int end_search_boundary = MAX_Y_SEARCH_BOUNDARY(c, current_zone, 5);
+    for(int j = start_search_boundary; j <= end_search_boundary; j++){
+      //printf("%s%d%s", " " ,j , " ");
+      //mvprintw(c->position.local_y-j, c->position.local_x, "X");
+      /* */
+	  if(numerical_responses[current_zone->tiles[c->position.global_y+j][c->position.global_x].content[0]] != 1 && numerical_responses[current_zone->tiles[c->position.global_y+j][c->position.global_x-1].content[0]] != 1 ){
 	  
 	  mvprintw(c->position.local_y,c->position.local_x,c->standing_on);
 	  //mvprintw(c->position.local_y+j, c->position.local_x-1, "X");
@@ -280,18 +287,25 @@ void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zon
 	  c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
 	  if(c->position.local_y+1 > DEFAULT_MAX_Y - 1  ){
 	    c->position.local_y++;
-	    //	    break;
+	    return;
 	  }
 	  else{
+	    //printf("%s%d½%d%s", "xy values:", c->position.local_y, c->position.local_x, " " );
 	    c->position.local_y++;
 	    mvprintw(c->position.local_y,c->position.local_x,c->representation);
+	    //	    printf("%s%s", " What's in front of the npc: ", current_zone->tiles[c->position.global_y][c->position.global_x-1]);
+	    // printf("%s", "this was called");
+	    return;
 	    // break;
 	  }
 	  //	 return; 
 	}
       }
 
-     for(int j = MIN_Y_SEARCH_BOUNDARY(c, current_zone, 1); j <= MIN_Y_SEARCH_BOUNDARY(c, current_zone, 5); j++){
+    start_search_boundary = MIN_Y_SEARCH_BOUNDARY(c, current_zone, 1);
+    end_search_boundary = MIN_Y_SEARCH_BOUNDARY(c, current_zone, 5);
+      
+     for(int j = start_search_boundary; j <= end_search_boundary; j++){
        //mvprintw(c->position.local_y-j, c->position.local_x, "X");
 	  if(numerical_responses[current_zone->tiles[c->position.global_y-j][c->position.global_x].content[0]] != 1 && numerical_responses[current_zone->tiles[c->position.global_y-j][c->position.global_x-1].content[0]]){
 	    //mvprintw(c->position.local_y-j, c->position.local_x-1, "X");
@@ -301,10 +315,12 @@ void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zon
 	  if(c->position.local_y-1 < 1  ){
 	    c->position.local_y--;
 	    //    break;
+	    return;
 	  }
 	  else{
 	    c->position.local_y--;
 	    mvprintw(c->position.local_y,c->position.local_x,c->representation);
+	    return;
 	    // break;
 	  }
 	  //return;
@@ -314,11 +330,9 @@ void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zon
   }
   
     if(direction == RIGHT){
-      // printf("%s%s%s%s%s%s%s%s%s%s%s","move down: " , current_zone->tiles[c->position.global_y+1][c->position.global_x].content," " , " move up:", current_zone->tiles[c->position.global_y-1][c->position.global_x].content," move right: ",current_zone->tiles[c->position.global_y][c->position.global_x+1].content, " ", "move left: ", current_zone->tiles[c->position.global_y+1][c->position.global_x-1].content, " ");
-      //printf("%s%s", "tile:", current_zone->tiles[c->position.global_y][c->position.global_x+1].content);
-      for(int j = MAX_Y_SEARCH_BOUNDARY(c, current_zone, 1); j < MAX_Y_SEARCH_BOUNDARY(c, current_zone, 6); j++){
-	printf("%s%d%s", " ", MAX_Y_SEARCH_BOUNDARY(c, current_zone, 6), " ");
-	
+      int start_search_boundary = MAX_Y_SEARCH_BOUNDARY(c, current_zone, 1);
+      int end_search_boundary = MAX_Y_SEARCH_BOUNDARY(c, current_zone, 6);
+      for(int j =start_search_boundary; j <= end_search_boundary; j++){
 	//printf("%s%d%s", " ", j, " ");
 	//printf("%s%d%s", " ", c->position.global_y+j, " ");
 	  if(numerical_responses[current_zone->tiles[c->position.global_y+j][c->position.global_x].content[0]] != 1 && numerical_responses[current_zone->tiles[c->position.global_y+j][c->position.global_x+1].content[0]] != 1){
@@ -330,21 +344,22 @@ void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zon
 	  c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
 	  if(c->position.local_y+1 > DEFAULT_MAX_Y - 1  ){
 	    c->position.local_y++;
+	    return;
 	    // break;
 	  }
 	  else{
 	    //printf("%s", " and we can move nromally" );
 	    c->position.local_y++;
-	    //printf("%s%d", "y is now:",c->position.local_y );
 	    mvprintw(c->position.local_y,c->position.local_x,c->representation);
+	    return;
 	    //break;
 	  }
 	  //return; 
 	}
       }
-
-     for(int j = MIN_Y_SEARCH_BOUNDARY(c, current_zone, 1); j < MIN_Y_SEARCH_BOUNDARY(c, current_zone, 6); j++){
-       printf("%s%d%s", " ", c->position.global_y+j, " ");
+      start_search_boundary = MIN_Y_SEARCH_BOUNDARY(c, current_zone, 1);
+      end_search_boundary = MIN_Y_SEARCH_BOUNDARY(c, current_zone, 6); 
+     for(int j = start_search_boundary; j <= end_search_boundary; j++){
        // mvprintw(c->position.local_y-j, c->position.local_x, "X");
 	  if(numerical_responses[current_zone->tiles[c->position.global_y-j][c->position.global_x].content[0]] != 1 && numerical_responses[current_zone->tiles[c->position.global_y-j][c->position.global_x+1].content[0]] != 1){
 	    //printf("%s", "valid  UP found " );
@@ -354,12 +369,12 @@ void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zon
 	  c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
 	  if(c->position.local_y-1 < 1  ){
 	    c->position.local_y--;
-	    //return;
+	    return;
 	  }
 	  else{
 	    c->position.local_y--;
 	    mvprintw(c->position.local_y,c->position.local_x,c->representation);
-	    //return;
+	    return;
 	  }
 	  
 	}
@@ -369,8 +384,9 @@ void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zon
 
     //
     if(direction == UP ){
-      
-      for(int j = MIN_X_SEARCH_BOUNDARY(c, current_zone, 1); j <= MIN_X_SEARCH_BOUNDARY(c, current_zone, 5); j++){
+      int start_search_boundary = MIN_X_SEARCH_BOUNDARY(c, current_zone, 1);
+      int end_search_boundary = MIN_X_SEARCH_BOUNDARY(c, current_zone, 5);
+      for(int j = start_search_boundary; j <= end_search_boundary; j++){
 	//	mvprintw(c->position.local_y, c->position.local_x-j, "X");
 	if(numerical_responses[current_zone->tiles[c->position.global_y][c->position.global_x - j].content[0]] != 1 && numerical_responses[current_zone->tiles[c->position.global_y - 1][c->position.global_x - j].content[0]] != 1 ){
 	  //printf("%s", "left ");
@@ -382,19 +398,20 @@ void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zon
 	    c->position.local_x--;
 	    //printf("%s%d"," x: ",c->position.local_x );
 	    // break;
-	    // return;
+	     return;
 	  } 
 	  else{
 	    //    printf("%s%d"," x before : ",c->position.local_x );
 	    c->position.local_x--;
 	    //  printf("%s%d"," x after : ",c->position.local_x );
 	     mvprintw(c->position.local_y,c->position.local_x,c->representation);
-	     //	     break; 
+	     return;
 	  }
 	}
       }
-      
-      for(int j = MAX_X_SEARCH_BOUNDARY(c, current_zone, 1); j <= MAX_X_SEARCH_BOUNDARY(c, current_zone, 5); j++){
+      start_search_boundary = MAX_X_SEARCH_BOUNDARY(c, current_zone, 1);
+      end_search_boundary = MAX_X_SEARCH_BOUNDARY(c, current_zone, 5);
+      for(int j = start_search_boundary; j <= end_search_boundary; j++){
 	//mvprintw(c->position.local_y, c->position.local_x+j, "X");
 	if(numerical_responses[current_zone->tiles[c->position.global_y][c->position.global_x + j].content[0]] != 1 && numerical_responses[current_zone->tiles[c->position.global_y - 1][c->position.global_x + j].content[0]] != 1 ){
 	  //printf("%s", "right ");
@@ -404,13 +421,13 @@ void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zon
 	  c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
 	  if(c->position.local_x+1 > DEFAULT_MAX_X -1  ){
 	    c->position.local_x++;
-	    // break;
+	    return;
 	    
 	  }
 	  else{
 	    c->position.local_x++;
 	    mvprintw(c->position.local_y,c->position.local_x,c->representation);
-	    // break;  
+	    return;
 	  }
 	  
 	}
@@ -418,8 +435,9 @@ void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zon
    }
 
     if(direction == DOWN ){
-      
-	for(int j = MIN_X_SEARCH_BOUNDARY(c, current_zone, 1); j <= MIN_X_SEARCH_BOUNDARY(c, current_zone, 5); j++){
+      int start_search_boundary = MIN_X_SEARCH_BOUNDARY(c, current_zone, 1);
+      int end_search_boundary = MIN_X_SEARCH_BOUNDARY(c, current_zone, 5);
+	for(int j = start_search_boundary; j <= end_search_boundary; j++){
 	  // mvprintw(c->position.local_y, c->position.local_x-j, "X");
 	if(numerical_responses[current_zone->tiles[c->position.global_y][c->position.global_x - j].content[0]] != 1 && numerical_responses[current_zone->tiles[c->position.global_y + 1][c->position.global_x - j].content[0]] != 1 ){
 	  // mvprintw(c->position.local_y+1, c->position.local_x-j, "X");
@@ -428,18 +446,19 @@ void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zon
 	  c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
 	  if(c->position.local_x-1 < DEFAULT_MAX_INFOBAR_WIDTH  ){
 	    c->position.local_x--;
-	    //return;
+	    return;
 	  }
 	  else{
 	    c->position.local_x--;
 	    mvprintw(c->position.local_y,c->position.local_x,c->representation);
-	    // return;
+	    return;
 	  }
 	  //  return;
 	}
       }
-
-      for(int j = MAX_X_SEARCH_BOUNDARY(c, current_zone, 1); j <= MAX_X_SEARCH_BOUNDARY(c, current_zone, 5); j++){
+      start_search_boundary = MAX_X_SEARCH_BOUNDARY(c, current_zone, 1);
+      end_search_boundary = MAX_X_SEARCH_BOUNDARY(c, current_zone, 5);
+      for(int j = start_search_boundary; j <= end_search_boundary; j++){
 	//	mvprintw(c->position.local_y, c->position.local_x+j, "X");
 	if(numerical_responses[current_zone->tiles[c->position.global_y][c->position.global_x + j].content[0]] != 1 && numerical_responses[current_zone->tiles[c->position.global_y + 1][c->position.global_x + j].content[0]] != 1 ){
 	  //  mvprintw(c->position.local_y+1, c->position.local_x-j, "X");
@@ -448,12 +467,12 @@ void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zon
 	  c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
 	  if(c->position.local_x+1 > DEFAULT_MAX_X -1  ){
 	    c->position.local_x++;
-	    //return;
+	    return;
 	  }
 	  else{
 	    c->position.local_x++;
 	    mvprintw(c->position.local_y,c->position.local_x,c->representation);
-	    //return;
+	    return;
 	  }
 
 	}
