@@ -247,6 +247,8 @@ typedef struct Creature{
   behavior behavior;
   behavior default_behavior;
   struct Creature *target;
+  int has_moved_around_vertically;
+  int has_moved_around_horizontally;
 }Creature;
 
 
