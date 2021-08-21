@@ -18,11 +18,12 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
   
 
 void mv_check_move_handler(int global_x, int global_y, int local_x, int local_y, Creature *c,Game_World *current_zone){
-  if( (global_x < current_zone->width  && global_y < current_zone->height) && (global_x > 0  && global_y > 0 )  ){
-  char tile = mvinch(local_y,local_x);
-  int response = numerical_responses[tile];
+  //printf("%d%s%d", global_x," " ,global_y);
+  //return;
   
-  (*move_response_handler[response])(global_x,global_y,local_x,local_y,c,current_zone);
+  if( (global_x < current_zone->width  && global_y < current_zone->height) && (global_x > -1  && global_y > -1 )  ){
+    int response = numerical_responses[current_zone->tiles[global_y][global_x].content[0]];
+     (*move_response_handler[response])(global_x,global_y,local_x,local_y,c,current_zone);
   }
 }
 
@@ -32,8 +33,7 @@ void (*move_response_handler[3])(int global_x, int global_y, int local_x, int lo
   void move_response_move_character(int global_x, int global_y, int local_x, int local_y, Creature *c,Game_World *current_zone){  
     c->position.global_x = global_x;
     c->position.global_y = global_y;
-    
-    if(local_y  <  1){
+    if(local_y  <  0){
       c->position.local_y = DEFAULT_MAX_Y - 1;
       REDRAW_MAP(c,current_zone, c->position.global_x,c->position.global_y,x_max, y_max);
       c->standing_on[0] = mvinch(local_y,local_x);
@@ -49,7 +49,7 @@ void (*move_response_handler[3])(int global_x, int global_y, int local_x, int lo
     }
 
     else if(local_x  <  DEFAULT_MAX_INFOBAR_WIDTH){
-      c->position.local_x = DEFAULT_MAX_INFOBAR_WIDTH;
+      c->position.local_x = DEFAULT_MAX_X - 1;
       REDRAW_MAP(c,current_zone, c->position.global_x,c->position.global_y,x_max, y_max);
     }
 
