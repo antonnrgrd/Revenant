@@ -18,16 +18,18 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
   
 
 void mv_check_move_handler(int global_x, int global_y, int local_x, int local_y, Creature *c,Game_World *current_zone){
+  if( (global_x < current_zone->width  && global_y < current_zone->height) && (global_x > 0  && global_y > 0 )  ){
   char tile = mvinch(local_y,local_x);
   int response = numerical_responses[tile];
   
   (*move_response_handler[response])(global_x,global_y,local_x,local_y,c,current_zone);
+  }
 }
 
 
 void (*move_response_handler[3])(int global_x, int global_y, int local_x, int local_y, Creature *c,Game_World *current_zone) =  {move_response_move_character,move_response_halt_character,move_response_loot_item};
 
-  void move_response_move_character(int global_x, int global_y, int local_x, int local_y, Creature *c,Game_World *current_zone){
+  void move_response_move_character(int global_x, int global_y, int local_x, int local_y, Creature *c,Game_World *current_zone){  
     c->position.global_x = global_x;
     c->position.global_y = global_y;
     
