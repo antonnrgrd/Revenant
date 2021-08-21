@@ -39,7 +39,7 @@ int main(int argc, char *argv[]){
   start_color();    
   Game_World *game_world = g_generate_game_world(1000,1000);
   Creature *opponent = c_generate_creature(animal,0,63,14, game_world);
-  Creature *c = c_random_player(63,12, game_world);
+  Creature *c = c_random_player(63,1, game_world);
   Linked_List *ll = ll_initialize_linked_list();
   APPEND_NODE_CREATURE(ll,opponent);
   Game_State *game_state = gs_create_game_state(c,game_world,ll);
