@@ -18,11 +18,13 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
   
 
 void mv_check_move_handler(int global_x, int global_y, int local_x, int local_y, Creature *c,Game_World *current_zone){
-  //printf("%d%s%d", global_x," " ,global_y);
-  //return;
+  
   
   if( (global_x < current_zone->width  && global_y < current_zone->height) && (global_x > -1  && global_y > -1 )  ){
     int response = numerical_responses[current_zone->tiles[global_y][global_x].content[0]];
+    if(response != 0){
+      printf("%s", current_zone->tiles[global_y][global_x].content);
+    }
      (*move_response_handler[response])(global_x,global_y,local_x,local_y,c,current_zone);
   }
 }
@@ -30,20 +32,17 @@ void mv_check_move_handler(int global_x, int global_y, int local_x, int local_y,
 
 void (*move_response_handler[3])(int global_x, int global_y, int local_x, int local_y, Creature *c,Game_World *current_zone) =  {move_response_move_character,move_response_halt_character,move_response_loot_item};
 
-  void move_response_move_character(int global_x, int global_y, int local_x, int local_y, Creature *c,Game_World *current_zone){  
+  void move_response_move_character(int global_x, int global_y, int local_x, int local_y, Creature *c,Game_World *current_zone){
+    current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->standing_on[0];
     c->position.global_x = global_x;
     c->position.global_y = global_y;
     if(local_y  <  0){
       c->position.local_y = DEFAULT_MAX_Y - 1;
       REDRAW_MAP(c,current_zone, c->position.global_x,c->position.global_y,x_max, y_max);
-      c->standing_on[0] = mvinch(local_y,local_x);
-      move(c->position.local_y,c->position.local_x);
-      
     }
 
     else if(local_y  >  DEFAULT_MAX_Y - 1){
-     
-      c->position.local_y = 1;
+      c->position.local_y = 0;
       REDRAW_MAP(c,current_zone, c->position.global_x,c->position.global_y,x_max, y_max);
       
     }
@@ -60,7 +59,8 @@ void (*move_response_handler[3])(int global_x, int global_y, int local_x, int lo
     else{
       
   mvprintw(c->position.local_y,c->position.local_x, c->standing_on);
-  c->standing_on[0] = mvinch(local_y,local_x);
+  c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
+  current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
   mvprintw(local_y,local_x,c->representation);
   c->position.local_x = local_x;
   c->position.local_y = local_y;

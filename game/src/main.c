@@ -1,5 +1,9 @@
 /*This file is part of Revenant.
+<<<<<<< HEAD
           
+=======
+         
+>>>>>>> movement_fix
 Revenant is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
@@ -38,13 +42,13 @@ int main(int argc, char *argv[]){
   initscr();
   start_color();    
   Game_World *game_world = g_generate_game_world(1000,1000);
-  //Creature *opponent = c_generate_creature(animal,0,63,14, game_world);
+  Creature *opponent = c_generate_creature(animal,0,63,14, game_world);
   Creature *c = c_random_player(63,2, game_world);
    Linked_List *ll = ll_initialize_linked_list();
-  // APPEND_NODE_CREATURE(ll,opponent);
+   APPEND_NODE_CREATURE(ll,opponent);
   Game_State *game_state = gs_create_game_state(c,game_world,ll);
-  //opponent->behavior = pursuing;
-  //opponent->target = c;
+  opponent->behavior = pursuing;
+  opponent->target = c;
   initscr();
   start_color();
   noecho();
@@ -52,7 +56,7 @@ int main(int argc, char *argv[]){
   keypad(stdscr, TRUE);
   srand(time(NULL));
   raw();
-  //  mvprintw(opponent->position.local_y,opponent->position.local_x,opponent->representation);
+    mvprintw(opponent->position.local_y,opponent->position.local_x,opponent->representation);
   game_loop(game_state);
   endwin();
   
