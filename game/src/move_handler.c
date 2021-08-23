@@ -22,9 +22,6 @@ void mv_check_move_handler(int global_x, int global_y, int local_x, int local_y,
   
   if( (global_x < current_zone->width  && global_y < current_zone->height) && (global_x > -1  && global_y > -1 )  ){
     int response = numerical_responses[current_zone->tiles[global_y][global_x].content[0]];
-    if(response != 0){
-      printf("%s", current_zone->tiles[global_y][global_x].content);
-    }
      (*move_response_handler[response])(global_x,global_y,local_x,local_y,c,current_zone);
   }
 }
