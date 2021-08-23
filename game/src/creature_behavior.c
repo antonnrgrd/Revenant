@@ -33,7 +33,7 @@ void cb_idle(Creature *c, Creature *target ,Game_World *current_zone){
 void cb_roam(Creature *c, Creature *target ,Game_World *current_zone){
   
   int direction =  (rand() % (5 -  0 + 1) + 1);
-  /* Important: we evaluate if the change in position exceeds the boundary of the game map, THEN check if the tile we try to move to is validto avoid the possibility of accessing an offset outside of the malloc'ed area to avoid segmentation faults. THis is due to logical and short circuiting (if the first statement is false, don't evluate the second) */
+  /* Important: we evaluate if the change in position exceeds the boundary of the game map, THEN check if the tile we try to move to is validto avoid the possibility of accessing an offset outside of the malloc'ed area to avoid segmentation faults. THis is due to logical AND short circuiting (if the first statement is false, don't evluate the second) */
    if(direction == UP){
      if(c->position.global_y+1 < current_zone->height && numerical_responses[current_zone->tiles[c->position.global_y+1][c->position.global_x].content[0]] != 1 ){
        current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->standing_on[0];
