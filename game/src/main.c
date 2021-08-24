@@ -43,7 +43,9 @@ int main(int argc, char *argv[]){
    Linked_List *ll = ll_initialize_linked_list();
    APPEND_NODE_CREATURE(ll,opponent);
   Game_State *game_state = gs_create_game_state(c,game_world,ll);
-  opponent->behavior = pursuing;
+  
+  opponent->behavior = idle;
+
   opponent->target = c;
   initscr();
   start_color();
