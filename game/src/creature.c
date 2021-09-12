@@ -14,8 +14,8 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "creature.h"
 #include "item.h"
 #include "tiles.h"
-
-
+#include "move_handler.h"
+#include "creature_macros.h"
 void c_free_animal(Animal_Instance *a){
   /* remember to free other animal components */
   free(animal);
@@ -49,13 +49,23 @@ void c_initialize_humanoid_inf(Creature *c, int id){
   // c->instance.humanoid = c_generate_humanoid_instance(d);
 }
 
-Creature *c_generate_creature(Creature_Kind kind, int id,unsigned x,unsigned y,Game_World *world){
+Creature *c_generate_creature(Creature_Kind kind, int id,unsigned x,unsigned y,Game_World *world, Creature *target){
   Creature *c = malloc(sizeof(Creature));
   creature_initializer[kind](c,id);
   c->position.global_x=x;
   c->position.global_y=y;
-  c->position.local_x=x;
-  c->position.local_y=y;
+  
+  /* Because the assignment of local coordinates can be rather arbitrary, as the local coordinates can be anything relative to the POV, we arbitarily assign to be roughly centered */
+  
+    c->position.local_x = 33;
+    c->position.local_y = 12;
+  
+
+    /*
+  printf("%d%s",c->position.local_x, " loc x ");
+  printf("%d%s",c->position.local_y, " loc y ");
+    */
+  
   c->species = kind;
   c->standing_on = malloc(sizeof(char));
   c->standing_on[0] = world->tiles[c->position.global_y][c->position.global_x].content[0];

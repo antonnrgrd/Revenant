@@ -21,7 +21,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "creature_macros.h"
 #include "tiles.h"
 /* */
-#define DERIVE_RELATIVE_COORDS
+#define DERIVE_RELATIVE_COORDS(creature, player)()
 
 
 #define COPY_LIMB(creature_limb, source_limb){\
