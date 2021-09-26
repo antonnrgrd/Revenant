@@ -14,8 +14,8 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "creature.h"
 #include "item.h"
 #include "tiles.h"
-
-
+#include "move_handler.h"
+//#include "creature_macros.h"
 void c_free_animal(Animal_Instance *a){
   /* remember to free other animal components */
   free(animal);
@@ -49,13 +49,23 @@ void c_initialize_humanoid_inf(Creature *c, int id){
   // c->instance.humanoid = c_generate_humanoid_instance(d);
 }
 
-Creature *c_generate_creature(Creature_Kind kind, int id,unsigned x,unsigned y,Game_World *world){
+Creature *c_generate_creature(Creature_Kind kind, int id,unsigned x,unsigned y,Game_World *world, Creature *target){
   Creature *c = malloc(sizeof(Creature));
   creature_initializer[kind](c,id);
   c->position.global_x=x;
   c->position.global_y=y;
-  c->position.local_x=x;
-  c->position.local_y=y;
+  
+  /* Because the assignment of local coordinates can be rather arbitrary, as the local coordinates can be anything relative to the POV, we arbitarily assign to be roughly centered */
+  
+  c_compute_relative_coords(c, target);
+ 
+  
+
+    /*
+  printf("%d%s",c->position.local_x, " loc x ");
+  printf("%d%s",c->position.local_y, " loc y ");
+    */
+  
   c->species = kind;
   c->standing_on = malloc(sizeof(char));
   c->standing_on[0] = world->tiles[c->position.global_y][c->position.global_x].content[0];
@@ -126,8 +136,53 @@ void c_initialize_animal_body(Creature *c, body_type body_type){
       c->body.animal_body = malloc(sizeof(Animal_Body));
 }
 }
+/* In order to understand why we compute the coordinates as we do when the distance ebtween player and creature exceeds the scrren boundaries, refer to the game manual*/
+void c_compute_relative_coords(Creature *creature, Creature *player){
+  if(creature->position.global_x > player->position.global_x){
+    if(player->position.local_x + (creature->position.global_x - player->position.global_x) < DEFAULT_MAX_X ){
+    creature->position.local_x = (player->position.local_x + (creature->position.global_x - player->position.global_x));
+    }
+    else{
+      
+      creature->position.local_x =  DEFAULT_MAX_INFOBAR_WIDTH + ((creature->position.global_x - SET_TO_MIN_X(player)) % (((DEFAULT_MAX_X -1) - DEFAULT_MAX_INFOBAR_WIDTH) + 1)); 
+    }
+  }
+  else{
+  if((player->position.local_x - (player->position.global_x - creature->position.global_x)) >= DEFAULT_MAX_INFOBAR_WIDTH ){
+  creature->position.local_x = player->position.local_x - (player->position.global_x - creature->position.global_x);
+    }
+    else{
+      creature->position.local_x = ((DEFAULT_MAX_X -1) - (((SET_TO_MAX_X(player)) - creature->position.global_x ) % (((DEFAULT_MAX_X -1) - DEFAULT_MAX_INFOBAR_WIDTH) + 1)));
+    }
+  }
+  
+  if(creature->position.global_y > player->position.global_y){
+  if(player->position.local_y + (creature->position.global_y - player->position.global_y ) < DEFAULT_MAX_Y ){
+  creature->position.local_y = player->position.local_y + (creature->position.global_y - player->position.global_y);
+    }
+  
+    else{
+      creature->position.local_y = DEFAULT_MIN_Y + ((creature->position.global_y - SET_TO_MIN_Y(player) ) % (( (DEFAULT_MAX_Y -1) - DEFAULT_MIN_Y)+1));
+    }
+  }
+  
+  else{
+  if(player->position.local_y - (player->position.global_y - creature->position.global_y) >= DEFAULT_MIN_Y ){
+  creature->position.local_y = player->position.local_y - (player->position.global_y - creature->position.global_y);
+    }
+    else{
+      
+      creature->position.local_y = (DEFAULT_MAX_Y-1) -  ((SET_TO_MAX_Y(player) - creature->position.global_y ) % (((DEFAULT_MAX_Y -1) - DEFAULT_MIN_Y)+1));
+    }
+  }
+}
+
 extern  Animal_Definition animal_definitions[] = {{0 ,"Short-faced bear","A large brown bear. It has a disproportionately short face",900,3.4,1.5 , {12,12,12,12,12,12,12}, {COLOR_RED, 0,0,0}, {.animal_body = {{hhead,healthy,100, 100},{ttorso,healthy,100, 100},{aarm,healthy,100, 100},{hhead,healthy,100, 100},{lleg,healthy,100, 100},{lleg,healthy,100, 100},{ttail,healthy,100, 100}}},roaming, animal_quad}};
 
+
+						  
+
 extern Humanoid_Definition humanoid_definitions[] = {{"Bandit", "A bandit looking to steal rob and murder you", 65,1.65, iron,iron,iron, leather, leather, steel, one_hand, sword,steel, leather, {15,15,15,15,15,15,15}, {hhead, healthy, 14, 15},{ttorso, healthy, 18, 21},{aarm, healthy, 14, 15} , {aarm, healthy, 14, 15}, {lleg, healthy, 14, 15}, {lleg, healthy, 14, 15},{noone, healthy, 14, 15},{noone, healthy, 14, 15},{noone, healthy, 14, 15}, medium, weaponry, axe}};
+
 
 void (*creature_initializer[1])(Creature *c, int id) = { c_initialize_animal_inf};

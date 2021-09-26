@@ -18,8 +18,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
   
 
 void mv_check_move_handler(int global_x, int global_y, int local_x, int local_y, Creature *c,Game_World *current_zone){
-  
-  
+  /* Before we check the response value from the character, we first need to be assert that position we are trying to make the move to is within bounds of the current zone's dimensionality to avoid invalid index lookups in the game world's tiles (whether negative or too large index values)  */
   if( (global_x < current_zone->width  && global_y < current_zone->height) && (global_x > -1  && global_y > -1 )  ){
     int response = numerical_responses[current_zone->tiles[global_y][global_x].content[0]];
      (*move_response_handler[response])(global_x,global_y,local_x,local_y,c,current_zone);
@@ -143,4 +142,10 @@ void move_response_loot_item(int global_x, int global_y,int local_x, int local_y
   }
  }
   
+void move_response_attack_target(int global_x, int global_y,int local_x, int local_y, Creature *c,Game_World *current_zone){
+  /* At present this is just more or less placeholder code for testing if a player hits a target  */
+  if  ( ((rand() % (21 - 1 + 1) + 1)) + c.attributes.dexterity >= (struct Creature*)current_zone->tiles[global_x][global_y].foe.attributes.dexterity+10){
 
+    
+  }
+}

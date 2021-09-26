@@ -27,6 +27,9 @@ typedef struct Position{
 typedef struct Tile{
   char *content;
   Entry *entry;
+  /*Instead of specifying that the tile can contain a creature struct, we use a void pointer instead because otherwise I would have to
+   re-structure the organization of the header files due to how certain structs are defined in certain header files */
+  void *foe;
 }Tile;
 
 

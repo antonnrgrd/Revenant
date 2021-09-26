@@ -35,7 +35,7 @@ void gs_print_foes(Game_State *game_state){
 void game_loop(Game_State *game_state){
   int ch;
   REDRAW_MAP(game_state->player,game_state->current_zone, game_state->player->position.global_x,game_state->player->position.global_y,rows, cols);
-  gs_print_foes(game_state);
+  // gs_print_foes(game_state);
   refresh();
   while(1){
     refresh(); 
