@@ -1,8 +1,8 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
- 
+\usepackage{amsmath}
 \title{Sections and Chapters}
-\author{Gubert Farnsworth}
+\author{Anton Nørgaard}
 \date{ }
   
 \begin{document}
@@ -11,26 +11,45 @@
   
 \tableofcontents
 
-\section{Introduction}
+\section*{Introduction}
    
-This is the first section.
-      
-Lorem  ipsum  dolor  sit  amet,  consectetuer  adipiscing  
-elit.   Etiam  lobortisfacilisis sem.  Nullam nec mi et 
-neque pharetra sollicitudin.  Praesent imperdietmi nec ante. 
-Donec ullamcorper, felis non sodales...
-       
-\addcontentsline{toc}{section}{Unnumbered Section}
-\section*{Unnumbered Section}
+\section*{How stuff works}
+\subsection*{Creatures}
+In the following chapers, we will use several variables to compute various information regarding creatures in-game, their status and the way
+that they interact with the environment and the player. For that purpose, we will use the following defintions, some are explicitly computed/stored in-game, others are just definitions and are not explicitly declared in-game. The definitions we will use are
+\begin{itemize}
+\item $min\_local$ the smallest local coordinate value possible 
+\item $max\_local$ the biggest local coordinate value possible 
+\item $Player_{global  \:coordinate}$  to represent a player's global coordinate, either X or Y coordinate 
+\item $Creature_{global \: coordinate}$ to represent a creature's global coordinate, either X or Y coordinate 
+\item The exact same variables are defined for the local coordinates 
+\item $max\_moves$ is the maximum number of tiles a player/creature can move, before they move our of bounds of the current screen view. It is computed as  ($max\_local$ - $max\_local$) +1 
+\item $Player_{set \: to \: min}$  is a subtraction of the players global coordinate s.t its local coordinate is the minimal. It is computed as  $Player_{global \: coordinate}$ - ($Player_{local \: coordinate}$ - $min\_local$)
+\item $Player_{set \: to \: max}$  is an addition of the players global coordinate s.t its local coordinate is the maximal. It is computed as  $Player_{global \: coordinate}$ + ($max\_local$ - $Player_{local \: coordinate}$)
+\end{itemize}
+With that in mind, we can now go over the different mechanics that we need to consider for the creatures in game, such as spawning, movement, death, behavior, actions and so on
 
-Lorem ipsum dolor sit amet, consectetuer adipiscing elit.  
-Etiam lobortis facilisissem.  Nullam nec mi et neque pharetra 
-sollicitudin.  Praesent imperdiet mi necante...
+\subsubsection{Spawning creatures}
+When it comes to spawning creatures, there are several things that we need to compute in relation to the player. One of them is the creatures local coordinates. The kicker about this is that while a player's local coordinates can be arbitrary without any hassle, the coordinates of the creature must be aligned relative to the players to that the view the creature has on screen matches that of the global coordinates. To do this, there are two cases that need to be considered, the trivial case and the nontrivial case. \newline
 
-\section{Second Section}
-       
-Lorem ipsum dolor sit amet, consectetuer adipiscing elit.  
-Etiam lobortis facilisissem.  Nullam nec mi et neque pharetra 
-sollicitudin.  Praesent imperdiet mi necante...
-         
+In the trivial case, the distance between the player and the creature is s.t the distance for the particular axis, does not exceed the boundaries of the screen \newline
+
+In the non-trivial case, what we effectively do is reduce it to the nontrivial case. The way that we do this is by considering whether the axis-wise coordinate for the player is greater or smaller than the creature's just like in the non-trivial case. In the case that
+
+\[ Player_{global  \:coordinate} > Creature_{global \: coordinate} \]
+
+Then set the creature's local coordinate to
+\[ Creature_{local \: coordinate} = max\_local - (Player_{set \: to \: max} - Creature_{global \: coordinate} ) \mod  max\_moves  \]
+
+
+In the other case where 
+\[ Player_{global  \:coordinate} < Creature_{global \: coordinate} \]
+
+Instead, set the creature's local coordinate to
+
+\[ Creature_{local \: coordinate} = min\_local + (Player_{set \: to \: min} - Creature_{global \: coordinate} ) \mod  max\_moves  \]
+
+The workings of this are a little hard to work around. Admittedly, this took rather a long while to figure out and I am unsure whether the computations can get simplified further. However, truth be told, I spent way too long to figure this out and so at this point that I cannot be bothered to come up with more clever solutions. \newline
+
+The way it works (informally) is as follows. Assume that 
 \end{document}

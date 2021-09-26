@@ -21,8 +21,6 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "creature_macros.h"
 #include "tiles.h"
 /* */
-#define DERIVE_RELATIVE_COORDS
-
 
 #define COPY_LIMB(creature_limb, source_limb){\
   creature_limb.kind = source_limb.kind; \
@@ -250,8 +248,8 @@ typedef struct Creature{
   behavior behavior;
   behavior default_behavior;
   struct Creature *target;
-  int has_moved_around_vertically;
-  int has_moved_around_horizontally;
+  int has_moved_around_vertically:1;
+  int has_moved_around_horizontally:1;
 }Creature;
 
 
@@ -282,4 +280,6 @@ void (*creature_initializer[1])(Creature *c, int id);
 Color *c_copy_color(Color color);
 
 Creature *c_random_player(int y, int x ,Game_World *world);
+
+void c_compute_relative_coords(Creature *creature, Creature *player);
 #endif
