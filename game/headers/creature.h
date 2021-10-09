@@ -22,6 +22,9 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "tiles.h"
 /* */
 
+#define YES 1
+#define NO 0
+
 #define COPY_LIMB(creature_limb, source_limb){\
   creature_limb.kind = source_limb.kind; \
   creature_limb.status = healthy; \
@@ -40,20 +43,6 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
   creature_attributes.wisdom =  creature_information_attributes.intelligence; \
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-			  //#define GET_CREATURE_INF(creature)
 typedef enum Creature_Kind{animal, humanoid,cyborg,mechanical,mathematical,vegetative,player_character}Creature_Kind;
 typedef enum Environment{cavern,forest,aquatic,plains,mountain}Environment;
 typedef enum Disposition{friendly,hostile, territorial,neutral,passive,undefined}Disposition;
@@ -62,7 +51,7 @@ typedef enum Limb_Kind{hhead,ttorso,aarm,lleg,ttail,wwing,hhand,ffoot,tthroat,ta
 typedef enum Limb_Status{bleeding,healthy,infected,disabled,frozen,poisons}Limb_Status;
 typedef enum Status{immobile,poisoned,haemorrhaging,unconscious,frostbit}Status;
 typedef enum Animal_ID{short_nosed_bear,elk,}Animal_ID;
-typedef enum body_type{humanlike, humanlike_tail, animal_quad }body_type;
+typedef enum body_type{animal_quad, humanlike, humanlike_tail }body_type;
 typedef enum behavior{idle, roaming, pursuing, fleeing}behavior;
 typedef enum attack_type{biting, clawing, charging, headbutting}attack_type;
 typedef struct Limb{
@@ -230,6 +219,7 @@ typedef struct Creature{
   body_holder body;
   float weight;
   float height;
+  int id;
   Creature_Kind species;
   Disposition disposition;
   Attributes attributes;
@@ -237,13 +227,13 @@ typedef struct Creature{
   uint32_t curr_health;
   float max_carry;
   float current_carry;
-  Creature_Instance instance;
+  /*Turns out, we very much indeed needed teh instance */
+   Creature_Instance instance;
   char *representation;
   Color *color;
   Position position;
   char *standing_on;
-  int flip:1;
-  int active:1;
+  int marked_for_deletion;
   int target_is_within_bound:1;
   behavior behavior;
   behavior default_behavior;
@@ -256,6 +246,9 @@ typedef struct Creature{
 extern Animal_Definition animal_definitions[];
 extern Humanoid_Definition humanoid_definitions[];
 
+void (*c_free_creature_body_type[1])(Creature *c);
+void c_free_animal_quad_body_type(Creature *c);
+void c_free_animal(Creature *c);
 void c_initialize_animal_body(Creature *c, body_type body_type);
 
 
@@ -263,7 +256,7 @@ Creature *c_generate_creature(Creature_Kind kind, int id,unsigned x,unsigned y,G
 
 Animal_Instance *c_generate_animal_instance(Animal_Definition d);
 
-void c_free_(Animal_Instance *a);
+
 
 
 Humanoid_Instance *c_generate_humanoid_instance(Humanoid_Definition d);
@@ -282,4 +275,6 @@ Color *c_copy_color(Color color);
 Creature *c_random_player(int y, int x ,Game_World *world);
 
 void c_compute_relative_coords(Creature *creature, Creature *player);
+
+void c_clean_cleanup_creature(Creature *c,Game_World *world);
 #endif

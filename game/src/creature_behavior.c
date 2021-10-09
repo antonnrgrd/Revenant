@@ -48,9 +48,9 @@ void cb_roam(Creature *c, Creature *target ,Game_World *current_zone){
 	 mvprintw(c->position.local_y,c->position.local_x,c->standing_on);
 	 mvprintw(c->position.local_y,c->position.local_x,c->representation);
     }
-       c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
-       current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
-       current_zone->tiles[c->position.global_y][c->position.global_x].foe = &c;
+       c->standing_on[0] = current_zone->tiles[c->position.global_x][c->position.global_y].content[0];
+       current_zone->tiles[c->position.global_x][c->position.global_y].content[0] = c->representation[0];
+       (Creature *)current_zone->tiles[c->position.global_x][c->position.global_y].foe = c;
      }
    }
    
@@ -64,9 +64,9 @@ void cb_roam(Creature *c, Creature *target ,Game_World *current_zone){
 	  mvprintw(c->position.local_y,c->position.local_x,c->standing_on);	  
 	  mvprintw(c->position.local_y,c->position.local_x,c->representation);
     }
-       c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
-       current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
-       current_zone->tiles[c->position.global_y][c->position.global_x].foe = &c;
+       c->standing_on[0] = current_zone->tiles[c->position.global_x][c->position.global_y].content[0];
+       current_zone->tiles[c->position.global_x][c->position.global_y].content[0] = c->representation[0];
+       (Creature *)current_zone->tiles[c->position.global_x][c->position.global_y].foe = c;
      }
    }
        
@@ -83,9 +83,9 @@ void cb_roam(Creature *c, Creature *target ,Game_World *current_zone){
        if(abs(c->position.global_x - target->position.global_x) <= DEFAULT_MAX_X -1){
 	  mvprintw(c->position.local_y,c->position.local_x,c->representation);
     }
-       c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
-       current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
-       current_zone->tiles[c->position.global_y][c->position.global_x].foe = &c;
+       c->standing_on[0] = current_zone->tiles[c->position.global_x][c->position.global_y].content[0];
+       current_zone->tiles[c->position.global_x][c->position.global_y].content[0] = c->representation[0];
+       (Creature *)current_zone->tiles[c->position.global_x][c->position.global_y].foe = c;
      }
    }
 
@@ -102,9 +102,9 @@ void cb_roam(Creature *c, Creature *target ,Game_World *current_zone){
        if(abs(c->position.global_x - target->position.global_x) <= DEFAULT_MAX_X -1){	  
 	 mvprintw(c->position.local_y,c->position.local_x,c->representation);
        }
-       c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
-       current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
-       current_zone->tiles[c->position.global_y][c->position.global_x].foe = &c;
+       c->standing_on[0] = current_zone->tiles[c->position.global_x][c->position.global_y].content[0];
+       current_zone->tiles[c->position.global_x][c->position.global_y].content[0] = c->representation[0];
+       (Creature *)current_zone->tiles[c->position.global_x][c->position.global_y].foe = c;
      }
    }
 }
@@ -121,12 +121,11 @@ void cb_pursure_target_oob(Creature *c, Creature *target ,Game_World *current_zo
   /* In order to pursue a target, we effectively try out all moves the creature can take to move closer to the current target. Provided the
  distance becomes smaller and it is a valid tile to step on, make a move */
   
-  current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->standing_on[0];
+  current_zone->tiles[c->position.global_x][c->position.global_y].content[0] = c->standing_on[0];
   /* moving up */
   if( (abs(c->position.global_y+1 - target->position.global_y ) < abs(c->position.global_x - target->position.global_x ))){
     c->position.global_y +=1;
-    c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
-    current_zone->tiles[c->position.global_y][c->position.global_x].foe = &c;
+    c->standing_on[0] = current_zone->tiles[c->position.global_x][c->position.global_y].content[0];
     if(c->position.local_y+1 >  DEFAULT_MAX_Y - 1){
       c->position.local_y = 0;
     }
@@ -141,8 +140,7 @@ void cb_pursure_target_oob(Creature *c, Creature *target ,Game_World *current_zo
   // Moving down 
   if( (abs(c->position.global_y-1 - target->position.global_y ) < abs(c->position.global_x - target->position.global_x ))){
     c->position.global_y -= 1;
-    c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
-    current_zone->tiles[c->position.global_y][c->position.global_x].foe = &c;
+    c->standing_on[0] = current_zone->tiles[c->position.global_x][c->position.global_y].content[0];
     if(c->position.local_y-1 <  0){
       c->position.local_y = DEFAULT_MAX_Y - 1;
     }
@@ -154,8 +152,7 @@ void cb_pursure_target_oob(Creature *c, Creature *target ,Game_World *current_zo
     /* move right */
   if( (abs(c->position.global_x+1 - target->position.global_x ) < abs(c->position.global_x - target->position.global_x ))){
 	c->position.global_x += 1;
-	c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
-    current_zone->tiles[c->position.global_y][c->position.global_x].foe = &c;
+	c->standing_on[0] = current_zone->tiles[c->position.global_x][c->position.global_y].content[0];
     if(c->position.local_x+1 >  DEFAULT_MAX_X - 1){
       c->position.local_x = 0;
     }
@@ -168,17 +165,16 @@ void cb_pursure_target_oob(Creature *c, Creature *target ,Game_World *current_zo
 
   if( (abs(c->position.global_x-1 -target->position.global_x ) < abs( c->position.global_x - target->position.global_x ))){
 
-    if(numerical_responses[current_zone->tiles[c->position.global_y][c->position.global_x-1].content[0] ] != 1){
     c->position.global_x -= 1;
-    c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
-    current_zone->tiles[c->position.global_y][c->position.global_x].foe = &c;
+    c->standing_on[0] = current_zone->tiles[c->position.global_x][c->position.global_y].content[0];
+    
     if(c->position.local_x-1 < 0  ){
       c->position.local_x = DEFAULT_MAX_X - 1;
     }
     else{
       c->position.local_x -= 1;
     }
-    }
+    
     goto CHECK_WITHIN_BOUNDS;
   }
 
@@ -186,9 +182,9 @@ void cb_pursure_target_oob(Creature *c, Creature *target ,Game_World *current_zo
  CHECK_WITHIN_BOUNDS:  
   c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
   current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
-
+  (Creature *)current_zone->tiles[c->position.global_x][c->position.global_y].foe = c;
   /*Finally, if the creature is now within the view distance of the player, draw it */
-  printf("%d%s", c->position.global_y, " ");
+  
   if(WITHIN_X_BOUNDS(c,target) & WITHIN_Y_BOUNDS(c,target) == WITHIN_BOUNDS){
     
     mvprintw(c->position.local_y,c->position.local_x,c->representation);
@@ -216,7 +212,7 @@ void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zon
     c->position.global_y +=1;
     c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
     current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
-    current_zone->tiles[c->position.global_y][c->position.global_x].foe = &c;
+    (Creature *)current_zone->tiles[c->position.global_x][c->position.global_y].foe = c;
     if(c->position.local_y+1 >  DEFAULT_MAX_Y - 1){
       c->position.local_y = 0;
     }
@@ -241,7 +237,7 @@ void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zon
       c->position.global_y -=1;
       c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
       current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
-      current_zone->tiles[c->position.global_y][c->position.global_x].foe = &c;
+      (Creature *)current_zone->tiles[c->position.global_x][c->position.global_y].foe = c;
     if(c->position.local_y-1 <  1){
       c->position.local_y = DEFAULT_MAX_Y - 1;
     }
@@ -270,7 +266,7 @@ void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zon
 	c->position.global_x +=1;
 	c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
 	current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
-	current_zone->tiles[c->position.global_y][c->position.global_x].foe = &c;
+	(Creature *)current_zone->tiles[c->position.global_x][c->position.global_y].foe = c;
     if(c->position.local_x+1 >  DEFAULT_MAX_X - 1){
       c->position.local_x = 0;
     }
@@ -423,7 +419,7 @@ void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zon
       }
       start_search_boundary = MIN_Y_SEARCH_BOUNDARY(c, current_zone, 1);
       end_search_boundary = MIN_Y_SEARCH_BOUNDARY(c, current_zone, 6);
-      /* 21-8-2021 hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee */ 
+  
      for(int j = start_search_boundary; j <= end_search_boundary; j++){
        // mvprintw(c->position.local_y-j, c->position.local_x, "X");
 	  if(numerical_responses[current_zone->tiles[c->position.global_y-j][c->position.global_x].content[0]] != 1 ){

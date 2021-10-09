@@ -15,21 +15,22 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "item.h"
 #include "tiles.h"
 #include "move_handler.h"
-//#include "creature_macros.h"
-void c_free_animal(Animal_Instance *a){
-  /* remember to free other animal components */
-  free(animal);
+
+void c_free_creature(Creature *c){
+  free(c->representation);
+  free(c->standing_on);
+  (*c_free_creature_body_type[c->body_type])(c);  
+  /* We do not free the Creature struct itself because when a creature dies, we mark it for deletion and later on, when going through all active creatures and we see that it is marked for deletion, we remove it from the list of active creatures and only then, can we safely remove. Otherwise, we will have a segementation fault because we pass a null pointer as an argument for the creature behavior function.*/
 }
 
-/*
-void c_generate_monster_animal(int id){
-  c_initialize_animal_inf(c,id);
-  return;
+void c_cleanup_creature(Creature *c,Game_World *world ){
+  c_free_creature(c);
 }
-*/
 
-
-
+void (*c_free_creature_body_type[1])(Creature *c) = {};
+void c_free_animal_quad_body_type(Creature *c){
+  free(c->body.animal_body);
+}
 
 void c_initialize_animal_inf(Creature *c,int id){
   Animal_Definition d = animal_definitions[id];
@@ -61,17 +62,16 @@ Creature *c_generate_creature(Creature_Kind kind, int id,unsigned x,unsigned y,G
  
   
 
-    /*
-  printf("%d%s",c->position.local_x, " loc x ");
-  printf("%d%s",c->position.local_y, " loc y ");
-    */
+  
   
   c->species = kind;
+  c->id = id;
   c->standing_on = malloc(sizeof(char));
   c->standing_on[0] = world->tiles[c->position.global_y][c->position.global_x].content[0];
   world->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
   c->has_moved_around_vertically = 0;
   c->has_moved_around_horizontally = 0;
+  c->marked_for_deletion = NO;
   return c;
 }
 
@@ -177,6 +177,7 @@ void c_compute_relative_coords(Creature *creature, Creature *player){
   }
 }
 
+
 extern  Animal_Definition animal_definitions[] = {{0 ,"Short-faced bear","A large brown bear. It has a disproportionately short face",900,3.4,1.5 , {12,12,12,12,12,12,12}, {COLOR_RED, 0,0,0}, {.animal_body = {{hhead,healthy,100, 100},{ttorso,healthy,100, 100},{aarm,healthy,100, 100},{hhead,healthy,100, 100},{lleg,healthy,100, 100},{lleg,healthy,100, 100},{ttail,healthy,100, 100}}},roaming, animal_quad}};
 
 
@@ -186,3 +187,5 @@ extern Humanoid_Definition humanoid_definitions[] = {{"Bandit", "A bandit lookin
 
 
 void (*creature_initializer[1])(Creature *c, int id) = { c_initialize_animal_inf};
+
+

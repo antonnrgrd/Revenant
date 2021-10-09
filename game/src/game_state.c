@@ -17,9 +17,18 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 void ll_iter_list_as_creature(Linked_List *list, Game_World *current_zone){
   Node *current_node = list->initial_node;
+  Node *previous = current_node;
   while(current_node != NULL) {
+    /*If a creature has been marked for deletion, it is dead and should therefore be firstly removed from the lsit of creature's that gets to act because it is dead and secondly, the creature itself is freed. We do not free the intercal contained structures of the creatures itself because they are already free'd whenever it is detected that a creature has died.*/
+    if( ((struct Creature *)current_node->value)->marked_for_deletion == YES){
+      free((struct Creature *)current_node->value);
+      current_node->value = NULL;
+    }
+    else{
     cb_act( (struct Creature *)current_node->value, ((struct Creature *)current_node->value)->target, current_zone);
+    previous = current_node;
     current_node = current_node->next;
+    }
   }
 }
 

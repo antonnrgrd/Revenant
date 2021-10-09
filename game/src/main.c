@@ -40,7 +40,7 @@ int main(int argc, char *argv[]){
   
   Game_World *game_world = g_generate_game_world(1000,1000);
   Creature *c = c_random_player(20,3, game_world);
-  Creature *opponent = c_generate_creature(animal,0,63,14, game_world, c);
+  Creature *opponent = c_generate_creature(animal,0,20,4, game_world, c);
   
    Linked_List *ll = ll_initialize_linked_list();
    APPEND_NODE_CREATURE(ll,opponent);
@@ -48,7 +48,7 @@ int main(int argc, char *argv[]){
 
 
   opponent->behavior = pursuing;
->>>>>>> movement_fix
+
   opponent->target = c;
   initscr();
   start_color();

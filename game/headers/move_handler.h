@@ -43,7 +43,7 @@ void gw_add_to_pile(Item_Holder *item, Entry *item_pile);
 
 void mv_check_move_handler(int global_x, int gloval_y, int local_x, int local_y, Creature *c,Game_World *current_zone);
 
-void (*move_response_handler[3])(int global_x, int global_y, int local_x, int local_y,Creature *c,Game_World *current_zone);
+void (*move_response_handler[4])(int global_x, int global_y, int local_x, int local_y,Creature *c,Game_World *current_zone);
 
 
 void move_response_move_character(int global_x, int global_y, int local_x, int local_y,Creature *c,Game_World *current_zone);
