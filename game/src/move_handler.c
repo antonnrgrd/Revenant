@@ -145,21 +145,24 @@ void move_response_loot_item(int global_x, int global_y,int local_x, int local_y
 void move_response_attack_target(int global_x, int global_y,int local_x, int local_y, Creature *c,Game_World *current_zone){
 
   /* At present this is just more or less placeholder code for testing if a player hits a target  */
-  if(!current_zone->tiles[global_x][global_y].foe){
-    printf("%s", "null");
-  }
-  /*  
-  if  ( ((rand() % (21 - 1 + 1) + 1)) + c->attributes.dexterity >= ((Creature *)current_zone->tiles[global_x][global_y].foe)->attributes.dexterity+10){
-    printf("%s", "True" );
-    return;
-    ((Creature *)current_zone->tiles[global_x][global_y].foe)->curr_health = ((Creature *)current_zone->tiles[global_x][global_y].foe)->curr_health-10;
-    if (((Creature *)current_zone->tiles[global_x][global_y].foe)->curr_health <= 0){
-      c_cleanup_creature(c,current_zone);
-      // If a creature runs out of health, mark it for deletion s.t when we next go through all the creatures that are to act, we see that it is dead and can therefore be free'd and removed from the list of active creatures
   
+ 
+ 
+ 
+ 
+  if  ( ((rand() % (21 - 1 + 1) + 1)) + c->attributes.dexterity >= ((Creature *)current_zone->tiles[global_y][global_x].foe)->attributes.dexterity){
+
+    ((Creature *)current_zone->tiles[global_y][global_x].foe)->curr_health = ((Creature *)current_zone->tiles[global_y][global_x].foe)->curr_health-10;
+    move(0,0);
+      clrtoeol();
+      mvprintw(0,0, "%s", "You damage ", , " for ");
+      move(c->position.local_y,c->position.local_x);
+    if (((Creature *)current_zone->tiles[global_y][global_x].foe)->curr_health <= 0){
+      c_cleanup_creature(c,current_zone);
+      // If a creature runs out of health, mark it for deletion s.t when we next go through all the creatures that are to act, we see that it is dead and can therefore be free'd and removed from the list of active creatures  
       c->marked_for_deletion = YES;
       
     }
   }
-  */
+  
 }

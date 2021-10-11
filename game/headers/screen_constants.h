@@ -18,5 +18,5 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define DEFAULT_MAX_Y 24
 #define DEFAULT_MIN_Y 0
 #define DEFAULT_MAX_INFOBAR_WIDTH 13
-
+#define LOG_EVENT(msg) for(int i = DEFAULT_MAX_Y; i < DEFAULT_MAX_Y+10; i++) long int msg = winchnstr(stdscr, i,2,35); move(i,2); clrtoeol(); (for int j = i; j < DEFAULT_MAX_Y+10; j++) mvprintw(j,2,msg);
 #endif

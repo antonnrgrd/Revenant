@@ -25,6 +25,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define YES 1
 #define NO 0
 
+
 #define COPY_LIMB(creature_limb, source_limb){\
   creature_limb.kind = source_limb.kind; \
   creature_limb.status = healthy; \
@@ -277,4 +278,5 @@ Creature *c_random_player(int y, int x ,Game_World *world);
 void c_compute_relative_coords(Creature *creature, Creature *player);
 
 void c_clean_cleanup_creature(Creature *c,Game_World *world);
+void inline c_retrieve_creature_name(Creature *c);
 #endif

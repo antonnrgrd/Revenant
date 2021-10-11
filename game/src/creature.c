@@ -69,6 +69,7 @@ Creature *c_generate_creature(Creature_Kind kind, int id,unsigned x,unsigned y,G
   c->standing_on = malloc(sizeof(char));
   c->standing_on[0] = world->tiles[c->position.global_y][c->position.global_x].content[0];
   world->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
+  world->tiles[c->position.global_y][c->position.global_x].foe = c;
   c->has_moved_around_vertically = 0;
   c->has_moved_around_horizontally = 0;
   c->marked_for_deletion = NO;

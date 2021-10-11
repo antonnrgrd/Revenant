@@ -79,5 +79,6 @@ Game_State *gs_create_game_state(Creature *player, Game_World *world,Linked_List
   state->player = player;
   state->current_zone = world;
   state->active_creatures = active_creatures;
+  state->action_log = newpad(DEFAULT_MAX_X, 100);
   return state;
 }
