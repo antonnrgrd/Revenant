@@ -23,11 +23,11 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "inventory.h" 
 #include "item.h"
 #include "strings.h"
-#include "placeholder.h"
+#include "gameinfo.h"
 #include "modifier.h"
 #include "generate.h"
 #include "game_state.h"
-#include "tiles.h"
+#include "gameinfo.h"
 #include <time.h>
 #include "creature_behavior.h"
 //can be removed   

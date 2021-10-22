@@ -14,7 +14,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #ifndef GENERATE
 #define GENERATE
 #include <ncurses.h>
-#include "tiles.h"
+#include "gameinfo.h"
 extern const char *alphabet;
 void g_tileset();
 Game_World *g_generate_game_world(int width, int height);

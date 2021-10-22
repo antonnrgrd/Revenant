@@ -13,7 +13,7 @@ You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "generate.h"
 #include <ncurses.h>
-#include "tiles.h"
+
 
 int gen_int(int min,int max){
   

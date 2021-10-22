@@ -13,7 +13,7 @@ You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "move_handler.h"
-#include "tiles.h"
+
 
   
 
@@ -146,12 +146,10 @@ void move_response_loot_item(int global_x, int global_y,int local_x, int local_y
 void move_response_attack_target(int global_x, int global_y,int local_x, int local_y, Creature *c,Game_World *current_zone){
 
   //((rand() % (21 - 1 + 1) + 1)) + c->attributes.dexterity >= ((Creature *)current_zone->tiles[global_y][global_x].foe)->attributes.dexterity
-   
+  
   if  (1){
 
     ((Creature *)current_zone->tiles[global_y][global_x].foe)->curr_health = ((Creature *)current_zone->tiles[global_y][global_x].foe)->curr_health-10;
-    move(0,0);
-      clrtoeol();
       UPDATE_EVENT_LOG()
       mvprintw(DEFAULT_MAX_Y,0, "%s%s%s%d%s", "You damage ", c_retrieve_creature_name((Creature *)current_zone->tiles[global_y][global_x].foe) , " for ", 10, " damage");
       move(c->position.local_y,c->position.local_x);

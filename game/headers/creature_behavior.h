@@ -2,7 +2,6 @@
 #ifndef CREATURE_BEHAVIOR
 #define CREATURE_BEHAVIOR
 #include "creature.h"
-#include "placeholder.h"
 #include <math.h>
 #include "move_handler.h"
 #define UP 0

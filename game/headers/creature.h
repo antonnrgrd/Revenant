@@ -17,9 +17,9 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "strings.h"
 #include "u_hash.h"
 #include <ncurses.h>
-#include "placeholder.h"
+#include "gameinfo.h"
 #include "creature_macros.h"
-#include "tiles.h"
+
 /* */
 
 #define YES 1

@@ -43,4 +43,6 @@ calls over and over */
   int max_y;
   Linked_List *active_creatures;
 }Game_World;
+
+int numerical_responses[256];
 #endif

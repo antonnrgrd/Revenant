@@ -3,3 +3,5 @@ NOTE, A -= 1 < B gives diffferent results than A-1 < B, find out why
 the Return statement also has an effect on whether the modification of a global variable inside a function call persists for some reason (see the pursuing target function) 
 
 If you specify a  function to be inline, the compiler will sometimes declare said function to be an undefined reference, even though it IS defined, find out why
+
+When you create a new branch and you want to  have it based on the current main/master branch use the commnad "git checkout -b BranchName" if you only use "git checkout BranchName" you create a new branch based on the current HEAD instead.

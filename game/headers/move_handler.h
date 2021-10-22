@@ -15,10 +15,9 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #ifndef MOVE_HANDLER
 #define MOVE_HANDLER
 #include <ncurses.h>
-#include "tiles.h"
+#include "gameinfo.h"
 #include "creature.h"
 #include "item.h"
-#include "tiles.h"
 #include "inventory.h"
 #include "screen_constants.h"
 #include "ingame_msg.h"
