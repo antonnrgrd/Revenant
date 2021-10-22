@@ -189,4 +189,11 @@ extern Humanoid_Definition humanoid_definitions[] = {{"Bandit", "A bandit lookin
 
 void (*creature_initializer[1])(Creature *c, int id) = { c_initialize_animal_inf};
 
-
+char *c_retrieve_creature_name(Creature *c){
+  switch(c->species){
+  case animal:
+    return animal_definitions[c->id].name;
+  default:
+    return "Undef";
+  }
+}

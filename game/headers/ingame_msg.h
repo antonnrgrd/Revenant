@@ -8,14 +8,19 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
-#ifndef SCREEN_CONSTANTS
-#define SCREEN_CONSTANTS
-#define Y 121
-#define N 110
-#define A 97
-#define S 115
-#define DEFAULT_MAX_X 80
-#define DEFAULT_MAX_Y 24
-#define DEFAULT_MIN_Y 0
-#define DEFAULT_MAX_INFOBAR_WIDTH 13
+#ifndef MSG
+#define MSG
+#include "screen_constants.h"
+#include <ncurses.h>
+#include "creature.h"
+#define MAX_MSG_LENGTH 50
+
+void msg_show_status(Creature *player);
+
+/*We only bother moving down the first 9 messages because the we intend only to have the last 10 actions available in the log so we delete the last message(the one to be "pushed" out of the "stack") */
+
+
+#define UPDATE_EVENT_LOG()move(DEFAULT_MAX_Y+10,2); clrtoeol(); for(int i = DEFAULT_MAX_Y+9; i > DEFAULT_MAX_Y; i--){ long int msg;  mvwinchnstr(stdscr, i,2,msg,MAX_MSG_LENGTH); move(i,2); clrtoeol(); mvprintw(i+1,2,msg) ;};
+
+
 #endif

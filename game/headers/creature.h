@@ -278,5 +278,5 @@ Creature *c_random_player(int y, int x ,Game_World *world);
 void c_compute_relative_coords(Creature *creature, Creature *player);
 
 void c_clean_cleanup_creature(Creature *c,Game_World *world);
-void inline c_retrieve_creature_name(Creature *c);
+ char  *c_retrieve_creature_name(Creature *c);
 #endif

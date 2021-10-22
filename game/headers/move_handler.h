@@ -21,6 +21,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "tiles.h"
 #include "inventory.h"
 #include "screen_constants.h"
+#include "ingame_msg.h"
 /*These are the dimensions that our computer screen should AT LEAST have. If it does not possess these, something is quite fishy */
 
 #define TEST(c,world, x,y, max_x, max_y) REDRAW_MAP(c,world, x,y, max_x, max_y) printf("%s" "done \n");
