@@ -41,44 +41,15 @@ void gs_print_foes(Game_State *game_state){
   }
 }
 
-void game_loop(Game_State *game_state){
-  int ch;
-  REDRAW_MAP(game_state->player,game_state->current_zone, game_state->player->position.global_x,game_state->player->position.global_y,rows, cols);
-  // gs_print_foes(game_state);
-  refresh();
-  while(1){
-    refresh(); 
-    ch = getch();
-    switch(ch){
-    case KEY_UP:
-      mv_check_move_handler(game_state->player->position.global_x, game_state->player->position.global_y-1,game_state->player->position.local_x, game_state->player->position.local_y-1, game_state->player,game_state->current_zone);
-      break;
-    case KEY_DOWN:
-      mv_check_move_handler(game_state->player->position.global_x, game_state->player->position.global_y+1,game_state->player->position.local_x, game_state->player->position.local_y+1, game_state->player,game_state->current_zone);      
-      break;
-    case KEY_LEFT:
-      mv_check_move_handler(game_state->player->position.global_x-1,game_state->player->position.global_y ,game_state->player->position.local_x-1, game_state->player->position.local_y,game_state->player,game_state->current_zone);
-      break;
-    case KEY_RIGHT:
-      mv_check_move_handler(game_state->player->position.global_x+1, game_state->player->position.global_y ,game_state->player->position.local_x+1, game_state->player->position.local_y, game_state->player,game_state->current_zone);
-      break;
-    case 'q':
-      return;
-    case S:
-      ;
-      break;
-    default:
-      break;
-    }
-        ll_iter_list_as_creature(game_state->active_creatures,game_state->current_zone);
-  }
-}
+
 
 Game_State *gs_create_game_state(Creature *player, Game_World *world,Linked_List *active_creatures){
   Game_State *state = malloc(sizeof(Game_State));
   state->player = player;
   state->current_zone = world;
   state->active_creatures = active_creatures;
-  state->action_log = newpad(DEFAULT_MAX_X, 100);
+  state->action_log = new_panel(stdscr);
+  INIT_LOG_SCREEN(state->action_log);
+  /*We don't call */
   return state;
 }

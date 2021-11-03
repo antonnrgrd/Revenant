@@ -12,15 +12,20 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define MSG
 #include "screen_constants.h"
 #include <ncurses.h>
-#include "creature.h"
+#include <panel.h>
 #define MAX_MSG_LENGTH 50
 
-void msg_show_status(Creature *player);
+#define INIT_LOG_SCREEN(log) char *ordering = malloc(sizeof(char) * 2); strcpy(ordering,"1."); for(int i = 0; i < 10; i++){mvprintw(log,1,0); ordering[0] = (i+1)+'0';} free(ordering); 
+
+void msg_show_status(PANEL *log);
 
 /*We only bother moving down the first 9 messages because the we intend only to have the last 10 actions available in the log so we delete the last message(the one to be "pushed" out of the "stack") */
 
+/*We malloc a message buffer of type (chtype * MAX_MSG_LENGTH) as mvwinchnstr needs a sufficiently big enough buffer to store the copied string to and 50 is the guessed biggest possible length we will need. chtype is a special datatype used by ncurses a type of string, if you will.*/
 
-#define UPDATE_EVENT_LOG()move(DEFAULT_MAX_Y+10,2); clrtoeol(); for(int i = DEFAULT_MAX_Y+9; i > DEFAULT_MAX_Y; i--){ long int msg;  mvwinchnstr(stdscr, i,2,msg,MAX_MSG_LENGTH); move(i,2); clrtoeol(); mvprintw(i+1,2,msg) ;};
+#define UPDATE_EVENT_LOG(log) char *msg_bfr = malloc(MAX_MSG_LENGTH * sizeof(char)); clrtoeol(); for(int i = DEFAULT_MAX_Y+9; i > DEFAULT_MAX_Y-1; i--){ mvwinnstr(stdscr, i,0,msg_bfr,MAX_MSG_LENGTH-1); move(i,0); clrtoeol(); mvprintw(i+1,0,msg_bfr); } free(msg_bfr);
 
-
+/*
+#define UPDATE_EVENT_LOG() char *msg_bfr = malloc(MAX_MSG_LENGTH * sizeof(char)); mvwinstr(stdscr,DEFAULT_MAX_Y,1,msg_bfr); mvprintw(DEFAULT_MAX_Y+1,0,msg_bfr);  free(msg_bfr);
+*/
 #endif
