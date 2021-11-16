@@ -21,7 +21,10 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "inventory.h"
 #include "screen_constants.h"
 #include "ingame_msg.h"
-/*These are the dimensions that our computer screen should AT LEAST have. If it does not possess these, something is quite fishy */
+
+
+
+typedef struct __Game_State;
 
 #define TEST(c,world, x,y, max_x, max_y) REDRAW_MAP(c,world, x,y, max_x, max_y) printf("%s" "done \n");
 #define ADD_TO_PILE(global_x,global_y, item, game_world) Entry *new_entry = malloc(sizeof(Entry)); new_entry->item_holder = item; new_entry->next_entry = game_world->tiles[global_y][global_x].entry; game_world->tiles[global_y][global_x].entry = new_entry;
@@ -41,17 +44,17 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 void gw_add_to_pile(Item_Holder *item, Entry *item_pile);
 
-void mv_check_move_handler(int global_x, int gloval_y, int local_x, int local_y, Creature *c,Game_World *current_zone);
+void mv_check_move_handler(int global_x, int gloval_y, int local_x, int local_y, Creature *c,Game_State *game_state);
 
-void (*move_response_handler[4])(int global_x, int global_y, int local_x, int local_y,Creature *c,Game_World *current_zone);
+void (*move_response_handler[4])(int global_x, int global_y, int local_x, int local_y,Creature *c,Game_State *game_state);
 
 
-void move_response_move_character(int global_x, int global_y, int local_x, int local_y,Creature *c,Game_World *current_zone);
+void move_response_move_character(int global_x, int global_y, int local_x, int local_y,Creature *c,Game_State *game_state);
 
-void move_response_halt_character(int global_x, int global_y,int local_x, int local_y, Creature *c,Game_World *current_zone);
+void move_response_halt_character(int global_x, int global_y,int local_x, int local_y, Creature *c,Game_State *game_state);
 
-void move_response_loot_item(int global_x, int global_y,int local_x, int local_y, Creature *c,Game_World *current_zone);
+void move_response_loot_item(int global_x, int global_y,int local_x, int local_y, Creature *c,Game_State *game_state);
 
-void move_response_attack_target(int global_x, int global_y,int local_x, int local_y, Creature *c,Game_World *current_zone);
+void move_response_attack_target(int global_x, int global_y,int local_x, int local_y, Creature *c,Game_State *game_state);
 
 #endif

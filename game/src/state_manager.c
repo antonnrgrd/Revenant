@@ -33,7 +33,7 @@ void game_loop(Game_State *game_state){
     case 'q':
       return;
     case 'l':
-      msg_show_status(game_state->action_log);
+      msg_show_status(game_state->logs[0]);
       break;
     case S:
       ;

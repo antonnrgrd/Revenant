@@ -21,13 +21,13 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define UPDATE_STATE(game_state) ll_iter_list_as_creature(game_state->player,game_state->current_zone,game_state->active_creatures);
 
 /* */
-//#define DISPLAY_ACTION_LOG
+
 /*The main struct that will encapsulate all information about the game currently present */
 typedef struct Game_State{
   Creature *player;
   Game_World *current_zone;
   Linked_List *active_creatures;
-  PANEL *action_log;
+  PANEL *logs[1];
 }Game_State;
 
 Game_State *gs_create_game_state(Creature *player, Game_World *world,Linked_List *active_creatures);

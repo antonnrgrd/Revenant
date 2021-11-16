@@ -48,8 +48,9 @@ Game_State *gs_create_game_state(Creature *player, Game_World *world,Linked_List
   state->player = player;
   state->current_zone = world;
   state->active_creatures = active_creatures;
-  state->action_log = new_panel(stdscr);
-  INIT_LOG_SCREEN(state->action_log);
-  /*We don't call */
+  state->logs[0] = new_panel(stdscr);
+  CLEAR_REGION(5,6,7, state->logs[0]);
+  INIT_LOG_SCREEN(state->logs[0]);
+  update_panels();
   return state;
 }

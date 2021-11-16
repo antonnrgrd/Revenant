@@ -11,12 +11,16 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "ingame_msg.h"
 #include "game_state.h"
 void msg_show_status(PANEL *log){
+  doupdate();
   show_panel(log);
+  /*
   int ch;
   while(1){
   ch = getch();
+  
   if(ch == 'q'){
     hide_panel(log);
   }
   }
+  */
 }

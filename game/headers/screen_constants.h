@@ -18,4 +18,5 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define DEFAULT_MAX_Y 24
 #define DEFAULT_MIN_Y 0
 #define DEFAULT_MAX_INFOBAR_WIDTH 13
+#define ACTIONLOG_PRINTING_POSTION 10
 #endif
