@@ -32,6 +32,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "creature_behavior.h"
 #include "state_manager.h"
 #include "ingame_msg.h"
+#include "game_state_struct.h"
 //can be removed   
 #include <sys/ioctl.h>
 int main(int argc, char *argv[]){

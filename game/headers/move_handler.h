@@ -21,18 +21,15 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "inventory.h"
 #include "screen_constants.h"
 #include "ingame_msg.h"
-
-
-
-typedef struct __Game_State;
+#include "game_state_struct.h"
 
 #define TEST(c,world, x,y, max_x, max_y) REDRAW_MAP(c,world, x,y, max_x, max_y) printf("%s" "done \n");
 #define ADD_TO_PILE(global_x,global_y, item, game_world) Entry *new_entry = malloc(sizeof(Entry)); new_entry->item_holder = item; new_entry->next_entry = game_world->tiles[global_y][global_x].entry; game_world->tiles[global_y][global_x].entry = new_entry;
 #define SPAWN_AT(creature,world, x,y)  mvprintw(c->position.local_y,c->position.local_x, c->representation);  move(c->position.local_y,c->position.local_x); /* world->tiles[c->position.global_y][c->position.global_y].content[0] = c->representation[0] */ c->position.local_x = x; c->position.local_y = y; c->position.global_x = 42; c->position.global_y = y; 
 
-#define LOOP_HEIGHT(world, x,y, max_x, max_y) for(int i = 0; i < DEFAULT_MAX_Y  && i+y < world->height;  i++)
-#define LOOP_WIDTH(world, x,y, max_x, max_y) for(int j = DEFAULT_MAX_INFOBAR_WIDTH; j < DEFAULT_MAX_X  && j+x < world->width;  j++)
-#define REDRAW_MAP(c,world, x,y, max_x, max_y)  LOOP_HEIGHT(world, x,y, max_x, max_y)  LOOP_WIDTH(world, x,y, max_x, max_y) mvprintw(i,j,(world->tiles[(c->position.global_y - (c->position.local_y))+i][(c->position.global_x - (c->position.local_x))+j].content));  mvprintw(c->position.local_y, c->position.local_x, c->representation); c->standing_on[0] = world->tiles[c->position.global_y][c->position.global_x].content[0]; world->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
+#define LOOP_HEIGHT(height, x,y, max_x, max_y) for(int i = 0; i < DEFAULT_MAX_Y  && i+y < height;  i++)
+#define LOOP_WIDTH(width, x,y, max_x, max_y) for(int j = DEFAULT_MAX_INFOBAR_WIDTH; j < DEFAULT_MAX_X  && j+x < width;  j++)
+#define REDRAW_MAP(c,current_zone, x,y, max_x, max_y)  LOOP_HEIGHT(current_zone, x,y, max_x, max_y)  LOOP_WIDTH(current_zone, x,y, max_x, max_y) mvprintw(i,j,(current_zone->tiles[(c->position.global_y - (c->position.local_y))+i][(c->position.global_x - (c->position.local_x))+j].content));  mvprintw(c->position.local_y, c->position.local_x, c->representation); c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0]; current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
 
 
 #define GET_NEXT_IN_PILE(game_world,x,y) (game_world->tiles[y][x]->entry->next_entry == NULL)? game_world->tiles[y][x]->content[0] = game_world->tiles[y][x]->entry->item_holder->item->standing_on[0]; replacement = game_world->tiles[y][x]->entry->next_entry; free(game_world->tiles[y][x]->entry); : game_world->tiles[y][x]->content[0] = game_world->tiles[y][x]->entry->next_entry->item_holder->item->standing_on[0]; replacement = game_world->tiles[y][x]->entry->next_entry; free(game_world->tiles[y][x]->entry);

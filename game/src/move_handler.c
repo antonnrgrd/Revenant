@@ -34,23 +34,23 @@ void (*move_response_handler[4])(int global_x, int global_y, int local_x, int lo
     c->position.global_y = global_y;
     if(local_y  <  0){
       c->position.local_y = DEFAULT_MAX_Y - 1;
-      REDRAW_MAP(c,current_zone, c->position.global_x,c->position.global_y,x_max, y_max);
+      REDRAW_MAP(c,game_state->current_zone, c->position.global_x,c->position.global_y,x_max, y_max);
     }
 
     else if(local_y  >  DEFAULT_MAX_Y - 1){
       c->position.local_y = 0;
-      REDRAW_MAP(c,current_zone, c->position.global_x,c->position.global_y,x_max, y_max);
+      REDRAW_MAP(c,game_state->current_zone, c->position.global_x,c->position.global_y,x_max, y_max);
       
     }
 
     else if(local_x  <  DEFAULT_MAX_INFOBAR_WIDTH){
       c->position.local_x = DEFAULT_MAX_X - 1;
-      REDRAW_MAP(c,current_zone, c->position.global_x,c->position.global_y,x_max, y_max);
+      REDRAW_MAP(c,game_state->current_zone, c->position.global_x,c->position.global_y,x_max, y_max);
     }
 
     else if(local_x  >  DEFAULT_MAX_X - 1){
       c->position.local_x = DEFAULT_MAX_INFOBAR_WIDTH;
-      REDRAW_MAP(c,current_zone, c->position.global_x,c->position.global_y,x_max, y_max);
+      REDRAW_MAP(c,game_state->current_zone, c->position.global_x,c->position.global_y,x_max, y_max);
     }
     else{
       
@@ -93,7 +93,7 @@ void move_response_loot_item(int global_x, int global_y,int local_x, int local_y
   
   move_response_move_character(global_x, global_y, local_x,local_y,c,game_state);
     
-    mvprintw(0,0, "%s%s%s%d%s", "Pickup ", game_state->current_zone->tiles[global_y][global_x].entry->item_holder->item->name, " amount: ", current_zone->tiles[global_y][global_x].entry->item_holder->amount, " ? [y/n/a/d]");  
+    mvprintw(0,0, "%s%s%s%d%s", "Pickup ", game_state->current_zone->tiles[global_y][global_x].entry->item_holder->item->name, " amount: ", game_state->current_zone->tiles[global_y][global_x].entry->item_holder->amount, " ? [y/n/a/d]");  
   
   int response;
   int result;
