@@ -12,7 +12,6 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 void game_loop(Game_State *game_state){
   int ch;
   REDRAW_MAP(game_state->player,game_state->current_zone, game_state->player->position.global_x,game_state->player->position.global_y,rows, cols);
-  // gs_print_foes(game_state);
   refresh();
   while(1){
     refresh(); 
@@ -33,7 +32,8 @@ void game_loop(Game_State *game_state){
     case 'q':
       return;
     case 'l':
-      msg_show_status(game_state->logs[0]);
+      //      printf("%s", " valid ");
+      msg_show_log(game_state->panels[EVENT_LOG]);
       break;
     case S:
       ;

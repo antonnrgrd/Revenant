@@ -15,11 +15,14 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include <panel.h>
 #define MAX_MSG_LENGTH 50
 
-/* We basically need a macro to clear a certain part of the window to */
+/* In order to make changes to a panel visible, we firstly need to call update panel to make the changes to the panels visible, then make doupdate to make said changes ivisible to the physical screen. To avoid having to call these methods all the time, we wrap them inside a macro*/
+#define UPDATE_PANEL_INFO() update_panels(); doupdate();
+
+/* We basically need a macro to clear a certain part of the window to, as ncurses doesn't appear to support this */
 #define CLEAR_REGION(start_y, end_y, num_rows, window)for(int i = start_y; i < end_y+1; i++){for(int j = i; j < num_rows+1; j++){mvprintw(window,i,j, " ");}}
 #define INIT_LOG_SCREEN(log) char *ordering = malloc(sizeof(char) * 2); strcpy(ordering,"1."); for(int i = 0; i < 10; i++){mvprintw(log,1,0); ordering[0] = (i+1)+'0';} free(ordering); 
 
-void msg_show_status(PANEL *log);
+void msg_show_log(PANEL *log);
 
 /*We only bother moving down the first 9 messages because the we intend only to have the last 10 actions available in the log so we delete the last message(the one to be "pushed" out of the "stack") */
 
