@@ -54,7 +54,7 @@ void (*move_response_handler[4])(int global_x, int global_y, int local_x, int lo
     }
     else{
       
-  mvprintw(c->position.local_y,c->position.local_x, c->standing_on);
+  mvprintw(game_state->logs[MAIN_SCREEN],c->position.local_y,c->position.local_x, c->standing_on);
   c->standing_on[0] = game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
   game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
   mvprintw(local_y,local_x,c->representation);

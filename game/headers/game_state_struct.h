@@ -28,6 +28,6 @@ typedef struct Game_State{
   Game_World *current_zone;
   Linked_List *active_creatures;
   PANEL *panels[2];
-  WINDOW *logs[2]
+  WINDOW *logs[2];
 }Game_State;
 #endif

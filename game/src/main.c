@@ -36,8 +36,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 //can be removed   
 #include <sys/ioctl.h>
 int main(int argc, char *argv[]){
-  
-  
+    
   initscr();
   start_color();    
   

@@ -15,7 +15,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "move_handler.h"
 #include "creature.h"
 
-void ll_iter_list_as_creature(Linked_List *list, Game_World *current_zone){
+void ll_iter_list_as_creature(Linked_List *list, Game_World *current_zone, WINDOW *draw_screen){
   Node *current_node = list->initial_node;
   Node *previous = current_node;
   while(current_node != NULL) {
@@ -25,7 +25,7 @@ void ll_iter_list_as_creature(Linked_List *list, Game_World *current_zone){
       current_node->value = NULL;
     }
     else{
-    cb_act( (struct Creature *)current_node->value, ((struct Creature *)current_node->value)->target, current_zone);
+      cb_act( (struct Creature *)current_node->value, ((struct Creature *)current_node->value)->target, current_zone,draw_screen);
     previous = current_node;
     current_node = current_node->next;
     }

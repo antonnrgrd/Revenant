@@ -23,7 +23,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 Game_State *gs_create_game_state(Creature *player, Game_World *world,Linked_List *active_creatures);
 
 
-void ll_iter_list_as_creature(Linked_List *list, Game_World *current_zone);
+void ll_iter_list_as_creature(Linked_List *list, Game_World *current_zone, WINDOW *draw_screen);
 
 void gs_print_foes(Game_State *game_state);
 #endif
