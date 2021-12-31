@@ -11,6 +11,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+
 #ifndef UHASH
 #define UHASH
 #include <stdio.h>
@@ -25,9 +26,9 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define DELETED 1
 #define NOT_ONE
 #define ONE
-#define GET_AVAILABLE(amount, available){amount>available? available:amount }
-/*Just a highly specialized structure that holds a reference to an item and how much weight there is to be subtracted from the player's
-carry weight and a flag that indicated if we deleted it from inventory */
+#define GET_AVAILABLE(amount, available)(amount>available? available:amount)
+//Just a highly specialized structure that holds a reference to an item and how much weight there is to be subtracted from the player's
+//carry weight and a flag that indicated if we deleted it from inventory 
 typedef struct Item_Weight{
   Item *item;
   float weight_loss;
@@ -66,4 +67,8 @@ void u_add_item(Item_Holder *item, int amount,U_Hashtable *table);
 Item_Weight u_remove_item(char *name,int amount,U_Hashtable *table);
 
 void u_print_inventory(U_Hashtable *inventory);
+
 #endif
+
+
+

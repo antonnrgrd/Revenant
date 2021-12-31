@@ -8,6 +8,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+
 #ifndef SCREEN_CONSTANTS
 #define SCREEN_CONSTANTS
 #define Y 121
@@ -20,3 +21,4 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define DEFAULT_MAX_INFOBAR_WIDTH 13
 #define ACTIONLOG_PRINTING_POSTION 10
 #endif
+

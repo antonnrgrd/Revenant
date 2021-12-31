@@ -10,7 +10,9 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Foobar.  If not, see <https://www.gnu.org/licenses/>. */
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+
+/*
 #include "dialogue.h"
 
 void point(){
@@ -95,18 +97,20 @@ void d_dialogue_loop(Dialogue_Header *header){
 
 
 
- 
+ */
 
-void d_add_dialogue(Dialogue_Header *header, int parent, int child){
-  Dialogue *p = header->chat[parent];
-  Dialogue *c = header->chat[child];
-   p->dialogue_options[p->counter]=c;
-  p->counter++;
+//void d_add_dialogue(Dialogue_Header *header, int parent, int child){
+  //Dialogue *p = header->chat[parent];
+  // Dialogue *c = header->chat[child];
+  // p->dialogue_options[p->counter]=c;
+   // p->counter++;
   //  d_display_dialogue(p);
-  /* printf("%s%d%s%d%s","Added ",header->chat[child]->id, " to ", header->chat[parent]->id, "\n");
-   Dialogue *cur = p->dialogue_options[p->counter];
-   char *str = cur->response;
-   printf("%s%s", str,"\n"); */
+  // printf("%s%d%s%d%s","Added ",header->chat[child]->id, " to ", header->chat[parent]->id, "\n");
+  // Dialogue *cur = p->dialogue_options[p->counter];
+   // char *str = cur->response;
+   // printf("%s%s", str,"\n"); */
    //   printf("%s%d%s%d%s","Added ",header->chat[child]->id, " has ",p->dialogue_options[p->counter]->id , " as response\n");
   
-}
+     //}
+
+

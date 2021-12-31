@@ -11,6 +11,8 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+
+
 #ifndef MODIFIER
 #define MODIFIER
 #include <float.h>
@@ -46,3 +48,4 @@ extern const char *mele_weapon_name_modifier[];
 
 extern const char *weapon_representations[];
 #endif
+

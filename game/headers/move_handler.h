@@ -12,6 +12,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
+/*
 #ifndef MOVE_HANDLER
 #define MOVE_HANDLER
 #include <ncurses.h>
@@ -25,7 +26,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 #define TEST(c,world, x,y, max_x, max_y) REDRAW_MAP(c,world, x,y, max_x, max_y) printf("%s" "done \n");
 #define ADD_TO_PILE(global_x,global_y, item, game_world) Entry *new_entry = malloc(sizeof(Entry)); new_entry->item_holder = item; new_entry->next_entry = game_world->tiles[global_y][global_x].entry; game_world->tiles[global_y][global_x].entry = new_entry;
-#define SPAWN_AT(creature,world, x,y)  mvprintw(c->position.local_y,c->position.local_x, c->representation);  move(c->position.local_y,c->position.local_x); /* world->tiles[c->position.global_y][c->position.global_y].content[0] = c->representation[0] */ c->position.local_x = x; c->position.local_y = y; c->position.global_x = 42; c->position.global_y = y; 
+#define SPAWN_AT(creature,world, x,y)  mvprintw(c->position.local_y,c->position.local_x, c->representation);  move(c->position.local_y,c->position.local_x);  c->position.local_x = x; c->position.local_y = y; c->position.global_x = 42; c->position.global_y = y; 
 
 #define LOOP_HEIGHT(height, x,y, max_x, max_y) for(int i = 0; i < DEFAULT_MAX_Y  && i+y < height;  i++)
 #define LOOP_WIDTH(width, x,y, max_x, max_y) for(int j = DEFAULT_MAX_INFOBAR_WIDTH; j < DEFAULT_MAX_X  && j+x < width;  j++)
@@ -55,3 +56,4 @@ void move_response_loot_item(int global_x, int global_y,int local_x, int local_y
 void move_response_attack_target(int global_x, int global_y,int local_x, int local_y, Creature *c,Game_State *game_state);
 
 #endif
+*/

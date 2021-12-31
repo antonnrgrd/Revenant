@@ -11,6 +11,8 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+
+
 #include "strings.h"
 
 char *s_create_text(char *arg){
@@ -57,3 +59,4 @@ void tester_function(char *arg){
   printf("%" PRIu64 "\n", value);
   free(string);
 }
+

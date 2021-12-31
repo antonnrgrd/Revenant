@@ -1,53 +1,50 @@
+/*
 #include "creature_behavior.h"
  
 
-void cb_pursue_target(Creature *c , Creature *target ,Game_World *current_zone){
+void cb_pursue_target(Creature *c,Game_World *current_zone, WINDOW *draw_screen){
   
 
 
-  /* We use the in-bounds pursuing strategy ONLY if the the target the creature is pursuing is within the viewing distance of the player X and Y coordinate-wise, because that in turn is both necessary and sufficient for the creature to be within-view of the player*/
-  if(WITHIN_X_BOUNDS(c,target) & WITHIN_Y_BOUNDS(c,target) == WITHIN_BOUNDS){
+  // We use the in-bounds pursuing strategy ONLY if the the target the creature is pursuing is within the viewing distance of the player X and Y coordinate-wise, because that in turn is both necessary and sufficient for the creature to be within-view of the player
+  if(WITHIN_X_BOUNDS(c,c->target) & WITHIN_Y_BOUNDS(c,c->target) == WITHIN_BOUNDS){
     c->target_is_within_bound = WITHIN_BOUND;
   }
   else{
-    c->target_is_within_bound = OUT_OF_BOUND;
-    
-     
-    
-    
+    c->target_is_within_bound = OUT_OF_BOUND;    
   }
   if(c->target_is_within_bound == WITHIN_BOUND){
-    cb_pursue_target_inb(c,target,current_zone);
+    cb_pursue_target_inb(c,current_zone,draw_screen);
   }
 
   else{
-    cb_pursure_target_oob(c,target,current_zone);
+    cb_pursure_target_oob(c,current_zone,draw_screen);
   }
    }
 
   
 
-void cb_attack_target(Creature *c, Creature *target ,Game_World *current_zone){
-  
-}
-
-void cb_idle(Creature *c, Creature *target ,Game_World *current_zone){
+void cb_attack_target(Creature *c,Game_World *current_zone, WINDOW *draw_screen){
   ;
 }
 
-/*Note to self, if i ever in the future have an error with the creatures, it's because i'm a fool and didn't realize you specify coordinates y,x, not x,y and managed to change this in a couple of places. I went through the code and changed it back to the correct order, but i might have missed a few places. subnote: simplify statemens by grouping them toegther in a macro at some point */
-void cb_roam(Creature *c, Creature *target ,Game_World *current_zone){
+void cb_idle(Creature *c,Game_World *current_zone, WINDOW *draw_screen){
+  ;
+}
+
+//Note to self, if i ever in the future have an error with the creatures, it's because i'm a fool and didn't realize you specify coordinates y,x, not x,y and managed to change this in a couple of places. I went through the code and changed it back to the correct order, but i might have missed a few places. subnote: simplify statemens by grouping them toegther in a macro at some point 
+void cb_roam(Creature *c,Game_World *current_zone, WINDOW *draw_screen){
   
   int direction =  (rand() % (5 -  0 + 1) + 1);
-  /* Important: we evaluate if the change in position exceeds the boundary of the game map, THEN check if the tile we try to move to is validto avoid the possibility of accessing an offset outside of the malloc'ed area to avoid segmentation faults. THis is due to logical AND short circuiting (if the first statement is false, don't evluate the second) */
+  // Important: we evaluate if the change in position exceeds the boundary of the game map, THEN check if the tile we try to move to is validto avoid the possibility of accessing an offset outside of the malloc'ed area to avoid segmentation faults. THis is due to logical AND short circuiting (if the first statement is false, don't evluate the second) 
    if(direction == UP){
      if(c->position.global_y+1 < current_zone->height && numerical_responses[current_zone->tiles[c->position.global_y+1][c->position.global_x].content[0]] != 1 ){
        current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->standing_on[0];
        c->position.global_y++;
        c->position.local_y++;
-       if(abs(c->position.global_x - target->position.global_x) <= DEFAULT_MAX_Y -1){	 
-	 mvprintw(c->position.local_y,c->position.local_x,c->standing_on);
-	 mvprintw(c->position.local_y,c->position.local_x,c->representation);
+       if(abs(c->position.global_x - c->target->position.global_x) <= DEFAULT_MAX_Y -1){	 
+	 mvprintw(draw_screen, c->position.local_y,c->position.local_x,c->standing_on);
+	 mvprintw(draw_screen, c->position.local_y,c->position.local_x,c->representation);
     }
        c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
        current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
@@ -59,12 +56,12 @@ void cb_roam(Creature *c, Creature *target ,Game_World *current_zone){
    if(direction == DOWN){
      if( c->position.global_y-1 > -1 && numerical_responses[current_zone->tiles[c->position.global_y-1][c->position.global_x].content[0]] != 1){
        current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->standing_on[0];
-       mvprintw(c->position.local_y,c->position.local_x,c->standing_on);
+       mvprintw(draw_screen, c->position.local_y,c->position.local_x,c->standing_on);
        c->position.global_y--;
        c->position.local_y--;
-       if(abs(c->position.global_x - target->position.global_x) <= DEFAULT_MAX_Y -1){
-	  mvprintw(c->position.local_y,c->position.local_x,c->standing_on);	  
-	  mvprintw(c->position.local_y,c->position.local_x,c->representation);
+       if(abs(c->position.global_x - c->target->position.global_x) <= DEFAULT_MAX_Y -1){
+	  mvprintw(draw_screen, c->position.local_y,c->position.local_x,c->standing_on);	  
+	  mvprintw(draw_screen, c->position.local_y,c->position.local_x,c->representation);
     }
        c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
        current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
@@ -79,12 +76,12 @@ void cb_roam(Creature *c, Creature *target ,Game_World *current_zone){
 
    if(direction == LEFT){
      if( c->position.global_x-1 > -1 && numerical_responses[current_zone->tiles[c->position.global_y][c->position.global_x-1].content[0]] != 1){
-       mvprintw(c->position.local_y,c->position.local_x,c->standing_on);
+       mvprintw(draw_screen, c->position.local_y,c->position.local_x,c->standing_on);
        current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->standing_on[0];
        c->position.global_x--;
        c->position.local_x--;
-       if(abs(c->position.global_x - target->position.global_x) <= DEFAULT_MAX_X -1){
-	  mvprintw(c->position.local_y,c->position.local_x,c->representation);
+       if(abs(c->position.global_x - c->target->position.global_x) <= DEFAULT_MAX_X -1){
+	  mvprintw(draw_screen, c->position.local_y,c->position.local_x,c->representation);
     }
        c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
        current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
@@ -99,12 +96,12 @@ void cb_roam(Creature *c, Creature *target ,Game_World *current_zone){
    
    if(direction == RIGHT){
      if(c->position.global_x+1 < current_zone->width && numerical_responses[current_zone->tiles[c->position.global_y][c->position.global_x+1].content[0]] != 1){
-       mvprintw(c->position.local_y,c->position.local_x,c->standing_on);
+       mvprintw(draw_screen, c->position.local_y,c->position.local_x,c->standing_on);
        current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->standing_on[0];
        c->position.global_x++;
        c->position.local_x++;
-       if(abs(c->position.global_x - target->position.global_x) <= DEFAULT_MAX_X -1){	  
-	 mvprintw(c->position.local_y,c->position.local_x,c->representation);
+       if(abs(c->position.global_x - c->target->position.global_x) <= DEFAULT_MAX_X -1){	  
+	 mvprintw(draw_screen, c->position.local_y,c->position.local_x,c->representation);
        }
        c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
        current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
@@ -116,19 +113,19 @@ void cb_roam(Creature *c, Creature *target ,Game_World *current_zone){
 
 
 
-void cb_flee_target(Creature *c, Creature *target ,Game_World *current_zone){
+void cb_flee_target(Creature *c,Game_World *current_zone, WINDOW *draw_screen){
 
 }
 
-/*Function to have a creature pursue a target when it is out of the player's view boundary. We don't make the usual check to see if it is a passable tile the creature is trying to step on. We choose not to, because otherwise, we would end up having to do arbitrarily complex checks to move around objects, detcet if the creature is stuck and if it is stuck, get unstuck, etc. concrete cases will be written in the manual at some point*/
+//Function to have a creature pursue a target when it is out of the player's view boundary. We don't make the usual check to see if it is a passable tile the creature is trying to step on. We choose not to, because otherwise, we would end up having to do arbitrarily complex checks to move around objects, detcet if the creature is stuck and if it is stuck, get unstuck, etc. concrete cases will be written in the manual at some point
 
-void cb_pursure_target_oob(Creature *c, Creature *target ,Game_World *current_zone){
-  /* In order to pursue a target, we effectively try out all moves the creature can take to move closer to the current target. Provided the
- distance becomes smaller and it is a valid tile to step on, make a move */
+void cb_pursure_target_oob(Creature *c, Game_World *current_zone, WINDOW *draw_screen){
+  // In order to pursue a target, we effectively try out all moves the creature can take to move closer to the current target. Provided the
+ distance becomes smaller and it is a valid tile to step on, make a move 
   
   current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->standing_on[0];
-  /* moving up */
-  if( (abs(c->position.global_y+1 - target->position.global_y ) < abs(c->position.global_x - target->position.global_x ))){
+  // moving up 
+  if( (abs(c->position.global_y+1 - c->target->position.global_y ) < abs(c->position.global_x - c->target->position.global_x ))){
     c->position.global_y +=1;
     c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
     current_zone->tiles[c->position.global_y-1][c->position.global_x].foe = NULL;
@@ -138,13 +135,13 @@ void cb_pursure_target_oob(Creature *c, Creature *target ,Game_World *current_zo
     else{
       c->position.local_y += 1;
      }
-    /*If we have made a move, we jump to the label in the function where we assert if the creature is now within the player's view because otherwise, because how we check if a move affects the distance between creature and target, a move that undoes the movement just made might now become valid. e.g making a move down might making a move up valid, undoing the move down.
-     */
+    //If we have made a move, we jump to the label in the function where we assert if the creature is now within the player's view because otherwise, because how we check if a move affects the distance between creature and target, a move that undoes the movement just made might now become valid. e.g making a move down might making a move up valid, undoing the move down.
+     
     goto CHECK_WITHIN_BOUNDS;
     }
 
   // Moving down 
-  if( (abs(c->position.global_y-1 - target->position.global_y ) < abs(c->position.global_x - target->position.global_x ))){
+  if( (abs(c->position.global_y-1 - c->target->position.global_y ) < abs(c->position.global_x - c->target->position.global_x ))){
     c->position.global_y -= 1;
     c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
     current_zone->tiles[c->position.global_y+1][c->position.global_x].foe = NULL;
@@ -156,8 +153,8 @@ void cb_pursure_target_oob(Creature *c, Creature *target ,Game_World *current_zo
     }
     goto CHECK_WITHIN_BOUNDS;
   }
-    /* move right */
-  if( (abs(c->position.global_x+1 - target->position.global_x ) < abs(c->position.global_x - target->position.global_x ))){
+    // move right 
+  if( (abs(c->position.global_x+1 - c->target->position.global_x ) < abs(c->position.global_x - c->target->position.global_x ))){
 	c->position.global_x += 1;
 	c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
 	current_zone->tiles[c->position.global_y][c->position.global_x-1].foe = NULL;
@@ -169,9 +166,9 @@ void cb_pursure_target_oob(Creature *c, Creature *target ,Game_World *current_zo
      }
     goto CHECK_WITHIN_BOUNDS;
   }
-    /* move left */
+// move left 
 
-  if( (abs(c->position.global_x-1 -target->position.global_x ) < abs( c->position.global_x - target->position.global_x ))){
+  if( (abs(c->position.global_x-1 -c->target->position.global_x ) < abs( c->position.global_x - c->target->position.global_x ))){
 
     c->position.global_x -= 1;
     c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
@@ -192,32 +189,32 @@ void cb_pursure_target_oob(Creature *c, Creature *target ,Game_World *current_zo
   c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
   current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
   current_zone->tiles[c->position.global_y][c->position.global_x].foe = c;
-  /*Finally, if the creature is now within the view distance of the player, draw it */
+  //Finally, if the creature is now within the view distance of the player, draw it 
   
-  if(WITHIN_X_BOUNDS(c,target) & WITHIN_Y_BOUNDS(c,target) == WITHIN_BOUNDS){
+  if(WITHIN_X_BOUNDS(c,c->target) & WITHIN_Y_BOUNDS(c,c->target) == WITHIN_BOUNDS){
     
-    mvprintw(c->position.local_y,c->position.local_x,c->representation);
+    mvprintw(draw_screen, c->position.local_y,c->position.local_x,c->representation);
     }
 }
 
 
-      /*mimmic pursuing behavior when the creature is within the players POW. Now, we HAVE to check if the tile it moves to is valid, because here the creature will be visible to the player */
-void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zone){
+      //mimmic pursuing behavior when the creature is within the players POW. Now, we HAVE to check if the tile it moves to is valid, because here the creature will be visible to the player 
+void cb_pursue_target_inb(Creature *c,Game_World *current_zone, WINDOW *draw_screen){
  
   int direction;
   
-  /* We check both that we get closer to the target AND that the distance is greater than 1, because a distance of only one implies we are standing right next to the target */
+  // We check both that we get closer to the target AND that the distance is greater than 1, because a distance of only one implies we are standing right next to the target
   
   //Move Down
-  if( (abs(c->position.global_y+1 - target->position.global_y )) < (abs(c->position.global_y - target->position.global_y)) && (abs(c->position.global_y - target->position.global_y)) > 1 ) {
-    /*We don't move horizontally/vertically if we previously have made a move along said axis, in an attempt to move around an object, because otherwise, moving along said axis might undo the move we just made in an attempt to navigate around an obstacle, e.g go back one tile to where we initally got stuck*/
+  if( (abs(c->position.global_y+1 - c->target->position.global_y )) < (abs(c->position.global_y - c->target->position.global_y)) && (abs(c->position.global_y - c->target->position.global_y)) > 1 ) {
+    // We don't move horizontally/vertically if we previously have made a move along said axis, in an attempt to move around an object, because otherwise, moving along said axis might undo the move we just made in an attempt to navigate around an obstacle, e.g go back one tile to where we initally got stuck
     if(c->has_moved_around_vertically != 1){
     direction = DOWN;
     if(numerical_responses[current_zone->tiles[c->position.global_y+1][c->position.global_x].content[0]] != 1){
-     /* If we have successfully made a move along any axis, we un-register that we made a move along the opposite axis, because the fact that we moved along said axis, implies that we are no longer stuck and thus no longer need to be aware of moving back to the inital position where we got stuck*/  
+     // If we have successfully made a move along any axis, we un-register that we made a move along the opposite axis, because the fact that we moved along said axis, implies that we are no longer stuck and thus no longer need to be aware of moving back to the inital position where we got stuck
     c->has_moved_around_horizontally = 0;
     current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->standing_on[0];
-    mvprintw(c->position.local_y,c->position.local_x,c->standing_on);
+    mvprintw(draw_screen, c->position.local_y,c->position.local_x,c->standing_on);
     c->position.global_y +=1;
     c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
     current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
@@ -229,7 +226,7 @@ void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zon
     else{
       c->position.local_y += 1;
      }
-    mvprintw(c->position.local_y,c->position.local_x,c->representation);
+    mvprintw(draw_screen, c->position.local_y,c->position.local_x,c->representation);
     return;
     }
     }
@@ -237,13 +234,13 @@ void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zon
 }
   
   //Moving UP 
-    if( (abs(c->position.global_y-1 - target->position.global_y )) < (abs(c->position.global_y - target->position.global_y)) && (abs(c->position.global_y - target->position.global_y)) > 1 ){
+    if( (abs(c->position.global_y-1 - c->target->position.global_y )) < (abs(c->position.global_y - c->target->position.global_y)) && (abs(c->position.global_y - c->target->position.global_y)) > 1 ){
       if(c->has_moved_around_vertically != 1){
     direction = UP;
     if(numerical_responses[current_zone->tiles[c->position.global_y-1][c->position.global_x].content[0]] != 1){
       c->has_moved_around_horizontally = 0;
       current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->standing_on[0];
-      mvprintw(c->position.local_y,c->position.local_x,c->standing_on);
+      mvprintw(draw_screen, c->position.local_y,c->position.local_x,c->standing_on);
       c->position.global_y -=1;
       c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
       current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
@@ -255,7 +252,7 @@ void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zon
     else{
       c->position.local_y -= 1;
     }
-    mvprintw(c->position.local_y,c->position.local_x,c->representation);
+    mvprintw(draw_screen, c->position.local_y,c->position.local_x,c->representation);
      return;
     }
       }
@@ -266,14 +263,14 @@ void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zon
   //move right 
   
   
-    if( (abs(c->position.global_x+1 - target->position.global_x )) < (abs(c->position.global_x - target->position.global_x )) && (abs(c->position.global_x - target->position.global_x)) > 1 ){
+    if( (abs(c->position.global_x+1 - c->target->position.global_x )) < (abs(c->position.global_x - c->target->position.global_x )) && (abs(c->position.global_x - c->target->position.global_x)) > 1 ){
       if(c->has_moved_around_horizontally != 1){
     direction = RIGHT;
     
     if(numerical_responses[current_zone->tiles[c->position.global_y][c->position.global_x+1].content[0]] != 1){
       c->has_moved_around_vertically = 0;
       current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->standing_on[0];
-       mvprintw(c->position.local_y,c->position.local_x,c->standing_on);
+       mvprintw(draw_screen, c->position.local_y,c->position.local_x,c->standing_on);
 	c->position.global_x +=1;
 	c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
 	current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
@@ -285,7 +282,7 @@ void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zon
     else{
       c->position.local_x += 1;
      }
-    mvprintw(c->position.local_y,c->position.local_x,c->representation);
+    mvprintw(draw_screen, c->position.local_y,c->position.local_x,c->representation);
      return;
     }
 
@@ -293,13 +290,13 @@ void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zon
   }
   // move left 
   
-  if( (abs(c->position.global_x-1 - target->position.global_x )) < (abs(c->position.global_x - target->position.global_x )) && (abs(c->position.global_x - target->position.global_x) > 1)){
+  if( (abs(c->position.global_x-1 - c->target->position.global_x )) < (abs(c->position.global_x - c->target->position.global_x )) && (abs(c->position.global_x - c->target->position.global_x) > 1)){
     if(c->has_moved_around_horizontally != 1){
     direction = LEFT;
     if(numerical_responses[current_zone->tiles[c->position.global_y][c->position.global_x-1].content[0]] != 1){
       c->has_moved_around_vertically = 0;
       current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->standing_on[0];
-       mvprintw(c->position.local_y,c->position.local_x,c->standing_on);
+       mvprintw(draw_screen, c->position.local_y,c->position.local_x,c->standing_on);
     c->position.global_x -=1;
     c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
     current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
@@ -312,7 +309,7 @@ void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zon
     else{
       c->position.local_x -= 1;
     }
-    mvprintw(c->position.local_y,c->position.local_x,c->representation);
+    mvprintw(draw_screen, c->position.local_y,c->position.local_x,c->representation);
     return;
  }
     }
@@ -321,7 +318,7 @@ void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zon
   // If we failed to make a move that directly makes progress towards the target it is pursuing, find a "move" that helps us navigate around the obstacle. For the sake of computational effeciency, we do so by checking a max range of 10 tiles (5 tiles either way around the obstacle tile) that could potentially provide a path around. If moving either way aroudn the obstacle eventually provides a clear path, just take it.This very basic scheme is for the sake of simplicity.
   
   if(direction == LEFT){
-    /*Initalize the values using the search boundary macro OUTSIDE of the for loop, rather than inside it. I suspect the macro is continously    evaluated when used to initalize the value inside of it and by all acounts, it seems to work.*/
+    //Initalize the values using the search boundary macro OUTSIDE of the for loop, rather than inside it. I suspect the macro is continously    evaluated when used to initalize the value inside of it and by all acounts, it seems to work.
     int start_search_boundary = MAX_Y_SEARCH_BOUNDARY(c, current_zone, 1);
     int end_search_boundary = MAX_Y_SEARCH_BOUNDARY(c, current_zone, 5);
     for(int j = start_search_boundary; j <= end_search_boundary; j++){
@@ -330,8 +327,8 @@ void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zon
 	    if(numerical_responses[current_zone->tiles[c->position.global_y+j][c->position.global_x-1].content[0]] != 1 ){
 	    c->has_moved_around_vertically = 1;
 	  current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->standing_on[0];
-	  mvprintw(c->position.local_y,c->position.local_x,c->standing_on);
-	  //mvprintw(c->position.local_y+j, c->position.local_x-1, "X");
+	  mvprintw(draw_screen, c->position.local_y,c->position.local_x,c->standing_on);
+	  //mvprintw(draw_screen, c->position.local_y+j, c->position.local_x-1, "X");
 	  c->position.global_y++;
 	  c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
 	  current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
@@ -344,7 +341,7 @@ void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zon
 	  else{
 	    //printf("%s%d½%d%s", "xy values:", c->position.local_y, c->position.local_x, " " );
 	    c->position.local_y++;
-	    mvprintw(c->position.local_y,c->position.local_x,c->representation);
+	    mvprintw(draw_screen, c->position.local_y,c->position.local_x,c->representation);
 	    //	    printf("%s%s", " What's in front of the npc: ", current_zone->tiles[c->position.global_y][c->position.global_x-1]);
 	    // printf("%s", "this was called");
 	    return;
@@ -363,12 +360,12 @@ void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zon
     end_search_boundary = MIN_Y_SEARCH_BOUNDARY(c, current_zone, 5);
       
      for(int j = start_search_boundary; j <= end_search_boundary; j++){
-       //mvprintw(c->position.local_y-j, c->position.local_x, "X");
+       //mvprintw(draw_screen, c->position.local_y-j, c->position.local_x, "X");
 	  if(numerical_responses[current_zone->tiles[c->position.global_y-j][c->position.global_x].content[0]] != 1){
 	    if(numerical_responses[current_zone->tiles[c->position.global_y-j][c->position.global_x-1].content[0]] != 1){
 	    c->has_moved_around_vertically = 1;
 	    current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->standing_on[0];
-	  mvprintw(c->position.local_y,c->position.local_x,c->standing_on);
+	  mvprintw(draw_screen, c->position.local_y,c->position.local_x,c->standing_on);
 	  c->position.global_y--;
 	  c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
 	  current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
@@ -380,7 +377,7 @@ void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zon
 	  }
 	  else{
 	    c->position.local_y--;
-	    mvprintw(c->position.local_y,c->position.local_x,c->representation);
+	    mvprintw(draw_screen, c->position.local_y,c->position.local_x,c->representation);
 	    return;
 	    // break;
 	  }
@@ -406,8 +403,8 @@ void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zon
 	    current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->standing_on[0];
 	    
 	    //printf("%s", "valid DOWN found " );
-	    //  mvprintw(c->position.local_y+j, c->position.local_x+1, "X");
-	  mvprintw(c->position.local_y,c->position.local_x,c->standing_on);
+	    //  mvprintw(draw_screen, c->position.local_y+j, c->position.local_x+1, "X");
+	  mvprintw(draw_screen, c->position.local_y,c->position.local_x,c->standing_on);
 	  
 	  c->position.global_y++;
 	  c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
@@ -422,7 +419,7 @@ void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zon
 	  else{
 	    //printf("%s", " and we can move nromally" );
 	    c->position.local_y++;
-	    mvprintw(c->position.local_y,c->position.local_x,c->representation);
+	    mvprintw(draw_screen, c->position.local_y,c->position.local_x,c->representation);
 	    return;
 	    //break;
 	  }
@@ -443,8 +440,8 @@ void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zon
 	    c->has_moved_around_vertically = 1;
 	    current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->standing_on[0];
 	    //printf("%s", "valid  UP found " );
-	    // mvprintw(c->position.local_y-j, c->position.local_x+1, "X");
-	  mvprintw(c->position.local_y,c->position.local_x,c->standing_on);
+	    // mvprintw(draw_screen, c->position.local_y-j, c->position.local_x+1, "X");
+	  mvprintw(draw_screen, c->position.local_y,c->position.local_x,c->standing_on);
 	  c->position.global_y--;
 	  c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
 	  current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
@@ -456,7 +453,7 @@ void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zon
 	  }
 	  else{
 	    c->position.local_y--;
-	    mvprintw(c->position.local_y,c->position.local_x,c->representation);
+	    mvprintw(draw_screen, c->position.local_y,c->position.local_x,c->representation);
 	    return;
 	  }
 	  
@@ -475,14 +472,14 @@ void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zon
       int start_search_boundary = MIN_X_SEARCH_BOUNDARY(c, current_zone, 1);
       int end_search_boundary = MIN_X_SEARCH_BOUNDARY(c, current_zone, 5);
       for(int j = start_search_boundary; j <= end_search_boundary; j++){
-	//mvprintw(c->position.local_y, c->position.local_x-j, "X");
+	//mvprintw(draw_screen, c->position.local_y, c->position.local_x-j, "X");
 	//printf("%s%d", "offset: ", j);
 	if(numerical_responses[current_zone->tiles[c->position.global_y][c->position.global_x - j].content[0]] != 1 ){
 	  if(numerical_responses[current_zone->tiles[c->position.global_y - 1][c->position.global_x - j].content[0]] != 1){
 	  c->has_moved_around_horizontally = 1;
 	  current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->standing_on[0];
 	
-	  mvprintw(c->position.local_y,c->position.local_x,c->standing_on);
+	  mvprintw(draw_screen, c->position.local_y,c->position.local_x,c->standing_on);
 	  c->position.global_x--;
 	  c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
 	  current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
@@ -498,7 +495,7 @@ void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zon
 	    //    printf("%s%d"," x before : ",c->position.local_x );
 	    c->position.local_x--;
 	    //  printf("%s%d"," x after : ",c->position.local_x );
-	     mvprintw(c->position.local_y,c->position.local_x,c->representation);
+	     mvprintw(draw_screen, c->position.local_y,c->position.local_x,c->representation);
 	     return;
 	  }
 	}
@@ -510,14 +507,14 @@ void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zon
       start_search_boundary = MAX_X_SEARCH_BOUNDARY(c, current_zone, 1);
       end_search_boundary = MAX_X_SEARCH_BOUNDARY(c, current_zone, 5);
       for(int j = start_search_boundary; j <= end_search_boundary; j++){
-	//mvprintw(c->position.local_y, c->position.local_x+j, "X");
+	//mvprintw(draw_screen, c->position.local_y, c->position.local_x+j, "X");
 	if(numerical_responses[current_zone->tiles[c->position.global_y][c->position.global_x + j].content[0]] != 1){
 	  if(numerical_responses[current_zone->tiles[c->position.global_y - 1][c->position.global_x + j].content[0]] != 1 ){
 	  current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->standing_on[0];
 	  c->has_moved_around_horizontally = 1;
 	  //printf("%s", "right ");
-	  // mvprintw(c->position.local_y-1, c->position.local_x+j, "X");
-	  mvprintw(c->position.local_y,c->position.local_x,c->standing_on);
+	  // mvprintw(draw_screen, c->position.local_y-1, c->position.local_x+j, "X");
+	  mvprintw(draw_screen, c->position.local_y,c->position.local_x,c->standing_on);
 	  c->position.global_x++;
 	  c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
 	  current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
@@ -530,7 +527,7 @@ void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zon
 	  }
 	  else{
 	    c->position.local_x++;
-	    mvprintw(c->position.local_y,c->position.local_x,c->representation);
+	    mvprintw(draw_screen, c->position.local_y,c->position.local_x,c->representation);
 	    return;
 	  }
 	  
@@ -546,13 +543,13 @@ void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zon
       int start_search_boundary = MIN_X_SEARCH_BOUNDARY(c, current_zone, 1);
       int end_search_boundary = MIN_X_SEARCH_BOUNDARY(c, current_zone, 5);
 	for(int j = start_search_boundary; j <= end_search_boundary; j++){
-	  // mvprintw(c->position.local_y, c->position.local_x-j, "X");
+	  // mvprintw(draw_screen, c->position.local_y, c->position.local_x-j, "X");
 	if(numerical_responses[current_zone->tiles[c->position.global_y][c->position.global_x - j].content[0]] != 1 ){
 	  if(numerical_responses[current_zone->tiles[c->position.global_y + 1][c->position.global_x - j].content[0]] != 1){
 	  c->has_moved_around_horizontally = 1;
 	  current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->standing_on[0];
-	  // mvprintw(c->position.local_y+1, c->position.local_x-j, "X");
-	  mvprintw(c->position.local_y,c->position.local_x,c->standing_on);
+	  // mvprintw(draw_screen, c->position.local_y+1, c->position.local_x-j, "X");
+	  mvprintw(draw_screen, c->position.local_y,c->position.local_x,c->standing_on);
 	  c->position.global_x--;
 	  c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
 	  current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
@@ -564,7 +561,7 @@ void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zon
 	  }
 	  else{
 	    c->position.local_x--;
-	    mvprintw(c->position.local_y,c->position.local_x,c->representation);
+	    mvprintw(draw_screen, c->position.local_y,c->position.local_x,c->representation);
 	    return;
 	  }
 	  //  return;
@@ -577,13 +574,13 @@ void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zon
       start_search_boundary = MAX_X_SEARCH_BOUNDARY(c, current_zone, 1);
       end_search_boundary = MAX_X_SEARCH_BOUNDARY(c, current_zone, 5);
       for(int j = start_search_boundary; j <= end_search_boundary; j++){
-	//	mvprintw(c->position.local_y, c->position.local_x+j, "X");
+	//	mvprintw(draw_screen, c->position.local_y, c->position.local_x+j, "X");
 	if(numerical_responses[current_zone->tiles[c->position.global_y][c->position.global_x + j].content[0]] != 1 ){
 	  if( numerical_responses[current_zone->tiles[c->position.global_y + 1][c->position.global_x + j].content[0]] != 1){
 	  c->has_moved_around_horizontally = 1;
 	  current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->standing_on[0];
-	  //  mvprintw(c->position.local_y+1, c->position.local_x-j, "X");
-	  mvprintw(c->position.local_y,c->position.local_x,c->standing_on);
+	  //  mvprintw(draw_screen, c->position.local_y+1, c->position.local_x-j, "X");
+	  mvprintw(draw_screen, c->position.local_y,c->position.local_x,c->standing_on);
 	  c->position.global_x++;
 	  c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
 	  current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
@@ -595,7 +592,7 @@ void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zon
 	  }
 	  else{
 	    c->position.local_x++;
-	    mvprintw(c->position.local_y,c->position.local_x,c->representation);
+	    mvprintw(draw_screen, c->position.local_y,c->position.local_x,c->representation);
 	    return;
 	  }
 
@@ -612,13 +609,13 @@ void cb_pursue_target_inb(Creature *c, Creature *target ,Game_World *current_zon
 }
 
 
-void cb_act(Creature *c , Creature *target ,Game_World *current_zone){
-  (*creature_behavior_handler[c->behavior])(c,target, current_zone);
+void cb_act(Creature *c,Game_World *current_zone, WINDOW *draw_screen){
+  (*creature_behavior_handler[c->behavior])(c,current_zone,draw_screen);
 }
 
-void (*creature_behavior_handler[4])(Creature *c , Creature *target ,Game_World *current_zone) = {cb_idle, cb_roam,cb_pursue_target, cb_flee_target};
+void (*creature_behavior_handler[4])(Creature *c,Game_World *current_zone, WINDOW *draw_screen) = {cb_idle, cb_roam,cb_pursue_target, cb_flee_target};
 	
   
-  
+*/  
 
 

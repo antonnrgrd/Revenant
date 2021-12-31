@@ -12,13 +12,14 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
+/*
 #include "move_handler.h"
 
 
   
 
 void mv_check_move_handler(int global_x, int global_y, int local_x, int local_y, Creature *c,Game_State *game_state){
-  /* Before we check the response value from the character, we first need to be assert that position we are trying to make the move to is within bounds of the current zone's dimensionality to avoid invalid index lookups in the game world's tiles (whether negative or too large index values)  */
+  // Before we check the response value from the character, we first need to be assert that position we are trying to make the move to is within bounds of the current zone's dimensionality to avoid invalid index lookups in the game world's tiles (whether negative or too large index values)  
   if( (global_x < game_state->current_zone->width  && global_y < game_state->current_zone->height) && (global_x > -1  && global_y > -1 )  ){
     int response = numerical_responses[game_state->current_zone->tiles[global_y][global_x].content[0]];
      (*move_response_handler[response])(global_x,global_y,local_x,local_y,c,game_state);
@@ -78,8 +79,6 @@ void move_response_halt_character(int global_x, int global_y,int local_x, int lo
   
 
 void move_response_loot_item(int global_x, int global_y,int local_x, int local_y, Creature *c,Game_State *game_state){
-
-  /*Bug is somewhere in these lines before we ask for user input. Removing either the stndard move operation OR the print seems to fix it */
 
   c->position.global_x = global_x;
   c->position.global_y = global_y;
@@ -164,3 +163,4 @@ void move_response_attack_target(int global_x, int global_y,int local_x, int loc
   
 } 
 
+*/

@@ -12,6 +12,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
+/*
 #ifndef INVENTORY
 #define SUCCESS_ADDITION 0
 #define WEIGHT_LIMIT_EXCEEDED 1
@@ -26,3 +27,4 @@ void inv_access_inv();
 int inv_add_item(Item_Holder *item_h, U_Hashtable *inventory, Creature *player);
 
 #endif
+*/

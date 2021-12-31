@@ -8,6 +8,8 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+
+
 #ifndef LINKED_LIST
 #define LINKED_LIST
 #include <stdlib.h>
@@ -26,3 +28,4 @@ typedef struct Linked_List{
 Linked_List *ll_initialize_linked_list();
 
 #endif
+

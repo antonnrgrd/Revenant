@@ -11,9 +11,13 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+
+
 #ifndef ITEM
 #define ITEM
-#include "dialogue.h"
+
+#include <stdlib.h>
+#include "strings.h"
 #include "modifier.h"
 #include <inttypes.h>
 #include <stdint.h>
@@ -104,9 +108,9 @@ Reagent *i_gen_reagent(Variant variant,float weight,uint32_t value,Reagent_Kind 
 
 Weapon *i_gen_mele_weapon(Quality_Level q,Variant variant,Material material,Wkind kind,uint16_t skill,Mele_Weapon_Kind k);
 Armor *i_gen_armor();
-//Consumable *i_create_consumable(char *name, char *description);
+Consumable *i_create_consumable(char *name, char *description);
 
-//Item *i_create_item(char *name, char *description,Item_Kind kind);
+Item *i_create_item(char *name, char *description,Item_Kind kind);
 
 char *i_mele_weapon_name(Quality_Level q, Material material, Variant v, Mele_Weapon_Kind kind);
 char *i_consumable_name();
@@ -129,7 +133,7 @@ void i_free_reagent(Item *i);
 void i_free_consumable(Item *i);
 void i_free_equippable(Item *i);
 Item *i_copy_item(Item *i);
-void (*free_item_handler[5])();
+
 
 Item *i_copy_item(Item *i);
 
@@ -140,5 +144,9 @@ void i_copy_consumable(Item *i, Item *j);
 void i_copy_equippable(Item *i, Item *j);
 void i_copy_reagent(Item *i, Item *j);
 
-void (*copy_item_handler[5])();
+void (*copy_item_handler[5])(Item *i);
+void (*free_item_handler[5])(Item *i);
+
 #endif
+
+

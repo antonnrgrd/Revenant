@@ -11,10 +11,9 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+/*
 #include "u_hash.h"
-#include "strings.h"
-#include "inventory.h"
-#include <stdlib.h>
+
 unsigned long long u_hash(char *name,U_Hashtable *table){
   return((table->a * s_uint_from_string(name) + table->b) % BFP) % table->size;
 }
@@ -33,9 +32,9 @@ void u_add_item(Item_Holder *item, int amount,U_Hashtable *table){
   unsigned long long index = u_hash(item->item->name, table);
   //  printf("%s%lld%s", "Index is: ", index, "\n");
   //  printf("%s%s%s", "Item we are adding is: ", item->item->name, "\n");
-  /*Item already present in inventory 
-Maybe delete item at this point, maybe not since we might not use it after adding to inventory??
-*/
+  //Item already present in inventory 
+//Maybe delete item at this point, maybe not since we might not use it after adding to inventory??
+
   if(table->entries[index] != NULL && table->entries[index]->item_holder->item->name == item->item->name){
     table->entries[index]->item_holder->amount += amount;
     // printf("%s", "First case, \n");
@@ -68,7 +67,7 @@ Maybe delete item at this point, maybe not since we might not use it after addin
 Item_Weight u_remove_item(char *name,int amount,U_Hashtable *table){
   unsigned long long index = u_hash(name, table);
   Item_Weight item_weight;
-  /* If the item we are looking for is at the top-level, then assert if we are removing all occurences of the items and act correspondingly */
+  // If the item we are looking for is at the top-level, then assert if we are removing all occurences of the items and act correspondingly 
   if(table->entries[index] != NULL && table->entries[index]->item_holder->item->name == name){
     if(amount >= table->entries[index]->item_holder->amount){
       item_weight.item = table->entries[index]->item_holder->item;
@@ -88,7 +87,7 @@ Item_Weight u_remove_item(char *name,int amount,U_Hashtable *table){
       return item_weight;
     }
   }
-  /*If the item was not found at the top-level, start the search in the chained sequence of items and act accordingly, depending on whether we remove all occurences of said item */
+  // If the item was not found at the top-level, start the search in the chained sequence of items and act accordingly, depending on whether we remove all occurences of said item 
   if(table->entries[index] != NULL && table->entries[index]->item_holder->item->name != name){
     Entry *previous_entry = table->entries[index];
     Entry *current_entry = table->entries[index]->next_entry;
@@ -113,7 +112,7 @@ Item_Weight u_remove_item(char *name,int amount,U_Hashtable *table){
       previous_entry = current_entry;
       current_entry = current_entry->next_entry;
       }
-    /*A safety guard more than anything else, if all else fails, we found no item and we stand to lose no weight */
+    // A safety guard more than anything else, if all else fails, we found no item and we stand to lose no weight 
   item_weight.weight_loss = 0;
   item_weight.item = NULL;
   return item_weight;
@@ -121,7 +120,7 @@ Item_Weight u_remove_item(char *name,int amount,U_Hashtable *table){
 }
   
  
-/*Found this on a thread on stackoverflow on how to generate numbers in C. Courtesy of user Ryan reich */
+// Found this on a thread on stackoverflow on how to generate numbers in C. Courtesy of user Ryan reich 
 unsigned long long generate_value(unsigned long long min, unsigned long long max){
   unsigned long long *value = malloc(sizeof(unsigned long long));
   for(unsigned i = 0; i < 100; i++){
@@ -146,3 +145,9 @@ void u_print_inventory(U_Hashtable *inventory){
     }
   }
 }
+
+
+
+
+
+*/

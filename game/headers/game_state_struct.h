@@ -8,21 +8,24 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+
+/*
 #ifndef GAME_STATE_STRUCT
 #define GAME_STATE_STRUCT
+
 #include "creature.h"
 #include <panel.h>
 #include "gameinfo.h"
 #include "linked_list.h"
-/* To avoid using magic numbers, we opt to use macros that represent the indices of the of the panels, e.g index 1 is designated to be the
-event log and so is represented by the macro EVENT_LOG. Panels are an extension of ncurses that basically simplifies the handling of multiple concurrent windows that overlap each other, which are stored in arrays
- */
+// To avoid using magic numbers, we opt to use macros that represent the indices of the of the panels, e.g index 1 is designated to be the
+//event log and so is represented by the macro EVENT_LOG. Panels are an extension of ncurses that basically simplifies the handling of multiple concurrent windows that overlap each other, which are stored in arrays
+ 
 #define MAIN_SCREEN 0
 #define EVENT_LOG 1
 #define PLAYER_STATUS_LOG 2
 #define INVENTORY_LOG 3
 #define QUEST_LOG 4
-/*The main struct that will encapsulate all information about the game currently present */
+//The main struct that will encapsulate all information about the game currently present 
 typedef struct Game_State{
   Creature *player;
   Game_World *current_zone;
@@ -30,4 +33,6 @@ typedef struct Game_State{
   PANEL *panels[2];
   WINDOW *logs[2];
 }Game_State;
+
 #endif
+*/

@@ -11,6 +11,8 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+
+/*
 #ifndef CREATURE
 #define CREATURE
 #include <inttypes.h>
@@ -20,7 +22,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "gameinfo.h"
 #include "creature_macros.h"
 
-/* */
+
 
 #define YES 1
 #define NO 0
@@ -89,9 +91,9 @@ typedef union body_type_holder{
 
 
 typedef struct Color{
-  /* will be defined by the constants in ncurses i.e COLOR_RED, COLOR_CYAN etc. */
+  // will be defined by the constants in ncurses i.e COLOR_RED, COLOR_CYAN etc. 
   unsigned primary_color:4;
-  /* extra parameters to vary color intensity */
+// extra parameters to vary color intensity 
   unsigned second_color:10;
   unsigned third_color:10;
   unsigned fourth_color:10;
@@ -105,7 +107,7 @@ typedef struct Attributes{
   uint32_t intelligence;
   uint32_t wisdom;
 }Attributes;
-/*As a side note i choose the scheme of animal definitions as the specifications of the stats a creature should have and animal instances as the actually initialized structs since C apparenty doesn't allow you to declare AND initialize a pointer at compile time. Instead, what you must do is declare a pointer and then instantiate with something that is NOT a pointer */
+//As a side note i choose the scheme of animal definitions as the specifications of the stats a creature should have and animal instances as the actually initialized structs since C apparenty doesn't allow you to declare AND initialize a pointer at compile time. Instead, what you must do is declare a pointer and then instantiate with something that is NOT a pointer 
 typedef struct Animal_Definition{ // Anything ending with an Definitions is an array that defines the stats of a given creature of a given type
   int index;
   char *name;
@@ -215,6 +217,7 @@ typedef union Creature_Instance{
   Player_Character *character;
 }Creature_Instance;
 
+
 typedef struct Creature{
   body_type body_type;
   body_holder body;
@@ -228,7 +231,6 @@ typedef struct Creature{
   uint32_t curr_health;
   float max_carry;
   float current_carry;
-  /*Turns out, we very much indeed needed teh instance */
    Creature_Instance instance;
   char *representation;
   Color *color;
@@ -280,3 +282,5 @@ void c_compute_relative_coords(Creature *creature, Creature *player);
 void c_cleanup_creature(Creature *c,Game_World *world);
  char  *c_retrieve_creature_name(Creature *c);
 #endif
+
+*/

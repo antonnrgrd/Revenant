@@ -5,3 +5,6 @@ the Return statement also has an effect on whether the modification of a global 
 If you specify a  function to be inline, the compiler will sometimes declare said function to be an undefined reference, even though it IS defined, find out why
 
 When you create a new branch and you want to  have it based on the current main/master branch use the commnad "git checkout -b BranchName" if you only use "git checkout BranchName" you create a new branch based on the current HEAD instead.
+'''''''''''''''''''''''''''
+For some reason, having either uhash/src or uhash/headers causes the aforementioned compilers errors, find out why
+maybe having inventory.h+*src is the problem

@@ -11,9 +11,13 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+
+
 #include "item.h"
 #include "modifier.h"
 #include <math.h>
+
+
 Reagent *i_gen_reagent(Variant variant,float weight,uint32_t value,Reagent_Kind kind){
   Reagent *reagent = malloc(sizeof(Reagent));
   reagent->variant = variant;
@@ -152,7 +156,7 @@ void i_free_item(Item *i){
 
 
 
-/*to be implemented */
+
 void i_free_interactable(Item *i){
   ;
 }
@@ -175,13 +179,13 @@ void i_free_equippable(Item *i){
 }
 
 
-void (*free_item_handler[5])() = {i_free_interactable, i_free_valuable, i_free_reagent, i_free_consumable, i_free_equippable};
+void (*free_item_handler[5])(Item *i) = {i_free_interactable, i_free_valuable, i_free_reagent, i_free_consumable, i_free_equippable};
 
-void (*copy_item_handler[5])()= {i_copy_interactable,i_copy_valuable,i_copy_reagent,i_copy_consumable,i_copy_equippable};
+void (*copy_item_handler[5])(Item *i) = {i_copy_interactable,i_copy_valuable,i_copy_reagent,i_copy_consumable,i_copy_equippable};
 
 Item *i_copy_item(Item *i){
   Item *item = malloc(sizeof(Item));
-  copy_item_handler[i->kind](i,item);
+  copy_item_handler[i->kind](i);
   return item;
 }
 
@@ -232,3 +236,8 @@ Item_Holder *i_make_item_holder(Item *item, unsigned amount){
   item_holder->amount = amount;
   
 }
+
+
+
+
+

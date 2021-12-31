@@ -11,16 +11,17 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+
+/*
 #include "creature.h"
 #include "item.h"
-
 #include "move_handler.h"
 
 void c_free_creature(Creature *c){
   free(c->representation);
   free(c->standing_on);
   (*c_free_creature_body_type[c->body_type])(c);  
-  /* We do not free the Creature struct itself because when a creature dies, we mark it for deletion and later on, when going through all active creatures and we see that it is marked for deletion, we remove it from the list of active creatures and only then, can we safely remove. Otherwise, we will have a segementation fault because we pass a null pointer as an argument for the creature behavior function.*/
+  // We do not free the Creature struct itself because when a creature dies, we mark it for deletion and later on, when going through all active creatures and we see that it is marked for deletion, we remove it from the list of active creatures and only then, can we safely remove. Otherwise, we will have a segementation fault because we pass a null pointer as an argument for the creature behavior function.
 }
 
 void c_cleanup_creature(Creature *c,Game_World *world ){
@@ -56,7 +57,7 @@ Creature *c_generate_creature(Creature_Kind kind, int id,unsigned x,unsigned y,G
   c->position.global_x=x;
   c->position.global_y=y;
   
-  /* Because the assignment of local coordinates can be rather arbitrary, as the local coordinates can be anything relative to the POV, we arbitarily assign to be roughly centered */
+  // Because the assignment of local coordinates can be rather arbitrary, as the local coordinates can be anything relative to the POV, we arbitarily assign to be roughly centered 
   
   c_compute_relative_coords(c, target);
  
@@ -76,17 +77,8 @@ Creature *c_generate_creature(Creature_Kind kind, int id,unsigned x,unsigned y,G
   return c;
 }
 
-/*
-Color *c_copy_color(Color color){
-  Color *c = malloc(sizeof(Color));
-  c->primary_color = color.primary_color;
-  c->second_color = color.second_color;
-  c->third_color = color.third_color;
-  c->fourth_color = color.fourth_color;
-  return c;
-}
-*/
-/* A tester function to help test cases */
+
+// A tester function to help test cases 
 Creature *c_random_player(int x, int y,Game_World *world){
   Creature *c = malloc(sizeof(Creature));
   c->standing_on = malloc(sizeof(char));
@@ -137,7 +129,7 @@ void c_initialize_animal_body(Creature *c, body_type body_type){
       c->body.animal_body = malloc(sizeof(Animal_Body));
 }
 }
-/* In order to understand why we compute the coordinates as we do when the distance ebtween player and creature exceeds the scrren boundaries, refer to the game manual*/
+// In order to understand why we compute the coordinates as we do when the distance ebtween player and creature exceeds the scrren boundaries, refer to the game manual
 void c_compute_relative_coords(Creature *creature, Creature *player){
   if(creature->position.global_x > player->position.global_x){
     if(player->position.local_x + (creature->position.global_x - player->position.global_x) < DEFAULT_MAX_X ){
@@ -197,3 +189,5 @@ char *c_retrieve_creature_name(Creature *c){
     return "Undef";
   }
 }
+
+*/

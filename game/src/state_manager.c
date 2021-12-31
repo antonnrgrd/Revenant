@@ -8,7 +8,9 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+/*
 #include "state_manager.h"
+
 void game_loop(Game_State *game_state){
   int ch;
   REDRAW_MAP(game_state->player,game_state->current_zone, game_state->player->position.global_x,game_state->player->position.global_y,rows, cols);
@@ -44,3 +46,4 @@ void game_loop(Game_State *game_state){
     ll_iter_list_as_creature(game_state->active_creatures,game_state->current_zone,game_state->logs[0]);
   }
 }
+*/

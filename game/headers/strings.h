@@ -11,6 +11,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+
 #ifndef STRINGS
 #define STRINGS
 #include <stdlib.h>
@@ -29,3 +30,4 @@ char *s_merge_text(char *first_arg,char *second_arg);
 uint64_t s_uint_from_string(char *string);
 void tester_function(char *arg);
 #endif
+
