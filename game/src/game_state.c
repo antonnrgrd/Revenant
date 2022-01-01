@@ -11,7 +11,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
-/*
+
 #include "game_state.h"
 #include "move_handler.h"
 #include "creature.h"
@@ -67,4 +67,4 @@ Game_State *gs_create_game_state(Creature *player, Game_World *world,Linked_List
   
   return state;
 }
-*/
+

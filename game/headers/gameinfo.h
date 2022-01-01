@@ -12,7 +12,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
-/*
+
 #ifndef PLACEHOLDER
 #define PLACEHOLDER
 #include "u_hash.h"
@@ -47,8 +47,8 @@ typedef struct Game_World{
   Linked_List *active_creatures;
 }Game_World;
 
-int numerical_responses[256];
+extern int numerical_responses[256];
 
 #endif
 
-*/
+

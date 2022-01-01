@@ -1,4 +1,4 @@
-/*
+
 #ifndef CREATURE_BEHAVIOR
 #define CREATURE_BEHAVIOR
 #include "creature.h"
@@ -28,7 +28,7 @@ void cb_attack_target(Creature *c,Game_World *current_zone, WINDOW *draw_screen)
 
 void cb_idle(Creature *c,Game_World *current_zone, WINDOW *draw_screen);
 
-void (*creature_behavior_handler[4])(Creature *c,Game_World *current_zone, WINDOW *draw_screen);
+extern void (*creature_behavior_handler[4])(Creature *c,Game_World *current_zone, WINDOW *draw_screen);
 
 void cb_act(Creature *c,Game_World *current_zone, WINDOW *draw_screen);
 
@@ -38,4 +38,4 @@ void cb_pursue_target_inb(Creature *c ,Game_World *current_zone, WINDOW *draw_sc
 
 
 #endif
-*/
+

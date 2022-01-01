@@ -144,8 +144,8 @@ void i_copy_consumable(Item *i, Item *j);
 void i_copy_equippable(Item *i, Item *j);
 void i_copy_reagent(Item *i, Item *j);
 
-void (*copy_item_handler[5])(Item *i);
-void (*free_item_handler[5])(Item *i);
+extern void (*copy_item_handler[5])(Item *i);
+extern void (*free_item_handler[5])(Item *i);
 
 #endif
 

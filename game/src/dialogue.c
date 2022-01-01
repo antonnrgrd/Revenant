@@ -12,7 +12,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
-/*
+
 #include "dialogue.h"
 
 void point(){
@@ -97,7 +97,7 @@ void d_dialogue_loop(Dialogue_Header *header){
 
 
 
- */
+
 
 //void d_add_dialogue(Dialogue_Header *header, int parent, int child){
   //Dialogue *p = header->chat[parent];

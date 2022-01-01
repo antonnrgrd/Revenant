@@ -12,7 +12,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
-/*
+
 #ifndef CREATURE
 #define CREATURE
 #include <inttypes.h>
@@ -249,7 +249,7 @@ typedef struct Creature{
 extern Animal_Definition animal_definitions[];
 extern Humanoid_Definition humanoid_definitions[];
 
-void (*c_free_creature_body_type[1])(Creature *c);
+extern void (*c_free_creature_body_type[1])(Creature *c);
 void c_free_animal_quad_body_type(Creature *c);
 void c_free_animal(Creature *c);
 void c_initialize_animal_body(Creature *c, body_type body_type);
@@ -271,7 +271,7 @@ void c_initialize_animal_inf(Creature *c, int id);
 void c_initialize_humanoid_inf(Creature *c, int id);
 
 
-void (*creature_initializer[1])(Creature *c, int id);
+extern void (*creature_initializer[1])(Creature *c, int id);
 
 Color *c_copy_color(Color color);
 
@@ -283,4 +283,4 @@ void c_cleanup_creature(Creature *c,Game_World *world);
  char  *c_retrieve_creature_name(Creature *c);
 #endif
 
-*/
+

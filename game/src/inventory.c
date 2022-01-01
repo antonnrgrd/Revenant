@@ -11,7 +11,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
-/*
+
 #include "inventory.h"
 #include "creature.h"
 #include "u_hash.h"
@@ -46,4 +46,4 @@ void inv_remove_item(char *name, int amount, U_Hashtable *inventory, Creature *p
   Item_Weight removed_weight = u_remove_item(name,amount,inventory);
   player->current_carry -= removed_weight.weight_loss;
 }
-*/
+

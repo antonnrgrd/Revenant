@@ -12,7 +12,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
-/*
+
 #include "dialogue.h"
 #include "u_hash.h"
 #include "creature.h"
@@ -35,9 +35,9 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "state_manager.h"
 #include "ingame_msg.h"
 #include "game_state_struct.h"
-*/
+
 int main(int argc, char *argv[]){
-/*
+
   initscr();
   start_color();    
   
@@ -51,7 +51,6 @@ int main(int argc, char *argv[]){
 
 
   opponent->behavior = pursuing;
-
   opponent->target = c;
   initscr();
   start_color();
@@ -63,6 +62,6 @@ int main(int argc, char *argv[]){
 
   game_loop(game_state);
   endwin();
-*/
+
 }
   

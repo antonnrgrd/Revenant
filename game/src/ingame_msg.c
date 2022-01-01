@@ -9,7 +9,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
-/*
+
 #include "ingame_msg.h"
 #include "game_state.h"
 void msg_show_log(PANEL *log){
@@ -18,4 +18,4 @@ void msg_show_log(PANEL *log){
   update_panels();
   doupdate();
 }
-*/
+

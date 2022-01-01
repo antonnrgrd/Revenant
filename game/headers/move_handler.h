@@ -12,7 +12,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
-/*
+
 #ifndef MOVE_HANDLER
 #define MOVE_HANDLER
 #include <ncurses.h>
@@ -44,7 +44,7 @@ void gw_add_to_pile(Item_Holder *item, Entry *item_pile);
 
 void mv_check_move_handler(int global_x, int gloval_y, int local_x, int local_y, Creature *c,Game_State *game_state);
 
-void (*move_response_handler[4])(int global_x, int global_y, int local_x, int local_y,Creature *c,Game_State *game_state);
+extern void (*move_response_handler[4])(int global_x, int global_y, int local_x, int local_y,Creature *c,Game_State *game_state);
 
 
 void move_response_move_character(int global_x, int global_y, int local_x, int local_y,Creature *c,Game_State *game_state);
@@ -56,4 +56,4 @@ void move_response_loot_item(int global_x, int global_y,int local_x, int local_y
 void move_response_attack_target(int global_x, int global_y,int local_x, int local_y, Creature *c,Game_State *game_state);
 
 #endif
-*/
+

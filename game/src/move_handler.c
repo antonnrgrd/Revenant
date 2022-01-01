@@ -12,7 +12,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
-/*
+
 #include "move_handler.h"
 
 
@@ -163,4 +163,4 @@ void move_response_attack_target(int global_x, int global_y,int local_x, int loc
   
 } 
 
-*/
+

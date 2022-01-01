@@ -1,4 +1,4 @@
-/*
+
 #include "creature_behavior.h"
  
 
@@ -121,7 +121,7 @@ void cb_flee_target(Creature *c,Game_World *current_zone, WINDOW *draw_screen){
 
 void cb_pursure_target_oob(Creature *c, Game_World *current_zone, WINDOW *draw_screen){
   // In order to pursue a target, we effectively try out all moves the creature can take to move closer to the current target. Provided the
- distance becomes smaller and it is a valid tile to step on, make a move 
+  // distance becomes smaller and it is a valid tile to step on, make a move 
   
   current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->standing_on[0];
   // moving up 
@@ -616,6 +616,6 @@ void cb_act(Creature *c,Game_World *current_zone, WINDOW *draw_screen){
 void (*creature_behavior_handler[4])(Creature *c,Game_World *current_zone, WINDOW *draw_screen) = {cb_idle, cb_roam,cb_pursue_target, cb_flee_target};
 	
   
-*/  
+
 
 

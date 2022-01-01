@@ -11,7 +11,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
-/*
+
 #ifndef GAME_STATE
 #define GAME_STATE
 #include "move_handler.h"
@@ -30,4 +30,4 @@ void ll_iter_list_as_creature(Linked_List *list, Game_World *current_zone, WINDO
 void gs_print_foes(Game_State *game_state);
 
 #endif
-*/
+

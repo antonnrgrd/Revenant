@@ -9,7 +9,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
-/*
+
 #ifndef GAME_STATE_STRUCT
 #define GAME_STATE_STRUCT
 
@@ -35,4 +35,4 @@ typedef struct Game_State{
 }Game_State;
 
 #endif
-*/
+

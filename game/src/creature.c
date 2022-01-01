@@ -12,7 +12,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
-/*
+
 #include "creature.h"
 #include "item.h"
 #include "move_handler.h"
@@ -190,4 +190,4 @@ char *c_retrieve_creature_name(Creature *c){
   }
 }
 
-*/
+

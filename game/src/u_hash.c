@@ -11,7 +11,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
-/*
+
 #include "u_hash.h"
 
 unsigned long long u_hash(char *name,U_Hashtable *table){
@@ -150,4 +150,4 @@ void u_print_inventory(U_Hashtable *inventory){
 
 
 
-*/
+
