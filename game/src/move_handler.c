@@ -35,30 +35,30 @@ void (*move_response_handler[4])(int global_x, int global_y, int local_x, int lo
     c->position.global_y = global_y;
     if(local_y  <  0){
       c->position.local_y = DEFAULT_MAX_Y - 1;
-      REDRAW_MAP(c,game_state->current_zone, c->position.global_x,c->position.global_y,x_max, y_max);
+      REDRAW_MAP(c,game_state->current_zone,game_state->logs[MAIN_SCREEN], c->position.global_x,c->position.global_y,x_max, y_max);
     }
 
     else if(local_y  >  DEFAULT_MAX_Y - 1){
       c->position.local_y = 0;
-      REDRAW_MAP(c,game_state->current_zone, c->position.global_x,c->position.global_y,x_max, y_max);
+      REDRAW_MAP(c,game_state->current_zone,game_state->logs[MAIN_SCREEN], c->position.global_x,c->position.global_y,x_max, y_max);
       
     }
 
     else if(local_x  <  DEFAULT_MAX_INFOBAR_WIDTH){
       c->position.local_x = DEFAULT_MAX_X - 1;
-      REDRAW_MAP(c,game_state->current_zone, c->position.global_x,c->position.global_y,x_max, y_max);
+      REDRAW_MAP(c,game_state->current_zone,game_state->logs[MAIN_SCREEN], c->position.global_x,c->position.global_y,x_max, y_max);
     }
 
     else if(local_x  >  DEFAULT_MAX_X - 1){
       c->position.local_x = DEFAULT_MAX_INFOBAR_WIDTH;
-      REDRAW_MAP(c,game_state->current_zone, c->position.global_x,c->position.global_y,x_max, y_max);
+      REDRAW_MAP(c,game_state->current_zone,game_state->logs[MAIN_SCREEN], c->position.global_x,c->position.global_y,x_max, y_max);
     }
     else{
       
   mvprintw(game_state->logs[MAIN_SCREEN],c->position.local_y,c->position.local_x, c->standing_on);
   c->standing_on[0] = game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
   game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
-  mvprintw(local_y,local_x,c->representation);
+  mvprintw(game_state->logs[MAIN_SCREEN],local_y,local_x,c->representation);
   c->position.local_x = local_x;
   c->position.local_y = local_y;
   move(c->position.local_y,c->position.local_x);
