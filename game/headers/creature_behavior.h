@@ -18,23 +18,23 @@
 
 #define WITHIN_BOUND 0
 #define OUT_OF_BOUND 1
-void cb_pursue_target(Creature *c,Game_World *current_zone, WINDOW *draw_screen);
+void cb_pursue_target(Creature *c,Game_World *current_zone);
 
-void cb_from_target(Creature *c,Game_World *current_zone, WINDOW *draw_screen);
+void cb_from_target(Creature *c,Game_World *current_zone);
 
-void cb_follow_target(Creature *c,Game_World *current_zone, WINDOW *draw_screen);
+void cb_follow_target(Creature *c,Game_World *current_zone);
 
-void cb_attack_target(Creature *c,Game_World *current_zone, WINDOW *draw_screen);
+void cb_attack_target(Creature *c,Game_World *current_zone);
 
-void cb_idle(Creature *c,Game_World *current_zone, WINDOW *draw_screen);
+void cb_idle(Creature *c,Game_World *current_zone);
 
-extern void (*creature_behavior_handler[4])(Creature *c,Game_World *current_zone, WINDOW *draw_screen);
+extern void (*creature_behavior_handler[4])(Creature *c,Game_World *current_zone);
 
-void cb_act(Creature *c,Game_World *current_zone, WINDOW *draw_screen);
+void cb_act(Creature *c,Game_World *current_zone);
 
-void cb_pursure_target_oob(Creature *c,Game_World *current_zone, WINDOW *draw_screen);
+void cb_pursure_target_oob(Creature *c,Game_World *current_zone);
 
-void cb_pursue_target_inb(Creature *c ,Game_World *current_zone, WINDOW *draw_screen);
+void cb_pursue_target_inb(Creature *c ,Game_World *current_zone);
 
 
 #endif

@@ -26,7 +26,7 @@ void ll_iter_list_as_creature(Linked_List *list, Game_World *current_zone, WINDO
       current_node->value = NULL;
     }
     else{
-      cb_act( (struct Creature *)current_node->value, current_zone,draw_screen);
+      cb_act( (struct Creature *)current_node->value, current_zone);
     previous = current_node;
     current_node = current_node->next;
     }

@@ -12,7 +12,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "state_manager.h"
 void game_loop(Game_State *game_state){
   int ch;
-  REDRAW_MAP(game_state->player,game_state->current_zone,game_state->logs[MAIN_SCREEN], game_state->player->position.global_x,game_state->player->position.global_y,rows, cols);
+  REDRAW_MAP(game_state->player,game_state->current_zone, game_state->player->position.global_x,game_state->player->position.global_y,rows, cols);
   refresh();
   update_panels();
   doupdate();
