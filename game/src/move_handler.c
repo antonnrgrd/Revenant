@@ -92,7 +92,7 @@ void move_response_loot_item(int global_x, int global_y,int local_x, int local_y
   
   move_response_move_character(global_x, global_y, local_x,local_y,c,game_state);
     
-    mvprintw(0,0, "%s%s%s%d%s", "Pickup ", game_state->current_zone->tiles[global_y][global_x].entry->item_holder->item->name, " amount: ", game_state->current_zone->tiles[global_y][global_x].entry->item_holder->amount, " ? [y/n/a/d]");  
+mvprintw(0,0, "%s%s%s%d%s", "Pickup ", game_state->current_zone->tiles[global_y][global_x].entry->item_holder->item->name, " amount: ", game_state->current_zone->tiles[global_y][global_x].entry->item_holder->amount, " ? [y/n/a/d]");  
   
   int response;
   int result;
@@ -150,7 +150,7 @@ void move_response_attack_target(int global_x, int global_y,int local_x, int loc
 
     ((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->curr_health = ((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->curr_health-10;
       
-    mvprintw(game_state->logs[EVENT_LOG],DEFAULT_MAX_Y,0, "%s%s%s%d%s", "You damage ", c_retrieve_creature_name((Creature *)game_state->current_zone->tiles[global_y][global_x].foe) , " for ", 10, " damage");
+      mvprintw(DEFAULT_MAX_Y,0, "%s%s%s%d%s", "You damage ", c_retrieve_creature_name((Creature *)game_state->current_zone->tiles[global_y][global_x].foe) , " for ", 10, " damage");
       UPDATE_EVENT_LOG(game_state->logs[EVENT_LOG]);
       move(c->position.local_y,c->position.local_x);
     if (((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->curr_health <= 0){

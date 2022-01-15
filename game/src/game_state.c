@@ -49,8 +49,12 @@ Game_State *gs_create_game_state(Creature *player, Game_World *world,Linked_List
   state->player = player;
   state->current_zone = world;
   state->active_creatures = active_creatures;
-  state->logs[MAIN_SCREEN] = newwin(0,0,0,0);
-  state->panels[MAIN_SCREEN] = new_panel(state->logs[MAIN_SCREEN]);
+  state->logs[EVENT_LOG] = newwin(DEFAULT_MAX_INFOBAR_WIDTH,0,10,10);
+  state->panels[EVENT_LOG] = new_panel(state->logs[EVENT_LOG]);
+  box(state->logs[EVENT_LOG],0,0);
+  
+  mvprintw(state->logs[EVENT_LOG],10,10, "SAMPLE TEXT");
+  hide_panel(state->panels[EVENT_LOG]);
   update_panels();
   doupdate();
   return state;

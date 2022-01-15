@@ -12,10 +12,17 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "ingame_msg.h"
 #include "game_state.h"
-void msg_show_log(PANEL *log){
-  top_panel(log);
-  show_panel(log);
+void msg_show_log(Game_State *gs, int panel_index){
+  top_panel(gs->panels[panel_index]);
   update_panels();
   doupdate();
+  int ch;
+  while (1){
+    ch = getch();
+    if (ch == 'q'){
+      hide_panel(gs->panels[panel_index]);
+      return;
+    }
+  }
 }
 
