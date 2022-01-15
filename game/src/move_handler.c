@@ -35,30 +35,30 @@ void (*move_response_handler[4])(int global_x, int global_y, int local_x, int lo
     c->position.global_y = global_y;
     if(local_y  <  0){
       c->position.local_y = DEFAULT_MAX_Y - 1;
-      REDRAW_MAP(c,game_state->current_zone, c->position.global_x,c->position.global_y,x_max, y_max);
+      REDRAW_MAP(c,game_state->current_zone,game_state->logs[MAIN_SCREEN], c->position.global_x,c->position.global_y,x_max, y_max);
     }
 
     else if(local_y  >  DEFAULT_MAX_Y - 1){
       c->position.local_y = 0;
-      REDRAW_MAP(c,game_state->current_zone, c->position.global_x,c->position.global_y,x_max, y_max);
+      REDRAW_MAP(c,game_state->current_zone,game_state->logs[MAIN_SCREEN], c->position.global_x,c->position.global_y,x_max, y_max);
       
     }
 
     else if(local_x  <  DEFAULT_MAX_INFOBAR_WIDTH){
       c->position.local_x = DEFAULT_MAX_X - 1;
-      REDRAW_MAP(c,game_state->current_zone, c->position.global_x,c->position.global_y,x_max, y_max);
+      REDRAW_MAP(c,game_state->current_zone,game_state->logs[MAIN_SCREEN], c->position.global_x,c->position.global_y,x_max, y_max);
     }
 
     else if(local_x  >  DEFAULT_MAX_X - 1){
       c->position.local_x = DEFAULT_MAX_INFOBAR_WIDTH;
-      REDRAW_MAP(c,game_state->current_zone, c->position.global_x,c->position.global_y,x_max, y_max);
+      REDRAW_MAP(c,game_state->current_zone,game_state->logs[MAIN_SCREEN], c->position.global_x,c->position.global_y,x_max, y_max);
     }
     else{
       
-  mvprintw(c->position.local_y,c->position.local_x, c->standing_on);
+  mvwprintw(game_state->logs[MAIN_SCREEN],c->position.local_y,c->position.local_x, c->standing_on);
   c->standing_on[0] = game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
   game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
-  mvprintw(local_y,local_x,c->representation);
+  mvwprintw(game_state->logs[MAIN_SCREEN],local_y,local_x,c->representation);
   c->position.local_x = local_x;
   c->position.local_y = local_y;
   move(c->position.local_y,c->position.local_x);
@@ -82,9 +82,9 @@ void move_response_loot_item(int global_x, int global_y,int local_x, int local_y
 
   c->position.global_x = global_x;
   c->position.global_y = global_y;
-  mvprintw(c->position.local_y,c->position.local_x, c->standing_on);
+  mvwprintw(game_state->logs[MAIN_SCREEN],c->position.local_y,c->position.local_x, c->standing_on);
   c->standing_on[0] =  mvinch(local_y,local_x);
-  mvprintw(local_y,local_x,c->representation);
+  mvwprintw(game_state->logs[MAIN_SCREEN],local_y,local_x,c->representation);
   c->position.local_x = local_x;
   c->position.local_y = local_y;
   move(c->position.local_y,c->position.local_x);
@@ -92,7 +92,7 @@ void move_response_loot_item(int global_x, int global_y,int local_x, int local_y
   
   move_response_move_character(global_x, global_y, local_x,local_y,c,game_state);
     
-mvprintw(0,0, "%s%s%s%d%s", "Pickup ", game_state->current_zone->tiles[global_y][global_x].entry->item_holder->item->name, " amount: ", game_state->current_zone->tiles[global_y][global_x].entry->item_holder->amount, " ? [y/n/a/d]");  
+mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s%s%s%d%s", "Pickup ", game_state->current_zone->tiles[global_y][global_x].entry->item_holder->item->name, " amount: ", game_state->current_zone->tiles[global_y][global_x].entry->item_holder->amount, " ? [y/n/a/d]");  
   
   int response;
   int result;
@@ -105,7 +105,7 @@ mvprintw(0,0, "%s%s%s%d%s", "Pickup ", game_state->current_zone->tiles[global_y]
       move(0,0);
       clrtoeol();
       move(c->position.local_y,c->position.local_x);
-      mvprintw(0,0, "%s", "Item(s) successfully added to inventory");
+      mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s", "Item(s) successfully added to inventory");
       Entry *next_in_pile = game_state->current_zone->tiles[global_y][global_x].entry->next_entry;
       free(game_state->current_zone->tiles[global_y][global_x].entry);
       if(next_in_pile != NULL){
@@ -119,7 +119,7 @@ mvprintw(0,0, "%s%s%s%d%s", "Pickup ", game_state->current_zone->tiles[global_y]
     else{
       move(0,0);
       clrtoeol();
-      mvprintw(0,0, "%s", "You cannot carry that many");
+      mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s", "You cannot carry that many");
       move(c->position.local_y,c->position.local_x);
     }
     break;
@@ -150,7 +150,7 @@ void move_response_attack_target(int global_x, int global_y,int local_x, int loc
 
     ((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->curr_health = ((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->curr_health-10;
       
-      mvprintw(DEFAULT_MAX_Y,0, "%s%s%s%d%s", "You damage ", c_retrieve_creature_name((Creature *)game_state->current_zone->tiles[global_y][global_x].foe) , " for ", 10, " damage");
+      mvwprintw(game_state->logs[MAIN_SCREEN],DEFAULT_MAX_Y,0, "%s%s%s%d%s", "You damage ", c_retrieve_creature_name((Creature *)game_state->current_zone->tiles[global_y][global_x].foe) , " for ", 10, " damage");
       UPDATE_EVENT_LOG(game_state->logs[EVENT_LOG]);
       move(c->position.local_y,c->position.local_x);
     if (((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->curr_health <= 0){

@@ -12,11 +12,11 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "state_manager.h"
 void game_loop(Game_State *game_state){
   int ch;
-  REDRAW_MAP(game_state->player,game_state->current_zone, game_state->player->position.global_x,game_state->player->position.global_y,rows, cols);
-  refresh();
+  REDRAW_MAP(game_state->player,game_state->current_zone,game_state->logs[MAIN_SCREEN], game_state->player->position.global_x,game_state->player->position.global_y,rows, cols);
+  wrefresh(game_state->logs[MAIN_SCREEN]);
   while(1){
-    refresh();
-    ch = getch();
+    wrefresh(game_state->logs[MAIN_SCREEN]);
+    ch = wgetch(game_state->logs[MAIN_SCREEN]);
     switch(ch){
     case KEY_UP:
       mv_check_move_handler(game_state->player->position.global_x, game_state->player->position.global_y-1,game_state->player->position.local_x, game_state->player->position.local_y-1, game_state->player,game_state);
