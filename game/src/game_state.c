@@ -53,7 +53,7 @@ Game_State *gs_create_game_state(Creature *player, Game_World *world,Linked_List
    windows. Therefore, if the contents of stdscr overlaps the contents of a window, stdscr will overwrite/take precedence of the contents of said window. To achieve the desired windows browsing effect,
   we are made to make a new panel-managed window that will act as stdscr */
   state->logs[MAIN_SCREEN]  = newwin(0,0,0,0);
-    state->logs[EVENT_LOG] = newwin(DEFAULT_MAX_INFOBAR_WIDTH,0,10,10);
+  state->logs[EVENT_LOG] = newwin(LOG_Y_SIZE,LOG_X_SIZE,LOG_START_Y,LOG_START_X);
   
   
    state->panels[EVENT_LOG] = new_panel(state->logs[EVENT_LOG]);
@@ -61,7 +61,7 @@ Game_State *gs_create_game_state(Creature *player, Game_World *world,Linked_List
   
    box(state->logs[EVENT_LOG],0,0);
   
-  mvwprintw(state->logs[EVENT_LOG],10,10, "SAMPLE TEXT");
+  mvwprintw(state->logs[EVENT_LOG],10,10, "SAMPLE TEXT"); 
   
   top_panel(state->panels[MAIN_SCREEN]);
   
