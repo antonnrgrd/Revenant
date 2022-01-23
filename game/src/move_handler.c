@@ -19,7 +19,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
   
 
 void mv_check_move_handler(int global_x, int global_y, int local_x, int local_y, Creature *c,Game_State *game_state){
-  // Before we check the response value from the character, we first need to be assert that position we are trying to make the move to is within bounds of the current zone's dimensionality to avoid invalid index lookups in the game world's tiles (whether negative or too large index values)  
+  // Before we check the response value from the character, we first need to be assert that position we are trying to make the move to is within bounds of the current zone's dimensionality to avoid invalid index lookups in the game world's tiles (whether negative or too large index values)
   if( (global_x < game_state->current_zone->width  && global_y < game_state->current_zone->height) && (global_x > -1  && global_y > -1 )  ){
     int response = numerical_responses[game_state->current_zone->tiles[global_y][global_x].content[0]];
      (*move_response_handler[response])(global_x,global_y,local_x,local_y,c,game_state);
@@ -144,14 +144,13 @@ mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s%s%s%d%s", "Pickup ", game_state
 
 void move_response_attack_target(int global_x, int global_y,int local_x, int local_y, Creature *c,Game_State *game_state){
 
-  //((rand() % (21 - 1 + 1) + 1)) + c->attributes.dexterity >= ((Creature *)current_zone->tiles[global_y][global_x].foe)->attributes.dexterity
-   
+  //((rand() % (21 - 1 + 1) + 1)) + c->attributes.dexterity >= ((Creature *)current_zone->tiles[global_y][global_x].foe)->attributes.dexterity   
   if  (1){
 
     ((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->curr_health = ((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->curr_health-10;
-      
+       UPDATE_EVENT_LOG(game_state); 
       mvwprintw(game_state->logs[MAIN_SCREEN],DEFAULT_MAX_Y,0, "%s%s%s%d%s", "You damage ", c_retrieve_creature_name((Creature *)game_state->current_zone->tiles[global_y][global_x].foe) , " for ", 10, " damage");
-      UPDATE_EVENT_LOG(game_state->logs[EVENT_LOG]);
+     
       move(c->position.local_y,c->position.local_x);
     if (((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->curr_health <= 0){
       c_cleanup_creature(c,game_state->current_zone);
@@ -159,8 +158,7 @@ void move_response_attack_target(int global_x, int global_y,int local_x, int loc
       c->marked_for_deletion = YES;
       
     }
-  }
-  
+  }  
 } 
 
 

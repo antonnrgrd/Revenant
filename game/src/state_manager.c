@@ -16,7 +16,8 @@ void game_loop(Game_State *game_state){
   wrefresh(game_state->logs[MAIN_SCREEN]);
   while(1){
     wrefresh(game_state->logs[MAIN_SCREEN]);
-    ch = wgetch(game_state->logs[MAIN_SCREEN]);
+    ch = getch();
+    //ch = wgetch(game_state->logs[MAIN_SCREEN]);
     switch(ch){
     case KEY_UP:
       mv_check_move_handler(game_state->player->position.global_x, game_state->player->position.global_y-1,game_state->player->position.local_x, game_state->player->position.local_y-1, game_state->player,game_state);
@@ -35,13 +36,13 @@ void game_loop(Game_State *game_state){
     case 'l':
             msg_show_log(game_state,EVENT_LOG);
       break;
-    case S:
+    case 'A':
       ;
       break;
     default:
       break;
     }
-    ll_iter_list_as_creature(game_state->active_creatures,game_state->current_zone,game_state->logs[0]);
+    ll_iter_list_as_creature(game_state->active_creatures,game_state->current_zone,game_state->logs[MAIN_SCREEN]);
   }
 }
 

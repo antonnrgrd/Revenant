@@ -16,7 +16,8 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include <ncurses.h>
 #include <panel.h>
 #include "game_state_struct.h"
-#define MAX_MSG_LENGTH 50
+#include <ctype.h>
+#define MAX_MSG_LENGTH 40
 
 // In order to make changes to a panel visible, we firstly need to call update panel to make the changes to the panels visible, then make doupdate to make said changes ivisible to the physical screen. To avoid having to call these methods all the time, we wrap them inside a macro
 #define UPDATE_PANEL_INFO() update_panels(); doupdate();
@@ -31,8 +32,18 @@ void msg_show_log(Game_State *gs, int panel_index);
 
 //We malloc a message buffer of type (chtype * MAX_MSG_LENGTH) as mvwinchnstr needs a sufficiently big enough buffer to store the copied string to and 50 is the guessed biggest possible length we will need. chtype is a special datatype used by ncurses a type of string, if you will.
 
-#define UPDATE_EVENT_LOG(log) char *msg_bfr = malloc(MAX_MSG_LENGTH * sizeof(char)); clrtoeol(); for(int i = DEFAULT_MAX_Y+9; i > DEFAULT_MAX_Y-1; i--){ mvwinnstr(stdscr, i,0,msg_bfr,MAX_MSG_LENGTH-1); move(i,0); clrtoeol(); mvprintw(log, i+1,0,msg_bfr); } free(msg_bfr);
+
+
+
+#define UPDATE_EVENT_LOG(game_state) char *msg_bfr = malloc(MAX_MSG_LENGTH * sizeof(char)); wmove(game_state->logs[MAIN_SCREEN],DEFAULT_MAX_Y,0); mvwinnstr(game_state->logs[MAIN_SCREEN], DEFAULT_MAX_Y,0,msg_bfr,MAX_MSG_LENGTH-1); wclrtoeol(game_state->logs[MAIN_SCREEN]); mvwprintw(game_state->logs[EVENT_LOG],14,20, msg_bfr); for(int i = DEFAULT_MAX_Y+9; i > DEFAULT_MAX_Y-1; i--){ mvwinnstr(game_state->logs[MAIN_SCREEN], i,0,msg_bfr,MAX_MSG_LENGTH-1); move(i,0); wclrtoeol(game_state->logs[EVENT_LOG]); mvprintw(log, i+1,0,msg_bfr); } free(msg_bfr); 
+
+
+
+
+
+
 #define WRITE_TO_LOG(log_index)
 
+#define INIT_EVENT_LOG(window) mvwprintw(window,1,25, "PAST 10 EVENTS" ); char number[] = "1."; for(int i = 3; i < 13; i ++){mvwprintw(window,i,20,number ); number[0] = (i-2) + '0'; } mvwprintw(window,13,20, "10."); wrefresh(window);
 #endif
 

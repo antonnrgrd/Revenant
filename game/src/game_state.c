@@ -11,7 +11,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
-
+ 
 #include "game_state.h"
 #include "move_handler.h"
 #include "creature.h"
@@ -26,7 +26,7 @@ void ll_iter_list_as_creature(Linked_List *list, Game_World *current_zone, WINDO
       current_node->value = NULL;
     }
     else{
-      cb_act( (struct Creature *)current_node->value, current_zone);
+      cb_act( (struct Creature *)current_node->value, current_zone,draw_screen);
     previous = current_node;
     current_node = current_node->next;
     }
@@ -37,11 +37,10 @@ void gs_print_foes(Game_State *game_state){
   Node *current_node = game_state->active_creatures->initial_node;
   // TBD:consider only creatures within range of the player 
   while(current_node != NULL) {
-    mvprintw( ((struct Creature *)current_node->value)->position.local_y,((struct Creature *)current_node->value)->position.local_x,((struct Creature *)current_node->value)->representation);
+    mvwprintw(game_state->logs[MAIN_SCREEN], ((struct Creature *)current_node->value)->position.local_y,((struct Creature *)current_node->value)->position.local_x,((struct Creature *)current_node->value)->representation);
     current_node = current_node->next;
   }
 }
-
 
 
 Game_State *gs_create_game_state(Creature *player, Game_World *world,Linked_List *active_creatures){
@@ -60,13 +59,14 @@ Game_State *gs_create_game_state(Creature *player, Game_World *world,Linked_List
   state->panels[MAIN_SCREEN] = new_panel(state->logs[MAIN_SCREEN]);
   
    box(state->logs[EVENT_LOG],0,0);
-  
-  mvwprintw(state->logs[EVENT_LOG],10,10, "SAMPLE TEXT"); 
-  
+
+   INIT_EVENT_LOG(state->logs[EVENT_LOG]);
+
+   
   top_panel(state->panels[MAIN_SCREEN]);
-  
+   
   update_panels();
-  doupdate();
+  doupdate(); 
   return state;
 }
 

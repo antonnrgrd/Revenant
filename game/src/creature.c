@@ -38,8 +38,11 @@ void c_initialize_animal_inf(Creature *c,int id){
   COPY_ATTRIBUTE_INFORMATION(c->attributes, d.attributes);
   c->weight = d.weight;
   c->height = d.height;
+  
   c->representation = malloc(sizeof(char));
-  c->representation[0] = 'a';
+  // We use strcpy instead of assigning the 0th index to be it's char represenation because for some reason, it started printing garbage when using that method to assign its creaturetype representation
+  //,explaining the difference in how the ascii represenation for the player and creature is handled
+  strcpy(c->representation, "a");
   c_initialize_animal_body(c, d.body_type);
 }
 
