@@ -60,3 +60,23 @@ void tester_function(char *arg){
   free(string);
 }
 
+int s_only_whitespace(char *bfr){
+  int working_index = 0;
+  //By the almghty c-standard 0 represents false, anything else true
+  while(bfr[working_index] != '\0'){
+    if(isspace(bfr[working_index] == 0)){
+      return 0;
+    }
+    working_index++;
+  }
+  return 1;
+ 
+}
+
+s_print_str_lines(char *str){
+  int curr_index = 0;
+  while (str[curr_index] != '\0'){
+    printf("%c%s",str[curr_index] , "\n");
+    curr_index++;
+  }
+}

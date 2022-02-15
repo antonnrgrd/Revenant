@@ -20,6 +20,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include <stdint.h>
 #include <math.h>
 #include <inttypes.h>
+#include <ctype.h>
 #define PRINT_STRING(argument)		\
   argument[0] = argument[0]-32;		\
   printf("%s%s",argument ,"\n");	\
@@ -29,5 +30,7 @@ char *s_create_text_const( const char *arg);
 char *s_merge_text(char *first_arg,char *second_arg);
 uint64_t s_uint_from_string(char *string);
 void tester_function(char *arg);
+
+int s_only_whitespace(char *bfr);
 #endif
 

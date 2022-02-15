@@ -60,7 +60,7 @@ Game_State *gs_create_game_state(Creature *player, Game_World *world,Linked_List
   
    box(state->logs[EVENT_LOG],0,0);
 
-   INIT_EVENT_LOG(state->logs[EVENT_LOG]);
+  INIT_EVENT_LOG(state->logs[EVENT_LOG]);
 
    
   top_panel(state->panels[MAIN_SCREEN]);
