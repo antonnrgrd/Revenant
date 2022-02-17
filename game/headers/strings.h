@@ -20,7 +20,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include <stdint.h>
 #include <math.h>
 #include <inttypes.h>
-#include <ctype.h>
+#define EMPTY_STR_RANGE 32
 #define PRINT_STRING(argument)		\
   argument[0] = argument[0]-32;		\
   printf("%s%s",argument ,"\n");	\

@@ -34,10 +34,10 @@ int msg_find_log_position(Game_State *gs);
 
 
 
-#define UPDATE_ADD_TO_LOG(game_state,position,msg_bfr)wmove(game_state->logs[MAIN_SCREEN],DEFAULT_MAX_Y,0); mvwinnstr(game_state->logs[MAIN_SCREEN], DEFAULT_MAX_Y,0,msg_bfr,MAX_MSG_LENGTH-1); wclrtoeol(game_state->logs[MAIN_SCREEN]); mvwprintw(game_state->logs[EVENT_LOG],free_log_position,22, msg_bfr);  wrefresh(game_state->logs[MAIN_SCREEN]); free(msg_bfr);  
+#define UPDATE_ADD_TO_LOG(game_state,position,msg_bfr)wmove(game_state->logs[MAIN_SCREEN],DEFAULT_MAX_Y,0); mvwinnstr(game_state->logs[MAIN_SCREEN], DEFAULT_MAX_Y,0,msg_bfr,MAX_MSG_LENGTH-1); wclrtoeol(game_state->logs[MAIN_SCREEN]); mvwprintw(game_state->logs[EVENT_LOG],free_log_position,12, msg_bfr); free(msg_bfr);  
 
 
-#define UPDATE_PUSH_ADD_TO_LOG(game_state,msg_bfr)wmove(game_state->logs[MAIN_SCREEN],DEFAULT_MAX_Y,0); mvwinnstr(game_state->logs[MAIN_SCREEN], DEFAULT_MAX_Y,0,msg_bfr,MAX_MSG_LENGTH-1);wclrtoeol(game_state->logs[MAIN_SCREEN]); mvwprintw(game_state->logs[EVENT_LOG],15,20, msg_bfr); wmove(game_state->logs[EVENT_LOG],13,0); wclrtoeol(game_state->logs[EVENT_LOG]); for(int i = 13; i > 2; i--){ mvwinnstr(game_state->logs[EVENT_LOG], i,22,msg_bfr,MAX_MSG_LENGTH-1); mvprintw(game_state->logs[EVENT_LOG], i+1,22,msg_bfr); wmove(game_state->logs[EVENT_LOG],i,22); wclrtoeol(game_state->logs[EVENT_LOG]); }  free(msg_bfr); 
+#define UPDATE_PUSH_ADD_TO_LOG(game_state,msg_bfr)wmove(game_state->logs[MAIN_SCREEN],DEFAULT_MAX_Y,0); mvwinnstr(game_state->logs[MAIN_SCREEN], DEFAULT_MAX_Y,0,msg_bfr,MAX_MSG_LENGTH-1);wclrtoeol(game_state->logs[MAIN_SCREEN]); mvwprintw(game_state->logs[EVENT_LOG],15,20, msg_bfr); wmove(game_state->logs[EVENT_LOG],13,0); wclrtoeol(game_state->logs[EVENT_LOG]); for(int i = 13; i > 2; i--){ mvwinnstr(game_state->logs[EVENT_LOG], i,12,msg_bfr,MAX_MSG_LENGTH-1); mvprintw(game_state->logs[EVENT_LOG], i+1,12,msg_bfr); wmove(game_state->logs[EVENT_LOG],i,12); wclrtoeol(game_state->logs[EVENT_LOG]); }  free(msg_bfr); 
 
 
 
@@ -49,6 +49,6 @@ void msg_update_event_log(Game_State *gs);
 
 #define WRITE_TO_LOG(log_index)
 
-#define INIT_EVENT_LOG(window) mvwprintw(window,1,25, "PAST 10 EVENTS" ); char number[] = "1."; for(int i = 3; i < 13; i++){ number[0] = (i-2) + '0'; mvwprintw(window,i,20,number ); } mvwprintw(window,12,20, "10.");
+#define INIT_EVENT_LOG(window) mvwprintw(window,1,25, "PAST 10 EVENTS" ); char number[] = "1."; for(int i = 3; i < 13; i++){ number[0] = (i-2) + '0'; mvwprintw(window,i,10,number ); } mvwprintw(window,12,10, "10.");
 #endif
 
