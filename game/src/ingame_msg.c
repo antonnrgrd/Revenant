@@ -52,9 +52,15 @@ void msg_update_event_log(Game_State *gs){
   char *msg_bfr = malloc(MAX_MSG_LENGTH * sizeof(char));
   mvwinnstr(gs->logs[MAIN_SCREEN], DEFAULT_MAX_Y,0,msg_bfr,MAX_MSG_LENGTH-1);
   int free_log_position = msg_find_log_position(gs);
-  //  printf("%d%s",free_log_position, " ");
+  // printf("%d%s",free_log_position, " ");
   if(free_log_position != -1){
-        UPDATE_ADD_TO_LOG(gs,position,msg_bfr) 
+    if(free_log_position < 12){
+      UPDATE_ADD_TO_LOG(gs,position,msg_bfr,12);
+    }
+    else{
+      //We change the offset where print if the found y position is 13 because the offset position is 2 digits and so we counter that by increasing the offst
+      UPDATE_ADD_TO_LOG(gs,position,msg_bfr,14);
+    }
   }
   else{
     UPDATE_PUSH_ADD_TO_LOG(gs,msg_bfr);
