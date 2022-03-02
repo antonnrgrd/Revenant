@@ -30,7 +30,7 @@ void msg_show_log(Game_State *gs, int panel_index){
     }
   }
 }
-   
+ 
 int msg_find_log_position(Game_State *gs){
   char *line_contents = malloc(MAX_MSG_LENGTH * sizeof(char));
   for(int i = 3; i< 13; i++){
@@ -42,8 +42,7 @@ int msg_find_log_position(Game_State *gs){
 	return i;
       }
   }
-  //printf("%s",line_contents);
-  
+  //printf("%s",line_contents);  
   free(line_contents);
   return -1;
 }
@@ -66,4 +65,6 @@ void msg_update_event_log(Game_State *gs){
     UPDATE_PUSH_ADD_TO_LOG(gs,msg_bfr);
    }
 }
-
+ 
+ 
+ 

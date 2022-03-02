@@ -34,10 +34,12 @@ int msg_find_log_position(Game_State *gs);
 
 
 
-#define UPDATE_ADD_TO_LOG(game_state,position,msg_bfr,offset)wmove(game_state->logs[MAIN_SCREEN],DEFAULT_MAX_Y,0); mvwinnstr(game_state->logs[MAIN_SCREEN], DEFAULT_MAX_Y,0,msg_bfr,MAX_MSG_LENGTH-1); wclrtoeol(game_state->logs[MAIN_SCREEN]); mvwprintw(game_state->logs[EVENT_LOG],free_log_position,offset, msg_bfr); free(msg_bfr);  
+#define UPDATE_ADD_TO_LOG(game_state,position,msg_bfr,offset) mvwprintw(game_state->logs[EVENT_LOG],free_log_position,offset, msg_bfr); free(msg_bfr);  
 
 
-#define UPDATE_PUSH_ADD_TO_LOG(game_state,msg_bfr)wmove(game_state->logs[MAIN_SCREEN],DEFAULT_MAX_Y,0); mvwinnstr(game_state->logs[MAIN_SCREEN], DEFAULT_MAX_Y,0,msg_bfr,MAX_MSG_LENGTH-1);wclrtoeol(game_state->logs[MAIN_SCREEN]); mvwprintw(game_state->logs[EVENT_LOG],15,20, msg_bfr); wmove(game_state->logs[EVENT_LOG],13,0); wclrtoeol(game_state->logs[EVENT_LOG]); for(int i = 13; i > 2; i--){ mvwinnstr(game_state->logs[EVENT_LOG], i,12,msg_bfr,MAX_MSG_LENGTH-1); mvprintw(game_state->logs[EVENT_LOG], i+1,12,msg_bfr); wmove(game_state->logs[EVENT_LOG],i,12); wclrtoeol(game_state->logs[EVENT_LOG]); }  free(msg_bfr); 
+#define UPDATE_PUSH_ADD_TO_LOG(game_state,msg_bfr) mvwprintw(game_state->logs[EVENT_LOG],13,14, msg_bfr); wmove(game_state->logs[EVENT_LOG],12,14); wclrtoeol(game_state->logs[EVENT_LOG]); mvwinnstr(game_state->logs[EVENT_LOG], 11,12,msg_bfr,MAX_MSG_LENGTH-1); mvwprintw(game_state->logs[EVENT_LOG],12,14, msg_bfr); for(int i = 11; i > 2; i--){ wmove(game_state->logs[EVENT_LOG],i,12); wclrtoeol(game_state->logs[EVENT_LOG]);  mvwinnstr(game_state->logs[EVENT_LOG], i-1,12,msg_bfr,MAX_MSG_LENGTH-1); mvwprintw(game_state->logs[EVENT_LOG],i,12, msg_bfr); } mvwinnstr(game_state->logs[EVENT_LOG], 13,14,msg_bfr,MAX_MSG_LENGTH-1); mvwprintw(game_state->logs[EVENT_LOG],3,12, msg_bfr); wmove(game_state->logs[EVENT_LOG],13,14); wclrtoeol(game_state->logs[EVENT_LOG]); free(msg_bfr);  
+
+/*  mvwinnstr(game_state->logs[EVENT_LOG], i,12,msg_bfr,MAX_MSG_LENGTH-1); mvprintw(game_state->logs[EVENT_LOG], i+1,12,msg_bfr); wmove(game_state->logs[EVENT_LOG],i,12); wclrtoeol(game_state->logs[EVENT_LOG]); }  free(msg_bfr); */
 
 
 
@@ -45,7 +47,7 @@ void msg_update_event_log(Game_State *gs);
 
 //     
 
-
+#define CLEAR_MSG_LINE() wmove(game_state->logs[MAIN_SCREEN],DEFAULT_MAX_Y,0); wclrtoeol(game_state->logs[MAIN_SCREEN]);
 
 #define WRITE_TO_LOG(log_index)
 
