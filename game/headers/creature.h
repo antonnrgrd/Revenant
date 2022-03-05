@@ -50,11 +50,11 @@ typedef enum Creature_Kind{animal, humanoid,cyborg,mechanical,mathematical,veget
 typedef enum Environment{cavern,forest,aquatic,plains,mountain}Environment;
 typedef enum Disposition{friendly,hostile, territorial,neutral,passive,undefined}Disposition;
 typedef enum Styling{land,flying,burrowing,diving}Styling;
-typedef enum Limb_Kind{hhead,ttorso,aarm,lleg,ttail,wwing,hhand,ffoot,tthroat,tappendage,ffinn,ggill,noone}Limb_Kind;
+typedef enum Limb_Kind{head,torso,arm,leg,tail,wing,hand,foot,throat,appendage,finn,gill,noone}Limb_Kind;
 typedef enum Limb_Status{bleeding,healthy,infected,disabled,frozen,poisons}Limb_Status;
 typedef enum Status{immobile,poisoned,haemorrhaging,unconscious,frostbit}Status;
 typedef enum Animal_ID{short_nosed_bear,elk,}Animal_ID;
-typedef enum body_type{animal_quad, humanlike, humanlike_tail }body_type;
+typedef enum body_type{quad, humanlike, serpentine }body_type;
 typedef enum behavior{idle, roaming, pursuing, fleeing}behavior;
 typedef enum attack_type{biting, clawing, charging, headbutting}attack_type;
 typedef struct Limb{
@@ -73,7 +73,7 @@ typedef struct Humanoid_Body{
   Limb r_leg;
 }Humanoid_Body;
 
-typedef struct Animal_Body{
+typedef struct{
   Limb head;
   Limb torso;
   Limb l_arm;
@@ -81,11 +81,11 @@ typedef struct Animal_Body{
   Limb l_leg;
   Limb r_leg;
   Limb tail;
-}Animal_Body;
+}Quad_Body;
 
 typedef union body_type_holder{
   Humanoid_Body *humanoid_body;
-  Animal_Body *animal_body;
+  Quad_Body *animal_body;
 }body_holder;
 
 
@@ -154,70 +154,6 @@ typedef struct Humanoid_Definition{
 }Humanoid_Definition;
 
 
-typedef struct Humanoid_Instance{ 
-  Item *head_wear;
-  Item *torso_wear;
-  Item *legs_wear;
-  Item *main_hand_wear;
-  Item *off_hand_wear;
-  Item *neck_wear;
-  Item *back_wear;
-  Item *finger_wear;
-  Limb *head;
-  Limb *torso;
-  Limb *l_arm;
-  Limb *r_arm;
-  Limb *l_leg;
-  Limb *r_leg;
-  Limb *tail;
-}Humanoid_Instance;
-
-typedef struct Animal_Instance{ // Anything ending with an Instance is intended to be the actual instantiations of a given creature type
-  
-}Animal_Instance;
-
-
-
-typedef struct Dragon_Kind{
-  char *name;
-  char *description;
-  Attributes *attributes;
-}Dragon_Kind;
-
-typedef struct Humanoid{
-  char *description;
-  Limb *head;
-  Limb *torso;
-  Limb *throat;
-  Limb *l_leg;
-  Limb *r_leg;
-  Limb *l_foot;
-  Limb *r_foot;
-  Limb *l_hand;
-  Limb *r_hand;
-  Limb *l_arm;
-  Limb *r_arm;
-  Item *headgear;
-  Item *chestgear;
-  Item *leggear;
-  Item *backgear;
-  Item *mainhand;
-  Item *offhand;
-}Humanoid;
-
-typedef struct Player_Character{
-  char *description;
-  U_Hashtable *inventory;
-}Player_Character;
- 
-
-typedef union Creature_Instance{
-  Humanoid_Instance *humanoid;
-   Animal_Instance *animal;
-  Player_Character *character;
-}Creature_Instance;
-
-
 typedef struct Creature{
   body_type body_type;
   body_holder body;
@@ -231,7 +167,8 @@ typedef struct Creature{
   uint32_t curr_health;
   float max_carry;
   float current_carry;
-   Creature_Instance instance;
+  // A generic placeholder for any kind of additional info that is highly dependent on the specific creature type
+  void *additional_info;
   char *representation;
   Color *color;
   Position position;
@@ -257,14 +194,6 @@ void c_initialize_animal_body(Creature *c, body_type body_type);
 
 Creature *c_generate_creature(Creature_Kind kind, int id,unsigned x,unsigned y,Game_World *world, Creature *target);
 
-Animal_Instance *c_generate_animal_instance(Animal_Definition d);
-
-
-
-
-Humanoid_Instance *c_generate_humanoid_instance(Humanoid_Definition d);
-//Humanoid_Instance *c_generate_humanoid_instance(Humanoid_Definition d);
-
 
 void c_initialize_animal_inf(Creature *c, int id);
 
@@ -281,6 +210,10 @@ void c_compute_relative_coords(Creature *creature, Creature *player);
 
 void c_cleanup_creature(Creature *c,Game_World *world);
  char  *c_retrieve_creature_name(Creature *c);
+
+//int (*creature_attack_bodytype_handler[1])(Creature *c,Creature *target, int id);
+
+creature_attack_bodytype_quad(Creature *c,Creature *target, int id);
 #endif
 
 

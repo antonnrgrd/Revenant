@@ -15,9 +15,6 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "move_handler.h"
 
-
-  
-
 void mv_check_move_handler(int global_x, int global_y, int local_x, int local_y, Creature *c,Game_State *game_state){
   // Before we check the response value from the character, we first need to be assert that position we are trying to make the move to is within bounds of the current zone's dimensionality to avoid invalid index lookups in the game world's tiles (whether negative or too large index values)
   if( (global_x < game_state->current_zone->width  && global_y < game_state->current_zone->height) && (global_x > -1  && global_y > -1 )  ){
@@ -99,7 +96,7 @@ mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s%s%s%d%s", "Pickup ", game_state
   response = getch();
   switch(response){
   case Y:
-    result = inv_add_item(game_state->current_zone->tiles[global_y][global_x].entry->item_holder, c->instance.character->inventory, c);
+    result = inv_add_item(game_state->current_zone->tiles[global_y][global_x].entry->item_holder, (struct U_Hashtable *)c->additional_info, c);
     Item *i = game_state->current_zone->tiles[global_y][global_x].entry->item_holder->item;
     if(result == SUCCESS_ADDITION){
       move(0,0);

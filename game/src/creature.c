@@ -121,15 +121,16 @@ Creature *c_random_player(int x, int y,Game_World *world){
   c->representation[0] = '@';
   c->color = malloc(sizeof(Color));
   c->standing_on[0] = ' ';
-  c->instance.character = malloc(sizeof(Player_Character));
-  c->instance.character->inventory = u_initialize_hashtable(10);
+
+  U_Hashtable *inventory = u_initialize_hashtable(10);
+  c->additional_info = inventory;
   return c;
   
 }
 
 void c_initialize_animal_body(Creature *c, body_type body_type){
-    if(body_type == animal_quad ){
-      c->body.animal_body = malloc(sizeof(Animal_Body));
+    if(body_type == animal){
+      c->body.animal_body = malloc(sizeof(Quad_Body));
 }
 }
 // In order to understand why we compute the coordinates as we do when the distance ebtween player and creature exceeds the scrren boundaries, refer to the game manual
@@ -174,15 +175,17 @@ void c_compute_relative_coords(Creature *creature, Creature *player){
 }
 
 
-extern  Animal_Definition animal_definitions[] = {{0 ,"Short-faced bear","A large brown bear. It has a disproportionately short face",900,3.4,1.5 , {12,12,12,12,12,12,12}, {COLOR_RED, 0,0,0}, {.animal_body = {{hhead,healthy,100, 100},{ttorso,healthy,100, 100},{aarm,healthy,100, 100},{hhead,healthy,100, 100},{lleg,healthy,100, 100},{lleg,healthy,100, 100},{ttail,healthy,100, 100}}},roaming, animal_quad}};
+extern  Animal_Definition animal_definitions[] = {{0 ,"Short-faced bear","A large brown bear. It has a disproportionately short face",900,3.4,1.5 , {12,12,12,12,12,12,12}, {COLOR_RED, 0,0,0}, {.animal_body = {{head,healthy,100, 100},{torso,healthy,100, 100},{arm,healthy,100, 100},{head,healthy,100, 100},{leg,healthy,100, 100},{leg,healthy,100, 100},{tail,healthy,100, 100}}},roaming, quad}};
 
 
 						  
 
-extern Humanoid_Definition humanoid_definitions[] = {{"Bandit", "A bandit looking to steal rob and murder you", 65,1.65, iron,iron,iron, leather, leather, steel, one_hand, sword,steel, leather, {15,15,15,15,15,15,15}, {hhead, healthy, 14, 15},{ttorso, healthy, 18, 21},{aarm, healthy, 14, 15} , {aarm, healthy, 14, 15}, {lleg, healthy, 14, 15}, {lleg, healthy, 14, 15},{noone, healthy, 14, 15},{noone, healthy, 14, 15},{noone, healthy, 14, 15}, medium, weaponry, axe}};
+extern Humanoid_Definition humanoid_definitions[] = {{"Bandit", "A bandit looking to steal rob and murder you", 65,1.65, iron,iron,iron, leather, leather, steel, one_hand, sword,steel, leather, {15,15,15,15,15,15,15}, {head, healthy, 14, 15},{torso, healthy, 18, 21},{arm, healthy, 14, 15} , {arm, healthy, 14, 15}, {leg, healthy, 14, 15}, {leg, healthy, 14, 15},{noone, healthy, 14, 15},{noone, healthy, 14, 15},{noone, healthy, 14, 15}, medium, weaponry, axe}};
 
 
 void (*creature_initializer[1])(Creature *c, int id) = { c_initialize_animal_inf};
+
+//int (*creature_attack_bodytype_handler[1])(Creature *c,Creature *target, int id) = { creature_attack_bodytype_quad };
 
 char *c_retrieve_creature_name(Creature *c){
   switch(c->species){
@@ -194,3 +197,7 @@ char *c_retrieve_creature_name(Creature *c){
 }
 
 
+c_attack_bodytype_quad(Creature *c,Creature *target, int id){
+  //  int dmg = c->attributes.strength * c->body.animal_body;
+  // target->curr_health -= dmg;
+}

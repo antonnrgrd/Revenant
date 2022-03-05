@@ -28,7 +28,7 @@ typedef enum Wkind{mele,ranged}Wkind;
 typedef enum Type{normal,magical}Type;
 typedef enum Quality_Level{poor,adequate,medium,high,very_high,epic,legendary,artefact}Quality_Level;
 //typedef enum Enchantment_Level{low,medium,high,very_high,epic,legendary,artefact}Enchantment_Level;
-typedef enum Worn_In{head,neck,finger,torso,legs,back,hand,hand_w}Worn_in;
+typedef enum Worn_In{head_slot,neck_slot,finger_slot,torso_slot,leg_slot,back_slot,hand_slot}Worn_in;
 typedef enum Equipment_Kind{armor, weaponry}Equipment_Kind;
 typedef enum Item_Kind{interactable,valuable,reagent,consumable,equippable}Item_Kind;
 typedef enum Reagent_Kind{cooking,smithing,fishing,herb,computer}Reagent_Kind;

@@ -25,7 +25,13 @@ void cb_pursue_target(Creature *c,Game_World *current_zone, WINDOW *draw_screen)
   
 
 void cb_attack_target(Creature *c,Game_World *current_zone, WINDOW *draw_screen){
-  ;
+  if(abs(c->position.global_y - c->target->position.global_y ) <= 1 || abs(c->position.global_x - c->target->position.global_x )){
+    //    (*creature_attack_bodytype_handler[c->body_type])(c,c->target, c->id);
+  }
+  else{
+    cb_pursue_target(c,current_zone, draw_screen);
+  }
+  
 }
 
 void cb_idle(Creature *c,Game_World *current_zone, WINDOW *draw_screen){
