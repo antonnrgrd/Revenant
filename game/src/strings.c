@@ -61,17 +61,12 @@ void tester_function(char *arg){
 }
 
 int s_only_whitespace(char *bfr){
-  int working_index = 0;
-  while(bfr[working_index] != '\0'){
     /* We only bother checking the first character because with how we write messages to the log, it suffices to check
      the first character to decide if the rest of the string is empty i.e if the first character is empty/nonempty, it applies to the rest of the string*/
     if(bfr[0] > EMPTY_STR_RANGE){      
       return 0;
     }
-  //  printf("%s%s", " empty str found: ", bfr );
-  return 1;
- 
-  }
+  return 1; 
 }
 s_print_str_lines(char *str){
   int curr_index = 0;

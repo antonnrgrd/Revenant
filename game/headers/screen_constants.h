@@ -11,10 +11,6 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 #ifndef SCREEN_CONSTANTS
 #define SCREEN_CONSTANTS
-#define Y 121
-#define N 110
-#define A 97
-#define S 115
 #define DEFAULT_MAX_X 80
 #define DEFAULT_MAX_Y 24
 #define DEFAULT_MIN_Y 0
