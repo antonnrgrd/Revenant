@@ -68,11 +68,5 @@ int s_only_whitespace(char *bfr){
     }
   return 1; 
 }
-s_print_str_lines(char *str){
-  int curr_index = 0;
-  while (str[curr_index] != '\0'){
-    printf("%c%s",str[curr_index] , "\n");
-    curr_index++;
-  }
-}
+
  

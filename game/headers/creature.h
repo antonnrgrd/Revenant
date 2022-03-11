@@ -21,7 +21,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include <ncurses.h>
 #include "gameinfo.h"
 #include "creature_macros.h"
-
+#include "rng.h"
 
 
 #define YES 1
@@ -178,8 +178,9 @@ typedef struct Creature{
   behavior behavior;
   behavior default_behavior;
   struct Creature *target;
-  int has_moved_around_vertically:1;
-  int has_moved_around_horizontally:1;
+  unsigned int has_moved_around_vertically:1;
+  unsigned int has_moved_around_horizontally:1;
+  int actions;
 }Creature;
 
 
@@ -211,9 +212,9 @@ void c_compute_relative_coords(Creature *creature, Creature *player);
 void c_cleanup_creature(Creature *c,Game_World *world);
  char  *c_retrieve_creature_name(Creature *c);
 
-//int (*creature_attack_bodytype_handler[1])(Creature *c,Creature *target, int id);
+//int (*creature_attack_bodytype_handler[1])(Creature *c, int id, Mersienne_Twister *twister);
 
-creature_attack_bodytype_quad(Creature *c,Creature *target, int id);
+creature_attack_bodytype_quad(Creature *c);
 #endif
 
 

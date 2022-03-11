@@ -42,7 +42,7 @@ void game_loop(Game_State *game_state){
     default:
       break;
     }
-    ll_iter_list_as_creature(game_state->active_creatures,game_state->current_zone,game_state->logs[MAIN_SCREEN]);
+    ll_iter_list_as_creature(game_state->active_creatures,game_state);
   }
 }
 

@@ -36,7 +36,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "game_state_struct.h"
 #include "rng.h"
 int main(int argc, char *argv[]){
-  /*
+  
   initscr();
   start_color();
   Game_World *game_world = g_generate_game_world(1000,1000);
@@ -57,14 +57,10 @@ int main(int argc, char *argv[]){
   keypad(stdscr, TRUE);
   srand(time(NULL));
   raw();
-  
+   
   game_loop(game_state);
   endwin();
-  */
-      Mersienne_Twister *twister = rng_generate_twister();
-      for(int i = 0; i < 1000; i++){
-	printf("%d%s", D10(twister), "\n");
-      } 
+ 
 }
   
  

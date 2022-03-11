@@ -197,7 +197,6 @@ char *c_retrieve_creature_name(Creature *c){
 }
 
 
-c_attack_bodytype_quad(Creature *c,Creature *target, int id){
-  //  int dmg = c->attributes.strength * c->body.animal_body;
-  // target->curr_health -= dmg;
+c_attack_bodytype_quad(Creature *c, int id){
+ 
 }

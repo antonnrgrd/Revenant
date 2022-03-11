@@ -16,7 +16,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "move_handler.h"
 #include "creature.h"
 
-void ll_iter_list_as_creature(Linked_List *list, Game_World *current_zone, WINDOW *draw_screen){
+void ll_iter_list_as_creature(Linked_List *list, Game_State *game_state){
   Node *current_node = list->initial_node;
   Node *previous = current_node;
   while(current_node != NULL) {
@@ -26,7 +26,7 @@ void ll_iter_list_as_creature(Linked_List *list, Game_World *current_zone, WINDO
       current_node->value = NULL;
     }
     else{
-      cb_act( (struct Creature *)current_node->value, current_zone,draw_screen);
+      cb_act( (struct Creature *)current_node->value, game_state);
     previous = current_node;
     current_node = current_node->next;
     }
@@ -54,7 +54,6 @@ Game_State *gs_create_game_state(Creature *player, Game_World *world,Linked_List
   state->logs[MAIN_SCREEN]  = newwin(0,0,0,0);
   state->logs[EVENT_LOG] = newwin(LOG_Y_SIZE,LOG_X_SIZE,LOG_START_Y,LOG_START_X);
   
-  
    state->panels[EVENT_LOG] = new_panel(state->logs[EVENT_LOG]);
   state->panels[MAIN_SCREEN] = new_panel(state->logs[MAIN_SCREEN]);
   
@@ -66,7 +65,9 @@ Game_State *gs_create_game_state(Creature *player, Game_World *world,Linked_List
   top_panel(state->panels[MAIN_SCREEN]);
    
   update_panels();
-  doupdate(); 
+  doupdate();
+
+  state->twister = rng_generate_twister();
   return state;
 }
 

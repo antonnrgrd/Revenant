@@ -4,6 +4,7 @@
 #include "creature.h"
 #include <math.h>
 #include "move_handler.h"
+#include "game_state_struct.h"
 #define UP 0
 #define DOWN 1
 #define LEFT 2
@@ -18,23 +19,23 @@
 
 #define WITHIN_BOUND 0
 #define OUT_OF_BOUND 1
-void cb_pursue_target(Creature *c,Game_World *current_zone, WINDOW *draw_screen);
+void cb_pursue_target(Creature *c,Game_State *game_state);
 
-void cb_from_target(Creature *c,Game_World *current_zone, WINDOW *draw_screen);
+void cb_from_target(Creature *c,Game_State *game_state);
 
-void cb_follow_target(Creature *c,Game_World *current_zone, WINDOW *draw_screen);
+void cb_follow_target(Creature *c,Game_State *game_state);
 
-void cb_attack_target(Creature *c,Game_World *current_zone, WINDOW *draw_screen);
+void cb_attack_target(Creature *c,Game_State *game_state);
 
-void cb_idle(Creature *c,Game_World *current_zone, WINDOW *draw_screen);
+void cb_idle(Creature *c,Game_State *game_state);
 
-extern void (*creature_behavior_handler[4])(Creature *c,Game_World *current_zone, WINDOW *draw_screen);
+extern void (*creature_behavior_handler[4])(Creature *c,Game_State *game_state);
 
-void cb_act(Creature *c,Game_World *current_zone, WINDOW *draw_screen);
+void cb_act(Creature *c,Game_State *game_state);
 
-void cb_pursure_target_oob(Creature *c,Game_World *current_zone, WINDOW *draw_screen);
+void cb_pursure_target_oob(Creature *c,Game_State *game_state);
 
-void cb_pursue_target_inb(Creature *c ,Game_World *current_zone, WINDOW *draw_screen);
+void cb_pursue_target_inb(Creature *c,Game_State *game_state);
 
 
 #endif
