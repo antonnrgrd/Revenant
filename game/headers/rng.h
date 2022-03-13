@@ -28,12 +28,12 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define F 1812433253
 /* Imitates die rolls, using the mersenne twister under the hood*. Arguement for upper value range is given as  limit+1 since the function for ensuring the value is in the given range
 is [min,max( and therefore use max+1 to ensure that we could also potentially generate the max value */
-#define GEN_VALUE_RANGED(lower,upper,twister)(rng_extract_number(twister) % (upper-lower) + lower)
-#define D4(twister)GEN_VALUE_RANGED(1,4+1,twister)
-#define D2(twister)GEN_VALUE_RANGED(1,2+1,twister)
-#define D20(twister)GEN_VALUE_RANGED(1,20+1,twister)
-#define D100(twister)GEN_VALUE_RANGED(1,100+1,twister)
-#define D10(twister)GEN_VALUE_RANGED(1,10+1,twister)
+#define GEN_VALUE_RANGE(lower,upper,twister)(rng_extract_number(twister) % (upper-lower) + lower)
+#define D4(twister)GEN_VALUE_RANGE(1,4+1,twister)
+#define D2(twister)GEN_VALUE_RANGE(1,2+1,twister)
+#define D20(twister)GEN_VALUE_RANGE(1,20+1,twister)
+#define D100(twister)GEN_VALUE_RANGE(1,100+1,twister)
+#define D10(twister)GEN_VALUE_RANGE(1,10+1,twister)
 typedef struct{
   int *mt;
   int index;

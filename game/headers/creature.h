@@ -24,6 +24,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "rng.h"
 
 
+
 #define YES 1
 #define NO 0
 
@@ -54,40 +55,15 @@ typedef enum Limb_Kind{head,torso,arm,leg,tail,wing,hand,foot,throat,appendage,f
 typedef enum Limb_Status{bleeding,healthy,infected,disabled,frozen,poisons}Limb_Status;
 typedef enum Status{immobile,poisoned,haemorrhaging,unconscious,frostbit}Status;
 typedef enum Animal_ID{short_nosed_bear,elk,}Animal_ID;
-typedef enum body_type{quad, humanlike, serpentine }body_type;
-typedef enum behavior{idle, roaming, pursuing, fleeing}behavior;
+typedef enum behavior{idle, roaming, pursuing, attacking}behavior;
 typedef enum attack_type{biting, clawing, charging, headbutting}attack_type;
+typedef enum{paw}limb_subtype;
 typedef struct Limb{
   Limb_Kind kind;
   Limb_Status status;
   int durability;
-  int damage;
+  int damage;  
 }Limb;
-
-typedef struct Humanoid_Body{
-  Limb head;
-  Limb torso;
-  Limb l_arm;
-  Limb r_arm;
-  Limb l_leg;
-  Limb r_leg;
-}Humanoid_Body;
-
-typedef struct{
-  Limb head;
-  Limb torso;
-  Limb l_arm;
-  Limb r_arm;
-  Limb l_leg;
-  Limb r_leg;
-  Limb tail;
-}Quad_Body;
-
-typedef union body_type_holder{
-  Humanoid_Body *humanoid_body;
-  Quad_Body *animal_body;
-}body_holder;
-
 
 
 typedef struct Color{
@@ -109,7 +85,7 @@ typedef struct Attributes{
 }Attributes;
 //As a side note i choose the scheme of animal definitions as the specifications of the stats a creature should have and animal instances as the actually initialized structs since C apparenty doesn't allow you to declare AND initialize a pointer at compile time. Instead, what you must do is declare a pointer and then instantiate with something that is NOT a pointer 
 typedef struct Animal_Definition{ // Anything ending with an Definitions is an array that defines the stats of a given creature of a given type
-  int index;
+  int id;
   char *name;
   char *description;
   float weight;
@@ -117,12 +93,12 @@ typedef struct Animal_Definition{ // Anything ending with an Definitions is an a
   float width;
   Attributes attributes;
   Color color;
-  body_holder body;
   behavior behavior;
-  body_type body_type;
+  int limb_count;
+  Limb *limbs;
 }Animal_Definition;
 
-typedef struct Humanoid_Definition{ 
+typedef struct Humanoid_Definition{
   char *name;
   char *description;
   float weight;
@@ -138,15 +114,6 @@ typedef struct Humanoid_Definition{
   Material off_hand_m;
   Material back_m;
   Attributes attributes;
-  Limb head;
-  Limb torso;
-  Limb l_arm;
-  Limb r_arm;
-  Limb l_leg;
-  Limb r_leg;
-  Limb l_wing;
-  Limb r_wing;
-  Limb tail;
   Quality_Level equipment_quality;
   Equipment_Kind secondary_kind; // a specifier that specifies whether the offhand is a weapon or something else
   Mele_Weapon_Kind secondary_weapon_kind; // in the case that their offhand is a weapon, use this, if not, let it be some arbitrary value
@@ -155,8 +122,9 @@ typedef struct Humanoid_Definition{
 
 
 typedef struct Creature{
-  body_type body_type;
-  body_holder body;
+  unsigned int limb_count:10;
+  unsigned int supported_limbs;
+  Limb *limbs;
   float weight;
   float height;
   int id;
@@ -180,7 +148,9 @@ typedef struct Creature{
   struct Creature *target;
   unsigned int has_moved_around_vertically:1;
   unsigned int has_moved_around_horizontally:1;
-  int actions;
+  unsigned int curr_ap:10;
+  unsigned int max_ap:10;
+  unsigned preffered_attack_type
 }Creature;
 
 
@@ -188,9 +158,8 @@ extern Animal_Definition animal_definitions[];
 extern Humanoid_Definition humanoid_definitions[];
 
 extern void (*c_free_creature_body_type[1])(Creature *c);
-void c_free_animal_quad_body_type(Creature *c);
 void c_free_animal(Creature *c);
-void c_initialize_animal_body(Creature *c, body_type body_type);
+
 
 
 Creature *c_generate_creature(Creature_Kind kind, int id,unsigned x,unsigned y,Game_World *world, Creature *target);
@@ -212,9 +181,9 @@ void c_compute_relative_coords(Creature *creature, Creature *player);
 void c_cleanup_creature(Creature *c,Game_World *world);
  char  *c_retrieve_creature_name(Creature *c);
 
-//int (*creature_attack_bodytype_handler[1])(Creature *c, int id, Mersienne_Twister *twister);
+//char * (*creature_attack_bodytype_handler[1])(Creature *c, int id, Mersienne_Twister *twister);
 
-creature_attack_bodytype_quad(Creature *c);
+char *creature_attack_bodytype_quad(Creature *c,Mersienne_Twister *twister);
 #endif
 
 

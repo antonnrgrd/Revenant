@@ -20,7 +20,6 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 void c_free_creature(Creature *c){
   free(c->representation);
   free(c->standing_on);
-  (*c_free_creature_body_type[c->body_type])(c);  
   // We do not free the Creature struct itself because when a creature dies, we mark it for deletion and later on, when going through all active creatures and we see that it is marked for deletion, we remove it from the list of active creatures and only then, can we safely remove. Otherwise, we will have a segementation fault because we pass a null pointer as an argument for the creature behavior function.
 }
 
@@ -29,27 +28,26 @@ void c_cleanup_creature(Creature *c,Game_World *world ){
 }
 
 void (*c_free_creature_body_type[1])(Creature *c) = {};
-void c_free_animal_quad_body_type(Creature *c){
-  free(c->body.animal_body);
-}
+
 
 void c_initialize_animal_inf(Creature *c,int id){
   Animal_Definition d = animal_definitions[id];
   COPY_ATTRIBUTE_INFORMATION(c->attributes, d.attributes);
   c->weight = d.weight;
   c->height = d.height;
-  
+  c->limb_count = d.limb_count;
+  c->limbs = malloc(sizeof(Limb) * c->limb_count);
+  memcpy(c->limbs, d.limbs, (sizeof(Limb) * c->limb_count));
   c->representation = malloc(sizeof(char));
   // We use strcpy instead of assigning the 0th index to be it's char represenation because for some reason, it started printing garbage when using that method to assign its creaturetype representation
   //,explaining the difference in how the ascii represenation for the player and creature is handled
   strcpy(c->representation, "a");
-  c_initialize_animal_body(c, d.body_type);
 }
 
 void c_initialize_humanoid_inf(Creature *c, int id){
-  Humanoid_Definition d = humanoid_definitions[id];
-  c->weight = d.weight;
-  c->height = d.height;
+  //  Humanoid_Definition d = humanoid_definitions[id];
+  //  c->weight = d.weight;
+  // c->height = d.height;
   c->representation[0] = 'h';
   // c->instance.humanoid = c_generate_humanoid_instance(d);
 }
@@ -128,11 +126,7 @@ Creature *c_random_player(int x, int y,Game_World *world){
   
 }
 
-void c_initialize_animal_body(Creature *c, body_type body_type){
-    if(body_type == animal){
-      c->body.animal_body = malloc(sizeof(Quad_Body));
-}
-}
+
 // In order to understand why we compute the coordinates as we do when the distance ebtween player and creature exceeds the scrren boundaries, refer to the game manual
 void c_compute_relative_coords(Creature *creature, Creature *player){
   if(creature->position.global_x > player->position.global_x){
@@ -175,17 +169,15 @@ void c_compute_relative_coords(Creature *creature, Creature *player){
 }
 
 
-extern  Animal_Definition animal_definitions[] = {{0 ,"Short-faced bear","A large brown bear. It has a disproportionately short face",900,3.4,1.5 , {12,12,12,12,12,12,12}, {COLOR_RED, 0,0,0}, {.animal_body = {{head,healthy,100, 100},{torso,healthy,100, 100},{arm,healthy,100, 100},{head,healthy,100, 100},{leg,healthy,100, 100},{leg,healthy,100, 100},{tail,healthy,100, 100}}},roaming, quad}};
+extern  Animal_Definition animal_definitions[] = {{0 ,"Short-faced bear","A large brown bear. It has a disproportionately short face",900,3.4,1.5 , {12,12,12,12,12,12,12}, {COLOR_RED, 0,0,0},6,  {{{head,healthy,100, 100},{torso,healthy,100, 100},{arm,healthy,100, 100},{head,healthy,100, 100},{leg,healthy,100, 100},{leg,healthy,100, 100},{tail,healthy,100, 100}}},roaming}};
 
 
 						  
 
-extern Humanoid_Definition humanoid_definitions[] = {{"Bandit", "A bandit looking to steal rob and murder you", 65,1.65, iron,iron,iron, leather, leather, steel, one_hand, sword,steel, leather, {15,15,15,15,15,15,15}, {head, healthy, 14, 15},{torso, healthy, 18, 21},{arm, healthy, 14, 15} , {arm, healthy, 14, 15}, {leg, healthy, 14, 15}, {leg, healthy, 14, 15},{noone, healthy, 14, 15},{noone, healthy, 14, 15},{noone, healthy, 14, 15}, medium, weaponry, axe}};
+//extern Humanoid_Definition humanoid_definitions[] = {{"Bandit", "A bandit looking to steal rob and murder you", 65,1.65, iron,iron,iron, leather, leather, steel, one_hand, sword,steel, leather, {15,15,15,15,15,15,15}, {head, healthy, 14, 15},{torso, healthy, 18, 21},{arm, healthy, 14, 15} , {arm, healthy, 14, 15}, {leg, healthy, 14, 15}, {leg, healthy, 14, 15},{noone, healthy, 14, 15},{noone, healthy, 14, 15},{noone, healthy, 14, 15}, medium, weaponry, axe}};
 
 
 void (*creature_initializer[1])(Creature *c, int id) = { c_initialize_animal_inf};
-
-//int (*creature_attack_bodytype_handler[1])(Creature *c,Creature *target, int id) = { creature_attack_bodytype_quad };
 
 char *c_retrieve_creature_name(Creature *c){
   switch(c->species){
@@ -197,6 +189,3 @@ char *c_retrieve_creature_name(Creature *c){
 }
 
 
-c_attack_bodytype_quad(Creature *c, int id){
- 
-}

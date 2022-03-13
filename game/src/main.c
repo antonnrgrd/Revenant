@@ -47,9 +47,8 @@ int main(int argc, char *argv[]){
   Game_State *game_state = gs_create_game_state(c,game_world,ll);
    
    
-  opponent->behavior = pursuing;
-  
   opponent->target = c;
+  opponent->behavior=attacking;
   initscr();
   start_color();
   noecho();
