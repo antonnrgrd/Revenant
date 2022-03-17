@@ -26,7 +26,6 @@ void cb_pursue_target(Creature *c,Game_State *game_state){
   void cb_attack_target(Creature *c,Game_State *game_state){
   if(abs(c->position.global_y - c->target->position.global_y ) <= 1 && abs(c->position.global_x - c->target->position.global_x ) <= 1){
     //we subtract 1 from limb count since an array of n limbs has a max index of n-1
-    //        printf("%s","called");
     Limb attacking_limb = c->limbs[GEN_VALUE_RANGE(0,c->limb_count-1, game_state->twister)];
     CLEAR_MSG_LINE();
     mvwprintw(game_state->logs[MAIN_SCREEN],DEFAULT_MAX_Y,0, "%s%s%d%s", c_retrieve_creature_name(c) , " hits you for ", 10, " damage");
