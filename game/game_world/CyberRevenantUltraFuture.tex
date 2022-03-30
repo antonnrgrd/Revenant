@@ -3,7 +3,7 @@
 \usepackage{amsmath}
 \title{Sections and Chapters}
 \author{Anton Nørgaard}
-\date{ }
+\date{ \today}
   
 \begin{document}
   
@@ -11,10 +11,10 @@
   
 \tableofcontents
 
-\section*{Introduction}
+\section{Introduction}
    
-\section*{How stuff works}
-\subsection*{Creatures}
+\section{How stuff works}
+\subsection{Creatures}
 In the following chapers, we will use several variables to compute various information regarding creatures in-game, their status and the way
 that they interact with the environment and the player. For that purpose, we will use the following defintions, some are explicitly computed/stored in-game, others are just definitions and are not explicitly declared in-game. The definitions we will use are
 \begin{itemize}
@@ -51,5 +51,34 @@ Instead, set the creature's local coordinate to
 
 The workings of this are a little hard to work around. Admittedly, this took rather a long while to figure out and I am unsure whether the computations can get simplified further. However, truth be told, I spent way too long to figure this out and so at this point that I cannot be bothered to come up with more clever solutions. \newline
 
-The way it works (informally) is as follows. Assume that 
+The way it works (informally) is as follows. Assume that
+
+
+
+\section{Controls}
+\subsection{Keyboard Layout}
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c| c| c |c|} 
+\hline
+ Col1 & Col2 & Col2 & Col3 \\ [0.5ex] 
+ a - N/A & n - N/A & A - N/A & N - N/A \\ 
+ b - N/A & o - N/A & B - N/A & O - N/A \\
+ c - N/A & p - N/A & C - N/A & P - N/A  \\
+ d - N/A & q - N/A & D - N/A & Q - N/A  \\
+ e - N/A & r - N/A & E - N/A & R - N/A \\ 
+ f - N/A & s - N/A & F - N/A & S - N/A \\
+ g - N/A & t - N/A & G - N/A & T - N/A \\
+ h - N/A & u - N/A & H - N/A & U - N/A \\
+ i - N/A & v - N/A & I - N/A & W - N/A \\
+ j - N/A & w - N/A & J - N/A & X- N/A \\
+ k - N/A & x - N/A & K - N/A & Y - N/A \\
+ l - show past 10 events & y - N/A & L - N/A & Z - N/A \\
+ m - N/A & z - N/A & M - N/A & ESC - Quit command \\ [1ex] 
+ \hline
+\end{tabular}
+\caption{Keyboard bindings.}
+\label{table:1}
+\end{table}
+
 \end{document}

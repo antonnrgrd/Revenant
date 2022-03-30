@@ -36,6 +36,9 @@ void game_loop(Game_State *game_state){
     case 'l':
             msg_show_log(game_state,EVENT_LOG);
       break;
+    case 'i':
+      msg_display_inventory(game_state);
+      break;
     case 'A':
       ;
       break;

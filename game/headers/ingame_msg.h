@@ -52,5 +52,7 @@ void msg_update_event_log(Game_State *gs);
 #define WRITE_TO_LOG(log_index)
 
 #define INIT_EVENT_LOG(window) mvwprintw(window,1,25, "PAST 10 EVENTS" ); char number[] = "1."; for(int i = 3; i < 13; i++){ number[0] = (i-2) + '0'; mvwprintw(window,i,10,number ); } mvwprintw(window,12,10, "10.");
+
+void msg_display_inventory(Game_State *gs);
 #endif
 

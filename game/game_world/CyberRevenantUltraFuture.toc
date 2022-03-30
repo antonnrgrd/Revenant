@@ -1,2 +1,0 @@
-\contentsline {subsubsection}{\numberline {0.0.1}Spawning creatures}{2}%
-\contentsline {section}{Unnumbered Section}{2}%

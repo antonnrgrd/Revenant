@@ -24,8 +24,8 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
  
 #define MAIN_SCREEN 0
 #define EVENT_LOG 1
-#define PLAYER_STATUS_LOG 2
-#define INVENTORY_LOG 3
+#define INVENTORY_LOG 2
+#define PLAYER_STATUS_LOG 3
 #define QUEST_LOG 4
 #define NUM_WINDOWS 5
 //
@@ -36,8 +36,8 @@ typedef struct Game_State{
   struct Creature *player;
   Game_World *current_zone;
   Linked_List *active_creatures;
-  PANEL *panels[2];
-  WINDOW *logs[2];
+  PANEL *panels[3];
+  WINDOW *logs[3];
   Mersienne_Twister *twister;
 }Game_State;
 

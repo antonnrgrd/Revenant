@@ -53,11 +53,13 @@ Game_State *gs_create_game_state(Creature *player, Game_World *world,Linked_List
   we are made to make a new panel-managed window that will act as stdscr */
   state->logs[MAIN_SCREEN]  = newwin(0,0,0,0);
   state->logs[EVENT_LOG] = newwin(LOG_Y_SIZE,LOG_X_SIZE,LOG_START_Y,LOG_START_X);
+  state->logs[INVENTORY_LOG] = newwin(LOG_Y_SIZE,LOG_X_SIZE,LOG_START_Y,LOG_START_X);
   
-   state->panels[EVENT_LOG] = new_panel(state->logs[EVENT_LOG]);
+  state->panels[EVENT_LOG] = new_panel(state->logs[EVENT_LOG]);
   state->panels[MAIN_SCREEN] = new_panel(state->logs[MAIN_SCREEN]);
-  
-   box(state->logs[EVENT_LOG],0,0);
+  state->panels[INVENTORY_LOG] = new_panel(state->logs[INVENTORY_LOG]);
+  box(state->logs[EVENT_LOG],0,0);
+  box(state->logs[INVENTORY_LOG],0,0);
 
    INIT_EVENT_LOG(state->logs[EVENT_LOG]);
 

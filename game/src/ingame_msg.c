@@ -68,6 +68,29 @@ void msg_update_event_log(Game_State *gs){
    }
 }
  
- 
- 
+void msg_display_inventory(Game_State *gs){
+  char letter = 'a';
+  for(int i = 0; i < ((U_Hashtable * )gs->player->additional_info)->size; i++ ){
+    if(((U_Hashtable * )gs->player->additional_info)->entries[i] != NULL){
+      Entry  *current_entry = ((U_Hashtable * )gs->player->additional_info)->entries[i];
+      while(current_entry != NULL){
+	mvwprintw(gs->logs[INVENTORY_LOG],10,14,current_entry->item_holder->item->name," X " ,current_entry->item_holder->amount);
+        current_entry = current_entry->next_entry;
+      }
+    }
+  }
+  top_panel(gs->panels[INVENTORY_LOG]);
+  update_panels(); 
+  doupdate();
+  int ch;
+  while (1){
+    ch = getch();
+    if (ch == 'q'){
+      hide_panel(gs->panels[INVENTORY_LOG]);
+      update_panels();
+      doupdate();
+      return;
+    }
+  }
+} 
 
