@@ -11,8 +11,6 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
-
-
 #include "item.h"
 #include "modifier.h"
 #include <math.h>
@@ -20,7 +18,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 Reagent *i_gen_reagent(Variant variant,float weight,uint32_t value,Reagent_Kind kind){
   Reagent *reagent = malloc(sizeof(Reagent));
-  reagent->variant = variant;
+  //  reagent->variant = variant;
   reagent->weight = weight;
   reagent->kind = kind;
   return reagent;
@@ -31,20 +29,18 @@ Armor *i_gen_armor(){
   return arm;
 }
 
-Weapon *i_gen_mele_weapon(Quality_Level q,Variant variant,Material material,Wkind kind,uint16_t skill,Mele_Weapon_Kind k){
+Weapon *i_gen_weapon(Quality_Level q,Variant variant,Material material,Weapon_Group kind,Weapon_Kind k){
   Weapon *weapon = malloc(sizeof(weapon));
   weapon->variant = variant;
   weapon->material = material;
   weapon->kind = kind;
-  weapon->skill = skill;
-  //  item->name = i_weapon_name(q,material,v,k);
   return weapon;
 }
 
 Consumable *i_gen_consumable(uint32_t healing, uint32_t value, float weight, uint16_t skill){
   Consumable *consumable = malloc(sizeof(Consumable));
   consumable->healing = healing;
-  consumable->weight = weight;
+  //  consumable->weight = weight;
   consumable->skill = skill;
   return consumable;
 }
@@ -70,7 +66,7 @@ char *i_armor_name(Quality_Level q, Material material, Worn_in w){
   char *name = s_merge_text(temp,slot);
   return name;
 }
-char *i_mele_weapon_name(Quality_Level q, Material material, Variant v, Mele_Weapon_Kind kind){
+char *i_mele_weapon_name(Quality_Level q, Material material, Variant v, Weapon_Kind kind){
   char *qual =s_create_text_const(quality_name_modifier[q]);
   char *mat = s_create_text_const(material_name_modifier[material]);
   char *variant = s_create_text_const(handed_modifier[v]);
@@ -84,9 +80,11 @@ char *i_mele_weapon_name(Quality_Level q, Material material, Variant v, Mele_Wea
 }
 
 Item *i_make_armor(Quality_Level q, Material material, Worn_in w){
+ 
   Material_Modifier m = material_modifiers[material];
   Variant_Modifier v = itemslot_modifiers[w];
   Item *i = malloc(sizeof(Item));
+   /*
   Armor *a = malloc(sizeof(Armor));//redundant, to be cleaned up
   a->armor = (uint64_t)ceil(m.armor_modifier * v.stats_modifier);
   a->skill = 10;
@@ -100,17 +98,17 @@ Item *i_make_armor(Quality_Level q, Material material, Worn_in w){
   i->description = NULL;
   i->kind = armor;
   i->quest_item = 0; //doesn't belong to any quest if 0
+  */
   return i; //needs to assert more attributes
 }
-void i_armor_info(Item *i){
-  printf("%s%s", i->name,"\n");
-  printf("%s%f%s", "Its weight is " ,i->weight," kilos \n");
-  printf("%s%d%s", "Its value is " ,i->value," gold \n");
-  printf("%s%ld%s","It provides ", i->specifier.equipment.armor->armor, " armor \n");
-}
-Item *i_make_mele_weapon(Quality_Level q, Material material, Variant v, Mele_Weapon_Kind kind){
+Item *i_make_mele_weapon(Quality_Level q, Material material, Variant v, Weapon_Kind kind){
+
   Item *i = malloc(sizeof(Item));
-  Weapon *w = malloc(sizeof(Weapon));
+  i->representation = s_create_text_const(weapon_representations[1]);
+  Weapon *w = i_gen_weapon(q,v,material,kind,mele);
+  i->item_specific_info = w;
+  i->kind = weapon;
+  /*
   Material_Modifier m = material_modifiers[material];
   Variant_Modifier va = variant_modifiers[v];
   w->variant = v;
@@ -124,33 +122,17 @@ Item *i_make_mele_weapon(Quality_Level q, Material material, Variant v, Mele_Wea
   i->weight = m.base_weight_modifier*va.weight_modifier;
   i->description = NULL;
   i->value = (uint32_t)ceil(m.value_modifier * va.value_modifier);
-  i->kind = equippable;
   i->quest_item = 0;
-  i->specifier.equipment.kind = weaponry;
-  i->specifier.equipment.weapon = w;
-  i-> representation = s_create_text_const(weapon_representations[1]);
+  i->item_specific_info = w;
   i->standing_on = malloc(sizeof(char));
   //strcpy(i->representation, weapon_representations[1]);
+  */
   return i;
 }
 
-void i_mele_weapon_info(Item *i){
-  printf("%s%s", i->name,"\n");
-  printf("%s%f%s", "Its weight is " ,i->weight," kilos \n");
-  printf("%s%d%s", "Its value is " ,i->value," gold \n");
-  printf("%s%ld%s","It does a minimum of  ", i->specifier.equipment.weapon->dmg, " damage \n");
-}
-
-Item *i_make_weapon_or_shield(Equipment_Kind k,Material material, Variant v, Worn_in w,Quality_Level q,Mele_Weapon_Kind kind){
-  if(k == weaponry){ //needs to have added case for armor later to as to initialize a humanoid enemy with a shield as ooposed to an offhand weapon
-    Item *i = i_make_mele_weapon(q,material,v,kind);
-    return i;
-  }
-}
 
 void i_free_item(Item *i){
   free_item_handler[i->kind](i);
-  free(i->name);
   free(i->description);
 }
 
@@ -164,18 +146,20 @@ void i_free_valuable(Item *i){
   ;
 }
 void i_free_reagent(Item *i){
-  free(i->specifier.reagent);
+  //  free(i->specifier.reagent);
 }
 void i_free_consumable(Item *i){
-  free(i->specifier.consumable);
+  // free(i->specifier.consumable);
 }
 void i_free_equippable(Item *i){
+  /*
   if(i->specifier.equipment.kind == armor){
     free(i->specifier.equipment.armor);
   }
   else{
     free(i->specifier.equipment.weapon);
   }
+  */
 }
 
 
@@ -206,6 +190,7 @@ void i_copy_reagent(Item *i, Item *j){
 }
 
 void i_copy_equippable(Item *i, Item *j){
+  /*
   if(i->specifier.equipment.kind == armor){
     j->specifier.equipment.armor = memcpy(&i->specifier.equipment.armor,&i->specifier.equipment.armor, sizeof(Armor) );
   }
@@ -221,6 +206,7 @@ void i_copy_equippable(Item *i, Item *j){
     j->quest_item = 0;
     j->specifier.equipment.kind = weaponry;
   }
+  */
 }
 
 void i_swap_pointers(Item_Holder *i,Item_Holder *j){
@@ -237,7 +223,47 @@ Item_Holder *i_make_item_holder(Item *item, unsigned amount){
   
 }
 
+void i_print_reagent_name(Item *i, WINDOW *inv_screen,int x, int y){
+  mvwprintw(inv_screen,y,x,i, reagent_definitions[i->id].name);
+}
+
+void i_print_consumable_name(Item *i, WINDOW *inv_screen,int x, int y){
+  mvwprintw(inv_screen,y,x,i, consumable_definitions[i->id].name);
+}
+
+void i_print_equippable_name(Item *i, WINDOW *inv_screen,int x, int y){
+  if(i->kind==weapon ){
+  mvwprintw("%s",inv_screen,y,x,i, variant_modifiers[((Weapon *)i)->variant]);
+  }
+
+  else{
+    ;
+  }
+  
+}
+
+extern char* (*i_derive_item_name[3])(Item *i) = {i_derive_item_name_reagent,i_derive_item_name_consumable,i_derive_item_name_equipment};
 
 
+char *i_derive_item_name_reagent(Item *i){
+  return reagent_definitions[i->id].name;
+}
+char *i_derive_item_name_consumable(Item *i){
+  return consumable_definitions[i->id].name;
+}
+char *i_derive_item_name_equipment(Item *i){
+  if(i->kind == weapon){
+    Weapon *w = (Weapon *)i->item_specific_info;
+    char *weapon_name = quality_name_modifier[w->quality];
+    strcat(weapon_name, material_name_modifier[w->material]);
+    strcat(weapon_name, handed_modifier[w->variant]);
+    strcat(weapon_name,mele_weapon_name_modifier[w->type]);
+    return weapon_name;
+  }
+  else{
+    ;
+  }
+}
 
-
+extern Reagent_Definition reagent_definitions[] = {{0,"raw trout", 5.0}};
+extern Consumable_Definition consumable_definitions[] = {{0, "apple", 1, 1.3}};

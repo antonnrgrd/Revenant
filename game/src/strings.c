@@ -42,23 +42,26 @@ char *s_merge_text(char *first_arg,char *second_arg){
   return(string_result);
 }
 
-uint64_t s_uint_from_string(char *string){
+uint64_t s_uint_from_string(int argcount, ...){
+  va_list string_list;
+  va_start(string_list, argcount);
   uint64_t value = 0;
-  int i = 0;
-  while(string[i] != '\0'){
-    uint64_t position = string[i] - 'a'; //won't work in all positions, but find numerical position in alphabet e.g a = 1, b =2, c = 3
-    value = value + position * (uint64_t) pow(2, (i%3));
-    i++;
+  int j = 0;
+  int k = 0;
+  for(int i = 0; i < argcount; i++){
+    char *str = va_arg(string_list,char* );
+    while(str[k] != '\0'){
+    uint64_t position = str[j] - 'a'; //won't work in all positions, but find numerical position in alphabet e.g a = 1, b =2, c = 3
+    value = value + position * (uint64_t) pow(2, (j%3));
+    j++;
+    k++;
+    }
+    k=0;
   }
+  va_end(string_list);
   return value;
 }
 
-void tester_function(char *arg){
-  char *string = s_create_text(arg);
-  uint64_t value = s_uint_from_string(string);
-  printf("%" PRIu64 "\n", value);
-  free(string);
-}
 
 int s_only_whitespace(char *bfr){
     /* We only bother checking the first character because with how we write messages to the log, it suffices to check

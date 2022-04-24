@@ -74,7 +74,7 @@ void msg_display_inventory(Game_State *gs){
     if(((U_Hashtable * )gs->player->additional_info)->entries[i] != NULL){
       Entry  *current_entry = ((U_Hashtable * )gs->player->additional_info)->entries[i];
       while(current_entry != NULL){
-	mvwprintw(gs->logs[INVENTORY_LOG],10,14,current_entry->item_holder->item->name," X " ,current_entry->item_holder->amount);
+	PRINT_ITEM(current_entry->item_holder,gs->logs[INVENTORY_LOG],10,10);
         current_entry = current_entry->next_entry;
       }
     }
@@ -94,3 +94,4 @@ void msg_display_inventory(Game_State *gs){
   }
 } 
 
+ 

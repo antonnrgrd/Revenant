@@ -20,6 +20,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include <stdint.h>
 #include <string.h>
 #include "item.h"
+#include "rng.h"
 #define BFP 18446744073709551615ULL //an enormous prime (by 64-bit standards)
 #define BFP_2 10089886811898868001ULL
 #define NOT_DELETED 0
@@ -56,15 +57,13 @@ typedef struct U_Hashtable{
   unsigned long long b;
 }U_Hashtable;
 
-unsigned long long u_hash(char *name,U_Hashtable *table);
+unsigned long long u_hash(int char_count,U_Hashtable *table, char *strings, ...);
 
-unsigned long long generate_value(unsigned long long min, unsigned long long max);
-
-U_Hashtable *u_initialize_hashtable(int initial_size);
+U_Hashtable *u_initialize_hashtable(int initial_size,Mersienne_Twister *twister);
 
 void u_add_item(Item_Holder *item, int amount,U_Hashtable *table);
 
-Item_Weight u_remove_item(char *name,int amount,U_Hashtable *table);
+Item_Weight u_remove_item(int argcount,int amount,U_Hashtable *table, char *item_name);
 
 void u_print_inventory(U_Hashtable *inventory);
 

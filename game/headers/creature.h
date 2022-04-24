@@ -110,13 +110,12 @@ typedef struct Humanoid_Definition{
   Material legs_m;
   Material main_hand_m;
   Variant main_hand_variant;
-  Mele_Weapon_Kind mele_weapon_kind;
+  //  Mele_Weapon_Kind mele_weapon_kind;
   Material off_hand_m;
   Material back_m;
   Attributes attributes;
   Quality_Level equipment_quality;
-  Equipment_Kind secondary_kind; // a specifier that specifies whether the offhand is a weapon or something else
-  Mele_Weapon_Kind secondary_weapon_kind; // in the case that their offhand is a weapon, use this, if not, let it be some arbitrary value
+  //  Mele_Weapon_Kind secondary_weapon_kind;  in the case that their offhand is a weapon, use this, if not, let it be some arbitrary value
   behavior behavior;
 }Humanoid_Definition;
 
@@ -150,7 +149,7 @@ typedef struct Creature{
   unsigned int has_moved_around_horizontally:1;
   unsigned int curr_ap:10;
   unsigned int max_ap:10;
-  unsigned preffered_attack_type
+  unsigned preffered_attack_type;
 }Creature;
 
 
@@ -174,7 +173,7 @@ extern void (*creature_initializer[1])(Creature *c, int id);
 
 Color *c_copy_color(Color color);
 
-Creature *c_random_player(int y, int x ,Game_World *world);
+Creature *c_random_player(int y, int x ,Game_World *world, Mersienne_Twister *twister);
 
 void c_compute_relative_coords(Creature *creature, Creature *player);
 

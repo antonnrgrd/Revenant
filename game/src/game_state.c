@@ -43,9 +43,10 @@ void gs_print_foes(Game_State *game_state){
 }
 
 
-Game_State *gs_create_game_state(Creature *player, Game_World *world,Linked_List *active_creatures){
-  Game_State *state = malloc(sizeof(Game_State));
-  state->player = player;
+Game_State *gs_create_game_state(Game_World *world,Linked_List *active_creatures){
+  Game_State *state = malloc(sizeof(Game_State))
+  state->twister = rng_generate_twister();
+  state->player = c_random_player(20,3, game_world);
   state->current_zone = world;
   state->active_creatures = active_creatures;
   /*It may seem redundant to make a screen that basically takes up the entire stdscr, but this is because unlike windows managed by panels, stdscr does not take into consideration the contents of other
@@ -69,7 +70,7 @@ Game_State *gs_create_game_state(Creature *player, Game_World *world,Linked_List
   update_panels();
   doupdate();
 
-  state->twister = rng_generate_twister();
+  state->player = c_random_player(20,3, game_world);
   return state;
 }
 

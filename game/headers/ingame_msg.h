@@ -17,8 +17,13 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include <panel.h>
 #include "game_state_struct.h"
 #include "strings.h"
+//screen, y,x, "%s X %d", quality_name_modifier[((union Equipment)item_holder->item->item_specific_info).weapon->quality]
 #define MAX_MSG_LENGTH 50
-
+#define PRINT_ITEM_WEAPON(item_holder,screen,x,y)mvprintw(screen, y,x, "%s", quality_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->quality])
+#define PRINT_ITEM_ARMOR(item_holder,screen,x,y)4
+#define PRINT_ITEM_NONEQUIPPABLE(item_holder,screen,x,y)mvwprintw(screen, y,x, "%s", i_derive_item_name[item_holder->item->kind]);
+#define PRINT_ITEM_EQUIPPABLE(item_holder,screen,x,y) item_holder->item->kind == weapon ? PRINT_ITEM_WEAPON(item_holder,screen,x,y) : PRINT_ITEM_ARMOR(item_holder,screen,x,y) 
+#define PRINT_ITEM(item_holder,screen,x,y)item_holder->item->kind == weapon || item_holder->item->kind == armor ? PRINT_ITEM_EQUIPPABLE(item_holder,screen,x,y):PRINT_ITEM_NONEQUIPPABLE(item_holder,screen,x,y)
 // In order to make changes to a panel visible, we firstly need to call update panel to make the changes to the panels visible, then make doupdate to make said changes ivisible to the physical screen. To avoid having to call these methods all the time, we wrap them inside a macro
 #define UPDATE_PANEL_INFO() update_panels(); doupdate();
 

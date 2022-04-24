@@ -21,14 +21,14 @@ int gen_int(int min,int max){
   return rand() % (max - min + 1) + min;
 }
 
-void g_tileset(){
+void g_tileset(Mersienne_Twister *twister){
   int max_y = 0;
   int max_x = 0;
   char *ascii = malloc(sizeof(char));
   getmaxyx(stdscr, max_y,max_x);
   for(int i = 0; i < max_x; i++){
     for(int j = 0; j < max_y; j++){
-      char letter = alphabet[generate_value(0,14)];
+      char letter = alphabet[GEN_VALUE_RANGE(0,14+1, twister)];
       ascii[0] = letter;
       init_pair(1,COLOR_CYAN,COLOR_BLACK);
       attron(COLOR_PAIR(1));

@@ -80,7 +80,7 @@ Creature *c_generate_creature(Creature_Kind kind, int id,unsigned x,unsigned y,G
 
 
 // A tester function to help test cases 
-Creature *c_random_player(int x, int y,Game_World *world){
+Creature *c_random_player(int x, int y,Game_World *world, Mersienne_Twister *twister){
   Creature *c = malloc(sizeof(Creature));
   c->standing_on = malloc(sizeof(char));
   c->weight = 80.5;
@@ -120,7 +120,7 @@ Creature *c_random_player(int x, int y,Game_World *world){
   c->color = malloc(sizeof(Color));
   c->standing_on[0] = ' ';
 
-  U_Hashtable *inventory = u_initialize_hashtable(10);
+  U_Hashtable *inventory = u_initialize_hashtable(10,twister);
   c->additional_info = inventory;
   return c;
   
