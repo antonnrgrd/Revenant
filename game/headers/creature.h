@@ -161,7 +161,7 @@ void c_free_animal(Creature *c);
 
 
 
-Creature *c_generate_creature(Creature_Kind kind, int id,unsigned x,unsigned y,Game_World *world, Creature *target);
+Creature *c_generate_creature(Creature_Kind kind, int id,unsigned x,unsigned y,Game_World *world,Creature *target);
 
 
 void c_initialize_animal_inf(Creature *c, int id);

@@ -52,7 +52,7 @@ void c_initialize_humanoid_inf(Creature *c, int id){
   // c->instance.humanoid = c_generate_humanoid_instance(d);
 }
 
-Creature *c_generate_creature(Creature_Kind kind, int id,unsigned x,unsigned y,Game_World *world, Creature *target){
+Creature *c_generate_creature(Creature_Kind kind, int id,unsigned x,unsigned y,Game_World *world,Creature *target){
   Creature *c = malloc(sizeof(Creature));
   creature_initializer[kind](c,id);
   c->position.global_x=x;

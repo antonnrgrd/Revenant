@@ -44,7 +44,6 @@ typedef struct Game_World{
   //calls over and over 
   int max_x;
   int max_y;
-  Linked_List *active_creatures;
 }Game_World;
 
 extern int numerical_responses[256];

@@ -22,7 +22,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define INIT_GAME_STATE(game_state)
 #define UPDATE_STATE(game_state) ll_iter_list_as_creature(game_state->player,game_state->current_zone,game_state->active_creatures);
 
-Game_State *gs_create_game_state(Game_World *world,Linked_List *active_creatures);
+Game_State *gs_create_game_state();
 
 
 void ll_iter_list_as_creature(Linked_List *list, Game_State *ggame_state);
