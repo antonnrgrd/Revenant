@@ -36,25 +36,22 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "game_state_struct.h"
 #include "rng.h"
 int main(int argc, char *argv[]){
-  
+    initscr();
+  start_color();
+  Game_World *game_world = g_generate_game_world(1000,1000);
   //  Item *weapon = i_make_mele_weapon(epic,one_hand,steel,sword);
   // printf("%s", i_derive_item_name_equipment(weapon));
-    Game_State *game_state = gs_create_game_state();
-  initscr();
-  start_color();
- 
+ Game_State *gs =  gs_create_game_state(game_world);
 
-   
-   
-  initscr();
-  start_color();
+
+    
   noecho();
   curs_set(FALSE);
   keypad(stdscr, TRUE);
   srand(time(NULL));
   raw();
-   
-  game_loop(game_state);
+ 
+  game_loop(gs);
   endwin();
 
 }

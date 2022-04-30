@@ -21,8 +21,11 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 #define INIT_GAME_STATE(game_state)
 #define UPDATE_STATE(game_state) ll_iter_list_as_creature(game_state->player,game_state->current_zone,game_state->active_creatures);
-
-Game_State *gs_create_game_state();
+/*
+Unlike the other fields which we can initiaize from the inside of the creation of the Game_State struct, we have to create a Game_World struct, THEN pass it as an argument and assign it as the value
+for the Game_world field for the Game_State. I suspect this is because how the values of max_x and max_y in the Game_World are affected by calls of the getmaxyx function, which are somehow not initialized from the gatmaxyx function call when creating the Game_World struct from inside of the create_game_state struct. Attempting to create the  Game_World struct from inside the function will cause seg fault, so this is how it has to be done.
+*/
+Game_State *gs_create_game_state(Game_World *game_world);
 
 
 void ll_iter_list_as_creature(Linked_List *list, Game_State *ggame_state);

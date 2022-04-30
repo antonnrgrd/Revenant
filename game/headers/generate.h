@@ -19,7 +19,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "gameinfo.h"
 #include "rng.h"
 extern const char *alphabet;
-void g_tileset(Mersienne_Twister *twister);
+
 Game_World *g_generate_game_world(int width, int height);
 
 #endif

@@ -64,7 +64,7 @@ Creature *c_generate_creature(Creature_Kind kind, int id,unsigned x,unsigned y,G
  
   
 
-  
+  c->target=target;
   
   c->species = kind;
   c->id = id;
@@ -113,17 +113,16 @@ Creature *c_random_player(int x, int y,Game_World *world, Mersienne_Twister *twi
       c->position.local_x = (world->max_x - 1)/2;
     }
   }
-  
-  
+
+
   c->representation = malloc(sizeof(char));
   c->representation[0] = '@';
   c->color = malloc(sizeof(Color));
   c->standing_on[0] = ' ';
-
-  U_Hashtable *inventory = u_initialize_hashtable(10,twister);
+   U_Hashtable *inventory = u_initialize_hashtable(10,twister);
   c->additional_info = inventory;
   return c;
-  
+
 }
 
 

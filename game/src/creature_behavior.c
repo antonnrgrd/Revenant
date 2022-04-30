@@ -3,19 +3,23 @@
 
 void cb_pursue_target(Creature *c,Game_State *game_state){
   
-
+  if (c->target == NULL){
+    printf("%s", "Null taregt \n");
+  }
 
   // We use the in-bounds pursuing strategy ONLY if the the target the creature is pursuing is within the viewing distance of the player X and Y coordinate-wise, because that in turn is both necessary and sufficient for the creature to be within-view of the player
   if(WITHIN_X_BOUNDS(c,c->target) & WITHIN_Y_BOUNDS(c,c->target) == WITHIN_BOUNDS){
+
     c->target_is_within_bound = WITHIN_BOUND;
   }
   else{
     c->target_is_within_bound = OUT_OF_BOUND;    
   }
   if(c->target_is_within_bound == WITHIN_BOUND){
+    
     cb_pursue_target_inb(c,game_state);
   }
-
+      
   else{
     cb_pursure_target_oob(c,game_state);
   }

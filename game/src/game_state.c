@@ -43,24 +43,27 @@ void gs_print_foes(Game_State *game_state){
 }
 
 
-Game_State *gs_create_game_state(){
-  Game_World *game_world = g_generate_game_world(1000,1000);
+Game_State *gs_create_game_state(Game_World *game_world){
 
+
+  
+  
   Game_State *state = malloc(sizeof(Game_State));
   state->twister = rng_generate_twister();
   state->player = c_random_player(20,3, game_world,state->twister);
-
+ 
 
   Creature *opponent = c_generate_creature(animal,0,20,4, game_world,state->player);
-  opponent->behavior = idle;
+  opponent->behavior = pursuing;
+  
   Linked_List *ll = ll_initialize_linked_list();
   APPEND_NODE_CREATURE(ll,opponent);
   
   state->current_zone = game_world;
   state->active_creatures = ll;
-  /*It may seem redundant to make a screen that basically takes up the entire stdscr, but this is because unlike windows managed by panels, stdscr does not take into consideration the contents of other
-   windows. Therefore, if the contents of stdscr overlaps the contents of a window, stdscr will overwrite/take precedence of the contents of said window. To achieve the desired windows browsing effect,
-  we are made to make a new panel-managed window that will act as stdscr */
+  //It may seem redundant to make a screen that basically takes up the entire stdscr, but this is because unlike windows managed by panels, stdscr does not take into consideration the contents of other
+  // windows. Therefore, if the contents of stdscr overlaps the contents of a window, stdscr will overwrite/take precedence of the contents of said window. To achieve the desired windows browsing effect,
+  //we are made to make a new panel-managed window that will act as stdscr 
   state->logs[MAIN_SCREEN]  = newwin(0,0,0,0);
   state->logs[EVENT_LOG] = newwin(LOG_Y_SIZE,LOG_X_SIZE,LOG_START_Y,LOG_START_X);
   state->logs[INVENTORY_LOG] = newwin(LOG_Y_SIZE,LOG_X_SIZE,LOG_START_Y,LOG_START_X);
@@ -71,7 +74,7 @@ Game_State *gs_create_game_state(){
   box(state->logs[EVENT_LOG],0,0);
   box(state->logs[INVENTORY_LOG],0,0);
 
-   INIT_EVENT_LOG(state->logs[EVENT_LOG]);
+  INIT_EVENT_LOG(state->logs[EVENT_LOG]);
 
    
   top_panel(state->panels[MAIN_SCREEN]);
@@ -80,6 +83,7 @@ Game_State *gs_create_game_state(){
   doupdate();
 
   return state;
+ 
 }
 
  
