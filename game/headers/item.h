@@ -100,7 +100,7 @@ typedef struct Item_Holder{ //a struct for an item and how many of that item cur
 Item_Holder *i_make_item_holder(Item *item, unsigned amount);
 void i_swap_pointers(Item_Holder *i,Item_Holder *j);
 
-Item *i_make_mele_weapon(Quality_Level q, Material material, Variant v,Weapon_Kind kind);
+Item *i_make_mele_weapon(Quality_Level q, Material material, Variant v,Weapon_Kind weapon_kind);
 
 Item *i_make_consumable(char *name, char *description,uint32_t healing, uint32_t value, float weight, uint16_t skill);
 
@@ -161,11 +161,11 @@ void i_print_reagent_name(Item *i, WINDOW *inv_screen,int x, int y);
 void i_print_consumable_name(Item *i, WINDOW *inv_screen,int x, int y);
 void i_print_equippable_name(Item *i, WINDOW *inv_screen,int x, int y);
 
-#define HAS_ITEM_NAME_WEAPON(source_item, target_item) char *source_item_quality = quality_name_modifier[((struct Weapon *)source_item->item_specific_info)->quality]; char *source_item_material = material_name_modifier[((struct Weapon *)source_item->item_specific_info)->material]; char *source_item_handed_modifer = handed_modifier[((struct Weapon *)source_item->item_specific_info)->variant]; char * source_item_type_modifer = mele_weapon_name_modifier[((struct Weapon *)source_item->item_specific_info)->type]; char *target_item_quality = quality_name_modifier[((struct Weapon *)target_item->item_specific_info)->quality]; char *target_item_material = material_name_modifier[((struct Weapon *)target_item->item_specific_info)->material]; char target_item_handed_modifer = handed_modifier[((struct Weapon *)target_item->item_specific_info)->variant]; char *target_item_type_modifer = mele_weapon_name_modifier[((struct Weapon *)target_item->item_specific_info)->type]; int res = (strcmp(source_item_quality,target_item_quality) & strcmp(source_item_material, target_item_material) & strcmp(source_item_handed_modifer,target_item_handed_modifer) & strcmp(source_item_type_modifer,target_item_type_modifer) );
-#define HAS_ITEM_NAME_ARMOR(source_item, target_item)
-#define HAS_ITEM_NAME_EQ(source_item, target_item)
-#define HAS_ITEM_NAME_NONEQ(source_item,item) char *source_item_name = i_derive_item_name[source_item->kind]; char *target_item_name i_derive_item_name[target_item->kind]; strcmp(source_item_name, target_item_name);
-#define HAS_SAME_NAME(source_item,item) item->kind == weapon || item->kind == armor ? HAS_ITEM_NAME_EQ(source_item,item) : HAS_ITEM_NAME_NONEQ(source_item,item)
+#define HAS_ITEM_NAME_WEAPON(source_item_holder, target_item_holder)({int is_equal; char *source_item_holder_quality = quality_name_modifier[((struct Weapon *)source_item_holder->item->item_specific_info)->quality]; char *source_item_holder_material = material_name_modifier[((struct Weapon *)source_item_holder->item->item_specific_info)->material]; char *source_item_holder_handed_modifier = handed_modifier[((struct Weapon *)source_item_holder->item->item_specific_info)->variant]; char *source_item_holder_type_modifer = mele_weapon_name_modifier[((struct Weapon *)source_item_holder->item->item_specific_info)->type]; char *target_item_holder_quality = quality_name_modifier[((struct Weapon *)target_item_holder->item->item_specific_info)->quality]; char *target_item_holder_material = material_name_modifier[((struct Weapon *)target_item_holder->item->item_specific_info)->material]; char *target_item_holder_handed_modifier = handed_modifier[((struct Weapon *)target_item_holder->item->item_specific_info)->variant]; char *target_item_holder_type_modifier = mele_weapon_name_modifier[((struct Weapon *)target_item_holder->item->item_specific_info)->type];  is_equal = strcmp(source_item_holder_quality,target_item_holder_quality)  & strcmp(source_item_holder_material, target_item_holder_material)  & strcmp(target_item_holder_handed_modifier,source_item_holder_handed_modifier ) & strcmp(source_item_holder_type_modifer,target_item_holder_type_modifer); is_equal;})
+#define HAS_ITEM_NAME_ARMOR(source_item_holder, target_item_holder)({int is_equal; is_equal = 0; is_equal;}) 
+#define HAS_ITEM_NAME_EQ(source_item_holder, target_item_holder) target_item_holder->item->kind == weapon ? HAS_ITEM_NAME_WEAPON(source_item_holder, target_item_holder) :  HAS_ITEM_NAME_ARMOR(source_item_holder, target_item_holder)
+#define HAS_ITEM_NAME_NONEQ(source_item_holder,target_item_holder) ({int is_equal; char *source_item_holder_name = i_derive_item_name[source_item_holder->item->kind]; char *target_item_holder_name = i_derive_item_name[target_item_holder->item->kind]; is_equal = strcmp(source_item_holder_name, target_item_holder_name); is_equal;})
+#define HAS_SAME_NAME(source_item_holder,target_item_holder) target_item_holder->item->kind == weapon || target_item_holder->item->kind == armor ? HAS_ITEM_NAME_EQ(source_item_holder,target_item_holder) : HAS_ITEM_NAME_NONEQ(source_item_holder,item)
 #endif
 
 

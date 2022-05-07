@@ -28,6 +28,11 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define NOT_ONE
 #define ONE
 #define GET_AVAILABLE(amount, available)(amount>available? available:amount)
+#define U_HASH_ITEM_NONEQ(item_holder,table)({unsigned long long hash; hash = u_hash(1,table,i_derive_item_name[item->item->kind]); hash;})
+#define U_HAS_ITEM_WEAPON(item_holder,table)({unsigned long long hash; hash = u_hash(1,table, quality_name_modifier[((struct Weapon*)item_holder->item->item_specific_info)->quality]); hash;})
+#define U_HAS_ITEM_ARMOR(item_holder,table)({unsigned long long hash; hash = u_hash(1, table, quality_name_modifier[((struct Armor*)item_holder->item->item_specific_info)->material]); hash;})
+#define U_HASH_ITEM_EQUIPPABLE(item_holder,table) item_holder->item->kind == weapon ? U_HAS_ITEM_WEAPON(item_holder,table) : U_HAS_ITEM_ARMOR(item_holder,table)
+#define U_HASH_ITEM(item_holder,table) item_holder->item->kind != weapon && item_holder->item->kind != armor ? U_HASH_ITEM_NONEQ(item_holder,table) : U_HASH_ITEM_EQUIPPABLE(item_holder,table)
 //Just a highly specialized structure that holds a reference to an item and how much weight there is to be subtracted from the player's
 //carry weight and a flag that indicated if we deleted it from inventory 
 typedef struct Item_Weight{

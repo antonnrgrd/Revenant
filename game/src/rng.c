@@ -50,7 +50,6 @@ Mersienne_Twister *rng_generate_twister(){
   twister->upper_mask = (int) ( ((unsigned int) ~(twister->lower_mask)) & ~(0xFFFFFFFF << W) );
   srand(time(0));
   rng_seed_mt(rand(),twister);
-
   return twister;
 }
   

@@ -22,37 +22,49 @@ U_Hashtable *u_initialize_hashtable(int initial_size,Mersienne_Twister *twister)
   U_Hashtable *table = malloc(sizeof(U_Hashtable));
   table->size = initial_size;
   table->item_count = 0;
-  table->entries =  malloc(sizeof(Entry *) * initial_size);  
+  table->entries =  malloc(sizeof(Entry *) * initial_size);
+
   table->a = GEN_VALUE_RANGE(1,BFP,twister);
   table->b = GEN_VALUE_RANGE(0,BFP,twister);
   return table;
 }
 
 void u_add_item(Item_Holder *item, int amount,U_Hashtable *table){
-  char *item_name = i_derive_item_name[item->item->kind];
-  unsigned long long index = u_hash(4,table,item_name);
-  //Item already present in inventory 
-//Maybe delete item at this point, maybe not since we might not use it after adding to inventory??
+  
 
-  if(table->entries[index] != NULL &&  i_derive_item_name[table->entries[index]->item_holder->item->kind] == item_name){
-    table->entries[index]->item_holder->amount += amount;
-    // printf("%s", "First case, \n");
+  unsigned long long index = U_HASH_ITEM(item,table);
+
+    //Item already present in inventory 
+//Maybe delete item at this point, maybe not since we might not use it after adding to inventory??
+  
+  
+  //It's very important that we put parenthesis around the two last conditions because otherwise the logical short circuiting of the first statement won't kick into effect for
+  // some reason, thus checking the second condition, potentially accessing a null pointer value, which woud cause a segmentation fault
+  //Zero, in the case of strcmp means "True"
+  if(table->entries[index] != NULL && (table->entries[index]->item_holder->item->kind == item->item->kind && HAS_SAME_NAME(table->entries[index]->item_holder, item) == 0)){
+     table->entries[index]->item_holder->amount += amount;
+     printf("%s", "First case, \n");
+     
+    
   }
-  if(table->entries[index] == NULL){
+  else if(table->entries[index] == NULL){
     table->entries[index] = malloc(sizeof(Entry));
-    table->entries[index]->item_holder = item;
-    // printf("%s", "Second case, \n");
+     table->entries[index]->item_holder = item;
+     printf("%s", "Second case, \n");
   }
-  if( table->entries[index] != NULL &&  i_derive_item_name[table->entries[index]->item_holder->item->kind]  != item_name){
-    // printf("%s", "Third case, \n");
+  //   else it must be that table->entries[index] != NULL && (table->entries[index]->item_holder->item->kind == item->item->kind && HAS_SAME_NAME(table->entries[index]->item_holder, item) == 0)  
+   else{
+     printf("%s", "Third case, \n");
     if(table->entries[index]->next_entry == NULL){
       table->entries[index]->next_entry = malloc(sizeof(Entry));
       table->entries[index]->next_entry->item_holder = item;
       return;
+      
     }
+    
     Entry *current_entry = table->entries[index]->next_entry;
     while(current_entry->next_entry != NULL){
-      if(i_derive_item_name[table->entries[index]->item_holder->item->kind] == item_name){
+      if(HAS_SAME_NAME(current_entry->item_holder, item) == 1){
 	current_entry->item_holder->amount += amount;
 	return;
       }
@@ -61,6 +73,7 @@ void u_add_item(Item_Holder *item, int amount,U_Hashtable *table){
     current_entry->next_entry = malloc(sizeof(Entry));
     current_entry->next_entry->item_holder = item;
   }
+
 }
 
 Item_Weight u_remove_item(int argcount,int amount,U_Hashtable *table, char *item_name){

@@ -14,8 +14,8 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "item.h"
 #include "modifier.h"
 #include <math.h>
-
-
+ 
+ 
 Reagent *i_gen_reagent(Variant variant,float weight,uint32_t value,Reagent_Kind kind){
   Reagent *reagent = malloc(sizeof(Reagent));
   //  reagent->variant = variant;
@@ -23,7 +23,7 @@ Reagent *i_gen_reagent(Variant variant,float weight,uint32_t value,Reagent_Kind 
   reagent->kind = kind;
   return reagent;
 }
-
+ 
 Armor *i_gen_armor(){
   Armor *arm = malloc(sizeof(armor));
   return arm;
@@ -31,6 +31,7 @@ Armor *i_gen_armor(){
 
 Weapon *i_gen_weapon(Quality_Level q,Variant variant,Material material,Weapon_Group kind,Weapon_Kind k){
   Weapon *weapon = malloc(sizeof(weapon));
+  weapon->quality = q;
   weapon->variant = variant;
   weapon->material = material;
   weapon->kind = kind;
@@ -101,32 +102,26 @@ Item *i_make_armor(Quality_Level q, Material material, Worn_in w){
   */
   return i; //needs to assert more attributes
 }
-Item *i_make_mele_weapon(Quality_Level q, Material material, Variant v, Weapon_Kind kind){
+Item *i_make_mele_weapon(Quality_Level q, Material material, Variant v, Weapon_Kind weapon_kind){
 
   Item *i = malloc(sizeof(Item));
   i->representation = s_create_text_const(weapon_representations[1]);
-  Weapon *w = i_gen_weapon(q,v,material,kind,mele);
+  Weapon *w = i_gen_weapon(q,v,material,weapon_kind,mele);
   i->item_specific_info = w;
   i->kind = weapon;
-  /*
   Material_Modifier m = material_modifiers[material];
   Variant_Modifier va = variant_modifiers[v];
-  w->variant = v;
-  w->quality = q;
-  w->material = material;
-  w->kind = mele;
-  w->type = kind;
-  w->skill = 15;
+    
+  
   w->dmg = (uint64_t)ceil(m.dmg_modifier * va.stats_modifier);
-  i->name = i_mele_weapon_name( q, material, v,  kind);
   i->weight = m.base_weight_modifier*va.weight_modifier;
-  i->description = NULL;
+  
   i->value = (uint32_t)ceil(m.value_modifier * va.value_modifier);
   i->quest_item = 0;
   i->item_specific_info = w;
   i->standing_on = malloc(sizeof(char));
-  //strcpy(i->representation, weapon_representations[1]);
-  */
+  strcpy(i->representation, weapon_representations[1]);
+ 
   return i;
 }
 
