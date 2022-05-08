@@ -17,7 +17,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 unsigned long long u_hash(int char_count,U_Hashtable *table, char *strings, ...){
   return((table->a * s_uint_from_string(char_count,strings) + table->b) % BFP) % table->size;
 }
-
+ 
 U_Hashtable *u_initialize_hashtable(int initial_size,Mersienne_Twister *twister){
   U_Hashtable *table = malloc(sizeof(U_Hashtable));
   table->size = initial_size;
@@ -43,18 +43,18 @@ void u_add_item(Item_Holder *item, int amount,U_Hashtable *table){
   //Zero, in the case of strcmp means "True"
   if(table->entries[index] != NULL && (table->entries[index]->item_holder->item->kind == item->item->kind && HAS_SAME_NAME(table->entries[index]->item_holder, item) == 0)){
      table->entries[index]->item_holder->amount += amount;
-     printf("%s", "First case, \n");
+     // printf("%s", "First case, \n");
      
     
   }
   else if(table->entries[index] == NULL){
     table->entries[index] = malloc(sizeof(Entry));
      table->entries[index]->item_holder = item;
-     printf("%s", "Second case, \n");
+     //printf("%s", "Second case, \n");
   }
   //   else it must be that table->entries[index] != NULL && (table->entries[index]->item_holder->item->kind == item->item->kind && HAS_SAME_NAME(table->entries[index]->item_holder, item) == 0)  
    else{
-     printf("%s", "Third case, \n");
+     //     printf("%s", "Third case, \n");
     if(table->entries[index]->next_entry == NULL){
       table->entries[index]->next_entry = malloc(sizeof(Entry));
       table->entries[index]->next_entry->item_holder = item;

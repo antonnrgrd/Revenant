@@ -71,6 +71,7 @@ Game_State *gs_create_game_state(Game_World *game_world){
   state->panels[EVENT_LOG] = new_panel(state->logs[EVENT_LOG]);
   state->panels[MAIN_SCREEN] = new_panel(state->logs[MAIN_SCREEN]);
   state->panels[INVENTORY_LOG] = new_panel(state->logs[INVENTORY_LOG]);
+  
   box(state->logs[EVENT_LOG],0,0);
   box(state->logs[INVENTORY_LOG],0,0);
 

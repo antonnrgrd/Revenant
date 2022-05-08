@@ -68,7 +68,7 @@ void msg_update_event_log(Game_State *gs){
    }
 }
  
-void msg_display_inventory(Game_State *gs){
+void msg_display_inventory(Game_State *gs){  
   char letter = 'a';
   for(int i = 0; i < ((U_Hashtable * )gs->player->additional_info)->size; i++ ){
     if(((U_Hashtable * )gs->player->additional_info)->entries[i] != NULL){

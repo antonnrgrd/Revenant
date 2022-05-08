@@ -29,12 +29,14 @@ Armor *i_gen_armor(){
   return arm;
 }
 
-Weapon *i_gen_weapon(Quality_Level q,Variant variant,Material material,Weapon_Group kind,Weapon_Kind k){
-  Weapon *weapon = malloc(sizeof(weapon));
+Weapon *i_gen_weapon(Quality_Level q,Variant variant,Material material,Weapon_Group group,Weapon_Kind k){
+  Weapon *weapon = malloc(sizeof(Weapon));
   weapon->quality = q;
   weapon->variant = variant;
   weapon->material = material;
-  weapon->kind = kind;
+   weapon->kind = k;
+  weapon->group =group;
+  //  printf("&s",mele_weapon_name_modifier[]);
   return weapon;
 }
 
@@ -106,7 +108,7 @@ Item *i_make_mele_weapon(Quality_Level q, Material material, Variant v, Weapon_K
 
   Item *i = malloc(sizeof(Item));
   i->representation = s_create_text_const(weapon_representations[1]);
-  Weapon *w = i_gen_weapon(q,v,material,weapon_kind,mele);
+  Weapon *w = i_gen_weapon(q,v,material,mele,weapon_kind);
   i->item_specific_info = w;
   i->kind = weapon;
   Material_Modifier m = material_modifiers[material];
@@ -252,7 +254,7 @@ char *i_derive_item_name_equipment(Item *i){
     char *weapon_name = quality_name_modifier[w->quality];
     strcat(weapon_name, material_name_modifier[w->material]);
     strcat(weapon_name, handed_modifier[w->variant]);
-    strcat(weapon_name,mele_weapon_name_modifier[w->type]);
+    strcat(weapon_name,mele_weapon_name_modifier[w->kind]);
     return weapon_name;
   }
   else{

@@ -19,7 +19,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "strings.h"
 //screen, y,x, "%s X %d", quality_name_modifier[((union Equipment)item_holder->item->item_specific_info).weapon->quality]
 #define MAX_MSG_LENGTH 50
-#define PRINT_ITEM_WEAPON(item_holder,screen,x,y)mvprintw(screen, y,x, "%s", quality_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->quality])
+#define PRINT_ITEM_WEAPON(item_holder,screen,x,y)mvwprintw(screen, y,x, "%s%s%s%s", quality_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->quality],handed_modifier[((struct Weapon *)item_holder->item->item_specific_info)->variant],material_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->material], mele_weapon_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->kind])
 #define PRINT_ITEM_ARMOR(item_holder,screen,x,y)4
 #define PRINT_ITEM_NONEQUIPPABLE(item_holder,screen,x,y)mvwprintw(screen, y,x, "%s", i_derive_item_name[item_holder->item->kind]);
 #define PRINT_ITEM_EQUIPPABLE(item_holder,screen,x,y) item_holder->item->kind == weapon ? PRINT_ITEM_WEAPON(item_holder,screen,x,y) : PRINT_ITEM_ARMOR(item_holder,screen,x,y) 
