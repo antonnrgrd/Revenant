@@ -70,12 +70,14 @@ void msg_update_event_log(Game_State *gs){
  
 void msg_display_inventory(Game_State *gs){  
   char letter = 'a';
+  int column_position = 2;
   for(int i = 0; i < ((U_Hashtable * )gs->player->additional_info)->size; i++ ){
     if(((U_Hashtable * )gs->player->additional_info)->entries[i] != NULL){
       Entry  *current_entry = ((U_Hashtable * )gs->player->additional_info)->entries[i];
       while(current_entry != NULL){
-	PRINT_ITEM(current_entry->item_holder,gs->logs[INVENTORY_LOG],10,10);
+	PRINT_ITEM(current_entry->item_holder,gs->logs[INVENTORY_LOG],5,column_position);
         current_entry = current_entry->next_entry;
+	column_position++;
       }
     }
   }

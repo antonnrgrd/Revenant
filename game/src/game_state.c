@@ -76,8 +76,8 @@ Game_State *gs_create_game_state(Game_World *game_world){
   box(state->logs[INVENTORY_LOG],0,0);
 
   INIT_EVENT_LOG(state->logs[EVENT_LOG]);
-
-   
+  INIT_INVENTORY_LOG(state->logs[INVENTORY_LOG], "inventory");
+    
   top_panel(state->panels[MAIN_SCREEN]);
    
   update_panels();

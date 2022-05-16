@@ -48,10 +48,10 @@ int main(int argc, char *argv[]){
  Item_Holder *i = malloc(sizeof(Item_Holder));
  i->item = weapon;
  i->amount = 1;
- // Item_Holder *j = malloc(sizeof(Item_Holder));
- // j->item = weapon_2;
- //j->amount = 42;
- // u_add_item(j,j->amount,(struct U_Hashtable*)gs->player->additional_info);
+  Item_Holder *j = malloc(sizeof(Item_Holder));
+ j->item = weapon_2;
+ j->amount = 42;
+ u_add_item(j,j->amount,(struct U_Hashtable*)gs->player->additional_info);
  u_add_item(i,i->amount,(struct U_Hashtable*)gs->player->additional_info);
  
 
@@ -60,7 +60,7 @@ int main(int argc, char *argv[]){
   keypad(stdscr, TRUE);
   srand(time(NULL));
   raw();
- 
+  
   game_loop(gs);
   endwin();
 

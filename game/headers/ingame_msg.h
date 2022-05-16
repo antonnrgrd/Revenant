@@ -19,7 +19,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "strings.h"
 //screen, y,x, "%s X %d", quality_name_modifier[((union Equipment)item_holder->item->item_specific_info).weapon->quality]
 #define MAX_MSG_LENGTH 50
-#define PRINT_ITEM_WEAPON(item_holder,screen,x,y)mvwprintw(screen, y,x, "%s%s%s%s", quality_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->quality],handed_modifier[((struct Weapon *)item_holder->item->item_specific_info)->variant],material_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->material], mele_weapon_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->kind])
+#define PRINT_ITEM_WEAPON(item_holder,screen,x,y)mvwprintw(screen, y,x, "%s%s%s%s%s%d", quality_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->quality],handed_modifier[((struct Weapon *)item_holder->item->item_specific_info)->variant],material_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->material], mele_weapon_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->kind], " X ", item_holder->amount)
 #define PRINT_ITEM_ARMOR(item_holder,screen,x,y)4
 #define PRINT_ITEM_NONEQUIPPABLE(item_holder,screen,x,y)mvwprintw(screen, y,x, "%s", i_derive_item_name[item_holder->item->kind]);
 #define PRINT_ITEM_EQUIPPABLE(item_holder,screen,x,y) item_holder->item->kind == weapon ? PRINT_ITEM_WEAPON(item_holder,screen,x,y) : PRINT_ITEM_ARMOR(item_holder,screen,x,y) 
@@ -57,6 +57,9 @@ void msg_update_event_log(Game_State *gs);
 #define WRITE_TO_LOG(log_index)
 
 #define INIT_EVENT_LOG(window) mvwprintw(window,1,25, "PAST 10 EVENTS" ); char number[] = "1."; for(int i = 3; i < 13; i++){ number[0] = (i-2) + '0'; mvwprintw(window,i,10,number ); } mvwprintw(window,12,10, "10.");
+//For some reason, you have to specify the arguments in this order, in order to print them correctly
+//To the screen. Perhaps because it's a maxture of static and dynamic strings
+#define INIT_INVENTORY_LOG(window, inv_name) mvwprintw(window,1,25,"%s" inv_name, "Items in " );
 
 void msg_display_inventory(Game_State *gs);
 #endif
