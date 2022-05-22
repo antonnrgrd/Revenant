@@ -40,6 +40,9 @@ void game_loop(Game_State *game_state){
     case 'i':
       msg_display_inventory(game_state);
       break;
+    case 'e':
+      msg_display_inventory_equip_context(game_state);
+      break;
     case 'A':
       ;
       break;

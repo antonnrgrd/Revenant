@@ -1,6 +1,7 @@
-\documentclass{article}
+\documentclass{report}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
+\usepackage{listings}
 \title{Sections and Chapters}
 \author{Anton Nørgaard}
 \date{ \today}
@@ -13,7 +14,11 @@
 
 \section{Introduction}
    
-\section{How stuff works}
+\chapter{Source code documentation}
+\section{Management of game state and status}
+\subsection{Keeping track of the creatures and the player}
+
+\subsection{Checking for active effects of player}
 \subsection{Creatures}
 In the following chapers, we will use several variables to compute various information regarding creatures in-game, their status and the way
 that they interact with the environment and the player. For that purpose, we will use the following defintions, some are explicitly computed/stored in-game, others are just definitions and are not explicitly declared in-game. The definitions we will use are
@@ -61,12 +66,13 @@ The way it works (informally) is as follows. Assume that
 \centering
 \begin{tabular}{|c| c| c |c|} 
 \hline
- Col1 & Col2 & Col2 & Col3 \\ [0.5ex] 
+ a-m & n-z & A-M & N-Z+ESC \\ [0.5ex] 
+ \hline
  a - N/A & n - N/A & A - N/A & N - N/A \\ 
  b - N/A & o - N/A & B - N/A & O - N/A \\
  c - N/A & p - N/A & C - N/A & P - N/A  \\
  d - N/A & q - N/A & D - N/A & Q - N/A  \\
- e - N/A & r - N/A & E - N/A & R - N/A \\ 
+ e - equip item in inventory & r - N/A & E - N/A & R - N/A \\ 
  f - N/A & s - N/A & F - N/A & S - N/A \\
  g - N/A & t - N/A & G - N/A & T - N/A \\
  h - N/A & u - N/A & H - N/A & U - N/A \\

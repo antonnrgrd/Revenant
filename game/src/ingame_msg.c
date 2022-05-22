@@ -97,3 +97,60 @@ void msg_display_inventory(Game_State *gs){
 } 
 
  
+void msg_display_inventory_equip_context(Game_State *gs){
+  int curr_curs_pos = 2;
+  int column_position = 2;
+  Item_Holder **item_list = malloc(sizeof(Item_Holder* ) * ((U_Hashtable * )gs->player->additional_info)->item_count);
+  for(int i = 0; i < ((U_Hashtable * )gs->player->additional_info)->size; i++ ){
+    if(((U_Hashtable * )gs->player->additional_info)->entries[i] != NULL){
+      Entry  *current_entry = ((U_Hashtable * )gs->player->additional_info)->entries[i];
+      while(current_entry != NULL){
+	if(i < ((U_Hashtable * )gs->player->additional_info)->item_count){
+	item_list[i] =  current_entry->item_holder;
+	}
+	if(current_entry->item_holder->item->kind == weapon || current_entry->item_holder->item->kind == armor ){
+	PRINT_ITEM(current_entry->item_holder,gs->logs[INVENTORY_LOG],5,column_position);
+        current_entry = current_entry->next_entry;
+	column_position++;
+       }
+      }
+    }
+  }
+  
+  wmove(gs->logs[INVENTORY_LOG],curr_curs_pos,5);
+  curs_set(TRUE);
+  top_panel(gs->panels[INVENTORY_LOG]);
+  update_panels(); 
+  doupdate();
+  int ch;
+  while (1){
+    ch = getch();
+    if (ch == 'q'){
+      free(item_list);
+      curs_set(FALSE);
+      hide_panel(gs->panels[INVENTORY_LOG]);
+      update_panels();
+      doupdate();
+      return;
+    }
+    else if (ch == KEY_UP && curr_curs_pos > 2){
+      curr_curs_pos--;
+
+      wmove(gs->logs[INVENTORY_LOG],curr_curs_pos,5);
+      update_panels();
+      doupdate();
+    }
+    else if (ch == KEY_DOWN && curr_curs_pos < DEFAULT_MAX_Y - 2 ){
+      curr_curs_pos++;
+      wmove(gs->logs[INVENTORY_LOG],curr_curs_pos,5);
+      update_panels();
+      doupdate();
+    }
+
+    else if (ch == 'y'){
+      
+    ;
+    }
+  }
+  
+}

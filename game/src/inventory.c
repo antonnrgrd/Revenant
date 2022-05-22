@@ -17,16 +17,23 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "u_hash.h"
 #include <stdlib.h>
 
-void inv_see_equipment(){
-
+void inv_equip_item(Item_holder *target_item,U_Hashtable *inventory){
+  Item *previously_equipped ;
+  if(target_item->item->kind == weapon){
+    tmp = inventory->equipment_list[((struct Weapon *)source_item_holder->item->item_specific_info)->worn_in];
+    inventory->equipment_list[((struct Weapon *)source_item_holder->item->item_specific_info)->worn_in] = target_item->item;
+    free(target_item);
+      
+  }
+  if(target_item->item->kind == armor){
+    tmp = inventory->equipment_list[((struct Armor *)source_item_holder->item->item_specific_info)->worn_in];
+    inventory->equipment_list[((struct Armor *)source_item_holder->item->item_specific_info)->worn_in] = target_item->item;
+    free(target_item);
+  }
+  
 }
 
-void inv_acces_inv(){
-  WINDOW* inventory_screen = newwin(2,2,2,2);
 
-
-  delwin(inventory_screen);
-}
 
 int inv_add_item(Item_Holder *item_h, U_Hashtable *inventory, Creature *player){
   
@@ -42,8 +49,10 @@ int inv_add_item(Item_Holder *item_h, U_Hashtable *inventory, Creature *player){
   }
 }
 
+/*
 void inv_remove_item(int argcount,char *name, int amount, U_Hashtable *inventory, Creature *player){
   Item_Weight removed_weight = u_remove_item(argcount,amount,inventory,name);
   player->current_carry -= removed_weight.weight_loss;
 }
 
+*/

@@ -150,6 +150,8 @@ typedef struct Creature{
   unsigned int curr_ap:10;
   unsigned int max_ap:10;
   unsigned preffered_attack_type;
+  int alive : 1;
+  int debuff_flags;
 }Creature;
 
 

@@ -47,5 +47,7 @@ extern const char *armorslot_name_modifier[];
 extern const char *mele_weapon_name_modifier[];
 
 extern const char *weapon_representations[];
+
+extern const char *equipment_kind_modifier[];
 #endif
 

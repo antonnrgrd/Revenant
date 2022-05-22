@@ -32,3 +32,4 @@ extern Variant_Modifier itemslot_modifiers[] = {{0.3, 1.1, 1.3},{0.1, 0.5, 0.3},
 
 extern const char *weapon_representations[] = {"{", "|"};
 
+extern const char *equipment_kind_modifier[] = {"helmet", "hood", "hat","mask", "boots", "shoes"};

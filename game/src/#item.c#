@@ -91,8 +91,8 @@ Item *i_make_armor(Quality_Level q, Material material, Worn_in w,Equipment_Kind 
   Material_Modifier m = material_modifiers[material];
   Variant_Modifier v = itemslot_modifiers[w];
   Item *i = malloc(sizeof(Item));
-  
-  Armor *a = malloc(sizeof(Armor));
+
+  Armor *a = malloc(sizeof(Armor));//redundant, to be cleaned up
   a->armor = (uint64_t)ceil(m.armor_modifier * v.stats_modifier);
   i->value = (uint32_t)ceil(m.value_modifier * v.value_modifier);
   i->weight = m.base_weight_modifier * v.weight_modifier;
@@ -100,7 +100,7 @@ Item *i_make_armor(Quality_Level q, Material material, Worn_in w,Equipment_Kind 
 
   i->kind = armor;
   
-  
+
   return i; //needs to assert more attributes
 }
 Item *i_make_mele_weapon(Quality_Level q, Material material, Variant v, Weapon_Kind weapon_kind){

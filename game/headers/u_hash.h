@@ -55,6 +55,7 @@ typedef struct Entry_Pairs{ // If a lookup with modification is ever needed, we 
 }Entry_Pairs;
 
 typedef struct U_Hashtable{
+  Item **equipment_list;
   int size;
   int item_count;
   Entry **entries;
@@ -68,9 +69,9 @@ U_Hashtable *u_initialize_hashtable(int initial_size,Mersienne_Twister *twister)
 
 void u_add_item(Item_Holder *item, int amount,U_Hashtable *table);
 
-Item_Weight u_remove_item(int argcount,int amount,U_Hashtable *table, char *item_name);
+Item_Weight u_remove_item(char *tem_name, int amount, U_Hashtable *table);
 
-void u_print_inventory(U_Hashtable *inventory);
+
 
 #endif
 

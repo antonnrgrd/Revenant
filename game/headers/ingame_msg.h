@@ -62,5 +62,7 @@ void msg_update_event_log(Game_State *gs);
 #define INIT_INVENTORY_LOG(window, inv_name) mvwprintw(window,1,25,"%s" inv_name, "Items in " );
 
 void msg_display_inventory(Game_State *gs);
+
+void msg_display_inventory_equip_context(Game_State *gs);
 #endif
 

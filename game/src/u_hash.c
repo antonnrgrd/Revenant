@@ -23,7 +23,7 @@ U_Hashtable *u_initialize_hashtable(int initial_size,Mersienne_Twister *twister)
   table->size = initial_size;
   table->item_count = 0;
   table->entries =  malloc(sizeof(Entry *) * initial_size);
-
+  table->equipment_list = malloc(sizeof(Item *) * NUM_EQUIPMENT_SLOTS);
   table->a = GEN_VALUE_RANGE(1,BFP,twister);
   table->b = GEN_VALUE_RANGE(0,BFP,twister);
   return table;
@@ -50,6 +50,7 @@ void u_add_item(Item_Holder *item, int amount,U_Hashtable *table){
   else if(table->entries[index] == NULL){
     table->entries[index] = malloc(sizeof(Entry));
      table->entries[index]->item_holder = item;
+     table->item_count++;
      //printf("%s", "Second case, \n");
   }
   //   else it must be that table->entries[index] != NULL && (table->entries[index]->item_holder->item->kind == item->item->kind && HAS_SAME_NAME(table->entries[index]->item_holder, item) == 0)  
@@ -58,13 +59,14 @@ void u_add_item(Item_Holder *item, int amount,U_Hashtable *table){
     if(table->entries[index]->next_entry == NULL){
       table->entries[index]->next_entry = malloc(sizeof(Entry));
       table->entries[index]->next_entry->item_holder = item;
+      table->item_count++;
       return;
       
     }
     
     Entry *current_entry = table->entries[index]->next_entry;
     while(current_entry->next_entry != NULL){
-      if(HAS_SAME_NAME(current_entry->item_holder, item) == 1){
+      if(HAS_SAME_NAME(current_entry->item_holder, item) == 0){
 	current_entry->item_holder->amount += amount;
 	return;
       }
@@ -72,12 +74,13 @@ void u_add_item(Item_Holder *item, int amount,U_Hashtable *table){
     }
     current_entry->next_entry = malloc(sizeof(Entry));
     current_entry->next_entry->item_holder = item;
+    table->item_count++;
   }
 
 }
-
-Item_Weight u_remove_item(int argcount,int amount,U_Hashtable *table, char *item_name){
-  unsigned long long index = u_hash(amount, table,item_name);
+/*
+Item_Weight u_remove_item(char *tem_name, int amount, U_Hashtable *table){
+  unsigned long long index = 42; //u_hash(1, table,item_name);
   Item_Weight item_weight;
   // If the item we are looking for is at the top-level, then assert if we are removing all occurences of the items and act correspondingly 
   if(table->entries[index] != NULL && i_derive_item_name[table->entries[index]->item_holder->item->kind]  == item_name){
@@ -131,20 +134,8 @@ Item_Weight u_remove_item(int argcount,int amount,U_Hashtable *table, char *item
   }
 }
   
- 
+*/
 
-void u_print_inventory(U_Hashtable *inventory){ /*
-  for(int i = 0; i < 7; i++){
-    if(inventory->entries[i] != NULL){
-      printf("%s%d%s", "Item found at index: ", i, "\n");
-     Entry  *current_entry = inventory->entries[i];
-      while(current_entry != NULL){
-	printf("%s%s%s%d%s", "The item is: ", current_entry->item_holder->item->name, " Of which you have in amount: ",current_entry->item_holder->amount ,  "\n");
-	current_entry = current_entry->next_entry;
-      }
-    }
-    } */
-}
 
 
 

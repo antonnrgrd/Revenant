@@ -27,12 +27,15 @@ typedef enum Material{carbon_fiber,plastic,clay,leather,gold,silver,custom,grani
 typedef enum Variant{one_hand, two_hand}Variant;
 typedef enum Weapon_Group{mele,ranged}Weapon_Group;
 typedef enum Type{normal,magical}Type;
-typedef enum Quality_Level{poor,adequate,medium,high,very_high,epic,legendary,artefact}Quality_Level;
+typedef enum Quality_Level{poor,adequate,good,great,excellent,masterful,epic,legendary,artefact}Quality_Level;
 //typedef enum Enchantment_Level{low,medium,high,very_high,epic,legendary,artefact}Enchantment_Level;
-typedef enum Worn_In{head_slot,neck_slot,finger_slot,torso_slot,leg_slot,back_slot,hand_slot}Worn_in;
+#define NUM_EQUIPMENT_SLOTS 8
+typedef enum Worn_In{head_slot,neck_slot,finger_slot,torso_slot,leg_slot,back_slot,hand_slot,offhand_slot}Worn_in;
 typedef enum Item_Kind{reagent,consumable,weapon,armor}Item_Kind;
 typedef enum Reagent_Kind{cooking,smithing,fishing,herb,computer}Reagent_Kind;
 typedef enum Weapon_Kind{sword,mace,axe}Weapon_Kind;
+typedef enum {helmet,hood,hat,mask,boots,shoes}Equipment_Kind;
+typedef enum {very_light, light, medium, heavy,very_heavy}Equipment_Classification;
 typedef struct{
   int id;
   char *name;
@@ -45,10 +48,13 @@ typedef struct{
   float weight;
 }Consumable_Definition;
 typedef struct Armor{
+  Quality_Level quality;
   uint64_t armor;
   Worn_in slot; //in which item slot will the item be worn in
   Material material;
   uint16_t skill;
+  Equipment_Kind armor_type;
+  Equipment_Classification weight_classification;
 }Armor;
 
 typedef struct Weapon{
@@ -58,6 +64,7 @@ typedef struct Weapon{
   Weapon_Group group;
   uint64_t dmg;
   Weapon_Kind kind;
+  Worn_in slot;
 }Weapon;
 
 typedef struct Reagent{
@@ -104,13 +111,13 @@ Item *i_make_mele_weapon(Quality_Level q, Material material, Variant v,Weapon_Ki
 
 Item *i_make_consumable(char *name, char *description,uint32_t healing, uint32_t value, float weight, uint16_t skill);
 
-Item *i_make_armor(Quality_Level q, Material material, Worn_in w);
+Armor *i_gen_armor(Quality_Level q, Material material, Worn_in w,Equipment_Kind armor_type);
 Consumable *i_gen_consumable(uint32_t healing, uint32_t value, float weight, uint16_t skill);
 
 Reagent *i_gen_reagent(Variant variant,float weight,uint32_t value,Reagent_Kind kind);
 
 Weapon *i_gen_weapon(Quality_Level q,Variant variant,Material material,Weapon_Group group,Weapon_Kind k);
-Armor *i_gen_armor();
+Item *i_make_armor(Quality_Level q, Material material, Worn_in w,Equipment_Kind armor_type);
 Consumable *i_create_consumable(char *name, char *description);
 
 Item *i_create_item(char *name, char *description,Item_Kind kind);
@@ -122,7 +129,6 @@ char *i_reagent_name();
 char *i_material_name(Material material);
 char *i_variant_name(Variant v);
 char *i_quality_name(Quality_Level q);
-Item *i_make_armor(Quality_Level q, Material material, Worn_in w);
 Item *i_make_weapon(Quality_Level q, Material material, Variant v);
 
 void i_free_item(Item *i);
@@ -162,7 +168,7 @@ void i_print_consumable_name(Item *i, WINDOW *inv_screen,int x, int y);
 void i_print_equippable_name(Item *i, WINDOW *inv_screen,int x, int y);
 
 #define HAS_ITEM_NAME_WEAPON(source_item_holder, target_item_holder)({int is_equal; char *source_item_holder_quality = quality_name_modifier[((struct Weapon *)source_item_holder->item->item_specific_info)->quality]; char *source_item_holder_material = material_name_modifier[((struct Weapon *)source_item_holder->item->item_specific_info)->material]; char *source_item_holder_handed_modifier = handed_modifier[((struct Weapon *)source_item_holder->item->item_specific_info)->variant]; char *source_item_holder_kind_modifier = mele_weapon_name_modifier[((struct Weapon *)source_item_holder->item->item_specific_info)->kind]; char *target_item_holder_quality = quality_name_modifier[((struct Weapon *)target_item_holder->item->item_specific_info)->quality]; char *target_item_holder_material = material_name_modifier[((struct Weapon *)target_item_holder->item->item_specific_info)->material]; char *target_item_holder_handed_modifier = handed_modifier[((struct Weapon *)target_item_holder->item->item_specific_info)->variant]; char *target_item_holder_kind_modifier = mele_weapon_name_modifier[((struct Weapon *)target_item_holder->item->item_specific_info)->kind]; is_equal = strcmp(source_item_holder_quality,target_item_holder_quality)  & strcmp(source_item_holder_material, target_item_holder_material)  & strcmp(target_item_holder_handed_modifier,source_item_holder_handed_modifier )  & strcmp(source_item_holder_kind_modifier,target_item_holder_kind_modifier); is_equal;})
-#define HAS_ITEM_NAME_ARMOR(source_item_holder, target_item_holder)({int is_equal; is_equal = 0; is_equal;}) 
+#define HAS_ITEM_NAME_ARMOR(source_item_holder, target_item_holder)({int is_equal; char *source_item_holder_quality = quality_name_modifier[((struct Armor *)source_item_holder->item->item_specific_info)->quality]; char *source_item_holder_material = material_name_modifier[((struct Armor *)source_item_holder->item->item_specific_info)->material]; char *source_item_holder_armor_type = equipment_kind_modifier[((struct Armor *)source_item_holder->item->item_specific_info)->armor_type]; is_equal;}) 
 #define HAS_ITEM_NAME_EQ(source_item_holder, target_item_holder) target_item_holder->item->kind == weapon ? HAS_ITEM_NAME_WEAPON(source_item_holder, target_item_holder) :  HAS_ITEM_NAME_ARMOR(source_item_holder, target_item_holder)
 #define HAS_ITEM_NAME_NONEQ(source_item_holder,target_item_holder) ({int is_equal; char *source_item_holder_name = i_derive_item_name[source_item_holder->item->kind]; char *target_item_holder_name = i_derive_item_name[target_item_holder->item->kind]; is_equal = strcmp(source_item_holder_name, target_item_holder_name); is_equal;})
 #define HAS_SAME_NAME(source_item_holder,target_item_holder) target_item_holder->item->kind == weapon || target_item_holder->item->kind == armor ? HAS_ITEM_NAME_EQ(source_item_holder,target_item_holder) : HAS_ITEM_NAME_NONEQ(source_item_holder,item)
