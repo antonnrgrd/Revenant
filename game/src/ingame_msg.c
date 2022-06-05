@@ -30,7 +30,7 @@ void msg_show_log(Game_State *gs, int panel_index){
     }
   }
 }
- 
+    
 int msg_find_log_position(Game_State *gs){
   char *line_contents = malloc(MAX_MSG_LENGTH * sizeof(char));
   for(int i = 3; i< 13; i++){
@@ -68,8 +68,9 @@ void msg_update_event_log(Game_State *gs){
    }
 }
  
-void msg_display_inventory(Game_State *gs){  
-  char letter = 'a';
+void msg_display_inventory(Game_State *gs){
+  MSG_CLEAR_SCREEN(gs->logs[INVENTORY_LOG]);
+  INIT_INVENTORY_LOG(gs->logs[INVENTORY_LOG], "inventory");
   int column_position = 2;
   for(int i = 0; i < ((U_Hashtable * )gs->player->additional_info)->size; i++ ){
     if(((U_Hashtable * )gs->player->additional_info)->entries[i] != NULL){
@@ -81,6 +82,7 @@ void msg_display_inventory(Game_State *gs){
       }
     }
   }
+  
   top_panel(gs->panels[INVENTORY_LOG]);
   update_panels(); 
   doupdate();
@@ -98,20 +100,21 @@ void msg_display_inventory(Game_State *gs){
 
  
 void msg_display_inventory_equip_context(Game_State *gs){
+  MSG_CLEAR_SCREEN(gs->logs[INVENTORY_LOG]);
   int curr_curs_pos = 2;
   int column_position = 2;
+  int current_printed_item = 0;
   Item_Holder **item_list = malloc(sizeof(Item_Holder* ) * ((U_Hashtable * )gs->player->additional_info)->item_count);
   for(int i = 0; i < ((U_Hashtable * )gs->player->additional_info)->size; i++ ){
     if(((U_Hashtable * )gs->player->additional_info)->entries[i] != NULL){
       Entry  *current_entry = ((U_Hashtable * )gs->player->additional_info)->entries[i];
       while(current_entry != NULL){
-	if(i < ((U_Hashtable * )gs->player->additional_info)->item_count){
-	item_list[i] =  current_entry->item_holder;
-	}
+	item_list[current_printed_item] =  current_entry->item_holder;
 	if(current_entry->item_holder->item->kind == weapon || current_entry->item_holder->item->kind == armor ){
 	PRINT_ITEM(current_entry->item_holder,gs->logs[INVENTORY_LOG],5,column_position);
         current_entry = current_entry->next_entry;
 	column_position++;
+	current_printed_item++;
        }
       }
     }
@@ -146,11 +149,66 @@ void msg_display_inventory_equip_context(Game_State *gs){
       update_panels();
       doupdate();
     }
-
+    //probably faulty with how we assign item holder pointers to the item list
     else if (ch == 'y'){
+      //likely invalid index of access
       
+      //we subtract 2 from curr_curs_pos to "map" from current cursor position to the actual postion of the item
+      //in the item list. This is because the item list starts at index 0, whereas the cursor position starts at 2
+      inv_equip_item(item_list[curr_curs_pos-2], ((U_Hashtable * )gs->player->additional_info), gs->player);
     ;
     }
   }
   
 }
+msg_display_equipped_equipment(Game_State *gs){
+  MSG_CLEAR_SCREEN(gs->logs[INVENTORY_LOG]);
+  //Since the imtem printer macro assumes a item holder,
+  //we make a dummy item holder to temporarily hold the
+  //equipped items we want to print
+  Item_Holder *item_holder = malloc(sizeof(Item_Holder));
+  mvwprintw(gs->logs[INVENTORY_LOG],1,25, "Items equipped");
+  mvwprintw(gs->logs[INVENTORY_LOG],4,25, "Head slot:");
+  item_holder->item = ((U_Hashtable * )gs->player->additional_info)->equipment_list[head_slot];
+  PRINT_ITEM(item_holder,gs->logs[INVENTORY_LOG],25,5);  
+  mvwprintw(gs->logs[INVENTORY_LOG],6,25, "Neck slot:");
+  item_holder->item = ((U_Hashtable * )gs->player->additional_info)->equipment_list[neck_slot];
+  PRINT_ITEM(item_holder,gs->logs[INVENTORY_LOG],25,7);  
+  mvwprintw(gs->logs[INVENTORY_LOG],8,25, "Torso slot:");
+  item_holder->item = ((U_Hashtable * )gs->player->additional_info)->equipment_list[torso_slot];
+  PRINT_ITEM(item_holder,gs->logs[INVENTORY_LOG],25,9);  
+  mvwprintw(gs->logs[INVENTORY_LOG],12,5, "Finger slot:");
+  item_holder->item = ((U_Hashtable * )gs->player->additional_info)->equipment_list[finger_slot];
+  PRINT_ITEM(item_holder,gs->logs[INVENTORY_LOG],5,13);  
+  mvwprintw(gs->logs[INVENTORY_LOG],15,25, "Legs slot:");
+  item_holder->item = ((U_Hashtable * )gs->player->additional_info)->equipment_list[legs_slot];
+  PRINT_ITEM(item_holder,gs->logs[INVENTORY_LOG],25,16);  
+  mvwprintw(gs->logs[INVENTORY_LOG],18,25, "Feet slot:");
+  item_holder->item = ((U_Hashtable * )gs->player->additional_info)->equipment_list[feet_slot];
+  PRINT_ITEM(item_holder,gs->logs[INVENTORY_LOG],25,19);  
+  mvwprintw(gs->logs[INVENTORY_LOG],10,5, "Mainhand slot:");
+  item_holder->item = ((U_Hashtable * )gs->player->additional_info)->equipment_list[mainhand_slot];
+  PRINT_ITEM(item_holder,gs->logs[INVENTORY_LOG],5,11);  
+  mvwprintw(gs->logs[INVENTORY_LOG],10,38, "Offhand slot:");
+  item_holder->item = ((U_Hashtable * )gs->player->additional_info)->equipment_list[offhand_slot];
+  PRINT_ITEM(item_holder,gs->logs[INVENTORY_LOG],38,11);  
+  mvwprintw(gs->logs[INVENTORY_LOG],2,40, "Back slot:");
+  item_holder->item = ((U_Hashtable * )gs->player->additional_info)->equipment_list[back_slot];
+  PRINT_ITEM(item_holder,gs->logs[INVENTORY_LOG],40,3);  
+  top_panel(gs->panels[INVENTORY_LOG]);
+  update_panels(); 
+  doupdate();
+  free(item_holder);
+  int ch;
+  while (1){
+    ch = getch();
+    if (ch == 'q'){                   
+      hide_panel(gs->panels[INVENTORY_LOG]);
+      update_panels();
+      doupdate();
+      return;
+    }
+  }
+}
+   
+      

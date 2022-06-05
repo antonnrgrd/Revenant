@@ -35,8 +35,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "ingame_msg.h"
 #include "game_state_struct.h"
 #include "rng.h"
-int main(int argc, char *argv[]){
-  
+int main(int argc, char *argv[]){  
   initscr();
   start_color();
 

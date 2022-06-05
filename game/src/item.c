@@ -38,8 +38,9 @@ Weapon *i_gen_weapon(Quality_Level q,Variant variant,Material material,Weapon_Gr
   weapon->quality = q;
   weapon->variant = variant;
   weapon->material = material;
-   weapon->kind = k;
+  weapon->kind = k;
   weapon->group =group;
+  weapon->slot = mainhand_slot;
   //  printf("&s",mele_weapon_name_modifier[]);
   return weapon;
 }

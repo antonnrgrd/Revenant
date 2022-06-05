@@ -29,8 +29,8 @@ typedef enum Weapon_Group{mele,ranged}Weapon_Group;
 typedef enum Type{normal,magical}Type;
 typedef enum Quality_Level{poor,adequate,good,great,excellent,masterful,epic,legendary,artefact}Quality_Level;
 //typedef enum Enchantment_Level{low,medium,high,very_high,epic,legendary,artefact}Enchantment_Level;
-#define NUM_EQUIPMENT_SLOTS 8
-typedef enum Worn_In{head_slot,neck_slot,finger_slot,torso_slot,leg_slot,back_slot,hand_slot,offhand_slot}Worn_in;
+#define NUM_EQUIPMENT_SLOTS 9
+typedef enum Worn_In{head_slot,neck_slot,finger_slot,torso_slot,legs_slot,back_slot,mainhand_slot,offhand_slot, feet_slot}Worn_in;
 typedef enum Item_Kind{reagent,consumable,weapon,armor}Item_Kind;
 typedef enum Reagent_Kind{cooking,smithing,fishing,herb,computer}Reagent_Kind;
 typedef enum Weapon_Kind{sword,mace,axe}Weapon_Kind;

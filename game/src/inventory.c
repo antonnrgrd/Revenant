@@ -17,20 +17,25 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "u_hash.h"
 #include <stdlib.h>
 
-void inv_equip_item(Item_holder *target_item,U_Hashtable *inventory){
-  Item *previously_equipped ;
-  if(target_item->item->kind == weapon){
-    tmp = inventory->equipment_list[((struct Weapon *)source_item_holder->item->item_specific_info)->worn_in];
-    inventory->equipment_list[((struct Weapon *)source_item_holder->item->item_specific_info)->worn_in] = target_item->item;
-    free(target_item);
-      
+void inv_equip_item(Item_Holder *target_item_holder,U_Hashtable *inventory, Creature *player){
+
+  Item *tmp;
+  if(target_item_holder->item->kind == weapon){
+    tmp = inventory->equipment_list[((struct Weapon *)target_item_holder->item->item_specific_info)->slot];  
+    inventory->equipment_list[((struct Weapon *)target_item_holder->item->item_specific_info)->slot] = target_item_holder->item;
   }
-  if(target_item->item->kind == armor){
-    tmp = inventory->equipment_list[((struct Armor *)source_item_holder->item->item_specific_info)->worn_in];
-    inventory->equipment_list[((struct Armor *)source_item_holder->item->item_specific_info)->worn_in] = target_item->item;
-    free(target_item);
+  if(target_item_holder->item->kind == armor){
+    tmp = inventory->equipment_list[((struct Armor *)target_item_holder->item->item_specific_info)->slot];
+    inventory->equipment_list[((struct Armor *)target_item_holder->item->item_specific_info)->slot] = target_item_holder->item;
   }
-  
+
+  free(target_item_holder);
+  if(tmp != NULL){
+  Item_Holder *added_item = malloc(sizeof(Item_Holder));
+  added_item->item = tmp;
+  added_item->amount=1;
+  inv_add_item(added_item,inventory,player);
+  }
 }
 
 
