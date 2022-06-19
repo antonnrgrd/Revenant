@@ -17,8 +17,9 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "u_hash.h"
 #include <stdlib.h>
 
-void inv_equip_item(Item_Holder *target_item_holder,U_Hashtable *inventory, Creature *player){
+Item_Holder *inv_equip_item(Item_Holder *target_item_holder,U_Hashtable *inventory, Creature *player){
 
+  Item_Weight item_removal = u_remove_item(target_item_holder,1,inventory, NO);
   Item *tmp;
   if(target_item_holder->item->kind == weapon){
     tmp = inventory->equipment_list[((struct Weapon *)target_item_holder->item->item_specific_info)->slot];  
@@ -29,13 +30,15 @@ void inv_equip_item(Item_Holder *target_item_holder,U_Hashtable *inventory, Crea
     inventory->equipment_list[((struct Armor *)target_item_holder->item->item_specific_info)->slot] = target_item_holder->item;
   }
 
-  free(target_item_holder);
   if(tmp != NULL){
   Item_Holder *added_item = malloc(sizeof(Item_Holder));
   added_item->item = tmp;
   added_item->amount=1;
   inv_add_item(added_item,inventory,player);
+  return added_item;
   }
+
+  return NULL;
 }
 
 

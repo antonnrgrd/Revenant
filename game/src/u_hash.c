@@ -13,7 +13,7 @@ You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "u_hash.h"
-
+#include "screen_constants.h"
 unsigned long long u_hash(int char_count,U_Hashtable *table, char *strings, ...){
   return((table->a * s_uint_from_string(char_count,strings) + table->b) % BFP) % table->size;
 }
@@ -33,7 +33,6 @@ void u_add_item(Item_Holder *item, int amount,U_Hashtable *table){
   
 
   unsigned long long index = U_HASH_ITEM(item,table);
-
     //Item already present in inventory 
 //Maybe delete item at this point, maybe not since we might not use it after adding to inventory??
   
@@ -41,11 +40,8 @@ void u_add_item(Item_Holder *item, int amount,U_Hashtable *table){
   //It's very important that we put parenthesis around the two last conditions because otherwise the logical short circuiting of the first statement won't kick into effect for
   // some reason, thus checking the second condition, potentially accessing a null pointer value, which woud cause a segmentation fault
   //Zero, in the case of strcmp means "True"
-  if(table->entries[index] != NULL && (table->entries[index]->item_holder->item->kind == item->item->kind && HAS_SAME_NAME(table->entries[index]->item_holder, item) == 0)){
-     table->entries[index]->item_holder->amount += amount;
-     // printf("%s", "First case, \n");
-     
-    
+  if(table->entries[index] != NULL && (table->entries[index]->item_holder->item->kind == item->item->kind && (HAS_SAME_NAME(table->entries[index]->item_holder, item)) == 0)){
+     table->entries[index]->item_holder->amount += amount;    
   }
   else if(table->entries[index] == NULL){
     table->entries[index] = malloc(sizeof(Entry));
@@ -78,13 +74,22 @@ void u_add_item(Item_Holder *item, int amount,U_Hashtable *table){
   }
 
 }
-/*
-Item_Weight u_remove_item(char *tem_name, int amount, U_Hashtable *table){
-  unsigned long long index = 42; //u_hash(1, table,item_name);
+
+
+Item_Weight u_remove_item(Item_Holder *item, int amount, U_Hashtable *table, int free_item_if_removed){
+  unsigned long long index = U_HASH_ITEM(item,table);
   Item_Weight item_weight;
-  // If the item we are looking for is at the top-level, then assert if we are removing all occurences of the items and act correspondingly 
-  if(table->entries[index] != NULL && i_derive_item_name[table->entries[index]->item_holder->item->kind]  == item_name){
+
+  // If the item we are looking for is at the top-level, then assert if we are removing all occurences of the items and act correspondingly
+  // Unsure why but we have to wrap the HAS_SAME_NAME macro in parenthesis in this case, but not for item insert for it to actually return a value 
+  if(table->entries[index] != NULL && (table->entries[index]->item_holder->item->kind == item->item->kind && (HAS_SAME_NAME(table->entries[index]->item_holder, item)) == 0)){
     if(amount >= table->entries[index]->item_holder->amount){
+      if(free_item_if_removed == YES){
+	i_free_item(table->entries[index]->item_holder->item);
+      }
+      else{
+	item_weight.item = table->entries[index]->item_holder->item;
+      }
       item_weight.item = table->entries[index]->item_holder->item;
       item_weight.weight_loss = (table->entries[index]->item_holder->amount * table->entries[index]->item_holder->item->weight);
       item_weight.deleted = DELETED;
@@ -102,13 +107,25 @@ Item_Weight u_remove_item(char *tem_name, int amount, U_Hashtable *table){
       return item_weight;
     }
   }
+
+  
+  
+    
+  
   // If the item was not found at the top-level, start the search in the chained sequence of items and act accordingly, depending on whether we remove all occurences of said item 
-  if(table->entries[index] != NULL && i_derive_item_name[table->entries[index]->item_holder->item->kind] != item_name){
+  if(table->entries[index] != NULL && (table->entries[index]->item_holder->item->kind == item->item->kind && (HAS_SAME_NAME(table->entries[index]->item_holder, item)) == 1)){
+
     Entry *previous_entry = table->entries[index];
     Entry *current_entry = table->entries[index]->next_entry;
     while(current_entry->next_entry != NULL){
-      if((current_entry->item_holder->item) == item_name){
+      if(current_entry->item_holder->item->kind == item->item->kind && HAS_SAME_NAME(current_entry->item_holder, item) == 0){
 	if(amount >= current_entry->item_holder->amount)
+	  if(free_item_if_removed == YES){
+	    i_free_item(table->entries[index]->item_holder->item);
+	  }
+	  else{
+	    item_weight.item = table->entries[index]->item_holder->item;
+	  }
 	  item_weight.item = table->entries[index]->item_holder->item;
 	  item_weight.weight_loss = (current_entry->item_holder->amount * current_entry->item_holder->item->weight);
 	  item_weight.deleted = DELETED;
@@ -134,7 +151,7 @@ Item_Weight u_remove_item(char *tem_name, int amount, U_Hashtable *table){
   }
 }
   
-*/
+
 
 
 

@@ -13,7 +13,7 @@ You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "modifier.h"
-extern const char* handed_modifier[]= {" one-handed"," two-handed"};
+extern const char* handed_modifier[]= {" 1-handed"," 2-handed"};
 
 extern const char* material_name_modifier[]={" carbon fiber"," plastic"," clay", " leather"," gold"," silver"," custom", " granite", " marble"," flint"," iron"," bronze"," steel", " mithril", " adamantite", " runite", " titanium", " laser", " plasma", " matterbane"};
 

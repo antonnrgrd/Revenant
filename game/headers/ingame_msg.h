@@ -12,6 +12,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 #ifndef MSG
 #define MSG
+#define ALREADY_LISTED -2
 #include "screen_constants.h"
 #include <ncurses.h>
 #include <panel.h>
@@ -19,9 +20,11 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "strings.h"
 //screen, y,x, "%s X %d", quality_name_modifier[((union Equipment)item_holder->item->item_specific_info).weapon->quality]
 #define MAX_MSG_LENGTH 50
-#define PRINT_ITEM_WEAPON(item_holder,screen,x,y)mvwprintw(screen, y,x, "%s%s%s%s%s%d", quality_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->quality],handed_modifier[((struct Weapon *)item_holder->item->item_specific_info)->variant],material_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->material], mele_weapon_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->kind], " X ", item_holder->amount)
-#define PRINT_ITEM_ARMOR(item_holder,screen,x,y)4
-#define PRINT_ITEM_NONEQUIPPABLE(item_holder,screen,x,y)mvwprintw(screen, y,x, "%s", i_derive_item_name[item_holder->item->kind]);
+#define PRINT_ITEM_WEAPON(item_holder,screen,x,y)item_holder->amount != 1 ? mvwprintw(screen, y,x, "%s%s%s%s%s%d", quality_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->quality],handed_modifier[((struct Weapon *)item_holder->item->item_specific_info)->variant],material_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->material], mele_weapon_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->kind], " X ", item_holder->amount) : mvwprintw(screen, y,x, "%s%s%s%s", quality_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->quality],handed_modifier[((struct Weapon *)item_holder->item->item_specific_info)->variant],material_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->material], mele_weapon_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->kind])
+
+#define PRINT_ITEM_ARMOR(item_holder,screen,x,y)item_holder->amount != 1 ? mvwprintw(screen, y,x, "%s%s%s%s%d", quality_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->quality],material_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->material], armorslot_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->armor_type], " X ", item_holder->amount) : mvwprintw(screen, y,x, "%s%s%s", quality_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->quality],material_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->material],  armorslot_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->armor_type])
+
+#define PRINT_ITEM_NONEQUIPPABLE(item_holder,screen,x,y)item_holder->amount != 1 ? mvwprintw(screen, y,x, "%s%s%d", i_derive_item_name[item_holder->item->kind], " X ", item_holder->amount) : mvwprintw(screen, y,x, "%s", i_derive_item_name[item_holder->item->kind])
 #define PRINT_ITEM_EQUIPPABLE(item_holder,screen,x,y) item_holder->item->kind == weapon ? PRINT_ITEM_WEAPON(item_holder,screen,x,y) : PRINT_ITEM_ARMOR(item_holder,screen,x,y) 
 #define PRINT_ITEM_NOT_NULL(item_holder,screen,x,y)item_holder->item->kind == weapon || item_holder->item->kind == armor ? PRINT_ITEM_EQUIPPABLE(item_holder,screen,x,y):PRINT_ITEM_NONEQUIPPABLE(item_holder,screen,x,y)
 #define PRINT_ITEM_NULL(item_holder,screen,x,y)mvwprintw(screen, y,x,"None")
@@ -38,6 +41,8 @@ void msg_show_log(Game_State *gs, int panel_index);
 //We malloc a message buffer of type (chtype * MAX_MSG_LENGTH) as mvwinchnstr needs a sufficiently big enough buffer to store the copied string to and 50 is the guessed biggest possible length we will need. chtype is a special datatype used by ncurses a type of string, if you will.
 
 int msg_find_log_position(Game_State *gs);
+
+int msg_find_item_position(WINDOW *log, int max_y, int x_pos, Item_Holder *item, Item_Holder **item_list);
 
 
 

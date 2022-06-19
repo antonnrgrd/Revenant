@@ -88,17 +88,19 @@ char *i_mele_weapon_name(Quality_Level q, Material material, Variant v, Weapon_K
 }
 
 Item *i_make_armor(Quality_Level q, Material material, Worn_in w,Equipment_Kind armor_type){
- 
+  Item *i = malloc(sizeof(Item));
+  /*
   Material_Modifier m = material_modifiers[material];
   Variant_Modifier v = itemslot_modifiers[w];
-  Item *i = malloc(sizeof(Item));
+  
   
   Armor *a = malloc(sizeof(Armor));
   a->armor = (uint64_t)ceil(m.armor_modifier * v.stats_modifier);
   i->value = (uint32_t)ceil(m.value_modifier * v.value_modifier);
   i->weight = m.base_weight_modifier * v.weight_modifier;
   i->item_specific_info = a;
-
+  */
+  i->item_specific_info = i_gen_armor(q,material,w,armor_type);
   i->kind = armor;
   
   
@@ -130,7 +132,6 @@ Item *i_make_mele_weapon(Quality_Level q, Material material, Variant v, Weapon_K
 
 void i_free_item(Item *i){
   free_item_handler[i->kind](i);
-  free(i->description);
 }
 
 

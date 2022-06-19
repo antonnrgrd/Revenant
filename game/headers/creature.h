@@ -22,11 +22,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "gameinfo.h"
 #include "creature_macros.h"
 #include "rng.h"
-
-
-
-#define YES 1
-#define NO 0
+#include "screen_constants.h"
 
 
 #define COPY_LIMB(creature_limb, source_limb){\

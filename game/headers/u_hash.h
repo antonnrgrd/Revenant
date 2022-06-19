@@ -69,7 +69,7 @@ U_Hashtable *u_initialize_hashtable(int initial_size,Mersienne_Twister *twister)
 
 void u_add_item(Item_Holder *item, int amount,U_Hashtable *table);
 
-Item_Weight u_remove_item(char *tem_name, int amount, U_Hashtable *table);
+Item_Weight u_remove_item(Item_Holder *item, int amount, U_Hashtable *table,int free_item_if_removed);
 
 
 

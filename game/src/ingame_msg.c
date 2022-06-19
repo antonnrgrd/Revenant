@@ -48,7 +48,31 @@ int msg_find_log_position(Game_State *gs){
   free(line_contents);
   return -1;
 }
-  
+
+int msg_find_item_position(WINDOW *log, int max_y, int x_pos, Item_Holder *item, Item_Holder **item_list){
+char *line_contents = malloc(MAX_MSG_LENGTH * sizeof(char));
+  for(int i = 2; i < max_y; i++){
+    //The position at which we check the screen contents could potentially fail
+    //Due to the fact that the last position of the message log hhas 2 digits (see the update event log function for more info)
+    
+
+      if( (HAS_SAME_NAME(item, item_list[i-2])) == 0){
+     return ALREADY_LISTED;
+      }
+    
+      mvwinnstr(log, i,x_pos,line_contents,MAX_MSG_LENGTH-1);
+      //printf("%d%s", line_contents[0], " ");
+      //      printf("%d",s_only_whitespace(line_contents));
+      if(s_only_whitespace(line_contents) == 1){
+	free(line_contents);
+	return i;
+      }
+  }
+  //printf("%s",line_contents);  
+  free(line_contents);
+  return -1;
+}
+
 void msg_update_event_log(Game_State *gs){
   char *msg_bfr = malloc(MAX_MSG_LENGTH * sizeof(char));
   mvwinnstr(gs->logs[MAIN_SCREEN], DEFAULT_MAX_Y,0,msg_bfr,MAX_MSG_LENGTH-1);
@@ -100,6 +124,7 @@ void msg_display_inventory(Game_State *gs){
 
  
 void msg_display_inventory_equip_context(Game_State *gs){
+  int tmp_amount_holder;
   MSG_CLEAR_SCREEN(gs->logs[INVENTORY_LOG]);
   int curr_curs_pos = 2;
   int column_position = 2;
@@ -151,22 +176,58 @@ void msg_display_inventory_equip_context(Game_State *gs){
     }
     //probably faulty with how we assign item holder pointers to the item list
     else if (ch == 'y'){
-      //likely invalid index of access
       
-      //we subtract 2 from curr_curs_pos to "map" from current cursor position to the actual postion of the item
+
+     mvwprintw(gs->logs[MAIN_SCREEN],DEFAULT_MAX_Y,0, "%s", "You equip ");
+     /*We temporarily set the amount of the item we equip to be one since
+      item printer prints the amount of the item, unless the amount we have is 1
+     and we do not want the amount printed, just the item's name*/
+     tmp_amount_holder = item_list[curr_curs_pos-2]->amount;
+     item_list[curr_curs_pos-2]->amount = 1;
+     PRINT_ITEM(item_list[curr_curs_pos-2],gs->logs[MAIN_SCREEN],11,DEFAULT_MAX_Y);
+     item_list[curr_curs_pos-2]->amount = tmp_amount_holder;
+     
+     msg_update_event_log(gs);
+     UPDATE_PANEL_INFO();
+     //we subtract 2 from curr_curs_pos to "map" from current cursor position to the actual postion of the item
       //in the item list. This is because the item list starts at index 0, whereas the cursor position starts at 2
-      inv_equip_item(item_list[curr_curs_pos-2], ((U_Hashtable * )gs->player->additional_info), gs->player);
-    ;
+     Item_Holder *previously_equipped = inv_equip_item(item_list[curr_curs_pos-2], ((U_Hashtable * )gs->player->additional_info), gs->player);
+     
+        if(item_list[curr_curs_pos-2]->amount == 1){
+	wclrtoeol(gs->logs[INVENTORY_LOG]);
+	 box(gs->logs[INVENTORY_LOG],0,0);
+	 UPDATE_PANEL_INFO();
+       }
+	  
+     else{
+       wclrtoeol(gs->logs[INVENTORY_LOG]);
+	 box(gs->logs[INVENTORY_LOG],0,0);
+	 PRINT_ITEM(item_list[curr_curs_pos-2],gs->logs[INVENTORY_LOG],5,curr_curs_pos);
+	 UPDATE_PANEL_INFO();
+     }
+	  
+	
+     if(previously_equipped != NULL){
+       //max Y range exceeds list of items bound is current error
+              int list_pos = msg_find_item_position(gs->logs[INVENTORY_LOG],DEFAULT_MAX_Y,5,previously_equipped,item_list);
+       /*
+       if(list_pos != ALREADY_LISTED){
+	PRINT_ITEM(item_list[curr_curs_pos-2],gs->logs[INVENTORY_LOG],11,list_pos);
+       item_list[list_pos] = previously_equipped;
+       */
+       }
+     }
+	
     }
   }
-  
-}
+
 msg_display_equipped_equipment(Game_State *gs){
   MSG_CLEAR_SCREEN(gs->logs[INVENTORY_LOG]);
   //Since the imtem printer macro assumes a item holder,
   //we make a dummy item holder to temporarily hold the
   //equipped items we want to print
   Item_Holder *item_holder = malloc(sizeof(Item_Holder));
+  item_holder->amount = 1;
   mvwprintw(gs->logs[INVENTORY_LOG],1,25, "Items equipped");
   mvwprintw(gs->logs[INVENTORY_LOG],4,25, "Head slot:");
   item_holder->item = ((U_Hashtable * )gs->player->additional_info)->equipment_list[head_slot];
@@ -186,9 +247,9 @@ msg_display_equipped_equipment(Game_State *gs){
   mvwprintw(gs->logs[INVENTORY_LOG],18,25, "Feet slot:");
   item_holder->item = ((U_Hashtable * )gs->player->additional_info)->equipment_list[feet_slot];
   PRINT_ITEM(item_holder,gs->logs[INVENTORY_LOG],25,19);  
-  mvwprintw(gs->logs[INVENTORY_LOG],10,5, "Mainhand slot:");
+  mvwprintw(gs->logs[INVENTORY_LOG],10,3, "Mainhand slot:");
   item_holder->item = ((U_Hashtable * )gs->player->additional_info)->equipment_list[mainhand_slot];
-  PRINT_ITEM(item_holder,gs->logs[INVENTORY_LOG],5,11);  
+  PRINT_ITEM(item_holder,gs->logs[INVENTORY_LOG],3,11);  
   mvwprintw(gs->logs[INVENTORY_LOG],10,38, "Offhand slot:");
   item_holder->item = ((U_Hashtable * )gs->player->additional_info)->equipment_list[offhand_slot];
   PRINT_ITEM(item_holder,gs->logs[INVENTORY_LOG],38,11);  
@@ -212,3 +273,4 @@ msg_display_equipped_equipment(Game_State *gs){
 }
    
       
+ 
