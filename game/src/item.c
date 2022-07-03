@@ -25,7 +25,7 @@ Reagent *i_gen_reagent(Variant variant,float weight,uint32_t value,Reagent_Kind 
 }
  
 Armor *i_gen_armor(Quality_Level q, Material material, Worn_in w,Equipment_Kind armor_type){
-  Armor *arm = malloc(sizeof(armor));
+  Armor *arm = malloc(sizeof(Armor));
   arm->quality =q;
   arm->material = material;
   arm->slot = w;

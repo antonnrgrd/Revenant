@@ -33,6 +33,9 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define UPDATE_PANEL_INFO() update_panels(); doupdate();
 
 
+//MSG_MOVE_TO_NEW_POS(item_list, init_free_pos, max_index, log)
+/* We stop at second last index because we set pointers to null and if we include the last index, we attempt to print the item at the last index, which is null, causing seg fault*/
+#define MSG_COMPRESS_ITEM_LIST(item_list, init_free_pos, max_index, log) for(int i = init_free_pos; i < max_index-1; i++ ){ item_list[i] = item_list[i+1]; item_list[i+1] = NULL;  wmove(log,i+2,5); wclrtoeol(log);  PRINT_ITEM(item_list[i],log,5,i+2); } /* item_list[max_index-1] = NULL; */ wmove(log,max_index-1+2,5); wclrtoeol(log); box(gs->logs[INVENTORY_LOG],0,0); wmove(log,init_free_pos+2,5); UPDATE_PANEL_INFO();
 
 void msg_show_log(Game_State *gs, int panel_index);
 
@@ -42,7 +45,7 @@ void msg_show_log(Game_State *gs, int panel_index);
 
 int msg_find_log_position(Game_State *gs);
 
-int msg_find_item_position(WINDOW *log, int max_y, int x_pos, Item_Holder *item, Item_Holder **item_list);
+int msg_find_item_position(WINDOW *log, int max_y,Item_Holder *item, Item_Holder **item_list);
 
 
 
@@ -73,6 +76,7 @@ void msg_display_inventory(Game_State *gs);
 void msg_display_inventory_equip_context(Game_State *gs);
 
 void msg_display_equipped_equipment(Game_State *gs);
+
 /*ncurses has built-in functionality for clearing */
 #define MSG_CLEAR_SCREEN(window)werase(gs->logs[INVENTORY_LOG]); box(window,0,0);
 #endif

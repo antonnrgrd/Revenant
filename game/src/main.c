@@ -35,33 +35,38 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "ingame_msg.h"
 #include "game_state_struct.h"
 #include "rng.h"
-int main(int argc, char *argv[]){  
+int main(int argc, char *argv[]){
+
+
   initscr();
-  start_color();
-  
+  start_color();  
  Game_World *game_world = g_generate_game_world(1000,1000);
  
  Item *weapon = i_make_mele_weapon(epic,bronze,one_hand,sword);
- Item *weapon_2 = i_make_mele_weapon(epic,steel,one_hand,sword);
- 
+ Item *weapon_2 = i_make_mele_weapon(epic,steel,one_hand,sword); 
  Item *armor = i_make_armor(poor,mithril,head_slot,helmet);
+ Item *armor_2 = i_make_armor(adequate,steel,feet_slot,boots);
  Game_State *gs =  gs_create_game_state(game_world);
  Item_Holder *i = malloc(sizeof(Item_Holder));
  i->item = weapon;
  i->amount = 1;
   Item_Holder *j = malloc(sizeof(Item_Holder));
   j->item = weapon_2;
- j->amount = 42;
- Item_Holder *k = malloc(sizeof(Item_Holder));
+ j->amount = 5;
+ //Item_Holder *k = malloc(sizeof(Item_Holder));
  Item_Holder *l = malloc(sizeof(Item_Holder));
  l->item = armor;
- l->amount = 7;
- k->amount=3;
- k->item = armor;
+ l->amount = 1;
+ //k->amount=1;
+ // k->item = armor;
+  Item_Holder *m = malloc(sizeof(Item_Holder));
+  m->item = armor_2;
+ m->amount=1;
   u_add_item(j,j->amount,(struct U_Hashtable*)gs->player->additional_info);
   u_add_item(i,i->amount,(struct U_Hashtable*)gs->player->additional_info);
- u_add_item(k,k->amount,(struct U_Hashtable*)gs->player->additional_info);
+  // u_add_item(k,k->amount,(struct U_Hashtable*)gs->player->additional_info);
  u_add_item(l,l->amount,(struct U_Hashtable*)gs->player->additional_info);
+ u_add_item(m,m->amount,(struct U_Hashtable*)gs->player->additional_info);
  
 
   noecho();

@@ -28,15 +28,12 @@ U_Hashtable *u_initialize_hashtable(int initial_size,Mersienne_Twister *twister)
   table->b = GEN_VALUE_RANGE(0,BFP,twister);
   return table;
 }
-
-void u_add_item(Item_Holder *item, int amount,U_Hashtable *table){
-  
-
+ 
+void u_add_item(Item_Holder *item, int amount,U_Hashtable *table){  
   unsigned long long index = U_HASH_ITEM(item,table);
     //Item already present in inventory 
 //Maybe delete item at this point, maybe not since we might not use it after adding to inventory??
-  
-  
+     
   //It's very important that we put parenthesis around the two last conditions because otherwise the logical short circuiting of the first statement won't kick into effect for
   // some reason, thus checking the second condition, potentially accessing a null pointer value, which woud cause a segmentation fault
   //Zero, in the case of strcmp means "True"
@@ -59,7 +56,7 @@ void u_add_item(Item_Holder *item, int amount,U_Hashtable *table){
       return;
       
     }
-    
+     
     Entry *current_entry = table->entries[index]->next_entry;
     while(current_entry->next_entry != NULL){
       if(HAS_SAME_NAME(current_entry->item_holder, item) == 0){
@@ -72,32 +69,31 @@ void u_add_item(Item_Holder *item, int amount,U_Hashtable *table){
     current_entry->next_entry->item_holder = item;
     table->item_count++;
   }
-
 }
 
 
 Item_Weight u_remove_item(Item_Holder *item, int amount, U_Hashtable *table, int free_item_if_removed){
   unsigned long long index = U_HASH_ITEM(item,table);
   Item_Weight item_weight;
-
   // If the item we are looking for is at the top-level, then assert if we are removing all occurences of the items and act correspondingly
   // Unsure why but we have to wrap the HAS_SAME_NAME macro in parenthesis in this case, but not for item insert for it to actually return a value 
   if(table->entries[index] != NULL && (table->entries[index]->item_holder->item->kind == item->item->kind && (HAS_SAME_NAME(table->entries[index]->item_holder, item)) == 0)){
+    //    printf("%s", " first case ");
     if(amount >= table->entries[index]->item_holder->amount){
       if(free_item_if_removed == YES){
 	i_free_item(table->entries[index]->item_holder->item);
+	free(table->entries[index]->item_holder);
       }
       else{
-	item_weight.item = table->entries[index]->item_holder->item;
-      }
       item_weight.item = table->entries[index]->item_holder->item;
       item_weight.weight_loss = (table->entries[index]->item_holder->amount * table->entries[index]->item_holder->item->weight);
       item_weight.deleted = DELETED;
-      free(table->entries[index]->item_holder);
+      Entry *tmp = table->entries[index];      
       Entry *replacement = table->entries[index]->next_entry;
-      free(table->entries[index]);
       table->entries[index] = replacement;
+      free(tmp);
       return item_weight;
+      }
     }
     else{
       table->entries[index]->item_holder->amount -= amount;
@@ -113,8 +109,8 @@ Item_Weight u_remove_item(Item_Holder *item, int amount, U_Hashtable *table, int
     
   
   // If the item was not found at the top-level, start the search in the chained sequence of items and act accordingly, depending on whether we remove all occurences of said item 
-  if(table->entries[index] != NULL && (table->entries[index]->item_holder->item->kind == item->item->kind && (HAS_SAME_NAME(table->entries[index]->item_holder, item)) == 1)){
-
+  else if(table->entries[index] != NULL && (table->entries[index]->item_holder->item->kind == item->item->kind && (HAS_SAME_NAME(table->entries[index]->item_holder, item)) != 0)){
+    //  printf("%s", " second case ");
     Entry *previous_entry = table->entries[index];
     Entry *current_entry = table->entries[index]->next_entry;
     while(current_entry->next_entry != NULL){
@@ -149,6 +145,19 @@ Item_Weight u_remove_item(Item_Holder *item, int amount, U_Hashtable *table, int
   item_weight.item = NULL;
   return item_weight;
   }
+  /*
+  else {
+    printf("%s%s%s", material_name_modifier[((struct Weapon *)item->item->item_specific_info)->material], "  ", material_name_modifier[((struct Weapon *)table->entries[index]->item_holder->item->item_specific_info)->material]); 
+    if(item == NULL){
+      printf("%s", " item null");
+    }
+    if(table->entries[index] == NULL){
+      printf("%s", " item at index null");
+    }
+    unsigned int  x = HAS_SAME_NAME(table->entries[index]->item_holder, item);
+    printf("%s%d"," x is ", x); 
+  }
+  */
 }
   
 

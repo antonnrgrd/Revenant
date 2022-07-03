@@ -8,10 +8,17 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
-
-
 #include "ingame_msg.h"
 #include "game_state.h"
+
+void any_null(Item_Holder **item_list){
+  printf("%s", "This run ");
+  for(int i = 0; i < 4; i++)
+    if(item_list[i] == NULL){
+      printf("%s%d"," " ,i);
+    }
+}
+         
 void msg_show_log(Game_State *gs, int panel_index){
   top_panel(gs->panels[panel_index]);
   // We defer the refreshing of screen contents of the panels until
@@ -30,7 +37,7 @@ void msg_show_log(Game_State *gs, int panel_index){
     }
   }
 }
-    
+              
 int msg_find_log_position(Game_State *gs){
   char *line_contents = malloc(MAX_MSG_LENGTH * sizeof(char));
   for(int i = 3; i< 13; i++){
@@ -48,29 +55,55 @@ int msg_find_log_position(Game_State *gs){
   free(line_contents);
   return -1;
 }
-
-int msg_find_item_position(WINDOW *log, int max_y, int x_pos, Item_Holder *item, Item_Holder **item_list){
+  
+int msg_find_item_position(WINDOW *log, int max_y,Item_Holder *item, Item_Holder **item_list){
+  /*
+  if(item != NULL){
+    printf("%s", "item to add not null " );
+  }
+  */
+  for(int i = 0; i < max_y; i++){
+    printf("%s%d"," ", i);
+    /*
+       if(item_list[i] == NULL){
+	 printf("%s", "found null pos" );
+     return i;
+     }
+    */
+       
+       /*
+    else if(HAS_SAME_NAME(item, item_list[i]) == 0){
+      return ALREADY_LISTED;
+    }
+       */
+  }
+  return 0;
+  /*
 char *line_contents = malloc(MAX_MSG_LENGTH * sizeof(char));
-  for(int i = 2; i < max_y; i++){
-    //The position at which we check the screen contents could potentially fail
-    //Due to the fact that the last position of the message log hhas 2 digits (see the update event log function for more info)
-    
-
-      if( (HAS_SAME_NAME(item, item_list[i-2])) == 0){
+  for(int i = 0; i < max_y; i++){
+    //Everything indicates it is ok, the error indeed occurs
+    //when you equip an item for a slot that already has
+    //an item in it and since we unequip it, we now
+    //have to display it available for re-equipping in the item list
+    if(HAS_SAME_NAME(item, item_list[i]) == 0){    
      return ALREADY_LISTED;
-      }
-    
+    }
+
       mvwinnstr(log, i,x_pos,line_contents,MAX_MSG_LENGTH-1);
       //printf("%d%s", line_contents[0], " ");
       //      printf("%d",s_only_whitespace(line_contents));
       if(s_only_whitespace(line_contents) == 1){
 	free(line_contents);
-	return i;
+	//We add a plus two since the item name list starts at position 2
+	//and we want to map back to the corresponding position in the item name
+	//list and so we add +2
+	return i+2;
       }
   }
   //printf("%s",line_contents);  
   free(line_contents);
   return -1;
+  */
 }
 
 void msg_update_event_log(Game_State *gs){
@@ -96,6 +129,7 @@ void msg_display_inventory(Game_State *gs){
   MSG_CLEAR_SCREEN(gs->logs[INVENTORY_LOG]);
   INIT_INVENTORY_LOG(gs->logs[INVENTORY_LOG], "inventory");
   int column_position = 2;
+
   for(int i = 0; i < ((U_Hashtable * )gs->player->additional_info)->size; i++ ){
     if(((U_Hashtable * )gs->player->additional_info)->entries[i] != NULL){
       Entry  *current_entry = ((U_Hashtable * )gs->player->additional_info)->entries[i];
@@ -105,8 +139,7 @@ void msg_display_inventory(Game_State *gs){
 	column_position++;
       }
     }
-  }
-  
+  }  
   top_panel(gs->panels[INVENTORY_LOG]);
   update_panels(); 
   doupdate();
@@ -121,9 +154,9 @@ void msg_display_inventory(Game_State *gs){
     }
   }
 } 
-
  
 void msg_display_inventory_equip_context(Game_State *gs){
+  int available_equipment = 0;
   int tmp_amount_holder;
   MSG_CLEAR_SCREEN(gs->logs[INVENTORY_LOG]);
   int curr_curs_pos = 2;
@@ -134,12 +167,13 @@ void msg_display_inventory_equip_context(Game_State *gs){
     if(((U_Hashtable * )gs->player->additional_info)->entries[i] != NULL){
       Entry  *current_entry = ((U_Hashtable * )gs->player->additional_info)->entries[i];
       while(current_entry != NULL){
-	item_list[current_printed_item] =  current_entry->item_holder;
 	if(current_entry->item_holder->item->kind == weapon || current_entry->item_holder->item->kind == armor ){
+	item_list[current_printed_item] =  current_entry->item_holder;  
 	PRINT_ITEM(current_entry->item_holder,gs->logs[INVENTORY_LOG],5,column_position);
         current_entry = current_entry->next_entry;
 	column_position++;
 	current_printed_item++;
+	available_equipment++;
        }
       }
     }
@@ -163,12 +197,11 @@ void msg_display_inventory_equip_context(Game_State *gs){
     }
     else if (ch == KEY_UP && curr_curs_pos > 2){
       curr_curs_pos--;
-
       wmove(gs->logs[INVENTORY_LOG],curr_curs_pos,5);
       update_panels();
       doupdate();
-    }
-    else if (ch == KEY_DOWN && curr_curs_pos < DEFAULT_MAX_Y - 2 ){
+    }       
+    else if (ch == KEY_DOWN && curr_curs_pos < DEFAULT_MAX_Y - 2 && item_list[(curr_curs_pos-2)+1] != NULL){
       curr_curs_pos++;
       wmove(gs->logs[INVENTORY_LOG],curr_curs_pos,5);
       update_panels();
@@ -176,8 +209,6 @@ void msg_display_inventory_equip_context(Game_State *gs){
     }
     //probably faulty with how we assign item holder pointers to the item list
     else if (ch == 'y'){
-      
-
      mvwprintw(gs->logs[MAIN_SCREEN],DEFAULT_MAX_Y,0, "%s", "You equip ");
      /*We temporarily set the amount of the item we equip to be one since
       item printer prints the amount of the item, unless the amount we have is 1
@@ -185,42 +216,44 @@ void msg_display_inventory_equip_context(Game_State *gs){
      tmp_amount_holder = item_list[curr_curs_pos-2]->amount;
      item_list[curr_curs_pos-2]->amount = 1;
      PRINT_ITEM(item_list[curr_curs_pos-2],gs->logs[MAIN_SCREEN],11,DEFAULT_MAX_Y);
-     item_list[curr_curs_pos-2]->amount = tmp_amount_holder;
-     
-     msg_update_event_log(gs);
-     UPDATE_PANEL_INFO();
-     //we subtract 2 from curr_curs_pos to "map" from current cursor position to the actual postion of the item
+     item_list[curr_curs_pos-2]->amount = tmp_amount_holder;     
+          msg_update_event_log(gs);
+      UPDATE_PANEL_INFO();
+      //we subtract 2 from curr_curs_pos to "map" from current cursor position to the actual postion of the item
       //in the item list. This is because the item list starts at index 0, whereas the cursor position starts at 2
      Item_Holder *previously_equipped = inv_equip_item(item_list[curr_curs_pos-2], ((U_Hashtable * )gs->player->additional_info), gs->player);
-     
-        if(item_list[curr_curs_pos-2]->amount == 1){
-	wclrtoeol(gs->logs[INVENTORY_LOG]);
-	 box(gs->logs[INVENTORY_LOG],0,0);
-	 UPDATE_PANEL_INFO();
-       }
-	  
+      if(item_list[curr_curs_pos-2]->amount == 1){
+       	wclrtoeol(gs->logs[INVENTORY_LOG]);
+	item_list[curr_curs_pos-2]=NULL;
+      	MSG_COMPRESS_ITEM_LIST(item_list,curr_curs_pos-2,available_equipment,gs->logs[INVENTORY_LOG]);
+	available_equipment--;
+	//	any_null(item_list);     
+           }
+             
      else{
        wclrtoeol(gs->logs[INVENTORY_LOG]);
 	 box(gs->logs[INVENTORY_LOG],0,0);
 	 PRINT_ITEM(item_list[curr_curs_pos-2],gs->logs[INVENTORY_LOG],5,curr_curs_pos);
 	 UPDATE_PANEL_INFO();
      }
-	  
-	
+       
      if(previously_equipped != NULL){
        //max Y range exceeds list of items bound is current error
-              int list_pos = msg_find_item_position(gs->logs[INVENTORY_LOG],DEFAULT_MAX_Y,5,previously_equipped,item_list);
+       int list_pos = msg_find_item_position(gs->logs[INVENTORY_LOG],available_equipment,previously_equipped,item_list);
+       //       any_null(item_list);   
+       printf("%d", list_pos);
+       printf("%s%d"," " ,available_equipment);
        /*
        if(list_pos != ALREADY_LISTED){
 	PRINT_ITEM(item_list[curr_curs_pos-2],gs->logs[INVENTORY_LOG],11,list_pos);
        item_list[list_pos] = previously_equipped;
-       */
+       available_equipment++;
        }
-     }
-	
+       */
+     }  
     }
   }
-
+}
 msg_display_equipped_equipment(Game_State *gs){
   MSG_CLEAR_SCREEN(gs->logs[INVENTORY_LOG]);
   //Since the imtem printer macro assumes a item holder,
