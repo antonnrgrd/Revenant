@@ -10,7 +10,7 @@ You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "ingame_msg.h"
 #include "game_state.h"
-
+ 
 void any_null(Item_Holder **item_list){
   printf("%s", "This run ");
   for(int i = 0; i < 4; i++)
@@ -37,7 +37,7 @@ void msg_show_log(Game_State *gs, int panel_index){
     }
   }
 }
-              
+               
 int msg_find_log_position(Game_State *gs){
   char *line_contents = malloc(MAX_MSG_LENGTH * sizeof(char));
   for(int i = 3; i< 13; i++){
@@ -57,53 +57,25 @@ int msg_find_log_position(Game_State *gs){
 }
   
 int msg_find_item_position(WINDOW *log, int max_y,Item_Holder *item, Item_Holder **item_list){
-  /*
-  if(item != NULL){
-    printf("%s", "item to add not null " );
-  }
-  */
   for(int i = 0; i < max_y; i++){
-    printf("%s%d"," ", i);
-    /*
-       if(item_list[i] == NULL){
-	 printf("%s", "found null pos" );
-     return i;
-     }
-    */
-       
-       /*
-    else if(HAS_SAME_NAME(item, item_list[i]) == 0){
+  // Because the equipment can be either of type armor or weapon, we have to be sure that they are the same type before even
+  //bothering to check if the names are the same
+    
+    //printf("%d", max_y);
+  if(item->item->kind == item_list[i]->item->kind){
+    //It is very important to put parenthesis around the macro call because otherwise, for unknown causes
+    //it returns a faulty value
+    if((HAS_SAME_NAME(item, item_list[i])) == 0){
+      //printf("ITEM ALREADY IN LIST");
       return ALREADY_LISTED;
     }
-       */
+   }  
   }
-  return 0;
-  /*
-char *line_contents = malloc(MAX_MSG_LENGTH * sizeof(char));
-  for(int i = 0; i < max_y; i++){
-    //Everything indicates it is ok, the error indeed occurs
-    //when you equip an item for a slot that already has
-    //an item in it and since we unequip it, we now
-    //have to display it available for re-equipping in the item list
-    if(HAS_SAME_NAME(item, item_list[i]) == 0){    
-     return ALREADY_LISTED;
-    }
-
-      mvwinnstr(log, i,x_pos,line_contents,MAX_MSG_LENGTH-1);
-      //printf("%d%s", line_contents[0], " ");
-      //      printf("%d",s_only_whitespace(line_contents));
-      if(s_only_whitespace(line_contents) == 1){
-	free(line_contents);
-	//We add a plus two since the item name list starts at position 2
-	//and we want to map back to the corresponding position in the item name
-	//list and so we add +2
-	return i+2;
-      }
-  }
-  //printf("%s",line_contents);  
-  free(line_contents);
-  return -1;
-  */
+  //We return max_y+1 since we add the item to the end of the list. However
+  //when we add the item, we increase the number of items in the list, so we have have to add a +1
+  //By how we malloc for the item_list, we SHOULD be guaranteed that there are enough free pointers to do this 
+  //printf("ITEM NOT ALREADY IN LIST");
+  return max_y+1;
 }
 
 void msg_update_event_log(Game_State *gs){
@@ -129,7 +101,6 @@ void msg_display_inventory(Game_State *gs){
   MSG_CLEAR_SCREEN(gs->logs[INVENTORY_LOG]);
   INIT_INVENTORY_LOG(gs->logs[INVENTORY_LOG], "inventory");
   int column_position = 2;
-
   for(int i = 0; i < ((U_Hashtable * )gs->player->additional_info)->size; i++ ){
     if(((U_Hashtable * )gs->player->additional_info)->entries[i] != NULL){
       Entry  *current_entry = ((U_Hashtable * )gs->player->additional_info)->entries[i];
@@ -238,18 +209,18 @@ void msg_display_inventory_equip_context(Game_State *gs){
      }
        
      if(previously_equipped != NULL){
-       //max Y range exceeds list of items bound is current error
        int list_pos = msg_find_item_position(gs->logs[INVENTORY_LOG],available_equipment,previously_equipped,item_list);
-       //       any_null(item_list);   
-       printf("%d", list_pos);
-       printf("%s%d"," " ,available_equipment);
-       /*
        if(list_pos != ALREADY_LISTED){
-	PRINT_ITEM(item_list[curr_curs_pos-2],gs->logs[INVENTORY_LOG],11,list_pos);
        item_list[list_pos] = previously_equipped;
+       PRINT_ITEM(item_list[list_pos],gs->logs[INVENTORY_LOG],5,list_pos+1);
        available_equipment++;
+       UPDATE_PANEL_INFO();
        }
-       */
+       else{ 
+	 free(previously_equipped);
+	 MSG_REDRAW_INVENTORY(item_list,available_equipment,gs->logs[INVENTORY_LOG]);
+	 UPDATE_PANEL_INFO();
+       }
      }  
     }
   }

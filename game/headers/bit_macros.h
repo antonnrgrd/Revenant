@@ -10,7 +10,6 @@ You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #ifndef BIT_MACROS
 #define BIT_MACROS
-
 CLEAR_BIT_ARRAY(bit_array)
 SET_ITH_BIT(bit_array)
 CLEAR_ITH_BIT(bit_array,offset) bit_array & ~(1 << offset)
