@@ -26,7 +26,10 @@ void ll_iter_list_as_creature(Linked_List *list, Game_State *game_state){
       current_node->value = NULL;
     }
     else{
-      cb_act( (struct Creature *)current_node->value, game_state);
+      while(((struct Creature *)current_node->value)->curr_ap > 0 ){
+	cb_act( (struct Creature *)current_node->value, game_state);
+      }
+      
     previous = current_node;
     current_node = current_node->next;
     }

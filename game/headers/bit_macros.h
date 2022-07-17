@@ -12,6 +12,6 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define BIT_MACROS
 CLEAR_BIT_ARRAY(bit_array)
 SET_ITH_BIT(bit_array)
-CLEAR_ITH_BIT(bit_array,offset) bit_array & ~(1 << offset)
-ASSERT_ITH_BIT_SET(bit_array, offset)
+CLEAR_ITH_BIT(bit_array,offset) bit_array & ~(1 << offset);
+ASSERT_ITH_BIT_SET(bit_array, offset)((num & (1 << i)) != 0);
 #endif

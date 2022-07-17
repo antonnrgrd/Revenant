@@ -57,7 +57,8 @@ Creature *c_generate_creature(Creature_Kind kind, int id,unsigned x,unsigned y,G
   creature_initializer[kind](c,id);
   c->position.global_x=x;
   c->position.global_y=y;
-  
+  c->curr_ap = 1;
+  c->max_ap = 1;
   // Because the assignment of local coordinates can be rather arbitrary, as the local coordinates can be anything relative to the POV, we arbitarily assign to be roughly centered 
   
   c_compute_relative_coords(c, target);
@@ -82,6 +83,8 @@ Creature *c_generate_creature(Creature_Kind kind, int id,unsigned x,unsigned y,G
 // A tester function to help test cases 
 Creature *c_random_player(int x, int y,Game_World *world, Mersienne_Twister *twister){
   Creature *c = malloc(sizeof(Creature));
+  c->curr_ap = 1;
+  c->max_ap = 1;
   c->standing_on = malloc(sizeof(char));
   c->weight = 80.5;
   c->height = 1.80;

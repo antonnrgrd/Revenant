@@ -18,6 +18,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include <panel.h>
 #include "game_state_struct.h"
 #include "strings.h"
+#include "generic_macros.h"
 //screen, y,x, "%s X %d", quality_name_modifier[((union Equipment)item_holder->item->item_specific_info).weapon->quality]
 #define MAX_MSG_LENGTH 50
 #define PRINT_ITEM_WEAPON(item_holder,screen,x,y)item_holder->amount != 1 ? mvwprintw(screen, y,x, "%s%s%s%s%s%d", quality_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->quality],handed_modifier[((struct Weapon *)item_holder->item->item_specific_info)->variant],material_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->material], mele_weapon_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->kind], " X ", item_holder->amount) : mvwprintw(screen, y,x, "%s%s%s%s", quality_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->quality],handed_modifier[((struct Weapon *)item_holder->item->item_specific_info)->variant],material_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->material], mele_weapon_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->kind])
@@ -37,7 +38,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 /* We stop at second last index because we set pointers to null and if we include the last index, we attempt to print the item at the last index, which is null, causing seg fault*/
 #define MSG_COMPRESS_ITEM_LIST(item_list, init_free_pos, max_index, log) for(int i = init_free_pos; i < max_index-1; i++ ){ item_list[i] = item_list[i+1]; item_list[i+1] = NULL;  wmove(log,i+2,5); wclrtoeol(log);  PRINT_ITEM(item_list[i],log,5,i+2); } /* item_list[max_index-1] = NULL; */ wmove(log,max_index-1+2,5); wclrtoeol(log); box(gs->logs[INVENTORY_LOG],0,0); wmove(log,init_free_pos+2,5); UPDATE_PANEL_INFO();
 
-void msg_show_log(Game_State *gs, int panel_index);
+int msg_show_log(Game_State *gs, int panel_index);
 
 //We only bother moving down the first 9 messages because the we intend only to have the last 10 actions available in the log so we delete the last message(the one to be "pushed" out of the "stack") 
 
@@ -71,11 +72,11 @@ void msg_update_event_log(Game_State *gs);
 //To the screen. Perhaps because it's a maxture of static and dynamic strings
 #define INIT_INVENTORY_LOG(window, inv_name) mvwprintw(window,1,25,"%s" inv_name, "Items in " );
 
-void msg_display_inventory(Game_State *gs);
+int msg_display_inventory(Game_State *gs);
 
-void msg_display_inventory_equip_context(Game_State *gs);
+int msg_display_inventory_equip_context(Game_State *gs);
 
-void msg_display_equipped_equipment(Game_State *gs);
+int msg_display_equipped_equipment(Game_State *gs);
 
 /*ncurses has built-in functionality for clearing */
 #define MSG_CLEAR_SCREEN(window)werase(gs->logs[INVENTORY_LOG]); box(window,0,0);

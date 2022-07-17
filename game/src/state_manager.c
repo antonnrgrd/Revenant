@@ -12,25 +12,25 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "state_manager.h"
 void game_loop(Game_State *game_state){
   int ch;
-
+  int player_turn = CONTINUE_TURN;
   REDRAW_MAP(game_state->player,game_state->current_zone,game_state->logs[MAIN_SCREEN], game_state->player->position.global_x,game_state->player->position.global_y,rows, cols);
   wrefresh(game_state->logs[MAIN_SCREEN]);
   while(1){
+    while(player_turn == CONTINUE_TURN ){
     wrefresh(game_state->logs[MAIN_SCREEN]);
     ch = getch();
-    //ch = wgetch(game_state->logs[MAIN_SCREEN]);
     switch(ch){
     case KEY_UP:
-      mv_check_move_handler(game_state->player->position.global_x, game_state->player->position.global_y-1,game_state->player->position.local_x, game_state->player->position.local_y-1, game_state->player,game_state);
+    player_turn = mv_check_move_handler(game_state->player->position.global_x, game_state->player->position.global_y-1,game_state->player->position.local_x, game_state->player->position.local_y-1, game_state->player,game_state);
       break;
     case KEY_DOWN:
-      mv_check_move_handler(game_state->player->position.global_x, game_state->player->position.global_y+1,game_state->player->position.local_x, game_state->player->position.local_y+1, game_state->player,game_state);      
+   player_turn =   mv_check_move_handler(game_state->player->position.global_x, game_state->player->position.global_y+1,game_state->player->position.local_x, game_state->player->position.local_y+1, game_state->player,game_state);      
       break;
     case KEY_LEFT:
-      mv_check_move_handler(game_state->player->position.global_x-1,game_state->player->position.global_y ,game_state->player->position.local_x-1, game_state->player->position.local_y,game_state->player,game_state);
+     player_turn = mv_check_move_handler(game_state->player->position.global_x-1,game_state->player->position.global_y ,game_state->player->position.local_x-1, game_state->player->position.local_y,game_state->player,game_state);
       break;
     case KEY_RIGHT:
-      mv_check_move_handler(game_state->player->position.global_x+1, game_state->player->position.global_y ,game_state->player->position.local_x+1, game_state->player->position.local_y, game_state->player,game_state);
+    player_turn =  mv_check_move_handler(game_state->player->position.global_x+1, game_state->player->position.global_y ,game_state->player->position.local_x+1, game_state->player->position.local_y, game_state->player,game_state);
       break;
     case 'q':
       return;
@@ -50,6 +50,8 @@ void game_loop(Game_State *game_state){
       break;
     }
     ll_iter_list_as_creature(game_state->active_creatures,game_state);
+    player_turn = CONTINUE_TURN;
+    }
   }
 }
 

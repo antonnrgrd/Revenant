@@ -10,7 +10,16 @@ You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #ifndef STATUS
 #define STATUS
-#define ST_SET_NTH_BIT
+#include "bit_macros.h"
+#include "game_state_struct.h"
+#define DEAD 1
+#define PARALYZED 2
+#define POISONED  3
 #define ST_RESET_DEBUFFS(creature)for(int i = 0; i < 10; i++){  creature->debuff_flags = creature->debuff_flags & (~(1<< i)); }
 #define ST_STATUS_OK(creature)({int ok = 0; for(int i = 0; i < 10; i++){ nth_status_bit =  (creature->debuff_flags >> i) & 1; ok | nth_status_bit; } ok;})
+
+void st_status_handler(Creature *c);
+void st_apply_statuses(Creaure *c);
+void st_handle_status_dead(Creature *c,Game_State *game_state);
 #endif
+

@@ -15,18 +15,21 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "move_handler.h"
 
-void mv_check_move_handler(int global_x, int global_y, int local_x, int local_y, Creature *c,Game_State *game_state){
+int mv_check_move_handler(int global_x, int global_y, int local_x, int local_y, Creature *c,Game_State *game_state){
   // Before we check the response value from the character, we first need to be assert that position we are trying to make the move to is within bounds of the current zone's dimensionality to avoid invalid index lookups in the game world's tiles (whether negative or too large index values)
   if( (global_x < game_state->current_zone->width  && global_y < game_state->current_zone->height) && (global_x > -1  && global_y > -1 )  ){
     int response = numerical_responses[game_state->current_zone->tiles[global_y][global_x].content[0]];
-     (*move_response_handler[response])(global_x,global_y,local_x,local_y,c,game_state);
+    return (*move_response_handler[response])(global_x,global_y,local_x,local_y,c,game_state);
+  }
+  else{
+    return CONTINUE_TURN;
   }
 }
 
 
-void (*move_response_handler[4])(int global_x, int global_y, int local_x, int local_y, Creature *c,Game_State *game_state) =  {move_response_move_character,move_response_halt_character,move_response_loot_item,move_response_attack_target};
+int (*move_response_handler[4])(int global_x, int global_y, int local_x, int local_y, Creature *c,Game_State *game_state) =  {move_response_move_character,move_response_halt_character,move_response_loot_item,move_response_attack_target};
 
-  void move_response_move_character(int global_x, int global_y, int local_x, int local_y, Creature *c,Game_State *game_state){
+  int move_response_move_character(int global_x, int global_y, int local_x, int local_y, Creature *c,Game_State *game_state){
     game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->standing_on[0];
     c->position.global_x = global_x;
     c->position.global_y = global_y;
@@ -61,13 +64,25 @@ void (*move_response_handler[4])(int global_x, int global_y, int local_x, int lo
   move(c->position.local_y,c->position.local_x);
     }
     
-    
-  
- 
-}
-
-void move_response_halt_character(int global_x, int global_y,int local_x, int local_y, Creature *c,Game_State *game_state){
+   c->curr_ap--;
   ;
+  if(c->curr_ap == 0){
+    return END_TURN;
+  }
+  else{
+    return CONTINUE_TURN;
+  } 
+}
+
+int move_response_halt_character(int global_x, int global_y,int local_x, int local_y, Creature *c,Game_State *game_state){
+  c->curr_ap--;
+  ;
+  if(c->curr_ap == 0){
+    return END_TURN;
+  }
+  else{
+    return CONTINUE_TURN;
+  }
 }
 
 
@@ -75,8 +90,8 @@ void move_response_halt_character(int global_x, int global_y,int local_x, int lo
 
   
 
-void move_response_loot_item(int global_x, int global_y,int local_x, int local_y, Creature *c,Game_State *game_state){
-
+int move_response_loot_item(int global_x, int global_y,int local_x, int local_y, Creature *c,Game_State *game_state){
+  
   c->position.global_x = global_x;
   c->position.global_y = global_y;
   mvwprintw(game_state->logs[MAIN_SCREEN],c->position.local_y,c->position.local_x, c->standing_on);
@@ -136,10 +151,18 @@ mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s%s%s%d%s", "Pickup ", i_derive_i
     move(c->position.local_y,c->position.local_x);
     break;
   }
+  c->curr_ap--;
+  ;
+  if(c->curr_ap == 0){
+    return END_TURN;
+  }
+  else{
+    return CONTINUE_TURN;
+  }
  }
 
 
-void move_response_attack_target(int global_x, int global_y,int local_x, int local_y, Creature *c,Game_State *game_state){
+int move_response_attack_target(int global_x, int global_y,int local_x, int local_y, Creature *c,Game_State *game_state){
 
   //((rand() % (21 - 1 + 1) + 1)) + c->attributes.dexterity >= ((Creature *)current_zone->tiles[global_y][global_x].foe)->attributes.dexterity   
   if  (1){
@@ -155,7 +178,15 @@ void move_response_attack_target(int global_x, int global_y,int local_x, int loc
       c->marked_for_deletion = YES;
       
     }
-  }  
+  }
+  c->curr_ap--;
+  ;
+  if(c->curr_ap == 0){
+    return END_TURN;
+  }
+  else{
+    return CONTINUE_TURN;
+  }
 } 
 
 

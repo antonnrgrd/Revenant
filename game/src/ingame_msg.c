@@ -19,7 +19,7 @@ void any_null(Item_Holder **item_list){
     }
 }
          
-void msg_show_log(Game_State *gs, int panel_index){
+int msg_show_log(Game_State *gs, int panel_index){
   top_panel(gs->panels[panel_index]);
   // We defer the refreshing of screen contents of the panels until
   // we actually want to see them, because if we refresh them immedately upon manipulating it conflicts
@@ -33,7 +33,7 @@ void msg_show_log(Game_State *gs, int panel_index){
       hide_panel(gs->panels[panel_index]);
       update_panels();
       doupdate();
-      return;
+      return CONTINUE_TURN;
     }
   }
 }
@@ -97,7 +97,7 @@ void msg_update_event_log(Game_State *gs){
    }
 }
  
-void msg_display_inventory(Game_State *gs){
+int msg_display_inventory(Game_State *gs){
   MSG_CLEAR_SCREEN(gs->logs[INVENTORY_LOG]);
   INIT_INVENTORY_LOG(gs->logs[INVENTORY_LOG], "inventory");
   int column_position = 2;
@@ -121,12 +121,12 @@ void msg_display_inventory(Game_State *gs){
       hide_panel(gs->panels[INVENTORY_LOG]);
       update_panels();
       doupdate();
-      return;
+      return CONTINUE_TURN;
     }
   }
 } 
  
-void msg_display_inventory_equip_context(Game_State *gs){
+int msg_display_inventory_equip_context(Game_State *gs){
   int available_equipment = 0;
   int tmp_amount_holder;
   MSG_CLEAR_SCREEN(gs->logs[INVENTORY_LOG]);
@@ -164,7 +164,7 @@ void msg_display_inventory_equip_context(Game_State *gs){
       hide_panel(gs->panels[INVENTORY_LOG]);
       update_panels();
       doupdate();
-      return;
+      return CONTINUE_TURN;
     }
     else if (ch == KEY_UP && curr_curs_pos > 2){
       curr_curs_pos--;
@@ -225,7 +225,7 @@ void msg_display_inventory_equip_context(Game_State *gs){
     }
   }
 }
-msg_display_equipped_equipment(Game_State *gs){
+int msg_display_equipped_equipment(Game_State *gs){
   MSG_CLEAR_SCREEN(gs->logs[INVENTORY_LOG]);
   //Since the imtem printer macro assumes a item holder,
   //we make a dummy item holder to temporarily hold the
@@ -271,7 +271,7 @@ msg_display_equipped_equipment(Game_State *gs){
       hide_panel(gs->panels[INVENTORY_LOG]);
       update_panels();
       doupdate();
-      return;
+      return CONTINUE_TURN;
     }
   }
 }
