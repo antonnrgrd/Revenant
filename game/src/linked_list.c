@@ -11,6 +11,17 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 
 #include "linked_list.h"
+void ll_append_node_creature(Linked_List *ll, Creature *c){
+  Node *node = malloc(sizeof(node));
+  node->value = c;
+  if(ll->initial_node == NULL){
+    ll->initial_node = node;
+  }
+  else{
+    ll->last_node->next = node;
+    ll->last_node = node;
+  }
+}
 
 Linked_List *ll_initialize_linked_list(){
   Linked_List *ll = malloc(sizeof(Linked_List));

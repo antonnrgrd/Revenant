@@ -35,13 +35,13 @@ void game_loop(Game_State *game_state){
     case 'q':
       return;
     case 'l':
-            msg_show_log(game_state,EVENT_LOG);
+      player_turn =  msg_show_log(game_state,EVENT_LOG);
       break;
     case 'i':
-      msg_display_inventory(game_state);
+      player_turn = msg_display_inventory(game_state);
       break;
     case 'e':
-      msg_display_inventory_equip_context(game_state);
+      player_turn = msg_display_inventory_equip_context(game_state);
       break;
     case 'E':
       msg_display_equipped_equipment(game_state);

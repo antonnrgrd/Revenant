@@ -12,14 +12,18 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define STATUS
 #include "bit_macros.h"
 #include "game_state_struct.h"
-#define DEAD 1
-#define PARALYZED 2
-#define POISONED  3
-#define ST_RESET_DEBUFFS(creature)for(int i = 0; i < 10; i++){  creature->debuff_flags = creature->debuff_flags & (~(1<< i)); }
-#define ST_STATUS_OK(creature)({int ok = 0; for(int i = 0; i < 10; i++){ nth_status_bit =  (creature->debuff_flags >> i) & 1; ok | nth_status_bit; } ok;})
-
-void st_status_handler(Creature *c);
-void st_apply_statuses(Creaure *c);
+#include "creature.h"
+#define DEAD 0
+#define PARALYZED 1
+#define POISONED  2
+#define BLEEDING 3
+#define FROZEN 4
+#define ST_RESET_DEBUFFS(creature)for(int i = 0; i < 10; i++){  creature->status_flags = creature->status_flags & (~(1<< i)); }
+#define ST_STATUS_OK(creature)({int ok = 0; for(int i = 0; i < 10; i++){ nth_status_bit =  (creature->status_flags >> i) & 1; ok | nth_status_bit; } ok;})
+#define ST_CHECK_FLAG_SET(creature, position)creature->status_flags & (1<<(position))
+#define ST_SET_FLAG_BIT(creature, position)((creature->status_flags << (position - 1))
+void st_status_handler_player(Creature *c);
+void st_apply_statuses(Creature *c);
 void st_handle_status_dead(Creature *c,Game_State *game_state);
 #endif
 

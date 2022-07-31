@@ -8,8 +8,15 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
-#inlcude "status.h"
-void st_status_handler(Creature *c){
-
+#include "status.h"
+void st_status_handler_player(Creature *c){
+  for(int i = 0; i < 0; i++){
+    if(ST_CHECK_FLAG_SET(c,i)){
+      ;
+    }
+  }
+  if(ST_CHECK_FLAG_SET(c,DEAD)){
+    ;
+  }
 }
 

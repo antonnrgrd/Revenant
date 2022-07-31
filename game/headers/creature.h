@@ -136,7 +136,7 @@ typedef struct Creature{
   Color *color;
   Position position;
   char *standing_on;
-  int marked_for_deletion;
+  int marked_for_deletion : 1 ;
   int target_is_within_bound:1;
   behavior behavior;
   behavior default_behavior;
@@ -147,7 +147,7 @@ typedef struct Creature{
   unsigned int max_ap:10;
   unsigned preffered_attack_type;
   int alive : 1;
-  int debuff_flags;
+  int status_flags;
 }Creature;
 
 

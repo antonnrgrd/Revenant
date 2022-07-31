@@ -63,7 +63,7 @@ Creature *c_generate_creature(Creature_Kind kind, int id,unsigned x,unsigned y,G
   
   c_compute_relative_coords(c, target);
  
-  
+  c->curr_health = 10;
 
   c->target=target;
   

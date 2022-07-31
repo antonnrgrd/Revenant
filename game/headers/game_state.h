@@ -18,7 +18,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "linked_list.h"
 #include "creature_behavior.h"
 #include "game_state_struct.h"
-
+#include "generic_macros.h"
 #define INIT_GAME_STATE(game_state)
 #define UPDATE_STATE(game_state) ll_iter_list_as_creature(game_state->player,game_state->current_zone,game_state->active_creatures);
 /*
