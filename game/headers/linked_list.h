@@ -13,7 +13,6 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #ifndef LINKED_LIST
 #define LINKED_LIST
 #include <stdlib.h>
-//#include "creature.h"
 typedef struct Node{
   struct Node *next;
   void *value;
@@ -21,7 +20,6 @@ typedef struct Node{
 
 typedef struct Linked_List{
   Node *initial_node;
-  Node *last_node;
 }Linked_List;
 
 #define APPEND_NODE_CREATURE(list, c) Node *node = malloc(sizeof(Node)); node->value = c; ( list->initial_node == NULL) ? (list->initial_node = node),(list->last_node = node) : (list->last_node->next = node), (list->last_node = node)

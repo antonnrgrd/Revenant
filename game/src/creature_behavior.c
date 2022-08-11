@@ -2,7 +2,10 @@
 
 
 void cb_pursue_target(Creature *c,Game_State *game_state){
-  // We use the in-bounds pursuing strategy ONLY if the the target the creature is pursuing is within the viewing distance of the player X and Y coordinate-wise, because that in turn is both necessary and sufficient for the creature to be within-view of the player
+  /*Future note to self: we make the same check for the in-bound variant of the pursue method for every possible direction, perhaps there is some potential for simplyfying the logic
+as the check here has already decided that the distance in at least one direction is greater than 1, i.e it is possible to make a move that brings the creature closer to its target*/
+  if((abs(c->position.global_y - c->target->position.global_y)) > 1 || (abs(c->position.global_x - c->target->position.global_x)) > 1){
+ // We use the in-bounds pursuing strategy ONLY if the the target the creature is pursuing is within the viewing distance of the player X and Y coordinate-wise, because that in turn is both necessary and sufficient for the creature to be within-view of the player   
   if(WITHIN_X_BOUNDS(c,c->target) & WITHIN_Y_BOUNDS(c,c->target) == WITHIN_BOUNDS){
 
     c->target_is_within_bound = WITHIN_BOUND;
@@ -19,7 +22,7 @@ void cb_pursue_target(Creature *c,Game_State *game_state){
     cb_pursure_target_oob(c,game_state);
   }
    }
-
+}
   
 
   void cb_attack_target(Creature *c,Game_State *game_state){
@@ -204,10 +207,10 @@ void cb_flee_target(Creature *c,Game_State *game_state){
     }
 }
 
+//Make additional check if a creature is standing on the on i.e it has an opponent struct in its foe pointer
 
       //mimmic pursuing behavior when the creature is within the players POW. Now, we HAVE to check if the tile it moves to is valid, because here the creature will be visible to the player 
 void cb_pursue_target_inb(Creature *c,Game_State *game_state){
- 
   int direction;
   
   // We check both that we get closer to the target AND that the distance is greater than 1, because a distance of only one implies we are standing right next to the target
@@ -239,11 +242,12 @@ void cb_pursue_target_inb(Creature *c,Game_State *game_state){
     }
     
 }
-  
+
   //Moving UP 
     if( (abs(c->position.global_y-1 - c->target->position.global_y )) < (abs(c->position.global_y - c->target->position.global_y)) && (abs(c->position.global_y - c->target->position.global_y)) > 1 ){
       if(c->has_moved_around_vertically != 1){
     direction = UP;
+
     if(numerical_responses[game_state->current_zone->tiles[c->position.global_y-1][c->position.global_x].content[0]] != 1){
       c->has_moved_around_horizontally = 0;
       game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->standing_on[0];
@@ -265,7 +269,7 @@ void cb_pursue_target_inb(Creature *c,Game_State *game_state){
       }
     
   }
-    
+
   
   //move right 
   
@@ -273,7 +277,6 @@ void cb_pursue_target_inb(Creature *c,Game_State *game_state){
     if( (abs(c->position.global_x+1 - c->target->position.global_x )) < (abs(c->position.global_x - c->target->position.global_x )) && (abs(c->position.global_x - c->target->position.global_x)) > 1 ){
       if(c->has_moved_around_horizontally != 1){
     direction = RIGHT;
-    
     if(numerical_responses[game_state->current_zone->tiles[c->position.global_y][c->position.global_x+1].content[0]] != 1){
       c->has_moved_around_vertically = 0;
       game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->standing_on[0];
@@ -295,6 +298,7 @@ void cb_pursue_target_inb(Creature *c,Game_State *game_state){
 
       }
   }
+
   // move left 
   
   if( (abs(c->position.global_x-1 - c->target->position.global_x )) < (abs(c->position.global_x - c->target->position.global_x )) && (abs(c->position.global_x - c->target->position.global_x) > 1)){
@@ -319,8 +323,8 @@ void cb_pursue_target_inb(Creature *c,Game_State *game_state){
     return;
  }
     }
-    
-      }     
+      }
+
   // If we failed to make a move that directly makes progress towards the target it is pursuing, find a "move" that helps us navigate around the obstacle. For the sake of computational effeciency, we do so by checking a max range of 10 tiles (5 tiles either way around the obstacle tile) that could potentially provide a path around. If moving either way aroudn the obstacle eventually provides a clear path, just take it.This very basic scheme is for the sake of simplicity.
   
   if(direction == LEFT){
@@ -545,7 +549,7 @@ void cb_pursue_target_inb(Creature *c,Game_State *game_state){
       }
    }
 
-    if(direction == DOWN ){
+    if(direction == DOWN){
       int start_search_boundary = MIN_X_SEARCH_BOUNDARY(c, game_state->current_zone, 1);
       int end_search_boundary = MIN_X_SEARCH_BOUNDARY(c, game_state->current_zone, 5);
 	for(int j = start_search_boundary; j <= end_search_boundary; j++){

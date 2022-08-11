@@ -48,6 +48,8 @@ typedef struct Game_World{
 
 extern int numerical_responses[256];
 
+
+
 #endif
 
 
