@@ -63,7 +63,7 @@ typedef struct U_Hashtable{
   unsigned long long b;
 }U_Hashtable;
 
-unsigned long long u_hash(int char_count,U_Hashtable *table, char *strings, ...);
+unsigned long long u_hash(int char_count,U_Hashtable *table, const char *strings, ...);
 
 U_Hashtable *u_initialize_hashtable(int initial_size,Mersienne_Twister *twister);
 

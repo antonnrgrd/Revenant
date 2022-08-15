@@ -14,7 +14,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "u_hash.h"
 #include "screen_constants.h"
-unsigned long long u_hash(int char_count,U_Hashtable *table, char *strings, ...){
+unsigned long long u_hash(int char_count,U_Hashtable *table, const char *strings, ...){
   return((table->a * s_uint_from_string(char_count,strings) + table->b) % BFP) % table->size;
 }
  
@@ -159,8 +159,7 @@ Item_Weight u_remove_item(Item_Holder *item, int amount, U_Hashtable *table, int
       //  printf("%s", " checking ");
       if(current_entry->item_holder->item->kind == item->item->kind && (HAS_SAME_NAME(current_entry->item_holder, item)) == 0){
 	//	printf("%s", " found item to remove ");
-	if(amount >= current_entry->item_holder->amount)
-	  
+	if(amount >= current_entry->item_holder->amount){	  
 	  if(free_item_if_removed == YES){
 	    i_free_item(table->entries[index]->item_holder->item);
 	  }
@@ -174,7 +173,7 @@ Item_Weight u_remove_item(Item_Holder *item, int amount, U_Hashtable *table, int
 	  free(current_entry->item_holder);
 	  free(current_entry);
 	  return item_weight;
-       }
+	}
       else{
 	table->entries[index]->item_holder->amount -= amount;
 	item_weight.item = table->entries[index]->item_holder->item;
@@ -182,28 +181,17 @@ Item_Weight u_remove_item(Item_Holder *item, int amount, U_Hashtable *table, int
 	item_weight.deleted = NOT_DELETED;
 	return item_weight;
        }
+      }
       previous_entry = current_entry;
       current_entry = current_entry->next_entry;
       }
     }
+  
+  }
     // A safety guard more than anything else, if all else fails, we found no item and we stand to lose no weight 
   item_weight.weight_loss = 0;
   item_weight.item = NULL;
   return item_weight;
-  }
-  /*
-  else {
-    printf("%s%s%s", material_name_modifier[((struct Weapon *)item->item->item_specific_info)->material], "  ", material_name_modifier[((struct Weapon *)table->entries[index]->item_holder->item->item_specific_info)->material]); 
-    if(item == NULL){
-      printf("%s", " item null");
-    }
-    if(table->entries[index] == NULL){
-      printf("%s", " item at index null");
-    }
-    unsigned int  x = HAS_SAME_NAME(table->entries[index]->item_holder, item);
-    printf("%s%d"," x is ", x); 
-  }
-  */
 }
   
 

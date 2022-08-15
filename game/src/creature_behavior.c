@@ -1,5 +1,5 @@
 #include "creature_behavior.h"
-
+#include "status.h"
 
 void cb_pursue_target(Creature *c,Game_State *game_state){
   /*Future note to self: we make the same check for the in-bound variant of the pursue method for every possible direction, perhaps there is some potential for simplyfying the logic
@@ -29,9 +29,22 @@ as the check here has already decided that the distance in at least one directio
   if(abs(c->position.global_y - c->target->position.global_y ) <= 1 && abs(c->position.global_x - c->target->position.global_x ) <= 1){
     //we subtract 1 from limb count since an array of n limbs has a max index of n-1
     Limb attacking_limb = c->limbs[GEN_VALUE_RANGE(0,c->limb_count-1, game_state->twister)];
+    if(c->species == player_character){
     CLEAR_MSG_LINE();
     mvwprintw(game_state->logs[MAIN_SCREEN],DEFAULT_MAX_Y,0, "%s%s%d%s", c_retrieve_creature_name(c) , " hits you for ", 10, " damage");
     msg_update_event_log(game_state);
+    if(c->target->curr_health <= 0){
+    ST_SET_FLAG_BIT(c->target, DEAD);
+    CLEAR_MSG_LINE();
+    mvwprintw(game_state->logs[MAIN_SCREEN],DEFAULT_MAX_Y,0, "%s", "You have died");
+    msg_update_event_log(game_state);
+    }
+    }
+    else{
+    CLEAR_MSG_LINE();
+    mvwprintw(game_state->logs[MAIN_SCREEN],DEFAULT_MAX_Y,0, "%s%s%s%d%s", c_retrieve_creature_name(c) , " hits", c_retrieve_creature_name(c->target),  " for ", 10, " damage");
+    msg_update_event_log(game_state);
+    }
   }
   else{
     cb_pursue_target(c,game_state);
@@ -48,7 +61,7 @@ void cb_roam(Creature *c,Game_State *game_state){
   int direction =  (rand() % (5 -  0 + 1) + 1);
   // Important: we evaluate if the change in position exceeds the boundary of the game map, THEN check if the tile we try to move to is validto avoid the possibility of accessing an offset outside of the malloc'ed area to avoid segmentation faults. THis is due to logical AND short circuiting (if the first statement is false, don't evluate the second) 
    if(direction == UP){
-     if(c->position.global_y+1 < game_state->current_zone->height && numerical_responses[game_state->current_zone->tiles[c->position.global_y+1][c->position.global_x].content[0]] != 1 ){
+     if(c->position.global_y+1 < game_state->current_zone->height && numerical_responses[game_state->current_zone->tiles[c->position.global_y+1][c->position.global_x].content[0]] != 1 && game_state->current_zone->tiles[c->position.global_y+1][c->position.global_x].foe == NULL ){
        game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->standing_on[0];
        c->position.global_y++;
        c->position.local_y++;
@@ -220,7 +233,7 @@ void cb_pursue_target_inb(Creature *c,Game_State *game_state){
     // We don't move horizontally/vertically if we previously have made a move along said axis, in an attempt to move around an object, because otherwise, moving along said axis might undo the move we just made in an attempt to navigate around an obstacle, e.g go back one tile to where we initally got stuck
     if(c->has_moved_around_vertically != 1){
     direction = DOWN;
-    if(numerical_responses[game_state->current_zone->tiles[c->position.global_y+1][c->position.global_x].content[0]] != 1){
+    if(numerical_responses[game_state->current_zone->tiles[c->position.global_y+1][c->position.global_x].content[0]] != 1 && game_state->current_zone->tiles[c->position.global_y+1][c->position.global_x].foe == NULL){
      // If we have successfully made a move along any axis, we un-register that we made a move along the opposite axis, because the fact that we moved along said axis, implies that we are no longer stuck and thus no longer need to be aware of moving back to the inital position where we got stuck
     c->has_moved_around_horizontally = 0;
     game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->standing_on[0];
@@ -248,7 +261,7 @@ void cb_pursue_target_inb(Creature *c,Game_State *game_state){
       if(c->has_moved_around_vertically != 1){
     direction = UP;
 
-    if(numerical_responses[game_state->current_zone->tiles[c->position.global_y-1][c->position.global_x].content[0]] != 1){
+    if(numerical_responses[game_state->current_zone->tiles[c->position.global_y-1][c->position.global_x].content[0]] != 1 && game_state->current_zone->tiles[c->position.global_y-1][c->position.global_x].foe == NULL ){
       c->has_moved_around_horizontally = 0;
       game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->standing_on[0];
       mvwprintw(game_state->logs[MAIN_SCREEN], c->position.local_y,c->position.local_x,c->standing_on);
@@ -277,7 +290,7 @@ void cb_pursue_target_inb(Creature *c,Game_State *game_state){
     if( (abs(c->position.global_x+1 - c->target->position.global_x )) < (abs(c->position.global_x - c->target->position.global_x )) && (abs(c->position.global_x - c->target->position.global_x)) > 1 ){
       if(c->has_moved_around_horizontally != 1){
     direction = RIGHT;
-    if(numerical_responses[game_state->current_zone->tiles[c->position.global_y][c->position.global_x+1].content[0]] != 1){
+    if(numerical_responses[game_state->current_zone->tiles[c->position.global_y][c->position.global_x+1].content[0]] != 1 && game_state->current_zone->tiles[c->position.global_y][c->position.global_x+1].foe == NULL){
       c->has_moved_around_vertically = 0;
       game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->standing_on[0];
        mvwprintw(game_state->logs[MAIN_SCREEN], c->position.local_y,c->position.local_x,c->standing_on);
@@ -304,7 +317,7 @@ void cb_pursue_target_inb(Creature *c,Game_State *game_state){
   if( (abs(c->position.global_x-1 - c->target->position.global_x )) < (abs(c->position.global_x - c->target->position.global_x )) && (abs(c->position.global_x - c->target->position.global_x) > 1)){
     if(c->has_moved_around_horizontally != 1){
     direction = LEFT;
-    if(numerical_responses[game_state->current_zone->tiles[c->position.global_y][c->position.global_x-1].content[0]] != 1){
+    if(numerical_responses[game_state->current_zone->tiles[c->position.global_y][c->position.global_x-1].content[0]] != 1 && game_state->current_zone->tiles[c->position.global_y][c->position.global_x-1].foe == NULL){
       c->has_moved_around_vertically = 0;
       game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->standing_on[0];
     mvwprintw(game_state->logs[MAIN_SCREEN], c->position.local_y,c->position.local_x,c->standing_on);
@@ -333,8 +346,8 @@ void cb_pursue_target_inb(Creature *c,Game_State *game_state){
     int end_search_boundary = MAX_Y_SEARCH_BOUNDARY(c, game_state->current_zone, 5);
     for(int j = start_search_boundary; j <= end_search_boundary; j++){
       //
-	  if(numerical_responses[game_state->current_zone->tiles[c->position.global_y+j][c->position.global_x].content[0]] != 1){
-	    if(numerical_responses[game_state->current_zone->tiles[c->position.global_y+j][c->position.global_x-1].content[0]] != 1 ){
+	  if(numerical_responses[game_state->current_zone->tiles[c->position.global_y+j][c->position.global_x].content[0]] != 1 && game_state->current_zone->tiles[c->position.global_y+j][c->position.global_x].foe == NULL){
+	    if(numerical_responses[game_state->current_zone->tiles[c->position.global_y+j][c->position.global_x-1].content[0]] != 1 && game_state->current_zone->tiles[c->position.global_y+j][c->position.global_x-1].foe == NULL ){
 	    c->has_moved_around_vertically = 1;
 	  game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->standing_on[0];
 	  mvwprintw(game_state->logs[MAIN_SCREEN], c->position.local_y,c->position.local_x,c->standing_on);
@@ -371,8 +384,8 @@ void cb_pursue_target_inb(Creature *c,Game_State *game_state){
       
      for(int j = start_search_boundary; j <= end_search_boundary; j++){
        //mvwprintw(game_state->logs[MAIN_SCREEN], c->position.local_y-j, c->position.local_x, "X");
-	  if(numerical_responses[game_state->current_zone->tiles[c->position.global_y-j][c->position.global_x].content[0]] != 1){
-	    if(numerical_responses[game_state->current_zone->tiles[c->position.global_y-j][c->position.global_x-1].content[0]] != 1){
+	  if(numerical_responses[game_state->current_zone->tiles[c->position.global_y-j][c->position.global_x].content[0]] != 1 && game_state->current_zone->tiles[c->position.global_y-j][c->position.global_x].foe == NULL){
+	    if(numerical_responses[game_state->current_zone->tiles[c->position.global_y-j][c->position.global_x-1].content[0]] != 1 && game_state->current_zone->tiles[c->position.global_y-j][c->position.global_x-1].foe == NULL){
 	    c->has_moved_around_vertically = 1;
 	    game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->standing_on[0];
 	  mvwprintw(game_state->logs[MAIN_SCREEN], c->position.local_y,c->position.local_x,c->standing_on);
@@ -407,8 +420,8 @@ void cb_pursue_target_inb(Creature *c,Game_State *game_state){
       for(int j =start_search_boundary; j <= end_search_boundary; j++){
 	//printf("%s%d%s", " ", j, " ");
 	//printf("%s%d%s", " ", c->position.global_y+j, " ");
-	  if(numerical_responses[game_state->current_zone->tiles[c->position.global_y+j][c->position.global_x].content[0]] != 1 ){
-	    if(numerical_responses[game_state->current_zone->tiles[c->position.global_y+j][c->position.global_x+1].content[0]] != 1){
+	  if(numerical_responses[game_state->current_zone->tiles[c->position.global_y+j][c->position.global_x].content[0]] != 1 && game_state->current_zone->tiles[c->position.global_y+j][c->position.global_x].foe == NULL ){
+	    if(numerical_responses[game_state->current_zone->tiles[c->position.global_y+j][c->position.global_x+1].content[0]] != 1 && game_state->current_zone->tiles[c->position.global_y+j][c->position.global_x+1].foe == NULL){
 	    c->has_moved_around_vertically = 1;
 	    game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->standing_on[0];
 	    
@@ -445,8 +458,8 @@ void cb_pursue_target_inb(Creature *c,Game_State *game_state){
   
      for(int j = start_search_boundary; j <= end_search_boundary; j++){
        // mvwprintw(game_state->logs[MAIN_SCREEN],c->position.local_y-j, c->position.local_x, "X");
-	  if(numerical_responses[game_state->current_zone->tiles[c->position.global_y-j][c->position.global_x].content[0]] != 1 ){
-	    if(numerical_responses[game_state->current_zone->tiles[c->position.global_y-j][c->position.global_x+1].content[0]] != 1){
+	  if(numerical_responses[game_state->current_zone->tiles[c->position.global_y-j][c->position.global_x].content[0]] != 1 && game_state->current_zone->tiles[c->position.global_y-j][c->position.global_x].foe == NULL ){
+	    if(numerical_responses[game_state->current_zone->tiles[c->position.global_y-j][c->position.global_x+1].content[0]] != 1 && game_state->current_zone->tiles[c->position.global_y-j][c->position.global_x+1].foe == NULL){
 	    c->has_moved_around_vertically = 1;
 	    game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->standing_on[0];
 	    //printf("%s", "valid  UP found " );
@@ -484,8 +497,8 @@ void cb_pursue_target_inb(Creature *c,Game_State *game_state){
       for(int j = start_search_boundary; j <= end_search_boundary; j++){
 	//mvwprintw(game_state->logs[MAIN_SCREEN], c->position.local_y, c->position.local_x-j, "X");
 	//printf("%s%d", "offset: ", j);
-	if(numerical_responses[game_state->current_zone->tiles[c->position.global_y][c->position.global_x - j].content[0]] != 1 ){
-	  if(numerical_responses[game_state->current_zone->tiles[c->position.global_y - 1][c->position.global_x - j].content[0]] != 1){
+	if(numerical_responses[game_state->current_zone->tiles[c->position.global_y][c->position.global_x - j].content[0]] != 1 && game_state->current_zone->tiles[c->position.global_y][c->position.global_x - j].foe == NULL ){
+	  if(numerical_responses[game_state->current_zone->tiles[c->position.global_y - 1][c->position.global_x - j].content[0]] != 1 && game_state->current_zone->tiles[c->position.global_y - 1][c->position.global_x - j].foe == NULL){
 	  c->has_moved_around_horizontally = 1;
 	  game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->standing_on[0];
 	
@@ -518,8 +531,8 @@ void cb_pursue_target_inb(Creature *c,Game_State *game_state){
       end_search_boundary = MAX_X_SEARCH_BOUNDARY(c, game_state->current_zone, 5);
       for(int j = start_search_boundary; j <= end_search_boundary; j++){
 	//mvwprintw(game_state->logs[MAIN_SCREEN], c->position.local_y, c->position.local_x+j, "X");
-	if(numerical_responses[game_state->current_zone->tiles[c->position.global_y][c->position.global_x + j].content[0]] != 1){
-	  if(numerical_responses[game_state->current_zone->tiles[c->position.global_y - 1][c->position.global_x + j].content[0]] != 1 ){
+	if(numerical_responses[game_state->current_zone->tiles[c->position.global_y][c->position.global_x + j].content[0]] != 1 && game_state->current_zone->tiles[c->position.global_y][c->position.global_x + j].foe == NULL){
+	  if(numerical_responses[game_state->current_zone->tiles[c->position.global_y - 1][c->position.global_x + j].content[0]] != 1 && game_state->current_zone->tiles[c->position.global_y - 1][c->position.global_x + j].foe == NULL ){
 	  game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->standing_on[0];
 	  c->has_moved_around_horizontally = 1;
 	  //printf("%s", "right ");
@@ -554,8 +567,8 @@ void cb_pursue_target_inb(Creature *c,Game_State *game_state){
       int end_search_boundary = MIN_X_SEARCH_BOUNDARY(c, game_state->current_zone, 5);
 	for(int j = start_search_boundary; j <= end_search_boundary; j++){
 	  // mvwprintw(game_state->logs[MAIN_SCREEN], c->position.local_y, c->position.local_x-j, "X");
-	if(numerical_responses[game_state->current_zone->tiles[c->position.global_y][c->position.global_x - j].content[0]] != 1 ){
-	  if(numerical_responses[game_state->current_zone->tiles[c->position.global_y + 1][c->position.global_x - j].content[0]] != 1){
+	if(numerical_responses[game_state->current_zone->tiles[c->position.global_y][c->position.global_x - j].content[0]] != 1 && game_state->current_zone->tiles[c->position.global_y][c->position.global_x - j].foe == NULL ){
+	  if(numerical_responses[game_state->current_zone->tiles[c->position.global_y + 1][c->position.global_x - j].content[0]] != 1 && game_state->current_zone->tiles[c->position.global_y + 1][c->position.global_x - j].foe == NULL){
 	  c->has_moved_around_horizontally = 1;
 	  game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->standing_on[0];
 	  // mvwprintw(game_state->logs[MAIN_SCREEN], c->position.local_y+1, c->position.local_x-j, "X");
@@ -585,8 +598,8 @@ void cb_pursue_target_inb(Creature *c,Game_State *game_state){
       end_search_boundary = MAX_X_SEARCH_BOUNDARY(c, game_state->current_zone, 5);
       for(int j = start_search_boundary; j <= end_search_boundary; j++){
 	//	mvwprintw(game_state->logs[MAIN_SCREEN], c->position.local_y, c->position.local_x+j, "X");
-	if(numerical_responses[game_state->current_zone->tiles[c->position.global_y][c->position.global_x + j].content[0]] != 1 ){
-	  if( numerical_responses[game_state->current_zone->tiles[c->position.global_y + 1][c->position.global_x + j].content[0]] != 1){
+	if(numerical_responses[game_state->current_zone->tiles[c->position.global_y][c->position.global_x + j].content[0]] != 1 && game_state->current_zone->tiles[c->position.global_y][c->position.global_x + j].foe == NULL ){
+	  if( numerical_responses[game_state->current_zone->tiles[c->position.global_y + 1][c->position.global_x + j].content[0]] != 1 && game_state->current_zone->tiles[c->position.global_y + 1][c->position.global_x + j].foe == NULL){
 	  c->has_moved_around_horizontally = 1;
 	  game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->standing_on[0];
 	  //  mvwprintw(game_state->logs[MAIN_SCREEN], c->position.local_y+1, c->position.local_x-j, "X");

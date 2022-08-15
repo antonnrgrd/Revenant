@@ -31,7 +31,6 @@ because depending on where we are in the list, we have to perform different step
 	  list->initial_node = current_node->next;
 	  previous = current_node->next;
 	  current_node = current_node->next;
-	  
 	  //Apparently, free-ing a pointer is not enough to make it null
 	  //You have to explicitly set it to be so i.e you can free a pointer
 	  //but will still on null checks come up as non-null, so we need
@@ -41,8 +40,11 @@ because depending on where we are in the list, we have to perform different step
        }
 
       else if(i > 0 && current_node->next == NULL){
+	/*Unsure why i need to set both pointers null, in theory, setting either (the pointer to the last node in the list) hould do, but
+	 if both aren't set to null, there are race conditions that can result in seg faults*/
+	previous->next = NULL; 
 	free(current_node);
-	previous->next = NULL;
+	current_node = NULL;
       }
       else{
 	Node *to_be_freed = current_node;
@@ -53,17 +55,6 @@ because depending on where we are in the list, we have to perform different step
       }
       i++;
     }  
-      /*
-      Node *to_be_freed = current_node;
-      previous->next = current_node->next;
-      current_node = current_node->next;
-      // Creature *dead_creature = (struct Creature *)to_be_freed->value;
-      //free(dead_creature);
-      free(to_be_freed);
-      return;
-      //      to_be_freed->value = NULL;
-      */
-
     else{
       while(((struct Creature *)current_node->value)->curr_ap > 0 ){
 	cb_act( (struct Creature *)current_node->value, game_state);
@@ -101,7 +92,7 @@ Game_State *gs_create_game_state(Game_World *game_world){
   Creature *opponent2 = c_generate_creature(animal,0,21,4, game_world,state->player);
   Creature *opponent3 = c_generate_creature(animal,0,22,4, game_world,state->player);
   Creature *opponent4 = c_generate_creature(animal,0,23,4, game_world,state->player);
-  opponent->behavior = pursuing;
+  opponent->behavior = attacking;
   opponent2->behavior = pursuing;
   opponent3->behavior = pursuing;
   opponent4->behavior = pursuing;
@@ -109,6 +100,9 @@ Game_State *gs_create_game_state(Game_World *game_world){
   Linked_List *ll = ll_initialize_linked_list();
   ll_prepend_node_creature(ll,opponent);
   ll_prepend_node_creature(ll,opponent2);
+  
+  ll_prepend_node_creature(ll,opponent3);
+  ll_prepend_node_creature(ll,opponent4);
   /*
   APPEND_NODE_CREATURE(ll,opponent);
   APPEND_NODE_CREATURE(ll,opponent2);

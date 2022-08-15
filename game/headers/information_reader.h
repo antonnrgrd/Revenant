@@ -8,29 +8,8 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
-
-
-#include "linked_list.h"
-#include "creature.h"
-void ll_prepend_node_creature(Linked_List *ll, Creature *c){
-  Node *node = malloc(sizeof(node));
-  node->value = c;
-  if(ll->initial_node == NULL){
-    ll->initial_node = node;
-  }
-  else{
-    Node *current = ll->initial_node;
-    int i = 0;
-    while(current->next != NULL){
-      current = current->next;
-      i++;
-    }
-    current->next = node;
-  }
-}
-
-Linked_List *ll_initialize_linked_list(){
-  Linked_List *ll = malloc(sizeof(Linked_List));
-  return ll;
-}
-
+#ifndef CREATURE_READER
+#define CREATURE_READER
+#include <yaml.h>
+Creature *ir_readin_creature(char *creature_yaml_file);
+#endif
