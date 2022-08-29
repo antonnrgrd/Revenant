@@ -1,0 +1,12 @@
+species=animal
+id=0
+limb_count=6
+limbs=[[head,healthy,100,100],[torso,healthy,100,100],[arm,healthy,100,100],[arm,healthy,100,100],[leg,healthy,100,100],[tail,healthy,100,100]]
+weight=900
+height=3.4
+attributes=[12,12,12,12,12,12,12,12]
+max_health
+curr_health
+max_carry
+current_carry
+preferred_attack_type

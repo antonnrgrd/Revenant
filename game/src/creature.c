@@ -16,7 +16,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "creature.h"
 #include "item.h"
 #include "move_handler.h"
-
+ 
 void c_free_creature(Creature *c){
   free(c->representation);
   free(c->standing_on);
@@ -171,7 +171,7 @@ void c_compute_relative_coords(Creature *creature, Creature *player){
 }
 
 
-extern  Animal_Definition animal_definitions[] = {{0 ,"Short-faced bear","A large brown bear. It has a disproportionately short face",900,3.4,1.5 , {12,12,12,12,12,12,12}, {COLOR_RED, 0,0,0},6,  {{{head,healthy,100, 100},{torso,healthy,100, 100},{arm,healthy,100, 100},{head,healthy,100, 100},{leg,healthy,100, 100},{leg,healthy,100, 100},{tail,healthy,100, 100}}},roaming}};
+extern  Animal_Definition animal_definitions[] = {{"Short-faced bear","A large brown bear. It has a disproportionately short face",900,3.4,1.5 , {12,12,12,12,12,12,12}, {COLOR_RED, 0,0,0},6,  {{{head,healthy,100, 100},{torso,healthy,100, 100},{arm,healthy,100, 100},{arm,healthy,100, 100},{leg,healthy,100, 100},{leg,healthy,100, 100},{tail,healthy,100, 100}}},roaming}};
 
 
 						  

@@ -81,7 +81,6 @@ typedef struct Attributes{
 }Attributes;
 //As a side note i choose the scheme of animal definitions as the specifications of the stats a creature should have and animal instances as the actually initialized structs since C apparenty doesn't allow you to declare AND initialize a pointer at compile time. Instead, what you must do is declare a pointer and then instantiate with something that is NOT a pointer 
 typedef struct Animal_Definition{ // Anything ending with an Definitions is an array that defines the stats of a given creature of a given type
-  int id;
   char *name;
   char *description;
   float weight;
@@ -117,12 +116,11 @@ typedef struct Humanoid_Definition{
 
 
 typedef struct Creature{
+  int id;
   unsigned int limb_count:10;
-  unsigned int supported_limbs;
   Limb *limbs;
   float weight;
   float height;
-  int id;
   Creature_Kind species;
   Disposition disposition;
   Attributes attributes;

@@ -10,6 +10,14 @@ You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #ifndef CREATURE_READER
 #define CREATURE_READER
-#include <yaml.h>
-Creature *ir_readin_creature(char *creature_yaml_file);
+#define FILE_BUFFER_SIZE 50
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include "creature.h"
+#include "strings.h"
+typedef enum{integer, string, floating}Return_Type;
+void *ir_readin_data(FILE *information_file, char *variable,Return_Type type);
+void ir_readin_creature_stats(FILE *creature_file,Creature *c);
+Creature *ir_readin_creature(char *creature_file_path);
 #endif

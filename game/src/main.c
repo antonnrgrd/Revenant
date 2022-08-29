@@ -34,7 +34,10 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "ingame_msg.h"
 #include "game_state_struct.h"
 #include "rng.h"
+#include "information_reader.h"
 int main(int argc, char *argv[]){
+  ir_readin_creature("/home/antonnrgrd/Revenant/game/creature_files/Short-faced bear"); 
+  /* 
   initscr();
   start_color();  
  Game_World *game_world = g_generate_game_world(1000,1000); 
@@ -73,6 +76,7 @@ int main(int argc, char *argv[]){
   
   game_loop(gs);
   endwin();
+  */
 }
   
  
