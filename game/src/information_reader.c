@@ -9,36 +9,16 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "information_reader.h" 
-/*
-void ir_readin_creature_stats(FILE *creature_file, Creature *c){
-  char *bfr = NULL;
-  size_t len = 0;
-  while(getline(&bfr,&len, creature_file) != -1){
-    if(bfr){
-      creature
-    }
-  }
-}
-*/
-/*
-void ir_readin_creature_id(FILE *creature_file, Creature *c){
-  char *bfr = NULL;
-  size_t len = 0;
-  while(getline(&bfr,&len, creature_file) != -1){
-    int id_index =
-    if(strstr(bfr, "id") != NULL){
-      printf("%s", bfr);
-    }
-  }
-}
-*/
+
 Creature *ir_readin_creature(char *creature_file_path){
   Creature *creature = malloc(sizeof(Creature));
   FILE *creature_file = fopen(creature_file_path, "r");
-  int intv = (int *)ir_readin_data(creature_file,"id",integer);
-  float floatv = *(float *)ir_readin_data(creature_file,"height",floating);
-  printf("%g%s", floatv, "\n");
-  printf("%d", intv);
+  // int intv = *(int *)ir_readin_data(creature_file,"id",integer);
+  // float floatv = *(float *)ir_readin_data(creature_file,"height",floating);
+  char *charv = (char *)ir_readin_data(creature_file,"name",string);
+  // printf("%g%s", floatv, "\n");
+  //printf("%d%s", intv, "\n");
+  // printf("%s%s", charv);
   fclose(creature_file);
   return creature;
 }
@@ -49,27 +29,28 @@ void *ir_readin_data(FILE *information_file, char *variable,Return_Type type){
   size_t len = 0;
   while(getline(&line, &len, information_file) != -1){
     char *variable_pointer = strstr(line, variable);
-    
+    //printf("%s%s",line ,"\n");
     if(variable_pointer != NULL){
-      printf("%s", variable_pointer);
+      //     printf("%s", variable_pointer);
       switch (type){
       case integer:
-	value = atoi(strchr(line, '=')+1);
+	int integer_value = atoi(strchr(line, '=')+1);
+	value = &integer_value;
 	return value;
 	break;
       case floating:
 	float float_value;
-	//printf("%s", "after = \n ");
-	//printf("%s%s", strchr(line, '=')+1, " ");
         float_value=atof(strchr(line, '=')+1);
-	//printf("%g", float_value);
 	value = &float_value;
 	return value;
 	break;
+      case string:
+	char *string_value = strchr(line, '=')+1;
+	value = string_value;
+	return value;
         default:
 	  break;
       }
-	//printf("%s",strchr(line, '=') + 1);
     }
   }
 }

@@ -18,6 +18,5 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "strings.h"
 typedef enum{integer, string, floating}Return_Type;
 void *ir_readin_data(FILE *information_file, char *variable,Return_Type type);
-void ir_readin_creature_stats(FILE *creature_file,Creature *c);
 Creature *ir_readin_creature(char *creature_file_path);
 #endif
