@@ -82,5 +82,7 @@ int msg_display_equipped_equipment(Game_State *gs);
 #define MSG_CLEAR_SCREEN(window)werase(gs->logs[INVENTORY_LOG]); box(window,0,0);
 //We print i+2 to print at the desired position in the equipment log
 #define MSG_REDRAW_INVENTORY(available_equipment,num_items,window) MSG_CLEAR_SCREEN(window); for(int i = 0; i < num_items; i++){PRINT_ITEM(available_equipment[i],gs->logs[INVENTORY_LOG],5,i+2);}
+
+
 #endif
 

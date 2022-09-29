@@ -1,13 +1,12 @@
-species=animal
-name=somename
+species=0
+name=Short-faced bear
+representation=a
 id=0
-limb_count=6
-limbs=[[head,healthy,100,100],[torso,healthy,100,100],[arm,healthy,100,100],[arm,healthy,100,100],[leg,healthy,100,100],[tail,healthy,100,100]]
+limb_count=7
+limbs=[[0,0,100,100],[1,0,100,100],[2,0,100,100],[2,0,100,100],[3,0,100,100],[3,0,100,100],[4,0,100,100]]
 weight=900
 height=3.4
 attributes=[12,12,12,12,12,12,12,12]
-max_health
-curr_health
-max_carry
-current_carry
-preferred_attack_type
+max_health=100
+max_carry=100
+preferred_attack_type=1

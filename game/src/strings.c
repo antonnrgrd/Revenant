@@ -74,3 +74,14 @@ int s_only_whitespace(char *bfr){
 }
 
  
+int s_char_count(char *string, char *character){
+  int i = 0;
+  int occurence_count = 0;
+  while(string[i] != '\0'){
+    if(string[i] == character){
+      occurence_count++;
+    }
+    i++;
+  }
+  return occurence_count;
+}

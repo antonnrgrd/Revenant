@@ -169,7 +169,8 @@ int move_response_attack_target(int global_x, int global_y,int local_x, int loca
     //printf("%d", ((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->curr_health);
     ((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->curr_health -= 10;
     CLEAR_MSG_LINE();
-      mvwprintw(game_state->logs[MAIN_SCREEN],DEFAULT_MAX_Y,0, "%s%s%s%d%s", "You damage ", c_retrieve_creature_name((Creature *)game_state->current_zone->tiles[global_y][global_x].foe) , " for ", 10, " damage");
+    //mvwprintw(game_state->logs[MAIN_SCREEN],DEFAULT_MAX_Y,0, "%s%s%s%d%s", "You damage ", c_retrieve_creature_name((Creature *)game_state->current_zone->tiles[global_y][global_x].foe) , " for ", 10, " damage");
+    mvwprintw(game_state->logs[MAIN_SCREEN],DEFAULT_MAX_Y,0, "%s%s%s%d%s", "You damage ", IR_RETRIEVE_CREATURE_NAME(((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->id) , " for ", 10, " damage");
       msg_update_event_log(game_state);
       move(c->position.local_y,c->position.local_x);
     if (((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->curr_health <= 0){      

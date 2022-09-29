@@ -89,7 +89,7 @@ typedef struct Animal_Definition{ // Anything ending with an Definitions is an a
   Attributes attributes;
   Color color;
   behavior behavior;
-  int limb_count;
+X  int limb_count;
   Limb *limbs;
 }Animal_Definition;
 

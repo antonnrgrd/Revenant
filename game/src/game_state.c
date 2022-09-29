@@ -88,21 +88,27 @@ Game_State *gs_create_game_state(Game_World *game_world){
   state->player = c_random_player(20,3, game_world,state->twister);
  
 
-  Creature *opponent = c_generate_creature(animal,0,20,4, game_world,state->player);
+  //Creature *opponent = c_generate_creature(animal,0,20,4, game_world,state->player);
+  Creature *opponent = ir_readin_creature("/home/anton/revenant/game/creature_files/Short-faced bear",20,4,game_world,state->player); 
+  /*
   Creature *opponent2 = c_generate_creature(animal,0,21,4, game_world,state->player);
   Creature *opponent3 = c_generate_creature(animal,0,22,4, game_world,state->player);
   Creature *opponent4 = c_generate_creature(animal,0,23,4, game_world,state->player);
-  opponent->behavior = attacking;
+  */
+  opponent->behavior = idle;
+  /*
   opponent2->behavior = pursuing;
   opponent3->behavior = pursuing;
   opponent4->behavior = pursuing;
-  
+  */
   Linked_List *ll = ll_initialize_linked_list();
   ll_prepend_node_creature(ll,opponent);
+  /*
   ll_prepend_node_creature(ll,opponent2);
   
   ll_prepend_node_creature(ll,opponent3);
   ll_prepend_node_creature(ll,opponent4);
+  */
   /*
   APPEND_NODE_CREATURE(ll,opponent);
   APPEND_NODE_CREATURE(ll,opponent2);

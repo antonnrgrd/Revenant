@@ -29,5 +29,6 @@ char *s_create_text_const( const char *arg);
 char *s_merge_text(char *first_arg,char *second_arg);
 uint64_t s_uint_from_string(int argcount, ...);
 int s_only_whitespace(char *bfr);
+int s_char_count(char *string, char *character);
 #endif
 
