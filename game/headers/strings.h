@@ -30,5 +30,8 @@ char *s_merge_text(char *first_arg,char *second_arg);
 uint64_t s_uint_from_string(int argcount, ...);
 int s_only_whitespace(char *bfr);
 int s_char_count(char *string, char *character);
+/*Working with unitialized but still validly malloced chars has proven to be a tedious nightmare. Attempting to ensure that the memory has been initalized e.g by using calloc or memset has proven futile. Manually setting the entire string empty space works, however */
+#define S_INITIALIZE_STR(length)({char *value = malloc(sizeof(char) * length); for(int i = 0; i < length; i++){value[i] = ' '; }; value;})
+#define S_ALLOC_FOR_CPY(bfr,to_be_copied) 
 #endif
 

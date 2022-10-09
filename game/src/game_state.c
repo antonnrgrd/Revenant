@@ -89,7 +89,7 @@ Game_State *gs_create_game_state(Game_World *game_world){
  
 
   //Creature *opponent = c_generate_creature(animal,0,20,4, game_world,state->player);
-  Creature *opponent = ir_readin_creature("/home/anton/revenant/game/creature_files/Short-faced bear",20,4,game_world,state->player); 
+  Creature *opponent = ir_readin_creature("/usr/lib/revenant_files/creature_files/0",20,4,game_world,state->player); 
   /*
   Creature *opponent2 = c_generate_creature(animal,0,21,4, game_world,state->player);
   Creature *opponent3 = c_generate_creature(animal,0,22,4, game_world,state->player);
@@ -124,10 +124,14 @@ Game_State *gs_create_game_state(Game_World *game_world){
   state->logs[MAIN_SCREEN]  = newwin(0,0,0,0);
   state->logs[EVENT_LOG] = newwin(LOG_Y_SIZE,LOG_X_SIZE,LOG_START_Y,LOG_START_X);
   state->logs[INVENTORY_LOG] = newwin(LOG_Y_SIZE,LOG_X_SIZE,LOG_START_Y,LOG_START_X);
+  state->logs[TRADING_LOG] = newwin(LOG_Y_SIZE,LOG_X_SIZE,LOG_START_Y,LOG_START_X);
+  
+  MSG_ENABLE_SCROLLING(state->logs[TRADING_LOG]);
   
   state->panels[EVENT_LOG] = new_panel(state->logs[EVENT_LOG]);
   state->panels[MAIN_SCREEN] = new_panel(state->logs[MAIN_SCREEN]);
   state->panels[INVENTORY_LOG] = new_panel(state->logs[INVENTORY_LOG]);
+  state->panels[TRADING_LOG] = new_panel(state->logs[TRADING_LOG]);
   
   box(state->logs[EVENT_LOG],0,0);
   box(state->logs[INVENTORY_LOG],0,0);

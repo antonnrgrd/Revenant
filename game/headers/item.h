@@ -38,15 +38,13 @@ typedef enum {helmet,hood,hat,mask,boots,shoes}Equipment_Kind;
 typedef enum {very_light, light, medium, heavy,very_heavy}Equipment_Classification;
 typedef struct{
   int id;
-  char *name;
-  float weight;
-}Reagent_Definition;
+  Reagent_Kind reagent_kind;
+}Reagent;
 typedef struct{
   int id;
-  char *name;
   int hp_change;
   float weight;
-}Consumable_Definition;
+}Consumable;
 typedef struct Armor{
   Quality_Level quality;
   uint64_t armor;
@@ -67,17 +65,6 @@ typedef struct Weapon{
   Worn_in slot;
 }Weapon;
 
-typedef struct Reagent{
-  float weight;
-  uint32_t value;
-  Reagent_Kind kind;
-}Reagent;
-
-typedef struct Consumable{
-  uint32_t healing;
-  uint16_t skill;
-}Consumable;
-
 typedef union Equipment{
   Armor *armor;
   Weapon *weapon;
@@ -95,7 +82,6 @@ typedef struct Item{
   float weight;
   uint8_t quest_item; //an unsigned int to specify if an item is a quest item and an id to specify
   uint8_t quest_id;   //which quest it belongs to.
-  int id;
 }Item;
 
 typedef struct Item_Holder{ //a struct for an item and how many of that item currently is in the inventory
@@ -152,16 +138,9 @@ void i_copy_reagent(Item *i, Item *j);
 extern void (*copy_item_handler[5])(Item *i);
 extern void (*free_item_handler[5])(Item *i);
 
-extern Reagent_Definition reagent_definitions[];
-extern Consumable_Definition consumable_definitions[];
-
 extern void (*i_print_item_name_handler[3])(Item *i);
 
-extern char* (*i_derive_item_name[3])(Item *i);
-
-char *i_derive_item_name_reagent(Item *i);
-char *i_derive_item_name_consumable(Item *i);
-char *i_derive_item_name_equipment(Item *i);
+char *i_derive_item_name(Item *i);
 
 void i_print_reagent_name(Item *i, WINDOW *inv_screen,int x, int y);
 void i_print_consumable_name(Item *i, WINDOW *inv_screen,int x, int y);

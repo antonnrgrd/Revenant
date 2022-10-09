@@ -48,7 +48,7 @@ typedef struct Game_World{
 
 extern int numerical_responses[256];
 
-
+#define GAMEINFO_PLACE_TRADER(trader, global_x,global_y, gamle_world) gs->current_zone->tiles[global_y][global_x].foe = trader; gs->current_zone->tiles[global_y][global_x].content[0] = 't';
 
 #endif
 

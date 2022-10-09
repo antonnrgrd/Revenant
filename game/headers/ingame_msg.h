@@ -55,6 +55,8 @@ int msg_find_item_position(WINDOW *log, int max_y,Item_Holder *item, Item_Holder
 
 #define UPDATE_PUSH_ADD_TO_LOG(game_state,msg_bfr) mvwprintw(game_state->logs[EVENT_LOG],13,14, msg_bfr); wmove(game_state->logs[EVENT_LOG],12,14); wclrtoeol(game_state->logs[EVENT_LOG]); mvwinnstr(game_state->logs[EVENT_LOG], 11,12,msg_bfr,MAX_MSG_LENGTH-1); mvwprintw(game_state->logs[EVENT_LOG],12,14, msg_bfr); for(int i = 11; i > 2; i--){ wmove(game_state->logs[EVENT_LOG],i,12); wclrtoeol(game_state->logs[EVENT_LOG]);  mvwinnstr(game_state->logs[EVENT_LOG], i-1,12,msg_bfr,MAX_MSG_LENGTH-1); mvwprintw(game_state->logs[EVENT_LOG],i,12, msg_bfr); } mvwinnstr(game_state->logs[EVENT_LOG], 13,14,msg_bfr,MAX_MSG_LENGTH-1); mvwprintw(game_state->logs[EVENT_LOG],3,12, msg_bfr); wmove(game_state->logs[EVENT_LOG],13,14); wclrtoeol(game_state->logs[EVENT_LOG]); free(msg_bfr);  
 
+#define MSG_PRINT_DAMAGE_CREATURE(screen,creature_id,damage) char *file_path_bfr = malloc(sizeof(char) * strlen("/usr/lib/revenant_files/creature_files/") +5); sprintf(file_path_bfr,"/usr/lib/revenant_files/creature_files/%d",creature_id); char *name = ir_readin_char(file_path_bfr, "name"); mvwprintw(game_state->logs[MAIN_SCREEN],DEFAULT_MAX_Y,0, "%s%s%s%d%s", "You damage ", name , " for ", 10, " damage"); free(file_path_bfr); free(name);
+
 /*  mvwinnstr(game_state->logs[EVENT_LOG], i,12,msg_bfr,MAX_MSG_LENGTH-1); mvprintw(game_state->logs[EVENT_LOG], i+1,12,msg_bfr); wmove(game_state->logs[EVENT_LOG],i,12); wclrtoeol(game_state->logs[EVENT_LOG]); }  free(msg_bfr); */
 
 
@@ -72,7 +74,7 @@ void msg_update_event_log(Game_State *gs);
 //To the screen. Perhaps because it's a maxture of static and dynamic strings
 #define INIT_INVENTORY_LOG(window, inv_name) mvwprintw(window,1,25,"%s" inv_name, "Items in " );
 
-int msg_display_inventory(Game_State *gs);
+int msg_display_inventory(Game_State *gs,int enable_selling, U_Hashtable *merchant);
 
 int msg_display_inventory_equip_context(Game_State *gs);
 
@@ -83,6 +85,7 @@ int msg_display_equipped_equipment(Game_State *gs);
 //We print i+2 to print at the desired position in the equipment log
 #define MSG_REDRAW_INVENTORY(available_equipment,num_items,window) MSG_CLEAR_SCREEN(window); for(int i = 0; i < num_items; i++){PRINT_ITEM(available_equipment[i],gs->logs[INVENTORY_LOG],5,i+2);}
 
-
+int msg_trading_session(int global_x, int global_y,Game_State *gs);
+#define MSG_ENABLE_SCROLLING(window) scrollok(window, TRUE); idlok(window, TRUE);
 #endif
 

@@ -1,5 +1,5 @@
 /*This file is part of Revenant.
-65;6800;1cqRevenant is free software: you can redistribute it and/or modify
+65;6800;1c65;6800;1cRevenant is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 Revenant  is distributed in the hope that it will be useful,
@@ -9,10 +9,18 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "information_reader.h" 
+Item *ir_readin_reagent(char *reagent_file_path){
+  Item i = malloc(sizeof(Item));
+  Reagent *reagent = malloc(sizeof(Reagent));
+  reagent->id = ir_readin_int(reagent_file_path,"id");
+  item->weight = ir_readin_float(reagent_file_path,"weight");
+  i->item_specific_info = reagent;
 
+  return i;
+}
 Creature *ir_readin_creature(char *creature_file_path,unsigned x, unsigned y, Game_World *world, Creature *target){
-
-  void *val;
+  
+ 
   Creature *c = malloc(sizeof(Creature));
 
   c->position.global_x=x;
@@ -26,39 +34,165 @@ Creature *ir_readin_creature(char *creature_file_path,unsigned x, unsigned y, Ga
   c->has_moved_around_vertically = 0;
   c->has_moved_around_horizontally = 0;
   c->marked_for_deletion = NO;
-
-  
-  ir_readin_data(creature_file_path,"species", integer, val);
-  c->species=*(int *)val;
-  ir_readin_data(creature_file_path,"id", integer, val);
-  c->id = *(int *)val;
-  ir_readin_data(creature_file_path,"representation", string, val);
+ 
+  char *representation = ir_readin_char(creature_file_path, "representation");
   c->representation = malloc(sizeof(char));
-  strcpy(c->representation,(char * )val);
-  ir_readin_data(creature_file_path,"limb_count", integer, val);
-  c->limb_count = *(int *)val;  
-  ir_readin_data(creature_file_path,"limbs",struct_limb,val);
-  c->limbs = (Limb *)val;
-  ir_readin_data(creature_file_path,"weight",floating,val);
-  c->weight = *(float *)val;
-  ir_readin_data(creature_file_path,"height",floating,val);
-  c->height = *(float *)val;
-  /*
-  c->attributes = *(Attributes *)ir_readin_data(creature_file,"attributes",struct_attributes);
-  c->max_health = *(int *)ir_readin_data(creature_file,"max_health",integer);
-  c->curr_health = c->max_health;
-  c->max_carry = *(float *)ir_readin_data(creature_file,"max_carry",floating);
-
+  strcpy(c->representation, representation);
+  free(representation);
+  c->species=ir_readin_int(creature_file_path, "species");
+  c->id=ir_readin_int(creature_file_path, "id");
+  c->limb_count = ir_readin_int(creature_file_path, "limb_count");
+  c->weight = ir_readin_float(creature_file_path, "weight");
+  c->max_carry = ir_readin_float(creature_file_path,"max_carry");
   c->current_carry = 0;
-  c->preferred_attack_type = *(int *)ir_readin_data(creature_file,"preferred_attack_type",integer);
+  c->max_health = ir_readin_int(creature_file_path,"max_health");
+  c->curr_health = c->max_health;
+  c->height = ir_readin_float(creature_file_path, "height");
+  c->preferred_attack_type = ir_readin_int(creature_file_path,"preferred_attack_type");
+  c->limbs = ir_readin_struct_limb(creature_file_path,"limbs");
+  ir_readin_struct_attributes(creature_file_path,"attributes",c->attributes);
+  /*
   
+  
+  
+ 
+ 
+  
+  
+  
+  
+  */
+    /*
+  
+  
+
+  c->attributes = *(Attributes *)ir_readin_data(creature_file,"attributes",struct_attributes);
   
 */
   world->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];  
   
   return c;
 }
-    
+
+void ir_readin_struct_attributes(char *file_path, char *variable, Attributes attributes){
+   FILE *fp = fopen(file_path, "r");
+  char * line = NULL;
+  size_t len = 0;
+  while((getline(&line, &len, fp)) != -1){
+    char *variable_pointer = strstr(line, variable);
+    if(variable_pointer != NULL){
+      char *value_as_str = strtok(strchr(line, '=')+1, "\n");
+      Attributes attributes_info;
+      ir_readin_struct_attributes_values(attributes,value_as_str);
+      memcpy(&attributes,&attributes_info, sizeof(Attributes));
+       break;
+      }
+    }
+  if(line){
+    free(line);
+  }
+  if(fp){
+    close(fp);
+  }
+       
+}
+Limb *ir_readin_struct_limb(char *file_path, char *variable){
+  FILE *fp = fopen(file_path, "r");
+  char * line = NULL;
+  size_t len = 0;
+  Limb *creature_limbs;
+  while((getline(&line, &len, fp)) != -1){
+    char *variable_pointer = strstr(line, variable);
+    if(variable_pointer != NULL){
+      char *value_as_str = strtok(strchr(line, '=')+1, "\n");
+      //We subtract 1 because the first bracket denotes the beginning of the list of limbs
+      int limb_count  = s_char_count(value_as_str, '[') -1 ;
+      creature_limbs = malloc(sizeof(Limb) * limb_count);
+      ir_readin_struct_limb_values(creature_limbs,value_as_str, limb_count);
+       break;
+      }
+    }
+  if(line){
+    free(line);
+  }
+  if(fp){
+    close(fp);
+  }
+       return creature_limbs;
+}
+
+float ir_readin_float(char *file_path, char *variable){
+  FILE *fp = fopen(file_path, "r");
+  char * line = NULL;
+  size_t len = 0;
+  float rational;
+  while((getline(&line, &len, fp)) != -1){
+    char *variable_pointer = strstr(line, variable);
+    if(variable_pointer != NULL){
+      char *value_as_str = strtok(strchr(line, '=')+1, "\n");
+      rational = atof(value_as_str); 
+       break;
+      }
+    }
+  if(line){
+    free(line);
+  }
+  if(fp){
+    close(fp);
+  }
+       return rational;
+ }
+
+int ir_readin_int(char *file_path, char *variable){
+  FILE *fp = fopen(file_path, "r");
+  char * line = NULL;
+  size_t len = 0;
+  int number;
+  while((getline(&line, &len, fp)) != -1){
+    char *variable_pointer = strstr(line, variable);
+    if(variable_pointer != NULL){
+      char *value_as_str = strtok(strchr(line, '=')+1, "\n");
+      number = atoi(value_as_str);
+       break;
+      }
+    }
+  if(line){
+    free(line);
+  }
+  if(fp){
+    close(fp);
+  }
+       return number;
+ }
+
+
+char *ir_readin_char(char *file_path, char *variable){
+  FILE *fp = fopen(file_path, "r");
+  char * line = NULL;
+  size_t len = 0;
+  char *bfr;
+  while((getline(&line, &len, fp)) != -1){
+    char *variable_pointer = strstr(line, variable);
+    if(variable_pointer != NULL){
+      char *value_as_str = strtok(strchr(line, '=')+1, "\n");
+      /*Honest to god have no fucking idea why value_as_str's size differs to vastly from
+       its actual length, in theory, strlen +1 ought to be sufficient size, but it defies this
+      notion. Since this works elsewere, i have a nagging suspicion that strchr returns far more than
+      just the value i want but at this point i don't care*/
+      bfr = malloc(sizeof(char) * (strlen(value_as_str) + 25 ));
+      strcpy(bfr,value_as_str);
+       break;
+      }
+    }
+  if(line){
+    free(line);
+  }
+  if(fp){
+    close(fp);
+  }
+       return bfr;
+ }
+
 void ir_readin_data(char *file_path, char *variable, Return_Type expected_type, void *value){
   FILE *fp = fopen(file_path, "r");
   char * line = NULL;
@@ -73,7 +207,9 @@ void ir_readin_data(char *file_path, char *variable, Return_Type expected_type, 
         *(int * )value = atoi(value_as_str);
 	break;
       case string:
-	strcpy((char *)value, value_as_str);
+	char *bfr = malloc(sizeof(char) * 100);
+	strcpy(bfr,value_as_str);
+	value = &bfr;
 	break;
       case floating:
 	*(float *)value = atof(value_as_str);
@@ -82,24 +218,25 @@ void ir_readin_data(char *file_path, char *variable, Return_Type expected_type, 
 	//We subtract 1 because the first bracket denotes the beginning of the list of limbs
 	int limb_count  = s_char_count(value_as_str, '[') -1 ;
 	Limb *creature_limbs = malloc(sizeof(Limb) * limb_count);
-	ir_readin_struct_limb(creature_limbs,value_as_str, limb_count);
+	//	ir_readin_struct_limb(creature_limbs,value_as_str, limb_count);
 	value = creature_limbs;
         break;
       case struct_attributes:
 	Attributes attributes;
-	ir_readin_struct_attributes(attributes,value_as_str);
+	//	ir_readin_struct_attributes(attributes,value_as_str);
 	value = &attributes;
 	break;
       default:
 	break;
       }
       free(line);
+      fclose(fp);
       break;
     }
   }
 }
   
-void ir_readin_struct_limb(Limb *limbs,char *limb_as_string, int limb_count){
+void ir_readin_struct_limb_values(Limb *limbs,char *limb_as_string, int limb_count){
   /*We add +2 to the result of the strchr function because we then skip over the first
  [ character in the string, allowing us to more easily extract the value(s) in the list*/
   char *processed_limbs = strchr(limb_as_string, '[')+2;
@@ -131,7 +268,7 @@ void ir_readin_struct_limb(Limb *limbs,char *limb_as_string, int limb_count){
   free(tmp_bfr);
 }
 
-void ir_readin_struct_attributes(Attributes attributes,char *attributes_as_string){
+void ir_readin_struct_attributes_values(Attributes attributes,char *attributes_as_string){
    /*We add +2 to the result of the strchr function because we then skip over the first
  [ character in the string, allowing us to more easily extract the value(s) in the list*/
     char *attributes_sequence = strchr(attributes_as_string, '[')+2;

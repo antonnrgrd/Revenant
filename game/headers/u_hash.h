@@ -61,6 +61,7 @@ typedef struct U_Hashtable{
   Entry **entries;
   unsigned long long a;
   unsigned long long b;
+  int money;
 }U_Hashtable;
 
 unsigned long long u_hash(int char_count,U_Hashtable *table, const char *strings, ...);

@@ -27,7 +27,7 @@ int mv_check_move_handler(int global_x, int global_y, int local_x, int local_y, 
 }
 
 
-int (*move_response_handler[4])(int global_x, int global_y, int local_x, int local_y, Creature *c,Game_State *game_state) =  {move_response_move_character,move_response_halt_character,move_response_loot_item,move_response_attack_target};
+int (*move_response_handler[5])(int global_x, int global_y, int local_x, int local_y, Creature *c,Game_State *game_state) =  {move_response_move_character,move_response_halt_character,move_response_loot_item,move_response_attack_target, move_response_initiate_trade};
 
   int move_response_move_character(int global_x, int global_y, int local_x, int local_y, Creature *c,Game_State *game_state){
     game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->standing_on[0];
@@ -170,7 +170,9 @@ int move_response_attack_target(int global_x, int global_y,int local_x, int loca
     ((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->curr_health -= 10;
     CLEAR_MSG_LINE();
     //mvwprintw(game_state->logs[MAIN_SCREEN],DEFAULT_MAX_Y,0, "%s%s%s%d%s", "You damage ", c_retrieve_creature_name((Creature *)game_state->current_zone->tiles[global_y][global_x].foe) , " for ", 10, " damage");
-    mvwprintw(game_state->logs[MAIN_SCREEN],DEFAULT_MAX_Y,0, "%s%s%s%d%s", "You damage ", IR_RETRIEVE_CREATURE_NAME(((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->id) , " for ", 10, " damage");
+ 
+    //mvwprintw(game_state->logs[MAIN_SCREEN],DEFAULT_MAX_Y,0, "%s%s%s%d%s", "You damage ", (char *)ptr , " for ", 10, " damage");
+    MSG_PRINT_DAMAGE_CREATURE(game_state->logs[MAIN_SCREEN],((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->id,10);
       msg_update_event_log(game_state);
       move(c->position.local_y,c->position.local_x);
     if (((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->curr_health <= 0){      
@@ -193,3 +195,6 @@ int move_response_attack_target(int global_x, int global_y,int local_x, int loca
 } 
 
 
+int move_response_initiate_trade(int global_x, int global_y,int local_x, int local_y, Creature *c,Game_State *game_state){
+  msg_trading_session(global_x,global_y,game_state);
+}

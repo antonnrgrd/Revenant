@@ -10,8 +10,8 @@ You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #ifndef TRADER
 #define TRADER
-typedef struct{
-  int money;
-}Trader;
 
+void trade_purchase(Item_Holder *to_be_sold, int amount, U_Hashtable *player_inv,U_Hashtable *trader_inv);
+
+void trade_sell(Item_Holder *to_be_sold, int amount, U_Hashtable *player_inv,U_Hashtable *trader_inv);
 #endif

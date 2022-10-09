@@ -53,6 +53,17 @@ Consumable *i_gen_consumable(uint32_t healing, uint32_t value, float weight, uin
   return consumable;
 }
 
+char *i_derive_item_name(Item *i){
+  switch(i->kind){
+  case reagent:
+    char *name = ir_readin_char();
+    break;
+  case consumable:
+    break;
+  default:
+    break;
+  }
+}
 
 char *i_variant_name(Variant v){
   return s_create_text_const(handed_modifier[v]);
@@ -240,15 +251,7 @@ void i_print_equippable_name(Item *i, WINDOW *inv_screen,int x, int y){
   
 }
 
-extern char* (*i_derive_item_name[3])(Item *i) = {i_derive_item_name_reagent,i_derive_item_name_consumable,i_derive_item_name_equipment};
 
-
-char *i_derive_item_name_reagent(Item *i){
-  return reagent_definitions[i->id].name;
-}
-char *i_derive_item_name_consumable(Item *i){
-  return consumable_definitions[i->id].name;
-}
 char *i_derive_item_name_equipment(Item *i){
   if(i->kind == weapon){
     Weapon *w = (Weapon *)i->item_specific_info;
@@ -263,5 +266,3 @@ char *i_derive_item_name_equipment(Item *i){
   }
 }
 
-extern Reagent_Definition reagent_definitions[] = {{0,"raw trout", 5.0}};
-extern Consumable_Definition consumable_definitions[] = {{0, "apple", 1, 1.3}};

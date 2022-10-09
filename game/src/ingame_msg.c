@@ -10,7 +10,43 @@ You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "ingame_msg.h"
 #include "game_state.h"
- 
+
+int msg_trading_session(int global_x, int global_y,Game_State *gs){
+  MSG_CLEAR_SCREEN(gs->logs[TRADING_LOG]);
+  INIT_INVENTORY_LOG(gs->logs[TRADING_LOG], "inventory");
+  int column_position = 2;
+  for(int i = 0; i < ((U_Hashtable * )gs->current_zone->tiles[global_y][global_x].foe)->size; i++ ){
+    if(((U_Hashtable * )gs->current_zone->tiles[global_y][global_x].foe)->entries[i] != NULL){
+      Entry  *current_entry = ((U_Hashtable * )gs->player->additional_info)->entries[i];
+      while(current_entry != NULL){
+	PRINT_ITEM(current_entry->item_holder,gs->logs[TRADING_LOG],5,column_position);
+        current_entry = current_entry->next_entry;
+	column_position++;
+      }
+    }
+  }  
+  top_panel(gs->panels[TRADING_LOG]);
+  UPDATE_PANEL_INFO();
+  int ch;
+  while (1){
+    ch = getch();
+      if (ch == 'q'){
+      free(item_list);
+      curs_set(FALSE);
+      hide_panel(gs->panels[INVENTORY_LOG]);
+      update_panels();
+      doupdate();
+      return CONTINUE_TURN;
+    }
+    else if (ch == 'y'){
+
+    }
+    else if(ch == 's')  
+   
+      
+  }
+}
+
 void any_null(Item_Holder **item_list){
   printf("%s", "This run ");
   for(int i = 0; i < 4; i++)
@@ -97,7 +133,7 @@ void msg_update_event_log(Game_State *gs){
    }
 }
  
-int msg_display_inventory(Game_State *gs){
+int msg_display_inventory(Game_State *gs,int enable_selling, U_Hashtable *merchant){
   MSG_CLEAR_SCREEN(gs->logs[INVENTORY_LOG]);
   INIT_INVENTORY_LOG(gs->logs[INVENTORY_LOG], "inventory");
   int column_position = 2;
