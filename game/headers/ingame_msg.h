@@ -1,5 +1,5 @@
 /*This file is part of Revenant.
-Revenant is free software: you can redistribute it and/or modify
+65;6800;1cRevenant is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 Revenant  is distributed in the hope that it will be useful,
@@ -21,22 +21,16 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "generic_macros.h"
 //screen, y,x, "%s X %d", quality_name_modifier[((union Equipment)item_holder->item->item_specific_info).weapon->quality]
 #define MAX_MSG_LENGTH 50
-#define PRINT_ITEM_WEAPON(item_holder,screen,x,y)item_holder->amount != 1 ? mvwprintw(screen, y,x, "%s%s%s%s%s%d", quality_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->quality],handed_modifier[((struct Weapon *)item_holder->item->item_specific_info)->variant],material_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->material], mele_weapon_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->kind], " X ", item_holder->amount) : mvwprintw(screen, y,x, "%s%s%s%s", quality_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->quality],handed_modifier[((struct Weapon *)item_holder->item->item_specific_info)->variant],material_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->material], mele_weapon_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->kind])
 
-#define PRINT_ITEM_ARMOR(item_holder,screen,x,y)item_holder->amount != 1 ? mvwprintw(screen, y,x, "%s%s%s%s%d", quality_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->quality],material_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->material], armorslot_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->armor_type], " X ", item_holder->amount) : mvwprintw(screen, y,x, "%s%s%s", quality_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->quality],material_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->material],  armorslot_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->armor_type])
-
-#define PRINT_ITEM_NONEQUIPPABLE(item_holder,screen,x,y)item_holder->amount != 1 ? mvwprintw(screen, y,x, "%s%s%d", i_derive_item_name[item_holder->item->kind], " X ", item_holder->amount) : mvwprintw(screen, y,x, "%s", i_derive_item_name[item_holder->item->kind])
-#define PRINT_ITEM_EQUIPPABLE(item_holder,screen,x,y) item_holder->item->kind == weapon ? PRINT_ITEM_WEAPON(item_holder,screen,x,y) : PRINT_ITEM_ARMOR(item_holder,screen,x,y) 
-#define PRINT_ITEM_NOT_NULL(item_holder,screen,x,y)item_holder->item->kind == weapon || item_holder->item->kind == armor ? PRINT_ITEM_EQUIPPABLE(item_holder,screen,x,y):PRINT_ITEM_NONEQUIPPABLE(item_holder,screen,x,y)
-#define PRINT_ITEM_NULL(item_holder,screen,x,y)mvwprintw(screen, y,x,"None")
-#define PRINT_ITEM(item_holder,screen,x,y) item_holder->item == NULL ?  PRINT_ITEM_NULL(item_holder,screen,x,y):PRINT_ITEM_NOT_NULL(item_holder,screen,x,y)
+static inline void msg_print_item(Item_Holder *item_holder, WINDOW *screen, int x, int y);
+static inline void msg_pickup_item(Game_State *game_state, Item_Holder *item_holder);
 // In order to make changes to a panel visible, we firstly need to call update panel to make the changes to the panels visible, then make doupdate to make said changes ivisible to the physical screen. To avoid having to call these methods all the time, we wrap them inside a macro
 #define UPDATE_PANEL_INFO() update_panels(); doupdate();
 
 
 //MSG_MOVE_TO_NEW_POS(item_list, init_free_pos, max_index, log)
 /* We stop at second last index because we set pointers to null and if we include the last index, we attempt to print the item at the last index, which is null, causing seg fault*/
-#define MSG_COMPRESS_ITEM_LIST(item_list, init_free_pos, max_index, log) for(int i = init_free_pos; i < max_index-1; i++ ){ item_list[i] = item_list[i+1]; item_list[i+1] = NULL;  wmove(log,i+2,5); wclrtoeol(log);  PRINT_ITEM(item_list[i],log,5,i+2); } /* item_list[max_index-1] = NULL; */ wmove(log,max_index-1+2,5); wclrtoeol(log); box(gs->logs[INVENTORY_LOG],0,0); wmove(log,init_free_pos+2,5); UPDATE_PANEL_INFO();
+#define MSG_COMPRESS_ITEM_LIST(item_list, init_free_pos, max_index, log) for(int i = init_free_pos; i < max_index-1; i++ ){ item_list[i] = item_list[i+1]; item_list[i+1] = NULL;  wmove(log,i+2,5); wclrtoeol(log);  msg_print_item(item_list[i],log,5,i+2); } /* item_list[max_index-1] = NULL; */ wmove(log,max_index-1+2,5); wclrtoeol(log); box(gs->logs[INVENTORY_LOG],0,0); wmove(log,init_free_pos+2,5); UPDATE_PANEL_INFO();
 
 int msg_show_log(Game_State *gs, int panel_index);
 
@@ -74,7 +68,7 @@ void msg_update_event_log(Game_State *gs);
 //To the screen. Perhaps because it's a maxture of static and dynamic strings
 #define INIT_INVENTORY_LOG(window, inv_name) mvwprintw(window,1,25,"%s" inv_name, "Items in " );
 
-int msg_display_inventory(Game_State *gs,int enable_selling, U_Hashtable *merchant);
+int msg_display_inventory(Game_State *gs,int context, U_Hashtable *merchant);
 
 int msg_display_inventory_equip_context(Game_State *gs);
 
@@ -83,9 +77,18 @@ int msg_display_equipped_equipment(Game_State *gs);
 /*ncurses has built-in functionality for clearing */
 #define MSG_CLEAR_SCREEN(window)werase(gs->logs[INVENTORY_LOG]); box(window,0,0);
 //We print i+2 to print at the desired position in the equipment log
-#define MSG_REDRAW_INVENTORY(available_equipment,num_items,window) MSG_CLEAR_SCREEN(window); for(int i = 0; i < num_items; i++){PRINT_ITEM(available_equipment[i],gs->logs[INVENTORY_LOG],5,i+2);}
+#define MSG_REDRAW_INVENTORY(available_equipment,num_items,window) MSG_CLEAR_SCREEN(window); for(int i = 0; i < num_items; i++){msg_print_item(available_equipment[i],gs->logs[INVENTORY_LOG],5,i+2);}
 
 int msg_trading_session(int global_x, int global_y,Game_State *gs);
 #define MSG_ENABLE_SCROLLING(window) scrollok(window, TRUE); idlok(window, TRUE);
+
+#define MSG_ITEM_PICKUP_NONEQUIPPABLE(game_state, item_holder) char *name /* = i_derive_item_name(item_holder->item); mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s%s%s%d%s", "Pickup ", name , " amount: ", item_holder->amount, " ? [y/n/a/d]"); free(name);
+									     #define MSG_ITEM_PICKUP_WEAPON(game_state, item_holder) mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s%s%s%s%s%s%d%s", "Pickup ",quality_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->quality], material_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->material],handed_modifier[((struct Weapon *)item_holder->item->item_specific_info)->variant],mele_weapon_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->kind] , " amount: ", item_holder->amount, " ? [y/n/a/d]")*/
+
+#define MSG_ITEM_PICKUP_ARMOR(game_state, item_holder)mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s%s%s%s%s%d%s", "Pickup ",quality_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->quality], material_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->material],equipment_kind_modifier[((struct Armor *)item_holder->item->item_specific_info)->armor_type], " amount: ", item_holder->amount, " ? [y/n/a/d]")
+
+#define MSG_ITEM_PICKUP_EQUIPPABLE(game_state, item_holder) item_holder->item->kind == weapon ? MSG_ITEM_PICKUP_WEAPON(game_state, item_holder):MSG_ITEM_PICKUP_ARMOR(game_state, item_holder)
+#define MSG_ITEM_PICKUP(game_state, item_holder) /* item_holder->item->kind == weapon || item_holder->item->kind == armor ? MSG_ITEM_PICKUP_EQUIPPABLE(game_state,item_holder): */ MSG_ITEM_PICKUP_NONEQUIPPABLE(game_state,item_holder)
+
 #endif
 

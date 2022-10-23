@@ -38,7 +38,7 @@ void game_loop(Game_State *game_state){
       player_turn =  msg_show_log(game_state,EVENT_LOG);
       break;
     case 'i':
-      player_turn = msg_display_inventory(game_state, NO, NULL);
+      player_turn = msg_display_inventory(game_state, CONTEXT_INSPECTING, NULL);
       break;
     case 'e':
       player_turn = msg_display_inventory_equip_context(game_state);

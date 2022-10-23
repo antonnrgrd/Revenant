@@ -15,15 +15,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "modifier.h"
 #include <math.h>
  
- 
-Reagent *i_gen_reagent(Variant variant,float weight,uint32_t value,Reagent_Kind kind){
-  Reagent *reagent = malloc(sizeof(Reagent));
-  //  reagent->variant = variant;
-  reagent->weight = weight;
-  reagent->kind = kind;
-  return reagent;
-}
- 
+  
 Armor *i_gen_armor(Quality_Level q, Material material, Worn_in w,Equipment_Kind armor_type){
   Armor *arm = malloc(sizeof(Armor));
   arm->quality =q;
@@ -45,24 +37,26 @@ Weapon *i_gen_weapon(Quality_Level q,Variant variant,Material material,Weapon_Gr
   return weapon;
 }
 
-Consumable *i_gen_consumable(uint32_t healing, uint32_t value, float weight, uint16_t skill){
-  Consumable *consumable = malloc(sizeof(Consumable));
-  consumable->healing = healing;
-  //  consumable->weight = weight;
-  consumable->skill = skill;
-  return consumable;
-}
+
 
 char *i_derive_item_name(Item *i){
+  char *name = NULL;
+  char *bfr = NULL;
   switch(i->kind){
   case reagent:
-    char *name = ir_readin_char();
+    bfr = malloc(sizeof(char) * (strlen("/usr/lib/revenant_files/item_files/reagent_files/")) + 5);
+    sprintf(bfr,"/usr/lib/revenant_files/item_files/reagent_files/%d",i->id);
+    name = ir_readin_char();
     break;
   case consumable:
+    bfr = malloc(sizeof(char) * (strlen("/usr/lib/revenant_files/item_files/consumable_files/")) + 5);
+    sprintf(bfr,"/usr/lib/revenant_files/item_files/consumable_files/%d",i->id);
     break;
   default:
     break;
   }
+  free(bfr);
+  return name;
 }
 
 char *i_variant_name(Variant v){
@@ -232,13 +226,6 @@ Item_Holder *i_make_item_holder(Item *item, unsigned amount){
   
 }
 
-void i_print_reagent_name(Item *i, WINDOW *inv_screen,int x, int y){
-  mvwprintw(inv_screen,y,x,i, reagent_definitions[i->id].name);
-}
-
-void i_print_consumable_name(Item *i, WINDOW *inv_screen,int x, int y){
-  mvwprintw(inv_screen,y,x,i, consumable_definitions[i->id].name);
-}
 
 void i_print_equippable_name(Item *i, WINDOW *inv_screen,int x, int y){
   if(i->kind==weapon ){

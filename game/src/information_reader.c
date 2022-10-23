@@ -10,10 +10,10 @@ You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "information_reader.h" 
 Item *ir_readin_reagent(char *reagent_file_path){
-  Item i = malloc(sizeof(Item));
+  Item *i = malloc(sizeof(Item));
   Reagent *reagent = malloc(sizeof(Reagent));
   reagent->id = ir_readin_int(reagent_file_path,"id");
-  item->weight = ir_readin_float(reagent_file_path,"weight");
+  i->weight = ir_readin_float(reagent_file_path,"weight");
   i->item_specific_info = reagent;
 
   return i;
@@ -78,13 +78,12 @@ void ir_readin_struct_attributes(char *file_path, char *variable, Attributes att
    FILE *fp = fopen(file_path, "r");
   char * line = NULL;
   size_t len = 0;
+  float rational;
   while((getline(&line, &len, fp)) != -1){
     char *variable_pointer = strstr(line, variable);
     if(variable_pointer != NULL){
       char *value_as_str = strtok(strchr(line, '=')+1, "\n");
-      Attributes attributes_info;
       ir_readin_struct_attributes_values(attributes,value_as_str);
-      memcpy(&attributes,&attributes_info, sizeof(Attributes));
        break;
       }
     }
@@ -94,7 +93,6 @@ void ir_readin_struct_attributes(char *file_path, char *variable, Attributes att
   if(fp){
     close(fp);
   }
-       
 }
 Limb *ir_readin_struct_limb(char *file_path, char *variable){
   FILE *fp = fopen(file_path, "r");

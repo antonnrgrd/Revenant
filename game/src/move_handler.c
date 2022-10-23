@@ -100,12 +100,12 @@ int move_response_loot_item(int global_x, int global_y,int local_x, int local_y,
   c->position.local_x = local_x;
   c->position.local_y = local_y;
   move(c->position.local_y,c->position.local_x);
-  
-  
-  move_response_move_character(global_x, global_y, local_x,local_y,c,game_state);
     
+  move_response_move_character(global_x, global_y, local_x,local_y,c,game_state);
+  MSG_ITEM_PICKUP(game_state,game_state->current_zone->tiles[global_y][global_x].entry->item_holder);
+  /*    
 mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s%s%s%d%s", "Pickup ", i_derive_item_name[game_state->current_zone->tiles[global_y][global_x].entry->item_holder->item->kind], " amount: ", game_state->current_zone->tiles[global_y][global_x].entry->item_holder->amount, " ? [y/n/a/d]");  
-  
+  */
   int response;
   int result;
   response = getch();

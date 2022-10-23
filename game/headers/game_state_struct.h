@@ -28,7 +28,12 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define PLAYER_STATUS_LOG 3
 #define QUEST_LOG 4
 #define TRADING_LOG 5
-#define NUM_WINDOWS 6
+#define NOTIFICATION_LOG 6
+#define NUM_WINDOWS 7
+
+
+#define CONTEXT_SELLING 0
+#define CONTEXT_INSPECTING 1
 //
 #define LOG_WIDTH 15
 #define LOG_Height 15
@@ -37,11 +42,10 @@ typedef struct Game_State{
   struct Creature *player;
   Game_World *current_zone;
   Linked_List *active_creatures;
-  PANEL *panels[6];
-  WINDOW *logs[6];
+  PANEL *panels[7];
+  WINDOW *logs[7];
   Mersienne_Twister *twister;
 }Game_State;
 
 
 #endif
-

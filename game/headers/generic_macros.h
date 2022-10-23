@@ -10,8 +10,10 @@ You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #ifndef GENERIC_MACROS
 #define GENERIC_MACROS
+#include <stdlib.h>
 #define YES 0
 #define NO 1
 #define END_TURN 0
 #define CONTINUE_TURN 1
+#define FREE_NULL(ptr) free(ptr); (ptr) = NULL
 #endif

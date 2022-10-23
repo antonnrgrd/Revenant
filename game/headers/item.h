@@ -72,7 +72,7 @@ typedef union Equipment{
 
 
 typedef struct Item{
-  int is_quest_item:1;
+  int id;
   void *item_specific_info;
   char *representation;
   char *standing_on;
@@ -150,7 +150,7 @@ void i_print_equippable_name(Item *i, WINDOW *inv_screen,int x, int y);
 #define HAS_ITEM_NAME_ARMOR(source_item_holder, target_item_holder)({int is_equal; const char *source_item_holder_quality = quality_name_modifier[((struct Armor *)source_item_holder->item->item_specific_info)->quality]; const char *source_item_holder_material = material_name_modifier[((struct Armor *)source_item_holder->item->item_specific_info)->material]; const char *source_item_holder_armor_type = equipment_kind_modifier[((struct Armor *)source_item_holder->item->item_specific_info)->armor_type]; char *target_item_holder_quality = quality_name_modifier[((struct Armor *)target_item_holder->item->item_specific_info)->quality]; const char *target_item_holder_material = material_name_modifier[((struct Armor *)target_item_holder->item->item_specific_info)->material]; const char *target_item_holder_armor_type = equipment_kind_modifier[((struct Armor *)target_item_holder->item->item_specific_info)->armor_type]; is_equal = (strcmp(source_item_holder_quality,target_item_holder_quality) | strcmp(source_item_holder_material,target_item_holder_material) | strcmp(source_item_holder_armor_type,target_item_holder_armor_type) ); is_equal;})
 
 #define HAS_ITEM_NAME_EQ(source_item_holder, target_item_holder) target_item_holder->item->kind == weapon ? HAS_ITEM_NAME_WEAPON(source_item_holder, target_item_holder) :  HAS_ITEM_NAME_ARMOR(source_item_holder, target_item_holder)
-#define HAS_ITEM_NAME_NONEQ(source_item_holder,target_item_holder) ({int is_equal; const char *source_item_holder_name = i_derive_item_name[source_item_holder->item->kind]; char *target_item_holder_name = i_derive_item_name[target_item_holder->item->kind]; is_equal = strcmp(source_item_holder_name, target_item_holder_name); is_equal;})
+#define HAS_ITEM_NAME_NONEQ(source_item_holder,target_item_holder) ({int is_equal; char *source_item_holder_name = i_derive_item_name(source_item_holder->item); char *target_item_holder_name = i_derive_item_name(target_item_holder->item); is_equal = strcmp(source_item_holder_name, target_item_holder_name);free(source_item_holder_name); free(target_item_holder_name); is_equal;})
 #define HAS_SAME_NAME(source_item_holder,target_item_holder)target_item_holder->item->kind == weapon || target_item_holder->item->kind == armor ? HAS_ITEM_NAME_EQ(source_item_holder,target_item_holder) : HAS_ITEM_NAME_NONEQ(source_item_holder,item)
 #endif
 

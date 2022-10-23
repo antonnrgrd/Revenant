@@ -14,7 +14,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "u_hash.h"
 #include "screen_constants.h"
-unsigned long long u_hash(int char_count,U_Hashtable *table, const char *strings, ...){
+unsigned long long u_hash(int char_count,U_Hashtable *table, char *strings, ...){
   return((table->a * s_uint_from_string(char_count,strings) + table->b) % BFP) % table->size;
 }
  
