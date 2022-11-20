@@ -23,7 +23,9 @@ U_Hashtable *u_initialize_hashtable(int initial_size,Mersienne_Twister *twister)
   table->size = initial_size;
   table->item_count = 0;
   table->entries =  malloc(sizeof(Entry *) * initial_size);
-  table->equipment_list = malloc(sizeof(Item *) * NUM_EQUIPMENT_SLOTS);
+  for(int i = 0; i < initial_size; i++){
+    table->entries[i] = NULL;
+  }
   table->a = GEN_VALUE_RANGE(1,BFP,twister);
   table->b = GEN_VALUE_RANGE(0,BFP,twister);
   return table;
@@ -31,6 +33,9 @@ U_Hashtable *u_initialize_hashtable(int initial_size,Mersienne_Twister *twister)
  
 void u_add_item(Item_Holder *item, int amount,U_Hashtable *table){  
   unsigned long long index = U_HASH_ITEM(item,table);
+
+
+
   //  if(((struct Weapon *)item->item->item_specific_info)->material == bronze){
   // printf("%s%llu%s","bronze: " ,index, " ");
   //  }
@@ -50,6 +55,7 @@ void u_add_item(Item_Holder *item, int amount,U_Hashtable *table){
   else if(table->entries[index] == NULL){
     table->entries[index] = malloc(sizeof(Entry));
      table->entries[index]->item_holder = item;
+     table->entries[index]->next_entry = NULL;
      table->item_count++;
      //printf("%s", "Second case, \n");
   }
@@ -95,6 +101,7 @@ Item_Weight u_remove_item(Item_Holder *item, int amount, U_Hashtable *table, int
 	i_free_item(table->entries[index]->item_holder->item);
 	free(table->entries[index]->item_holder);
 	free(table->entries[index]);
+	table->entries[index] = NULL;
       }
       else{   
       item_weight.item = table->entries[index]->item_holder->item;
@@ -198,7 +205,16 @@ Item_Weight u_remove_item(Item_Holder *item, int amount, U_Hashtable *table, int
 
 
 
+/*
+char *faku(){
+  char *val = malloc(sizeof(char));
+  return val;
+}
+*/
 
 
 
-
+char *faku(){
+  char *val = "abc";
+  return val;
+}

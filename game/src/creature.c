@@ -116,14 +116,18 @@ Creature *c_random_player(int x, int y,Game_World *world, Mersienne_Twister *twi
       c->position.local_x = (world->max_x - 1)/2;
     }
   }
+  
 
 
   c->representation = malloc(sizeof(char));
   c->representation[0] = '@';
   c->color = malloc(sizeof(Color));
   c->standing_on[0] = ' ';
-   U_Hashtable *inventory = u_initialize_hashtable(10,twister);
-  c->additional_info = inventory;
+  U_Hashtable *inventory = u_initialize_hashtable(10,twister);
+  Player_Info *player_info = malloc(sizeof(Player_Info));
+  player_info->equipment_list = malloc(sizeof(Item *) * NUM_EQUIPMENT_SLOTS);
+  player_info->inventory = inventory;
+  c->additional_info = player_info;
   return c;
 
 }

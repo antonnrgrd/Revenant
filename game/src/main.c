@@ -1,5 +1,5 @@
 /*This file is part of Revenant.
-                                       
+65;6800;1c                                       
 Revenant is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
@@ -15,7 +15,6 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "u_hash.h"
 #include "creature.h"
 #include "u_hash.h"
-#include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <ncurses.h>
@@ -37,50 +36,64 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "information_reader.h"
 int main(int argc, char *argv[]){
 
-
-
-
-  
-
-    
+  // Item *v = ir_readin_reagent("/usr/lib/revenant_files/item_files/reagent_files/1");
+  // printf("%s", I_GET_ITEMNAME_NONEQUIPPABLE(v));
+  // printf("%s", ir_readin_char("/usr/lib/revenant_files/item_files/reagent_files/1", "name"));
+ 
   
  initscr();
  start_color();  
- Game_World *game_world = g_generate_game_world(1000,1000); 
- Item *weapon = i_make_mele_weapon(epic,bronze,one_hand,sword);
+ Game_World *game_world = g_generate_game_world(1000,1000);
+ Game_State *gs =  gs_create_game_state(game_world);
+ 
+ 
+  
+Item *weapon = i_make_mele_weapon(epic,bronze,one_hand,sword);
  Item *weapon_2 = i_make_mele_weapon(epic,steel,one_hand,sword); 
  Item *armor = i_make_armor(poor,mithril,head_slot,helmet);
  Item *armor_2 = i_make_armor(adequate,steel,feet_slot,boots);
- Game_State *gs =  gs_create_game_state(game_world);
  Item_Holder *i = malloc(sizeof(Item_Holder));
  i->item = weapon;
  i->amount = 1;
   Item_Holder *j = malloc(sizeof(Item_Holder));
   j->item = weapon_2;
  j->amount = 5;
- //Item_Holder *k = malloc(sizeof(Item_Holder));
+ Item_Holder *k = malloc(sizeof(Item_Holder));
  Item_Holder *l = malloc(sizeof(Item_Holder));
  l->item = armor;
  l->amount = 1;
- //k->amount=1;
- // k->item = armor;
+ k->amount=1;
+ k->item = armor;
   Item_Holder *m = malloc(sizeof(Item_Holder));
   m->item = armor_2;
  m->amount=1;
-  u_add_item(j,j->amount,(struct U_Hashtable*)gs->player->additional_info);
-  u_add_item(i,i->amount,(struct U_Hashtable*)gs->player->additional_info);
-  // u_add_item(k,k->amount,(struct U_Hashtable*)gs->player->additional_info);
- u_add_item(l,l->amount,(struct U_Hashtable*)gs->player->additional_info);
- u_add_item(m,m->amount,(struct U_Hashtable*)gs->player->additional_info);
  
+ Item *v = ir_readin_reagent("/usr/lib/revenant_files/item_files/reagent_files/0");
+ Item *w = ir_readin_reagent("/usr/lib/revenant_files/item_files/reagent_files/1");
+ Item_Holder *y = malloc(sizeof(Item_Holder));
+ Item_Holder *q = malloc(sizeof(Item_Holder));
+ y->item = v;
+ q->item = w;
+ y->amount = 13;
+ q->amount = 2;
+
+ u_add_item(y,y->amount,((Player_Info * )gs->player->additional_info)->inventory);
+ u_add_item(q,q->amount,((Player_Info * )gs->player->additional_info)->inventory);
+ 
+ u_add_item(j,j->amount,((Player_Info * )gs->player->additional_info)->inventory);
+  u_add_item(i,i->amount,((Player_Info * )gs->player->additional_info)->inventory);
+  u_add_item(k,k->amount,((Player_Info *)gs->player->additional_info)->inventory);
+   u_add_item(l,l->amount,((Player_Info * )gs->player->additional_info)->inventory);
+    u_add_item(m,m->amount,((Player_Info * )gs->player->additional_info)->inventory);
+  
 
   noecho();
   curs_set(FALSE);
-  keypad(stdscr, TRUE);
-  srand(time(NULL));
+   keypad(stdscr, TRUE);
+    srand(time(NULL));
   raw();
   
-  game_loop(gs);
+    game_loop(gs);
   endwin();
  
 }

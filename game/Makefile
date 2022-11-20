@@ -5,8 +5,8 @@ IDIR = headers
 #OBJ_MAIN = build/main.o
 
 #Note- always put -lpanel flag before the -lncurses flag, otherwise, it might yield some compilation issues
-CFLAGS = -I$(IDIR)  -std=c11 -ggdb -Wall -Wextra -pedantic -lm  -lpanel -lncurses  -g 
-
+#CFLAGS = -I$(IDIR)  -std=c11 -ggdb -Wall -Wextra -pedantic -lm  -lpanel -lncurses  -g 
+CFLAGS = -I$(IDIR)  -std=c11 -ggdb -lm  -lpanel -lncurses  -g 
 .PHONY: RUN clean 
 
 all: 

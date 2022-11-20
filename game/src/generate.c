@@ -15,6 +15,9 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "generate.h"
 #include <ncurses.h>
 
+extern inline void g_place_trader(){
+
+}
 
 int gen_int(int min,int max){
   
@@ -66,6 +69,9 @@ Game_World *g_generate_game_world(int width, int height){
 
 
 
+void g_generate_merchant(){
+
+}
 
 extern const char *alphabet = "#          ";
 

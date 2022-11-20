@@ -19,6 +19,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "game_state_struct.h"
 #include "strings.h"
 #include "generic_macros.h"
+#include "u_hash.h"
 //screen, y,x, "%s X %d", quality_name_modifier[((union Equipment)item_holder->item->item_specific_info).weapon->quality]
 #define MAX_MSG_LENGTH 50
 
@@ -49,7 +50,7 @@ int msg_find_item_position(WINDOW *log, int max_y,Item_Holder *item, Item_Holder
 
 #define UPDATE_PUSH_ADD_TO_LOG(game_state,msg_bfr) mvwprintw(game_state->logs[EVENT_LOG],13,14, msg_bfr); wmove(game_state->logs[EVENT_LOG],12,14); wclrtoeol(game_state->logs[EVENT_LOG]); mvwinnstr(game_state->logs[EVENT_LOG], 11,12,msg_bfr,MAX_MSG_LENGTH-1); mvwprintw(game_state->logs[EVENT_LOG],12,14, msg_bfr); for(int i = 11; i > 2; i--){ wmove(game_state->logs[EVENT_LOG],i,12); wclrtoeol(game_state->logs[EVENT_LOG]);  mvwinnstr(game_state->logs[EVENT_LOG], i-1,12,msg_bfr,MAX_MSG_LENGTH-1); mvwprintw(game_state->logs[EVENT_LOG],i,12, msg_bfr); } mvwinnstr(game_state->logs[EVENT_LOG], 13,14,msg_bfr,MAX_MSG_LENGTH-1); mvwprintw(game_state->logs[EVENT_LOG],3,12, msg_bfr); wmove(game_state->logs[EVENT_LOG],13,14); wclrtoeol(game_state->logs[EVENT_LOG]); free(msg_bfr);  
 
-#define MSG_PRINT_DAMAGE_CREATURE(screen,creature_id,damage) char *file_path_bfr = malloc(sizeof(char) * strlen("/usr/lib/revenant_files/creature_files/") +5); sprintf(file_path_bfr,"/usr/lib/revenant_files/creature_files/%d",creature_id); char *name = ir_readin_char(file_path_bfr, "name"); mvwprintw(game_state->logs[MAIN_SCREEN],DEFAULT_MAX_Y,0, "%s%s%s%d%s", "You damage ", name , " for ", 10, " damage"); free(file_path_bfr); free(name);
+#define MSG_PRINT_DAMAGE_CREATURE(screen,creature_id,damage) char *file_path_bfr = malloc(sizeof(char) * strlen("/usr/lib/revenant_files/creature_files/") +5); sprintf(file_path_bfr,"/usr/lib/revenant_files/creature_files/%d",creature_id); char *name;  ir_readin_char(file_path_bfr, "name",name); mvwprintw(game_state->logs[MAIN_SCREEN],DEFAULT_MAX_Y,0, "%s%s%s%d%s", "You damage ", name , " for ", 10, " damage"); free(file_path_bfr); free(name);
 
 /*  mvwinnstr(game_state->logs[EVENT_LOG], i,12,msg_bfr,MAX_MSG_LENGTH-1); mvprintw(game_state->logs[EVENT_LOG], i+1,12,msg_bfr); wmove(game_state->logs[EVENT_LOG],i,12); wclrtoeol(game_state->logs[EVENT_LOG]); }  free(msg_bfr); */
 
@@ -66,7 +67,7 @@ void msg_update_event_log(Game_State *gs);
 #define INIT_EVENT_LOG(window) mvwprintw(window,1,25, "PAST 10 EVENTS" ); char number[] = "1."; for(int i = 3; i < 13; i++){ number[0] = (i-2) + '0'; mvwprintw(window,i,10,number ); } mvwprintw(window,12,10, "10.");
 //For some reason, you have to specify the arguments in this order, in order to print them correctly
 //To the screen. Perhaps because it's a maxture of static and dynamic strings
-#define INIT_INVENTORY_LOG(window, inv_name) mvwprintw(window,1,25,"%s" inv_name, "Items in " );
+#define INIT_INVENTORY_LOG(window, inv_msg) mvwprintw(window,1,25, inv_msg );
 
 int msg_display_inventory(Game_State *gs,int context, U_Hashtable *merchant);
 
@@ -75,7 +76,7 @@ int msg_display_inventory_equip_context(Game_State *gs);
 int msg_display_equipped_equipment(Game_State *gs);
 
 /*ncurses has built-in functionality for clearing */
-#define MSG_CLEAR_SCREEN(window)werase(gs->logs[INVENTORY_LOG]); box(window,0,0);
+#define MSG_CLEAR_SCREEN(window)werase(window); box(window,0,0);
 //We print i+2 to print at the desired position in the equipment log
 #define MSG_REDRAW_INVENTORY(available_equipment,num_items,window) MSG_CLEAR_SCREEN(window); for(int i = 0; i < num_items; i++){msg_print_item(available_equipment[i],gs->logs[INVENTORY_LOG],5,i+2);}
 

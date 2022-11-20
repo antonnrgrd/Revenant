@@ -61,6 +61,10 @@ typedef struct Limb{
   int damage;  
 }Limb;
 
+typedef struct{
+   Item **equipment_list;
+   U_Hashtable *inventory;
+}Player_Info;
 
 typedef struct Color{
   // will be defined by the constants in ncurses i.e COLOR_RED, COLOR_CYAN etc. 

@@ -38,25 +38,23 @@ Weapon *i_gen_weapon(Quality_Level q,Variant variant,Material material,Weapon_Gr
 }
 
 
-
-char *i_derive_item_name(Item *i){
-  char *name = NULL;
-  char *bfr = NULL;
+extern inline void i_derive_item_name(Item *i,char *bfr){
+  char *fpath = NULL;
   switch(i->kind){
   case reagent:
-    bfr = malloc(sizeof(char) * (strlen("/usr/lib/revenant_files/item_files/reagent_files/")) + 5);
-    sprintf(bfr,"/usr/lib/revenant_files/item_files/reagent_files/%d",i->id);
-    name = ir_readin_char();
+    fpath = malloc(sizeof(char) * (strlen("/usr/lib/revenant_files/item_files/reagent_files/")) + 5);
+    sprintf(fpath,"/usr/lib/revenant_files/item_files/reagent_files/%d",i->id);
+    ir_readin_char(fpath,"name",bfr);
     break;
   case consumable:
-    bfr = malloc(sizeof(char) * (strlen("/usr/lib/revenant_files/item_files/consumable_files/")) + 5);
-    sprintf(bfr,"/usr/lib/revenant_files/item_files/consumable_files/%d",i->id);
+    fpath = malloc(sizeof(char) * (strlen("/usr/lib/revenant_files/item_files/consumable_files/")) + 5);
+    sprintf(fpath,"/usr/lib/revenant_files/item_files/consumable_files/%d",i->id);
+    ir_readin_char(fpath,"name",bfr);
     break;
   default:
     break;
   }
-  free(bfr);
-  return name;
+  free(fpath);
 }
 
 char *i_variant_name(Variant v){
@@ -253,3 +251,32 @@ char *i_derive_item_name_equipment(Item *i){
   }
 }
 
+char *i_get_name(Item *i){
+  /*
+  char *name = NULL;
+  char *bfr = NULL;
+  char *myname = ir_readin_char("/usr/lib/revenant_files/item_files/reagent_files/0","name");
+  switch(i->kind){
+  case reagent:
+    printf("%d",strlen("/usr/lib/revenant_files/item_files/reagent_files/"));
+    bfr = malloc(sizeof(char) * (strlen("/usr/lib/revenant_files/item_files/reagent_files/")) + 5);
+    sprintf(bfr,"/usr/lib/revenant_files/item_files/reagent_files/%d",i->id);
+    char mybfr[60];
+    sprintf(mybfr,"/usr/lib/revenant_files/item_files/reagent_files/%d",i->id);
+    //    char *myname = ir_readin_char("/usr/lib/revenant_files/item_files/reagent_files/0","name");
+    name = ir_readin_char(bfr,"name");
+    break;
+  case consumable:
+    bfr = malloc(sizeof(char) * (strlen("/usr/lib/revenant_files/item_files/consumable_files/")) + 5);
+    sprintf(bfr,"/usr/lib/revenant_files/item_files/consumable_files/%d",i->id);
+    name = malloc(sizeof(char));
+    break;
+  free(bfr);
+  return name;
+  }
+  */
+  char *file_path_bfr = malloc(sizeof(char) * strlen("/usr/lib/revenant_files/creature_files/") +5);
+  sprintf(file_path_bfr,"/usr/lib/revenant_files/creature_files/%d",i->id);
+  char *name = ir_readin_char(file_path_bfr, "name");
+  return name;
+}

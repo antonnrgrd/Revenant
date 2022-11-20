@@ -1,5 +1,5 @@
 /*This file is part of Revenant.
-65;6800;1c65;6800;1cRevenant is free software: you can redistribute it and/or modify
+Revenant is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 Revenant  is distributed in the hope that it will be useful,
@@ -9,18 +9,27 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "information_reader.h" 
-Item *ir_readin_reagent(char *reagent_file_path){
-  Item *i = malloc(sizeof(Item));
+struct Item *ir_readin_reagent(char *reagent_file_path){
+  struct Item *i = malloc(sizeof(Item));
   Reagent *reagent = malloc(sizeof(Reagent));
   reagent->id = ir_readin_int(reagent_file_path,"id");
   i->weight = ir_readin_float(reagent_file_path,"weight");
   i->item_specific_info = reagent;
+  i->id = reagent->id;
+  return i;
+}
 
+struct Item *ir_readin_consumable(char *consumable_file_path){
+  struct Item *i = malloc(sizeof(Item));
+  Consumable *consumable = malloc(sizeof(Consumable));
+  consumable->id = ir_readin_int(consumable_file_path,"id");
+  i->weight = ir_readin_float(consumable_file_path,"weight");
+  i->item_specific_info = consumable;
+  i->id = consumable->id;
   return i;
 }
 Creature *ir_readin_creature(char *creature_file_path,unsigned x, unsigned y, Game_World *world, Creature *target){
-  
- 
+   
   Creature *c = malloc(sizeof(Creature));
 
   c->position.global_x=x;
@@ -35,10 +44,10 @@ Creature *ir_readin_creature(char *creature_file_path,unsigned x, unsigned y, Ga
   c->has_moved_around_horizontally = 0;
   c->marked_for_deletion = NO;
  
-  char *representation = ir_readin_char(creature_file_path, "representation");
-  c->representation = malloc(sizeof(char));
-  strcpy(c->representation, representation);
-  free(representation);
+  ir_readin_char(creature_file_path, "representation", c->representation);
+  // c->representation = malloc(sizeof(char));
+  //strcpy(c->representation, representation);
+  //free(representation);
   c->species=ir_readin_int(creature_file_path, "species");
   c->id=ir_readin_int(creature_file_path, "id");
   c->limb_count = ir_readin_int(creature_file_path, "limb_count");
@@ -91,7 +100,7 @@ void ir_readin_struct_attributes(char *file_path, char *variable, Attributes att
     free(line);
   }
   if(fp){
-    close(fp);
+    fclose(fp);
   }
 }
 Limb *ir_readin_struct_limb(char *file_path, char *variable){
@@ -114,7 +123,7 @@ Limb *ir_readin_struct_limb(char *file_path, char *variable){
     free(line);
   }
   if(fp){
-    close(fp);
+    fclose(fp);
   }
        return creature_limbs;
 }
@@ -136,7 +145,7 @@ float ir_readin_float(char *file_path, char *variable){
     free(line);
   }
   if(fp){
-    close(fp);
+    fclose(fp);
   }
        return rational;
  }
@@ -158,26 +167,57 @@ int ir_readin_int(char *file_path, char *variable){
     free(line);
   }
   if(fp){
-    close(fp);
+    fclose(fp);
   }
        return number;
  }
 
+char *yield_char(){
+  char *val = malloc(sizeof(char));
+  return val;
+}
+/*For reason i simply cannot comprehend, attempting to return a char pointer simply did not work.
+It would work on its own, but trying to use that pointer would cause segmentation fault. inspecting with GDB
+revealed that the point somehow ceased to be valid the instant the function returned the point. It was not NULL straight out invalid
+THe fact that the approach works for every other data type baffles me. But for chars, we are forced to make do with a pass-by-reference
+approach for reading in a char value*/
+void ir_readin_char(char *file_path, char *variable,char *bfr){
+    FILE *fp;
+    char *line = NULL;
+    size_t len = 0;
+    size_t read;
 
-char *ir_readin_char(char *file_path, char *variable){
+    //fp = fopen("/usr/lib/revenant_files/item_files/reagent_files/0", "r");
+    fp = fopen(file_path, "r");
+    if (fp == NULL)
+        exit(EXIT_FAILURE);
+
+   while ((read = getline(&line, &len, fp)) != -1) {
+     char *variable_pointer = strstr(line, variable);
+     if(variable_pointer != NULL){
+       char *value_as_str = strtok(strchr(line, '=')+1, "\n");
+       bfr = malloc(sizeof(char) * strlen(value_as_str) +5);
+       strcpy(bfr , value_as_str);
+       break;
+     }
+    }
+
+   if(line)
+     free(line);
+   fclose(fp);
+  /*
   FILE *fp = fopen(file_path, "r");
+  if(fp == NULL){
+    exit(EXIT_FAILURE);
+  }
   char * line = NULL;
   size_t len = 0;
-  char *bfr;
+  char *bfr = NULL;
   while((getline(&line, &len, fp)) != -1){
-    char *variable_pointer = strstr(line, variable);
+    
     if(variable_pointer != NULL){
       char *value_as_str = strtok(strchr(line, '=')+1, "\n");
-      /*Honest to god have no fucking idea why value_as_str's size differs to vastly from
-       its actual length, in theory, strlen +1 ought to be sufficient size, but it defies this
-      notion. Since this works elsewere, i have a nagging suspicion that strchr returns far more than
-      just the value i want but at this point i don't care*/
-      bfr = malloc(sizeof(char) * (strlen(value_as_str) + 25 ));
+      bfr = malloc(sizeof(char) * (strlen(value_as_str) +1 ));
       strcpy(bfr,value_as_str);
        break;
       }
@@ -186,11 +226,34 @@ char *ir_readin_char(char *file_path, char *variable){
     free(line);
   }
   if(fp){
-    close(fp);
+    fclose(fp);
   }
        return bfr;
+  */
  }
 
+/*
+char *ir_readin_char(char *file_path, char *variable){
+  FILE *fp = fopen(file_path, "r");
+  char * line = NULL;
+  size_t len = 0;
+  char *value_as_str;
+  while((getline(&line, &len, fp)) != -1){
+    char *variable_pointer = strstr(line, variable);
+    if(variable_pointer != NULL){
+      value_as_str = strtok(strchr(line, '=')+1, "\n");
+       break;
+      }
+    }
+  if(line){
+    free(line);
+  }
+  if(fp){
+    fclose(fp);
+  }
+  return value_as_str;
+ }
+*/
 void ir_readin_data(char *file_path, char *variable, Return_Type expected_type, void *value){
   FILE *fp = fopen(file_path, "r");
   char * line = NULL;
@@ -310,7 +373,7 @@ int ir_readin_int(char *file_path, char *variable){
     char *value_as_str = strtok(strchr(line, '=')+1, "\n");
     return atoi(value_as_str);  
   free(line);    
-  fclose(fp);
+  ffclose(fp);
  
   }
 }
@@ -364,3 +427,107 @@ int ir_readin_int(char *file_path, char *variable){
       */
    
   //      printf("%s%s%","could not find ",variable ," is apparently missing ");
+
+/*
+Okay so this is not a comment as much it is a more of a venting personal rant for myself. Originally the desired functionality for the information_reader source file was to provide functionality for reading in hard-coded values stored in files. This worked for evey single data type EXCEPT for char pointers. no matter the approach, it would also culminate in some sort of low-level error. Both approaches of returning a malloc'd char pointer or pass by reference approach where you assign the result to a char point argument failed. Interestingly enough, going through gdb revealed that in the function call of ir_readin_char, the desired return value was as expected. but the INSTANT the function call retuned, it was no longer valid. Either it was garbage or an unaccessible pointer. After countless approaches, it was given up on and instead, since the values ARE valid in the function call, any work with the strings will be done inside the function calls below. Besides my instances were i would use ir_readin_char, the char in question is single use, before calling a free, so the functions save me from havign to make a a malloc, only to immediately free it afterwrads. Funnily enough, ir_readin_char works for assigning the character representation for ir_readin_creature, but nowwhere else. Rant over
+*/
+void ir_print_string(char *file_path, char *variable, WINDOW *screen, int x, int y, int printing_specification, Item_Holder *item_holder){
+    FILE *fp;
+    char *line = NULL;
+    size_t len = 0;
+    size_t read;
+
+    fp = fopen(file_path, "r");
+    if (fp == NULL)
+        exit(EXIT_FAILURE);
+
+   while ((read = getline(&line, &len, fp)) != -1) {
+     char *variable_pointer = strstr(line, variable);
+     if(variable_pointer != NULL){
+       char *value_as_str = strtok(strchr(line, '=')+1, "\n");
+       switch(printing_specification){
+       case PRINT_ITEM:
+	 if(item_holder->amount != 1){
+	    mvwprintw(screen, y,x, "%s%s%d", value_as_str , " X ", item_holder->amount);
+	 }
+	 else{
+	   mvwprintw(screen, y,x, "%s", value_as_str);  
+	 }
+	 break;
+       default:
+	 break;
+       }
+       mvprintw(screen,y,x,value_as_str);
+       break;
+     }
+    }
+
+   if(line)
+     free(line);
+   fclose(fp);
+ }
+
+unsigned long long ir_hash_string(char *file_path,char *variable, U_Hashtable *table){
+   FILE *fp;
+    char *line = NULL;
+    size_t len = 0;
+    size_t read;
+    unsigned long long hash;
+    fp = fopen(file_path, "r");
+    if (fp == NULL)
+        exit(EXIT_FAILURE);
+
+   while ((read = getline(&line, &len, fp)) != -1) {
+     char *variable_pointer = strstr(line, variable);
+     if(variable_pointer != NULL){
+       char *value_as_str = strtok(strchr(line, '=')+1, "\n");
+       hash = u_hash(1,table,value_as_str);
+       break;
+     }
+    }
+
+   if(line)
+     free(line);
+   fclose(fp);
+   return hash;
+ }
+
+int ir_compare_strings(char *first_file_path, char *second_file_path, char *variable){
+  FILE *fp;
+    char *line = NULL;
+    size_t len = 0;
+    size_t read;
+    char *first_string;
+    char *second_string;
+    fp = fopen(first_file_path, "r");
+    if (fp == NULL)
+        exit(EXIT_FAILURE);
+
+   while ((read = getline(&line, &len, fp)) != -1) {
+     char *variable_pointer = strstr(line, variable);
+     if(variable_pointer != NULL){
+       first_string = strtok(strchr(line, '=')+1, "\n");
+     }
+    }
+
+   if(line)
+     free(line);
+   fclose(fp);
+
+   fp = fopen(second_file_path, "r");
+    if (fp == NULL)
+        exit(EXIT_FAILURE);
+
+   while ((read = getline(&line, &len, fp)) != -1) {
+     char *variable_pointer = strstr(line, variable);
+     if(variable_pointer != NULL){
+       second_string = strtok(strchr(line, '=')+1, "\n");
+     }
+    }
+
+   if(line)
+     free(line);
+   fclose(fp);
+   return strcmp(first_string,second_string);
+   
+}

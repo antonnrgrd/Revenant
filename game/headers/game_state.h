@@ -21,6 +21,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "generic_macros.h"
 #include "information_reader.h"
 #define INIT_GAME_STATE(game_state)
+#define GS_PLACE_MERCHANT(hashtable)
 #define UPDATE_STATE(game_state) ll_iter_list_as_creature(game_state->player,game_state->current_zone,game_state->active_creatures);
 /*
 Unlike the other fields which we can initiaize from the inside of the creation of the Game_State struct, we have to create a Game_World struct, THEN pass it as an argument and assign it as the value

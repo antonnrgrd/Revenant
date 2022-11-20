@@ -31,6 +31,7 @@ void ll_prepend_node_creature(Linked_List *ll, Creature *c){
 
 Linked_List *ll_initialize_linked_list(){
   Linked_List *ll = malloc(sizeof(Linked_List));
+  ll->initial_node = NULL;
   return ll;
 }
 
