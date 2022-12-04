@@ -9,25 +9,6 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "information_reader.h" 
-struct Item *ir_readin_reagent(char *reagent_file_path){
-  struct Item *i = malloc(sizeof(Item));
-  Reagent *reagent = malloc(sizeof(Reagent));
-  reagent->id = ir_readin_int(reagent_file_path,"id");
-  i->weight = ir_readin_float(reagent_file_path,"weight");
-  i->item_specific_info = reagent;
-  i->id = reagent->id;
-  return i;
-}
-
-struct Item *ir_readin_consumable(char *consumable_file_path){
-  struct Item *i = malloc(sizeof(Item));
-  Consumable *consumable = malloc(sizeof(Consumable));
-  consumable->id = ir_readin_int(consumable_file_path,"id");
-  i->weight = ir_readin_float(consumable_file_path,"weight");
-  i->item_specific_info = consumable;
-  i->id = consumable->id;
-  return i;
-}
 Creature *ir_readin_creature(char *creature_file_path,unsigned x, unsigned y, Game_World *world, Creature *target){
    
   Creature *c = malloc(sizeof(Creature));
@@ -429,7 +410,7 @@ int ir_readin_int(char *file_path, char *variable){
   //      printf("%s%s%","could not find ",variable ," is apparently missing ");
 
 /*
-Okay so this is not a comment as much it is a more of a venting personal rant for myself. Originally the desired functionality for the information_reader source file was to provide functionality for reading in hard-coded values stored in files. This worked for evey single data type EXCEPT for char pointers. no matter the approach, it would also culminate in some sort of low-level error. Both approaches of returning a malloc'd char pointer or pass by reference approach where you assign the result to a char point argument failed. Interestingly enough, going through gdb revealed that in the function call of ir_readin_char, the desired return value was as expected. but the INSTANT the function call retuned, it was no longer valid. Either it was garbage or an unaccessible pointer. After countless approaches, it was given up on and instead, since the values ARE valid in the function call, any work with the strings will be done inside the function calls below. Besides my instances were i would use ir_readin_char, the char in question is single use, before calling a free, so the functions save me from havign to make a a malloc, only to immediately free it afterwrads. Funnily enough, ir_readin_char works for assigning the character representation for ir_readin_creature, but nowwhere else. Rant over
+Okay so this is not a comment as much it is a more of a venting personal rant for myself. Originally the desired functionality for the information_reader source file was to provide functionality for reading in hard-coded values stored in files. This worked for evey single data type EXCEPT for char pointers. no matter the approach, it would also culminate in some sort of low-level error. Both approaches of returning a malloc'd char pointer or pass by reference approach where you assign the result to a char point argument failed. Interestingly enough, going through gdb revealed that in the function call of ir_readin_char, the desired return value was as expected. but the INSTANT the function call retuned, it was no longer valid. Either it was garbage or an unaccessible pointer. After countless approaches, it was given up on and instead, since the values ARE valid in the function call, any work with the strings will be done inside the function calls below. Besides my instances were i would use ir_readin_char, the char in question is single use, before calling a free, so the functions save me from havign to make a a malloc, only to immediately free it afterwards. Funnily enough, ir_readin_char works for assigning the character representation for ir_readin_creature, but nowwhere else. Rant over
 */
 void ir_print_string(char *file_path, char *variable, WINDOW *screen, int x, int y, int printing_specification, Item_Holder *item_holder){
     FILE *fp;
@@ -472,11 +453,12 @@ unsigned long long ir_hash_string(char *file_path,char *variable, U_Hashtable *t
     char *line = NULL;
     size_t len = 0;
     size_t read;
+    /*
     unsigned long long hash;
     fp = fopen(file_path, "r");
     if (fp == NULL)
         exit(EXIT_FAILURE);
-
+    
    while ((read = getline(&line, &len, fp)) != -1) {
      char *variable_pointer = strstr(line, variable);
      if(variable_pointer != NULL){
@@ -489,14 +471,19 @@ unsigned long long ir_hash_string(char *file_path,char *variable, U_Hashtable *t
    if(line)
      free(line);
    fclose(fp);
-   return hash;
+    */
+    return 0; //hash;
  }
 
 int ir_compare_strings(char *first_file_path, char *second_file_path, char *variable){
   FILE *fp;
-    char *line = NULL;
+  FILE *fp_2;
+     char *line = NULL;
+     char *line_2 = NULL;
     size_t len = 0;
+    size_t len_2 = 0;
     size_t read;
+    size_t read_2;
     char *first_string;
     char *second_string;
     fp = fopen(first_file_path, "r");
@@ -514,20 +501,129 @@ int ir_compare_strings(char *first_file_path, char *second_file_path, char *vari
      free(line);
    fclose(fp);
 
-   fp = fopen(second_file_path, "r");
-    if (fp == NULL)
+   fp_2 = fopen(second_file_path, "r");
+    if (fp_2 == NULL)
         exit(EXIT_FAILURE);
 
-   while ((read = getline(&line, &len, fp)) != -1) {
-     char *variable_pointer = strstr(line, variable);
+   while ((read_2 = getline(&line_2, &len_2, fp_2)) != -1) {
+     char *variable_pointer = strstr(line_2, variable);
      if(variable_pointer != NULL){
        second_string = strtok(strchr(line, '=')+1, "\n");
      }
     }
 
-   if(line)
-     free(line);
+   if(line_2)
+     free(line_2);
    fclose(fp);
+   /*If the items are they same they have the same filepath and we cannot close the same file pointer twice
+NOTE: but is memory still allocated twice for the same file pointer in this case?
+Removing this bit of logic will definetly result in a hard to debug segfualt. This issue was discovered on 3/12/2022*/
+
+   /*
+     Another note to self. By the the lesson learnt from the comment above, you can infer if two items are the same simply by looking
+     at the item kind + item id, since they combined uniquely identify an item file path. This means this function is unecessarry, but this rewrite of code logic is for another time
+    */
+   if(strcmp(first_string,second_string) != 0){
+     fclose(fp_2);
+   }
+   
    return strcmp(first_string,second_string);
    
 }
+
+void ir_print_damage_to_creature(WINDOW *screen, Creature *c, Creature *target){
+  char *creature_name;
+  if(c->id == target->id){
+  char *file_path = NULL;
+  file_path = malloc(sizeof(char) * strlen(IR_COMMON_CREATURE_FILEPATH) + 5);
+  sprintf(file_path, "/usr/lib/revenant_files/creature_files/%d", c->id);
+  FILE *fp = fopen(file_path, "r");
+  char * line = NULL;
+  size_t len = 0;
+  while((getline(&line, &len, fp)) != -1){
+    char *variable_pointer = strstr(line, "name");
+    if(variable_pointer != NULL){
+      char *value_as_str = strtok(strchr(line, '=')+1, "\n");
+       break;
+      }
+    }
+  if(line){
+    free(line);
+  }
+  if(fp){
+    fclose(fp);
+  }
+  free(file_path);
+  }
+  else if(c->species != target->species && target->species == player_character){
+   char *file_path = NULL;
+  file_path = malloc(sizeof(char) * strlen(IR_COMMON_CREATURE_FILEPATH) + 5);
+  sprintf(file_path, "/usr/lib/revenant_files/creature_files/%d", c->id);
+  FILE *fp = fopen(file_path, "r");
+  char * line = NULL;
+  size_t len = 0;
+  while((getline(&line, &len, fp)) != -1){
+    char *variable_pointer = strstr(line, "name");
+    if(variable_pointer != NULL){
+      char *value_as_str = strtok(strchr(line, '=')+1, "\n");
+       break;
+      }
+    }
+  if(line){
+    free(line);
+  }
+  if(fp){
+    fclose(fp);
+  }
+  free(file_path);
+  mvwprintw(screen, DEFAULT_MAX_Y,0, "%s damages you for 10 damage", creature_name);  
+   } 
+  }
+  else{
+  char *file_path = NULL;
+  char *file_path_2 = NULL;
+  file_path = malloc(sizeof(char) * strlen(IR_COMMON_CREATURE_FILEPATH) + 5);
+  file_path_2 = malloc(sizeof(char) * strlen(IR_COMMON_CREATURE_FILEPATH) + 5);
+  sprintf(file_path, "/usr/lib/revenant_files/creature_files/%d", c->id);
+  sprintf(file_path_2, "/usr/lib/revenant_files/creature_files/%d", target->id);
+  FILE *fp = fopen(file_path, "r");
+  FILE *fp_2 = fopen(file_path_2, "r");
+  char * line = NULL;
+  char * line_2 = NULL;
+  size_t len = 0;
+  size_t len_2 = 0;
+  char *target_name;
+  while((getline(&line, &len, fp)) != -1){
+    char *variable_pointer = strstr(line, "name");
+    if(variable_pointer != NULL){
+      creature_name = strtok(strchr(line, '=')+1, "\n");
+       break;
+      }
+    }
+  if(line){
+    free(line);
+  }
+  if(fp){
+    fclose(fp);
+  }
+  free(file_path);
+
+  while((getline(&line_2, &len_2, fp_2)) != -1){
+    char *variable_pointer = strstr(line, "name");
+    if(variable_pointer != NULL){
+      target_name = strtok(strchr(line, '=')+1, "\n");
+       break;
+      }
+    }
+  if(line_2){
+    free(line2);
+  }
+  if(fp_2){
+    fclose(fp_2);
+  }
+  free(file_path_2);
+  mvwprintw(screen, DEFAULT_MAX_Y,0, "%s damages %s for 10 damage", creature_name, target_name);  
+  }
+}
+
+  

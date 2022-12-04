@@ -19,7 +19,7 @@ extern const char* material_name_modifier[]={" carbon fiber"," plastic"," clay",
 
 extern const char *quality_name_modifier[]={"Poor","Apprenticeship", "Journyman","Masterwork", "Grandmaster","Epic" ,"Legendary","Artefact"};
 
-extern const  char *armorslot_name_modifier[]={" helmet"," necklace"," ring"," chestwear"," leggings"," cape"};
+//extern const  char *equipment_kind_modifier[]={" helmet"," necklace"," ring"," chestwear"," leggings"," cape"};
 
 extern const char *mele_weapon_name_modifier[]={" sword"," mace"," axe"};
 
@@ -32,4 +32,4 @@ extern Variant_Modifier itemslot_modifiers[] = {{0.3, 1.1, 1.3},{0.1, 0.5, 0.3},
 
 extern const char *weapon_representations[] = {"{", "|"};
 
-extern const char *equipment_kind_modifier[] = {"helmet", "hood", "hat","mask", "boots", "shoes"};
+extern const char *equipment_type_modifier[] = {"helmet", "hat", "mask", "chestplate", "robe", "chainmail", "leggings", "trousers", "ring", "boots"};

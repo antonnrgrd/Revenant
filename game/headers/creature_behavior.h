@@ -5,11 +5,12 @@
 #include <math.h>
 #include "move_handler.h"
 #include "game_state_struct.h"
+#include "information_reader.h"
 #define UP 0
 #define DOWN 1
 #define LEFT 2
 #define RIGHT 3
-
+#define CB_DMG_TARGET()
 // We want to avoid looking out of bounds of the current zone we are in and so if the range we attempt to look in when looking for a path around an obstacle, we always make sure that we looking within min-max of the 
 #define MAX_Y_SEARCH_BOUNDARY(c,current_zone,offset)(((c->position.global_y + offset) > (current_zone->height-1)) ? ((current_zone->height-1) - c->position.global_y) : (offset))
 #define MIN_Y_SEARCH_BOUNDARY(c,current_zone,offset)(((c->position.global_y - offset) < (0)) ? (c->position.global_y) : (offset))

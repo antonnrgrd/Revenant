@@ -153,8 +153,6 @@ typedef struct Creature{
 }Creature;
 
 
-extern Animal_Definition animal_definitions[];
-extern Humanoid_Definition humanoid_definitions[];
 
 extern void (*c_free_creature_body_type[1])(Creature *c);
 void c_free_animal(Creature *c);
@@ -164,12 +162,9 @@ void c_free_animal(Creature *c);
 Creature *c_generate_creature(Creature_Kind kind, int id,unsigned x,unsigned y,Game_World *world,Creature *target);
 
 
-void c_initialize_animal_inf(Creature *c, int id);
 
 void c_initialize_humanoid_inf(Creature *c, int id);
 
-
-extern void (*creature_initializer[1])(Creature *c, int id);
 
 Color *c_copy_color(Color color);
 

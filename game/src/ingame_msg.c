@@ -23,10 +23,10 @@ static inline void msg_pickup_item(Game_State *game_state, Item_Holder *item_hol
 
   else if(item_holder->item->kind == armor){
     if(item_holder->amount != 1){
-      mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s%s%s%s%s%d%s", "Pickup ",quality_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->quality], material_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->material],equipment_kind_modifier[((struct Armor *)item_holder->item->item_specific_info)->armor_type], " amount: ", item_holder->amount, " ? [y/n/a/d]");
+      mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s%s%s%s%s%d%s", "Pickup ",quality_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->quality], material_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->material],equipment_type_modifier[((struct Armor *)item_holder->item->item_specific_info)->armor_type], " amount: ", item_holder->amount, " ? [y/n/a/d]");
     }
     else{
-      mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s%s%s%s%s", "Pickup ",quality_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->quality], material_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->material],equipment_kind_modifier[((struct Armor *)item_holder->item->item_specific_info)->armor_type], " ? [y/n/a/d]");
+      mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s%s%s%s%s", "Pickup ",quality_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->quality], material_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->material],equipment_type_modifier[((struct Armor *)item_holder->item->item_specific_info)->armor_type], " ? [y/n/a/d]");
     }
   }
     
@@ -59,10 +59,10 @@ static inline void msg_print_item(Item_Holder *item_holder, WINDOW *screen, int 
 
   else if(item_holder->item->kind == armor){
     if(item_holder->amount != 1){
-      mvwprintw(screen, y,x, "%s%s%s%s%d", quality_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->quality],material_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->material], armorslot_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->armor_type], " X ", item_holder->amount);
+      mvwprintw(screen, y,x, "%s%s%s%s%d", quality_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->quality],material_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->material], equipment_type_modifier[((struct Armor *)item_holder->item->item_specific_info)->armor_type], " X ", item_holder->amount);
     }
     else{
-      mvwprintw(screen, y,x, "%s%s%s", quality_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->quality],material_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->material],  armorslot_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->armor_type]);
+      mvwprintw(screen, y,x, "%s%s%s", quality_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->quality],material_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->material],  equipment_type_modifier[((struct Armor *)item_holder->item->item_specific_info)->armor_type]);
     }
   }
     

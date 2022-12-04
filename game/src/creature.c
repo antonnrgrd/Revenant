@@ -29,21 +29,6 @@ void c_cleanup_creature(Creature *c,Game_World *world ){
 
 void (*c_free_creature_body_type[1])(Creature *c) = {};
 
-
-void c_initialize_animal_inf(Creature *c,int id){
-  Animal_Definition d = animal_definitions[id];
-  COPY_ATTRIBUTE_INFORMATION(c->attributes, d.attributes);
-  c->weight = d.weight;
-  c->height = d.height;
-  c->limb_count = d.limb_count;
-  c->limbs = malloc(sizeof(Limb) * c->limb_count);
-  memcpy(c->limbs, d.limbs, (sizeof(Limb) * c->limb_count));
-  c->representation = malloc(sizeof(char));
-  // We use strcpy instead of assigning the 0th index to be it's char represenation because for some reason, it started printing garbage when using that method to assign its creaturetype representation
-  //,explaining the difference in how the ascii represenation for the player and creature is handled
-  strcpy(c->representation, "a");
-}
-
 void c_initialize_humanoid_inf(Creature *c, int id){
   //  Humanoid_Definition d = humanoid_definitions[id];
   //  c->weight = d.weight;
@@ -54,7 +39,7 @@ void c_initialize_humanoid_inf(Creature *c, int id){
 
 Creature *c_generate_creature(Creature_Kind kind, int id,unsigned x,unsigned y,Game_World *world,Creature *target){
   Creature *c = malloc(sizeof(Creature));
-  creature_initializer[kind](c,id);
+
   c->position.global_x=x;
   c->position.global_y=y;
   c->curr_ap = 1;
@@ -175,23 +160,10 @@ void c_compute_relative_coords(Creature *creature, Creature *player){
 }
 
 
-extern  Animal_Definition animal_definitions[] = {{"Short-faced bear","A large brown bear. It has a disproportionately short face",900,3.4,1.5 , {12,12,12,12,12,12,12}, {COLOR_RED, 0,0,0},6,  {{{head,healthy,100, 100},{torso,healthy,100, 100},{arm,healthy,100, 100},{arm,healthy,100, 100},{leg,healthy,100, 100},{leg,healthy,100, 100},{tail,healthy,100, 100}}},roaming}};
-
-
-						  
 
 //extern Humanoid_Definition humanoid_definitions[] = {{"Bandit", "A bandit looking to steal rob and murder you", 65,1.65, iron,iron,iron, leather, leather, steel, one_hand, sword,steel, leather, {15,15,15,15,15,15,15}, {head, healthy, 14, 15},{torso, healthy, 18, 21},{arm, healthy, 14, 15} , {arm, healthy, 14, 15}, {leg, healthy, 14, 15}, {leg, healthy, 14, 15},{noone, healthy, 14, 15},{noone, healthy, 14, 15},{noone, healthy, 14, 15}, medium, weaponry, axe}};
 
 
-void (*creature_initializer[1])(Creature *c, int id) = { c_initialize_animal_inf};
 
-char *c_retrieve_creature_name(Creature *c){
-  switch(c->species){
-  case animal:
-    return animal_definitions[c->id].name;
-  default:
-    return "Undef";
-  }
-}
 
 

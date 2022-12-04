@@ -18,17 +18,19 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include <ncurses.h>
 #include "gameinfo.h"
 #include "rng.h"
+#include "item.h"
+#define GENERATE_CONSUMABLE 1
+#define GENERATE_REAGENT 2
+#define GENERATE_ARMOR 3
+#define GENERATE_WEAPON 4
+#define PLACE_MERCHANT(game_state,merchant, global_x,global_y)(game_state)
 extern const char *alphabet;
 
 Game_World *g_generate_game_world(int width, int height);
 
-U_Hastable *g_generate_merchant_inventory(int min_amount, int max_amount, Mersienne_Twister *twister){
-  int num_items_to_be_generated = GEN_VALUE_RANGE(min_amount, max_amount+1);
-  int current_generated = 0;
-  /*This is admittedly a guess at how big the buffer will need to be to hold any possible filepath*/
-  char *bfr = malloc(sizeof(char) * 100);
-  
-}
+Item_Holder *g_generate_item(Mersienne_Twister *twister); 
+
+U_Hashtable *g_generate_merchant_inventory(int min_amount, int max_amount, Mersienne_Twister *twister);
 
 void g_generate_merchant();
 #endif

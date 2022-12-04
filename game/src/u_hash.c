@@ -33,27 +33,20 @@ U_Hashtable *u_initialize_hashtable(int initial_size,Mersienne_Twister *twister)
  
 void u_add_item(Item_Holder *item, int amount,U_Hashtable *table){  
   unsigned long long index = U_HASH_ITEM(item,table);
-
-
-
-  //  if(((struct Weapon *)item->item->item_specific_info)->material == bronze){
-  // printf("%s%llu%s","bronze: " ,index, " ");
-  //  }
-  //else{
-  //printf("%llu%s", index, " ");
-  // }
-
     //Item already present in inventory 
 //Maybe delete item at this point, maybe not since we might not use it after adding to inventory??
      
   //It's very important that we put parenthesis around the two last conditions because otherwise the logical short circuiting of the first statement won't kick into effect for
   // some reason, thus checking the second condition, potentially accessing a null pointer value, which woud cause a segmentation fault
   //Zero, in the case of strcmp means "True"
+
+  
   if(table->entries[index] != NULL && (table->entries[index]->item_holder->item->kind == item->item->kind && (HAS_SAME_NAME(table->entries[index]->item_holder, item)) == 0)){
      table->entries[index]->item_holder->amount += amount;    
   }
+
   else if(table->entries[index] == NULL){
-    table->entries[index] = malloc(sizeof(Entry));
+     table->entries[index] = malloc(sizeof(Entry));
      table->entries[index]->item_holder = item;
      table->entries[index]->next_entry = NULL;
      table->item_count++;
@@ -94,7 +87,7 @@ Item_Weight u_remove_item(Item_Holder *item, int amount, U_Hashtable *table, int
   Item_Weight item_weight;
   // If the item we are looking for is at the top-level, then assert if we are removing all occurences of the items and act correspondingly
   // Unsure why but we have to wrap the HAS_SAME_NAME macro in parenthesis in this case, but not for item insert for it to actually return a value 
-  if(table->entries[index] != NULL && (table->entries[index]->item_holder->item->kind == item->item->kind && (HAS_SAME_NAME(table->entries[index]->item_holder, item)) == 0)){
+  if(table->entries[index] != NULL && (table->entries[index]->item_holder->item->kind == item->item->kind  && (HAS_SAME_NAME(table->entries[index]->item_holder, item)) == 0)){
     //    printf("%s", " first case ");
     if(amount >= table->entries[index]->item_holder->amount){
       if(free_item_if_removed == YES){

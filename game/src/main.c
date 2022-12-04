@@ -35,23 +35,22 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "rng.h"
 #include "information_reader.h"
 int main(int argc, char *argv[]){
-
-  // Item *v = ir_readin_reagent("/usr/lib/revenant_files/item_files/reagent_files/1");
-  // printf("%s", I_GET_ITEMNAME_NONEQUIPPABLE(v));
-  // printf("%s", ir_readin_char("/usr/lib/revenant_files/item_files/reagent_files/1", "name"));
  
-  
+ 
+  /*
  initscr();
  start_color();  
- Game_World *game_world = g_generate_game_world(1000,1000);
- Game_State *gs =  gs_create_game_state(game_world);
+  */
+  // Game_World *game_world = g_generate_game_world(1000,1000);
+  //Game_State *gs =  gs_create_game_state(game_world);
+  Mersienne_Twister *twister =rng_generate_twister();
+ U_Hashtable *merchant = g_generate_merchant_inventory(100,100,twister);
  
- 
-  
+ /*
 Item *weapon = i_make_mele_weapon(epic,bronze,one_hand,sword);
  Item *weapon_2 = i_make_mele_weapon(epic,steel,one_hand,sword); 
- Item *armor = i_make_armor(poor,mithril,head_slot,helmet);
- Item *armor_2 = i_make_armor(adequate,steel,feet_slot,boots);
+ Item *armor = i_make_armor(poor,mithril,helmet);
+ Item *armor_2 = i_make_armor(adequate,steel,boots);
  Item_Holder *i = malloc(sizeof(Item_Holder));
  i->item = weapon;
  i->amount = 1;
@@ -95,7 +94,7 @@ Item *weapon = i_make_mele_weapon(epic,bronze,one_hand,sword);
   
     game_loop(gs);
   endwin();
- 
+ */
 }
   
  

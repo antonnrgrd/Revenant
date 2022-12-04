@@ -15,13 +15,21 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "modifier.h"
 #include <math.h>
  
-  
-Armor *i_gen_armor(Quality_Level q, Material material, Worn_in w,Equipment_Kind armor_type){
+Armor *i_gen_armor(Quality_Level q, Material material,Equipment_Kind armor_type){
   Armor *arm = malloc(sizeof(Armor));
   arm->quality =q;
   arm->material = material;
-  arm->slot = w;
   arm->armor_type = armor_type;
+  if(armor_type >= helmet && armor_type <= mask){
+    arm->slot = head_slot;
+  }
+  else if(armor_type >= chestplate && armor_type <= chainmail){
+    arm->slot = torso_slot;
+  }
+
+  else if(armor_type == boots){
+    arm->slot = feet_slot;
+  }
   return arm;
 }
 
@@ -69,14 +77,6 @@ char *i_quality_name(Quality_Level q){
   return s_create_text_const(quality_name_modifier[q]);
 }
 
-char *i_armor_name(Quality_Level q, Material material, Worn_in w){
-  char *qual =s_create_text_const(quality_name_modifier[q]);
-  char *mat = s_create_text_const(material_name_modifier[material]);
-  char *slot = s_create_text_const(armorslot_name_modifier[w]);
-  char *temp = s_merge_text(qual,mat);
-  char *name = s_merge_text(temp,slot);
-  return name;
-}
 char *i_mele_weapon_name(Quality_Level q, Material material, Variant v, Weapon_Kind kind){
   char *qual =s_create_text_const(quality_name_modifier[q]);
   char *mat = s_create_text_const(material_name_modifier[material]);
@@ -90,7 +90,7 @@ char *i_mele_weapon_name(Quality_Level q, Material material, Variant v, Weapon_K
   return name;
 }
 
-Item *i_make_armor(Quality_Level q, Material material, Worn_in w,Equipment_Kind armor_type){
+Item *i_make_armor(Quality_Level q, Material material,Equipment_Kind armor_type){
   Item *i = malloc(sizeof(Item));
   /*
   Material_Modifier m = material_modifiers[material];
@@ -103,7 +103,7 @@ Item *i_make_armor(Quality_Level q, Material material, Worn_in w,Equipment_Kind 
   i->weight = m.base_weight_modifier * v.weight_modifier;
   i->item_specific_info = a;
   */
-  i->item_specific_info = i_gen_armor(q,material,w,armor_type);
+  i->item_specific_info = i_gen_armor(q,material,armor_type);
   i->kind = armor;
   
   
