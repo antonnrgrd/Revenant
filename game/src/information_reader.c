@@ -25,10 +25,12 @@ Creature *ir_readin_creature(char *creature_file_path,unsigned x, unsigned y, Ga
   c->has_moved_around_horizontally = 0;
   c->marked_for_deletion = NO;
  
-  ir_readin_char(creature_file_path, "representation", c->representation);
-  // c->representation = malloc(sizeof(char));
-  //strcpy(c->representation, representation);
-  //free(representation);
+  /* Oh fuck this stupid src file and its buggy crap, see the comment below on readin_char and all the bullshit i went through to
+get it to work*/
+  c->representation = ir_readin_char_nonvoid(creature_file_path, "representation");
+  
+   //strcpy(c->representation, representation);
+   //free(representation);
   c->species=ir_readin_int(creature_file_path, "species");
   c->id=ir_readin_int(creature_file_path, "id");
   c->limb_count = ir_readin_int(creature_file_path, "limb_count");
@@ -37,30 +39,21 @@ Creature *ir_readin_creature(char *creature_file_path,unsigned x, unsigned y, Ga
   c->current_carry = 0;
   c->max_health = ir_readin_int(creature_file_path,"max_health");
   c->curr_health = c->max_health;
+  printf(" curr health %d ");
   c->height = ir_readin_float(creature_file_path, "height");
   c->preferred_attack_type = ir_readin_int(creature_file_path,"preferred_attack_type");
   c->limbs = ir_readin_struct_limb(creature_file_path,"limbs");
   ir_readin_struct_attributes(creature_file_path,"attributes",c->attributes);
-  /*
-  
-  
-  
- 
- 
-  
-  
-  
-  
-  */
     /*
   
   
 
   c->attributes = *(Attributes *)ir_readin_data(creature_file,"attributes",struct_attributes);
   
-*/
+e*/
+   
   world->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];  
-  
+  c->target=target;
   return c;
 }
 
@@ -161,44 +154,43 @@ char *yield_char(){
 It would work on its own, but trying to use that pointer would cause segmentation fault. inspecting with GDB
 revealed that the point somehow ceased to be valid the instant the function returned the point. It was not NULL straight out invalid
 THe fact that the approach works for every other data type baffles me. But for chars, we are forced to make do with a pass-by-reference
-approach for reading in a char value*/
-void ir_readin_char(char *file_path, char *variable,char *bfr){
-    FILE *fp;
-    char *line = NULL;
-    size_t len = 0;
-    size_t read;
+a*pproach for reading in a char value*/
 
-    //fp = fopen("/usr/lib/revenant_files/item_files/reagent_files/0", "r");
-    fp = fopen(file_path, "r");
-    if (fp == NULL)
-        exit(EXIT_FAILURE);
-
-   while ((read = getline(&line, &len, fp)) != -1) {
-     char *variable_pointer = strstr(line, variable);
-     if(variable_pointer != NULL){
-       char *value_as_str = strtok(strchr(line, '=')+1, "\n");
-       bfr = malloc(sizeof(char) * strlen(value_as_str) +5);
-       strcpy(bfr , value_as_str);
-       break;
-     }
-    }
-
-   if(line)
-     free(line);
-   fclose(fp);
-  /*
-  FILE *fp = fopen(file_path, "r");
-  if(fp == NULL){
+void ir_readin_char(char *file_path, char *variable, char *bfr) {
+  FILE *fp;
+  char *line = NULL;
+  size_t len = 0;
+  size_t read;
+  fp = fopen(file_path, "r");
+  if (fp == NULL)
     exit(EXIT_FAILURE);
+
+  while ((read = getline(&line, &len, fp)) != -1) {
+    char *variable_pointer = strstr(line, variable);
+    if (variable_pointer != NULL) {
+      char *value_as_str = strtok(strchr(line, '=') + 1, "\n");
+      bfr = malloc(sizeof(char) * strlen(value_as_str) + 1);
+      strcpy(bfr, value_as_str);
+      break;
+    }
   }
+
+  if (line)
+    free(line);
+  fclose(fp);
+}
+
+
+char *ir_readin_char_nonvoid(char *file_path, char *variable){
+  FILE *fp = fopen(file_path, "r");
   char * line = NULL;
   size_t len = 0;
   char *bfr = NULL;
   while((getline(&line, &len, fp)) != -1){
-    
+    char *variable_pointer = strstr(line, variable);
     if(variable_pointer != NULL){
       char *value_as_str = strtok(strchr(line, '=')+1, "\n");
-      bfr = malloc(sizeof(char) * (strlen(value_as_str) +1 ));
+      bfr = malloc(sizeof(char) * strlen(value_as_str) + 1);
       strcpy(bfr,value_as_str);
        break;
       }
@@ -209,32 +201,9 @@ void ir_readin_char(char *file_path, char *variable,char *bfr){
   if(fp){
     fclose(fp);
   }
-       return bfr;
-  */
+  return  bfr;
  }
 
-/*
-char *ir_readin_char(char *file_path, char *variable){
-  FILE *fp = fopen(file_path, "r");
-  char * line = NULL;
-  size_t len = 0;
-  char *value_as_str;
-  while((getline(&line, &len, fp)) != -1){
-    char *variable_pointer = strstr(line, variable);
-    if(variable_pointer != NULL){
-      value_as_str = strtok(strchr(line, '=')+1, "\n");
-       break;
-      }
-    }
-  if(line){
-    free(line);
-  }
-  if(fp){
-    fclose(fp);
-  }
-  return value_as_str;
- }
-*/
 void ir_readin_data(char *file_path, char *variable, Return_Type expected_type, void *value){
   FILE *fp = fopen(file_path, "r");
   char * line = NULL;
@@ -530,10 +499,10 @@ Removing this bit of logic will definetly result in a hard to debug segfualt. Th
    return strcmp(first_string,second_string);
    
 }
-
-void ir_print_damage_to_creature(WINDOW *screen, Creature *c, Creature *target){
+//game_state->logs[MAIN_SCREEN]
+void ir_print_damage_to_creature(Game_State *gs, Creature *c, Creature *target){
   char *creature_name;
-  if(c->id == target->id){
+  if(c->id == target->id && c->species == target->species ){
   char *file_path = NULL;
   file_path = malloc(sizeof(char) * strlen(IR_COMMON_CREATURE_FILEPATH) + 5);
   sprintf(file_path, "/usr/lib/revenant_files/creature_files/%d", c->id);
@@ -543,7 +512,7 @@ void ir_print_damage_to_creature(WINDOW *screen, Creature *c, Creature *target){
   while((getline(&line, &len, fp)) != -1){
     char *variable_pointer = strstr(line, "name");
     if(variable_pointer != NULL){
-      char *value_as_str = strtok(strchr(line, '=')+1, "\n");
+      creature_name = strtok(strchr(line, '=')+1, "\n");
        break;
       }
     }
@@ -554,8 +523,7 @@ void ir_print_damage_to_creature(WINDOW *screen, Creature *c, Creature *target){
     fclose(fp);
   }
   free(file_path);
-  }
-  else if(c->species != target->species && target->species == player_character){
+  } else if(c->species != target->species && target->species == player_character){
    char *file_path = NULL;
   file_path = malloc(sizeof(char) * strlen(IR_COMMON_CREATURE_FILEPATH) + 5);
   sprintf(file_path, "/usr/lib/revenant_files/creature_files/%d", c->id);
@@ -565,7 +533,7 @@ void ir_print_damage_to_creature(WINDOW *screen, Creature *c, Creature *target){
   while((getline(&line, &len, fp)) != -1){
     char *variable_pointer = strstr(line, "name");
     if(variable_pointer != NULL){
-      char *value_as_str = strtok(strchr(line, '=')+1, "\n");
+      creature_name = strtok(strchr(line, '=')+1, "\n");
        break;
       }
     }
@@ -576,10 +544,31 @@ void ir_print_damage_to_creature(WINDOW *screen, Creature *c, Creature *target){
     fclose(fp);
   }
   free(file_path);
-  mvwprintw(screen, DEFAULT_MAX_Y,0, "%s damages you for 10 damage", creature_name);  
-   } 
+  mvwprintw(gs->logs[MAIN_SCREEN], DEFAULT_MAX_Y,0, "%s damages you for 10 damage", creature_name);
+   } else if(c->species == player_character){
+   char *file_path = NULL;
+  file_path = malloc(sizeof(char) * strlen(IR_COMMON_CREATURE_FILEPATH) + 5);
+  sprintf(file_path, "/usr/lib/revenant_files/creature_files/%d", target->id);
+  FILE *fp = fopen(file_path, "r");
+  char * line = NULL;
+  size_t len = 0;
+  while((getline(&line, &len, fp)) != -1){
+    char *variable_pointer = strstr(line, "name");
+    if(variable_pointer != NULL){
+      creature_name = strtok(strchr(line, '=')+1, "\n");
+      target->curr_health -= 10;
+       mvwprintw(gs->logs[MAIN_SCREEN], DEFAULT_MAX_Y,0, "You damage %s for 10 damage", creature_name);
+       break;
+      }
+    }
+  if(line){
+    free(line);
   }
-  else{
+  if(fp){
+    fclose(fp);
+  }
+  free(file_path);
+   } else{
   char *file_path = NULL;
   char *file_path_2 = NULL;
   file_path = malloc(sizeof(char) * strlen(IR_COMMON_CREATURE_FILEPATH) + 5);
@@ -616,14 +605,16 @@ void ir_print_damage_to_creature(WINDOW *screen, Creature *c, Creature *target){
       }
     }
   if(line_2){
-    free(line2);
+    free(line_2);
   }
   if(fp_2){
     fclose(fp_2);
   }
   free(file_path_2);
-  mvwprintw(screen, DEFAULT_MAX_Y,0, "%s damages %s for 10 damage", creature_name, target_name);  
+  mvwprintw(gs->logs[MAIN_SCREEN], DEFAULT_MAX_Y,0, "%s damages %s for 10 damage", creature_name, target_name);  
   }
 }
+  
+
 
   

@@ -89,20 +89,23 @@ Game_State *gs_create_game_state(Game_World *game_world){
  
 
   //Creature *opponent = c_generate_creature(animal,0,20,4, game_world,state->player);
-  // Creature *opponent = ir_readin_creature("/usr/lib/revenant_files/creature_files/0",20,4,game_world,state->player); 
+    Creature *opponent = ir_readin_creature("/usr/lib/revenant_files/creature_files/0",20,4,game_world,state->player);
+    //    Creature *opponent_2 = ir_readin_creature("/usr/lib/revenant_files/creature_files/0",20,5,game_world,state->player); 
   /*
   Creature *opponent2 = c_generate_creature(animal,0,21,4, game_world,state->player);
   Creature *opponent3 = c_generate_creature(animal,0,22,4, game_world,state->player);
   Creature *opponent4 = c_generate_creature(animal,0,23,4, game_world,state->player);
   */
-  // opponent->behavior = idle;
+    opponent->behavior = attacking;
+    //   opponent_2->behavior = attacking;
   /*
   opponent2->behavior = pursuing;
   opponent3->behavior = pursuing;
   opponent4->behavior = pursuing;
   */
   Linked_List *ll = ll_initialize_linked_list();
-  // ll_prepend_node_creature(ll,opponent);
+   ll_prepend_node_creature(ll,opponent);
+   // ll_prepend_node_creature(ll,opponent_2);
   /*
   ll_prepend_node_creature(ll,opponent2);
   

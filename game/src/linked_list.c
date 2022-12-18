@@ -14,6 +14,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "creature.h"
 void ll_prepend_node_creature(Linked_List *ll, Creature *c){
   Node *node = malloc(sizeof(node));
+  node->next = NULL;
   node->value = c;
   if(ll->initial_node == NULL){
     ll->initial_node = node;

@@ -173,6 +173,9 @@ void any_null(Item_Holder **item_list){
          
 int msg_show_log(Game_State *gs, int panel_index){
   top_panel(gs->panels[panel_index]);
+  /*MSG_CLEAR_SCREEN is not a suitable macro as it additionally clears the log screen entirely, so we will have to make
+do with just redrawing the box around the log*/
+  box(gs->logs[EVENT_LOG],0,0);
   // We defer the refreshing of screen contents of the panels until
   // we actually want to see them, because if we refresh them immedately upon manipulating it conflicts
   //with the contents of the main screen. update_panels + doupdate does this for us so no need to call wfrefresh
@@ -196,14 +199,11 @@ int msg_find_log_position(Game_State *gs){
     //The position at which we check the screen contents could potentially fail
     //Due to the fact that the last position of the message log hhas 2 digits (see the update event log function for more info)
       mvwinnstr(gs->logs[EVENT_LOG], i,12,line_contents,MAX_MSG_LENGTH-1);
-      //printf("%d%s", line_contents[0], " ");
-      //      printf("%d",s_only_whitespace(line_contents));
       if(s_only_whitespace(line_contents) == 1){
 	free(line_contents);
 	return i;
       }
   }
-  //printf("%s",line_contents);  
   free(line_contents);
   return -1;
 }
@@ -234,7 +234,6 @@ void msg_update_event_log(Game_State *gs){
   char *msg_bfr = malloc(MAX_MSG_LENGTH * sizeof(char));
   mvwinnstr(gs->logs[MAIN_SCREEN], DEFAULT_MAX_Y,0,msg_bfr,MAX_MSG_LENGTH-1);
   int free_log_position = msg_find_log_position(gs);
-  // printf("%s%s%d%s",msg_bfr, " ", free_log_position, " ");
   if(free_log_position != -1){
     if(free_log_position < 12){
       UPDATE_ADD_TO_LOG(gs,position,msg_bfr,12);

@@ -136,7 +136,7 @@ mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s%s%s%d%s", "Pickup ", i_derive_i
     }
     break;
   case 'n':
-    move(0,0);
+   move(0,0);
     clrtoeol();
     move(c->position.local_y,c->position.local_x);
     break;
@@ -163,29 +163,24 @@ mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s%s%s%d%s", "Pickup ", i_derive_i
 
 
 int move_response_attack_target(int global_x, int global_y,int local_x, int local_y, Creature *c,Game_State *game_state){
-
-  //((rand() % (21 - 1 + 1) + 1)) + c->attributes.dexterity >= ((Creature *)current_zone->tiles[global_y][global_x].foe)->attributes.dexterity   
+  
+  
   if  (1){
-    //printf("%d", ((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->curr_health);
-    ((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->curr_health -= 10;
     CLEAR_MSG_LINE();
-    //mvwprintw(game_state->logs[MAIN_SCREEN],DEFAULT_MAX_Y,0, "%s%s%s%d%s", "You damage ", c_retrieve_creature_name((Creature *)game_state->current_zone->tiles[global_y][global_x].foe) , " for ", 10, " damage");
- 
-    //mvwprintw(game_state->logs[MAIN_SCREEN],DEFAULT_MAX_Y,0, "%s%s%s%d%s", "You damage ", (char *)ptr , " for ", 10, " damage");
-    MSG_PRINT_DAMAGE_CREATURE(game_state->logs[MAIN_SCREEN],((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->id,10);
-      msg_update_event_log(game_state);
+      ir_print_damage_to_creature(game_state, game_state->player, ((Creature *)game_state->current_zone->tiles[global_y][global_x].foe));
+    msg_update_event_log(game_state);
       move(c->position.local_y,c->position.local_x);
-    if (((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->curr_health <= 0){      
-           mvwprintw(game_state->logs[MAIN_SCREEN],((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->position.local_y,((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->position.local_x,((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->standing_on);
-	     game_state->current_zone->tiles[global_y][global_x].content[0] = ((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->standing_on[0];
+     
+    if (((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->curr_health <= 0){
+      mvwprintw(game_state->logs[MAIN_SCREEN],game_state,((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->position.local_y,((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->position.local_x,((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->standing_on);
+           game_state->current_zone->tiles[global_y][global_x].content[0] = ((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->standing_on[0];
 	   // c_cleanup_creature(c,game_state->current_zone);
       
       // If a creature runs out of health, mark it for deletion s.t when we next go through all the creatures that are to act, we see that it is dead and can therefore be free'd and removed from the list of active creatures  
-	         ((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->marked_for_deletion = YES;      
+	         ((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->marked_for_deletion = YES;
     }
   }
   c->curr_ap--;
-  ;
   if(c->curr_ap == 0){
     return END_TURN;
   }

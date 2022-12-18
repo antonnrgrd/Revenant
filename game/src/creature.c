@@ -73,9 +73,10 @@ Creature *c_random_player(int x, int y,Game_World *world, Mersienne_Twister *twi
   c->standing_on = malloc(sizeof(char));
   c->weight = 80.5;
   c->height = 1.80;
-  c->species = humanoid;
+  c->species = player_character;
   c->max_carry = 5000.0;
   c->current_carry = 0.0;
+  c->curr_health = 5000;
   c->disposition = undefined;
   c->position.global_x = x;
   c->position.global_y = y;
@@ -113,6 +114,7 @@ Creature *c_random_player(int x, int y,Game_World *world, Mersienne_Twister *twi
   player_info->equipment_list = malloc(sizeof(Item *) * NUM_EQUIPMENT_SLOTS);
   player_info->inventory = inventory;
   c->additional_info = player_info;
+  c->marked_for_deletion = NO;
   return c;
 
 }

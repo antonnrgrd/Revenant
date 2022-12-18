@@ -17,7 +17,7 @@ void game_loop(Game_State *game_state){
   wrefresh(game_state->logs[MAIN_SCREEN]);
   while(1){
     while(player_turn == CONTINUE_TURN ){
-    wrefresh(game_state->logs[MAIN_SCREEN]);
+    wrefresh(game_state->logs[MAIN_SCREEN]);  
     ch = getch();
     switch(ch){
     case KEY_UP:
