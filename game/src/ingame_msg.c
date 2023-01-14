@@ -1,5 +1,5 @@
 /*This file is part of Revenant.
-65;6800;1cRevenant is free software: you can redistribute it and/or modify
+Revenant is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 Revenant  is distributed in the hope that it will be useful,
@@ -9,69 +9,6 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "ingame_msg.h"
-#include "game_state.h"
-
-static inline void msg_pickup_item(Game_State *game_state, Item_Holder *item_holder){
-  if(item_holder->item->kind == weapon){
-    if(item_holder->amount != 1){
-      mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s%s%s%s%s%s%d%s", "Pickup ",quality_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->quality], material_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->material],handed_modifier[((struct Weapon *)item_holder->item->item_specific_info)->variant],mele_weapon_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->kind] , " amount: ", item_holder->amount, " ? [y/n/a/d]");
-  }
-    else{
-      mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s%s%s%s%s%s", "Pickup ",quality_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->quality], material_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->material],handed_modifier[((struct Weapon *)item_holder->item->item_specific_info)->variant],mele_weapon_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->kind] , " ? [y/n/a/d]");
-    }
-  }
-
-  else if(item_holder->item->kind == armor){
-    if(item_holder->amount != 1){
-      mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s%s%s%s%s%d%s", "Pickup ",quality_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->quality], material_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->material],equipment_type_modifier[((struct Armor *)item_holder->item->item_specific_info)->armor_type], " amount: ", item_holder->amount, " ? [y/n/a/d]");
-    }
-    else{
-      mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s%s%s%s%s", "Pickup ",quality_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->quality], material_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->material],equipment_type_modifier[((struct Armor *)item_holder->item->item_specific_info)->armor_type], " ? [y/n/a/d]");
-    }
-  }
-    
-  else{
-    char *name;
-    i_derive_item_name(item_holder->item,name);
-    if (item_holder->amount != 1){
-      mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s%s%s%d%s", "Pickup ", name , " amount: ", item_holder->amount, " ? [y/n/a/d]"); free(name);
-    }
-      else{
-	mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s%s%s", "Pickup ", name , " ? [y/n/a/d]"); free(name);
-	  }
-      free(name);
-    }
-}
-
-static inline void msg_print_item(Item_Holder *item_holder, WINDOW *screen, int x, int y){
-  if(item_holder->item == NULL){
-    mvwprintw(screen, y,x,"None");
-  }
-  
-  else if(item_holder->item->kind == weapon){
-    if(item_holder->amount != 1){
-      mvwprintw(screen, y,x, "%s%s%s%s%s%d", quality_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->quality],handed_modifier[((struct Weapon *)item_holder->item->item_specific_info)->variant],material_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->material], mele_weapon_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->kind], " X ", item_holder->amount);
-  }
-    else{
-      mvwprintw(screen, y,x, "%s%s%s%s", quality_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->quality],handed_modifier[((struct Weapon *)item_holder->item->item_specific_info)->variant],material_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->material], mele_weapon_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->kind]);
-    }
-  }
-
-  else if(item_holder->item->kind == armor){
-    if(item_holder->amount != 1){
-      mvwprintw(screen, y,x, "%s%s%s%s%d", quality_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->quality],material_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->material], equipment_type_modifier[((struct Armor *)item_holder->item->item_specific_info)->armor_type], " X ", item_holder->amount);
-    }
-    else{
-      mvwprintw(screen, y,x, "%s%s%s", quality_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->quality],material_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->material],  equipment_type_modifier[((struct Armor *)item_holder->item->item_specific_info)->armor_type]);
-    }
-  }
-    
-  else{
-    char *file_path = I_GET_FILEPATH(item_holder->item);
-      ir_print_string(file_path, "name", screen,x,y,PRINT_ITEM, item_holder);
-      free(file_path);
-    }
-}
 
 int msg_trading_session(int global_x, int global_y,Game_State *gs){
   int tmp_amount_holder;
@@ -83,14 +20,14 @@ int msg_trading_session(int global_x, int global_y,Game_State *gs){
   INIT_INVENTORY_LOG(gs->logs[TRADING_LOG], "Merchant\'s wares");
   for(int i = 0; i < ((U_Hashtable * )gs->current_zone->tiles[global_y][global_x].foe)->size; i++ ){
     if(((U_Hashtable * )gs->current_zone->tiles[global_y][global_x].foe)->entries[i] != NULL){
-      Entry  *current_entry = ((U_Hashtable * )gs->player->additional_info)->entries[i];
+      Entry  *current_entry = ((U_Hashtable * )gs->current_zone->tiles[global_y][global_x].foe)->entries[i];
       while(current_entry != NULL){
 	msg_print_item(current_entry->item_holder,gs->logs[TRADING_LOG],5,column_position);
         current_entry = current_entry->next_entry;
 	column_position++;
       }
     }
-  }  
+  }
   top_panel(gs->panels[TRADING_LOG]);
   UPDATE_PANEL_INFO();
   int ch;
@@ -108,7 +45,7 @@ int msg_trading_session(int global_x, int global_y,Game_State *gs){
       char amount_bfr[5];
       int bfr_index = 0;
       MSG_CLEAR_SCREEN(gs->logs[NOTIFICATION_LOG]);
-      mvprintw(gs->logs[NOTIFICATION_LOG],5,5, "Enter amount you want to buy");
+      mvprintw(gs->logs[NOTIFICATION_LOG],5,15, "Enter amount you want to buy");
       top_panel(gs->panels[NOTIFICATION_LOG]);
       UPDATE_PANEL_INFO();
       while(1){
@@ -161,6 +98,70 @@ int msg_trading_session(int global_x, int global_y,Game_State *gs){
       msg_display_inventory(gs,CONTEXT_SELLING, ((U_Hashtable * )gs->current_zone->tiles[global_y][global_x].foe));
     }
   }
+}
+ 
+
+
+static inline void msg_pickup_item(Game_State *game_state, Item_Holder *item_holder){
+  if(item_holder->item->kind == weapon){
+    if(item_holder->amount != 1){
+      mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s%s%s%s%s%s%d%s", "Pickup ",quality_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->quality], material_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->material],handed_modifier[((struct Weapon *)item_holder->item->item_specific_info)->variant],mele_weapon_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->kind] , " amount: ", item_holder->amount, " ? [y/n/a/d]");
+  }
+    else{
+      mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s%s%s%s%s%s", "Pickup ",quality_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->quality], material_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->material],handed_modifier[((struct Weapon *)item_holder->item->item_specific_info)->variant],mele_weapon_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->kind] , " ? [y/n/a/d]");
+    }
+  }
+
+  else if(item_holder->item->kind == armor){
+    if(item_holder->amount != 1){
+      mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s%s%s%s%s%d%s", "Pickup ",quality_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->quality], material_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->material],equipment_type_modifier[((struct Armor *)item_holder->item->item_specific_info)->armor_type], " amount: ", item_holder->amount, " ? [y/n/a/d]");
+    }
+    else{
+      mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s%s%s%s%s", "Pickup ",quality_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->quality], material_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->material],equipment_type_modifier[((struct Armor *)item_holder->item->item_specific_info)->armor_type], " ? [y/n/a/d]");
+    }
+  }
+    
+  else{
+    char *name;
+    i_derive_item_name(item_holder->item,name);
+    if (item_holder->amount != 1){
+      mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s%s%s%d%s", "Pickup ", name , " amount: ", item_holder->amount, " ? [y/n/a/d]"); free(name);
+    }
+      else{
+	mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s%s%s", "Pickup ", name , " ? [y/n/a/d]"); free(name);
+	  }
+      free(name);
+    }
+}
+
+extern inline void msg_print_item(Item_Holder *item_holder, WINDOW *screen, int x, int y){
+  if(item_holder->item == NULL){
+    mvwprintw(screen, y,x,"None");
+  }
+  
+  else if(item_holder->item->kind == weapon){
+    if(item_holder->amount != 1){
+      mvwprintw(screen, y,x, "%s%s%s%s%s%d", quality_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->quality],handed_modifier[((struct Weapon *)item_holder->item->item_specific_info)->variant],material_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->material], mele_weapon_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->kind], " X ", item_holder->amount);
+  }
+    else{
+      mvwprintw(screen, y,x, "%s%s%s%s", quality_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->quality],handed_modifier[((struct Weapon *)item_holder->item->item_specific_info)->variant],material_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->material], mele_weapon_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->kind]);
+    }
+  }
+
+  else if(item_holder->item->kind == armor){
+    if(item_holder->amount != 1){
+      mvwprintw(screen, y,x, "%s%s%s%s%d", quality_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->quality],material_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->material], equipment_type_modifier[((struct Armor *)item_holder->item->item_specific_info)->armor_type], " X ", item_holder->amount);
+    }
+    else{
+      mvwprintw(screen, y,x, "%s%s%s", quality_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->quality],material_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->material],  equipment_type_modifier[((struct Armor *)item_holder->item->item_specific_info)->armor_type]);
+    }
+  }
+    
+  else{
+    char *file_path = I_GET_FILEPATH(item_holder->item);
+      ir_print_string(file_path, "name", screen,x,y,PRINT_ITEM, item_holder);
+      free(file_path);
+    }
 }
  
 void any_null(Item_Holder **item_list){
@@ -453,6 +454,4 @@ int msg_display_equipped_equipment(Game_State *gs){
     }
   }
 }
-   
-      
- 
+

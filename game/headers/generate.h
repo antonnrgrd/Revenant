@@ -15,14 +15,17 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 #ifndef GENERATE
 #define GENERATE
-#include <ncurses.h>
-#include "gameinfo.h"
-#include "rng.h"
-#include "item.h"
 #define GENERATE_CONSUMABLE 1
 #define GENERATE_REAGENT 2
 #define GENERATE_ARMOR 3
 #define GENERATE_WEAPON 4
+
+#include "information_reader.h"
+#include <ncurses.h>
+#include "gameinfo.h"
+#include "rng.h"
+#include "item.h"
+
 #define PLACE_MERCHANT(game_state,merchant, global_x,global_y)(game_state)
 extern const char *alphabet;
 
@@ -32,6 +35,6 @@ Item_Holder *g_generate_item(Mersienne_Twister *twister);
 
 U_Hashtable *g_generate_merchant_inventory(int min_amount, int max_amount, Mersienne_Twister *twister);
 
-void g_generate_merchant();
+void g_generate_trader(int global_x, int global_y ,Mersienne_Twister *twister, Game_State *gs);
 #endif
 

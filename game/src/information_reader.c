@@ -8,7 +8,37 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
-#include "information_reader.h" 
+#include "information_reader.h"
+
+Item_Holder *ir_readin_reagent(char *reagent_file_path, int amount){
+  Item *i = malloc(sizeof(Item));
+  Reagent *reagent = malloc(sizeof(Reagent));
+  Item_Holder *item_holder = malloc(sizeof(Item_Holder));
+  i->item_specific_info = reagent;
+  item_holder->item = i;
+  item_holder->amount = amount;
+  reagent->id = ir_readin_int(reagent_file_path,"id");
+  i->weight = ir_readin_float(reagent_file_path,"weight");
+  i->item_specific_info = reagent;
+  i->id = reagent->id;
+
+  return item_holder;
+}
+  
+Item_Holder *ir_readin_consumable(char *consumable_file_path, int amount){
+  Item *i = malloc(sizeof(Item));
+  Consumable *consumable = malloc(sizeof(Consumable));
+  consumable->id = ir_readin_int(consumable_file_path,"id");
+  i->weight = ir_readin_float(consumable_file_path,"weight");
+  i->item_specific_info = consumable;
+  i->id = consumable->id;
+  Item_Holder *item_holder = malloc(sizeof(Item_Holder));
+  item_holder->amount = amount;
+  item_holder->item = i;
+  return item_holder;
+}
+
+
 Creature *ir_readin_creature(char *creature_file_path,unsigned x, unsigned y, Game_World *world, Creature *target){
    
   Creature *c = malloc(sizeof(Creature));
@@ -39,7 +69,6 @@ get it to work*/
   c->current_carry = 0;
   c->max_health = ir_readin_int(creature_file_path,"max_health");
   c->curr_health = c->max_health;
-  printf(" curr health %d ");
   c->height = ir_readin_float(creature_file_path, "height");
   c->preferred_attack_type = ir_readin_int(creature_file_path,"preferred_attack_type");
   c->limbs = ir_readin_struct_limb(creature_file_path,"limbs");
@@ -614,7 +643,8 @@ void ir_print_damage_to_creature(Game_State *gs, Creature *c, Creature *target){
   mvwprintw(gs->logs[MAIN_SCREEN], DEFAULT_MAX_Y,0, "%s damages %s for 10 damage", creature_name, target_name);  
   }
 }
-  
 
+/*
+Programmers sidenote: apparently, the order in which you define and or possibly inlcude header files is detrimental to the correctness of the program. It has been observed that including headers and defining functions in different orders has a major impact on whether or not the pointer returned is a valid pointer. e.g It is seen that if we define things in a certain order, it might compile and run fine, but upon return of the function, the pointer is no longer valid. Changing the order in which you define these functions tends to fix this issue and affect different parts of the program differently, so maybe swapping the order of the definitions might fix things.
+*/
 
-  

@@ -20,10 +20,14 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "strings.h"
 #include "generic_macros.h"
 #include "u_hash.h"
+#include "game_state.h"
+#include "information_reader.h"
+#include "item.h"
+#include "generate.h"
 //screen, y,x, "%s X %d", quality_name_modifier[((union Equipment)item_holder->item->item_specific_info).weapon->quality]
 #define MAX_MSG_LENGTH 50
 
-static inline void msg_print_item(Item_Holder *item_holder, WINDOW *screen, int x, int y);
+extern inline void msg_print_item(Item_Holder *item_holder, WINDOW *screen, int x, int y);
 static inline void msg_pickup_item(Game_State *game_state, Item_Holder *item_holder);
 // In order to make changes to a panel visible, we firstly need to call update panel to make the changes to the panels visible, then make doupdate to make said changes ivisible to the physical screen. To avoid having to call these methods all the time, we wrap them inside a macro
 #define UPDATE_PANEL_INFO() update_panels(); doupdate();
@@ -80,7 +84,7 @@ int msg_display_equipped_equipment(Game_State *gs);
 //We print i+2 to print at the desired position in the equipment log
 #define MSG_REDRAW_INVENTORY(available_equipment,num_items,window) MSG_CLEAR_SCREEN(window); for(int i = 0; i < num_items; i++){msg_print_item(available_equipment[i],gs->logs[INVENTORY_LOG],5,i+2);}
 
-int msg_trading_session(int global_x, int global_y,Game_State *gs);
+
 #define MSG_ENABLE_SCROLLING(window) scrollok(window, TRUE); idlok(window, TRUE);
 
 #define MSG_ITEM_PICKUP_NONEQUIPPABLE(game_state, item_holder) char *name /* = i_derive_item_name(item_holder->item); mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s%s%s%d%s", "Pickup ", name , " amount: ", item_holder->amount, " ? [y/n/a/d]"); free(name);
@@ -90,6 +94,6 @@ int msg_trading_session(int global_x, int global_y,Game_State *gs);
 
 #define MSG_ITEM_PICKUP_EQUIPPABLE(game_state, item_holder) item_holder->item->kind == weapon ? MSG_ITEM_PICKUP_WEAPON(game_state, item_holder):MSG_ITEM_PICKUP_ARMOR(game_state, item_holder)
 #define MSG_ITEM_PICKUP(game_state, item_holder) /* item_holder->item->kind == weapon || item_holder->item->kind == armor ? MSG_ITEM_PICKUP_EQUIPPABLE(game_state,item_holder): */ MSG_ITEM_PICKUP_NONEQUIPPABLE(game_state,item_holder)
-
+int msg_trading_session(int global_x, int global_y,Game_State *gs);
 #endif
 

@@ -124,7 +124,6 @@ Item *i_make_mele_weapon(Quality_Level q, Material material, Variant v, Weapon_K
   i->weight = m.base_weight_modifier*va.weight_modifier;
   
   i->value = (uint32_t)ceil(m.value_modifier * va.value_modifier);
-  i->quest_item = 0;
   i->item_specific_info = w;
   i->standing_on = malloc(sizeof(char));
   strcpy(i->representation, weapon_representations[1]);
@@ -280,3 +279,15 @@ char *i_get_name(Item *i){
   char *name = ir_readin_char(file_path_bfr, "name");
   return name;
 }
+
+/*
+Item_Holder *i_readin_reagent(char *reagent_file_path){
+  Item_Holder *item_holder = malloc(sizeof(Item_Holder));
+  Item *i = malloc(sizeof(Item));
+  Reagent *r = malloc(sizeof(Reagent));
+  r->id = ir_readin_int(reagent_file_path,"id");
+  i->item_specific_into = r;
+  item_holder->item = i;
+  return item_holder;
+}
+*/

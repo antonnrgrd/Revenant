@@ -25,7 +25,6 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "game_state_struct.h"
 #include "generic_macros.h"
 #include "information_reader.h"
-
 //#define MV_PRINT_DMG(creature) char *fpath = malloc(sizeof(char) * strlen() ) free(fpath);
 #define TEST(c,world, x,y, max_x, max_y) REDRAW_MAP(c,world, x,y, max_x, max_y) printf("%s" "done \n");
 #define ADD_TO_PILE(global_x,global_y, item, game_world) Entry *new_entry = malloc(sizeof(Entry)); new_entry->item_holder = item; new_entry->next_entry = game_world->tiles[global_y][global_x].entry; game_world->tiles[global_y][global_x].entry = new_entry;
@@ -59,5 +58,6 @@ int move_response_loot_item(int global_x, int global_y,int local_x, int local_y,
 int move_response_attack_target(int global_x, int global_y,int local_x, int local_y, Creature *c,Game_State *game_state);
 
 int move_response_initiate_trade(int global_x, int global_y,int local_x, int local_y, Creature *c,Game_State *game_state);
+
 #endif
 

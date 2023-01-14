@@ -85,41 +85,18 @@ Game_State *gs_create_game_state(Game_World *game_world){
   
   Game_State *state = malloc(sizeof(Game_State));
   state->twister = rng_generate_twister();
-  state->player = c_random_player(20,3, game_world,state->twister);
- 
+    state->player = c_random_player(20,20, game_world,state->twister);
+  state->current_zone = game_world;
+  g_generate_trader(13,13, state->twister, state);
 
-  //Creature *opponent = c_generate_creature(animal,0,20,4, game_world,state->player);
+  
     Creature *opponent = ir_readin_creature("/usr/lib/revenant_files/creature_files/0",20,4,game_world,state->player);
-    //    Creature *opponent_2 = ir_readin_creature("/usr/lib/revenant_files/creature_files/0",20,5,game_world,state->player); 
-  /*
-  Creature *opponent2 = c_generate_creature(animal,0,21,4, game_world,state->player);
-  Creature *opponent3 = c_generate_creature(animal,0,22,4, game_world,state->player);
-  Creature *opponent4 = c_generate_creature(animal,0,23,4, game_world,state->player);
-  */
     opponent->behavior = attacking;
-    //   opponent_2->behavior = attacking;
-  /*
-  opponent2->behavior = pursuing;
-  opponent3->behavior = pursuing;
-  opponent4->behavior = pursuing;
-  */
   Linked_List *ll = ll_initialize_linked_list();
    ll_prepend_node_creature(ll,opponent);
-   // ll_prepend_node_creature(ll,opponent_2);
-  /*
-  ll_prepend_node_creature(ll,opponent2);
+
   
-  ll_prepend_node_creature(ll,opponent3);
-  ll_prepend_node_creature(ll,opponent4);
-  */
-  /*
-  APPEND_NODE_CREATURE(ll,opponent);
-  APPEND_NODE_CREATURE(ll,opponent2);
-  //  APPEND_NODE_CREATURE(ll,opponent2);
-  // APPEND_NODE_CREATURE(ll,opponent3);
-  //APPEND_NODE_CREATURE(ll,opponent4);
-  */
-  state->current_zone = game_world;
+  
   state->active_creatures = ll;
   //It may seem redundant to make a screen that basically takes up the entire stdscr, but this is because unlike windows managed by panels, stdscr does not take into consideration the contents of other
   // windows. Therefore, if the contents of stdscr overlaps the contents of a window, stdscr will overwrite/take precedence of the contents of said window. To achieve the desired windows browsing effect,
@@ -128,6 +105,7 @@ Game_State *gs_create_game_state(Game_World *game_world){
   state->logs[EVENT_LOG] = newwin(LOG_Y_SIZE,LOG_X_SIZE,LOG_START_Y,LOG_START_X);
   state->logs[INVENTORY_LOG] = newwin(LOG_Y_SIZE,LOG_X_SIZE,LOG_START_Y,LOG_START_X);
   state->logs[TRADING_LOG] = newwin(LOG_Y_SIZE,LOG_X_SIZE,LOG_START_Y,LOG_START_X);
+  state->logs[NOTIFICATION_LOG] = newwin(10,20,5,15);
   
   MSG_ENABLE_SCROLLING(state->logs[TRADING_LOG]);
   
@@ -135,18 +113,19 @@ Game_State *gs_create_game_state(Game_World *game_world){
   state->panels[MAIN_SCREEN] = new_panel(state->logs[MAIN_SCREEN]);
   state->panels[INVENTORY_LOG] = new_panel(state->logs[INVENTORY_LOG]);
   state->panels[TRADING_LOG] = new_panel(state->logs[TRADING_LOG]);
+  state->panels[NOTIFICATION_LOG] = new_panel(state->logs[NOTIFICATION_LOG]);
   
   box(state->logs[EVENT_LOG],0,0);
   box(state->logs[INVENTORY_LOG],0,0);
-
+  box(state->logs[NOTIFICATION_LOG],0,0);
   INIT_EVENT_LOG(state->logs[EVENT_LOG]);
 
-    
+  state->notification_log_offset = 15;
   top_panel(state->panels[MAIN_SCREEN]);
    
   update_panels();
   doupdate();
-
+  
   return state;
  
 }

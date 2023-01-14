@@ -39,6 +39,9 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define LOG_Height 15
 //The main struct that will encapsulate all information about the game currently present 
 typedef struct Game_State{
+  int notification_log_offset;
+  int x_screen_width;
+  int y_screen_width;
   struct Creature *player;
   Game_World *current_zone;
   Linked_List *active_creatures;

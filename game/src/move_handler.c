@@ -27,7 +27,7 @@ int mv_check_move_handler(int global_x, int global_y, int local_x, int local_y, 
 }
 
 
-int (*move_response_handler[5])(int global_x, int global_y, int local_x, int local_y, Creature *c,Game_State *game_state) =  {move_response_move_character,move_response_halt_character,move_response_loot_item,move_response_attack_target, move_response_initiate_trade};
+int (*move_response_handler[5])(int global_x, int global_y, int local_x, int local_y, Creature *c,Game_State *game_state) =  {move_response_move_character,move_response_halt_character,move_response_loot_item, move_response_attack_target , move_response_initiate_trade };
 
   int move_response_move_character(int global_x, int global_y, int local_x, int local_y, Creature *c,Game_State *game_state){
     game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->standing_on[0];
@@ -85,6 +85,32 @@ int move_response_halt_character(int global_x, int global_y,int local_x, int loc
   }
 }
 
+/*Ignore the fact that the message is not visible on screen until the creature dies because at some point you will rewrite the game to use the entire terminal, but for now, keep in mind you won't see that you are damaging your target until it is dead. oddly enough, it is visible in the event log.*/
+
+int move_response_attack_target(int global_x, int global_y,int local_x, int local_y, Creature *c,Game_State *game_state){
+  if  (1){
+    CLEAR_MSG_LINE();
+      ir_print_damage_to_creature(game_state, game_state->player, ((Creature *)game_state->current_zone->tiles[global_y][global_x].foe));
+    msg_update_event_log(game_state);
+      move(c->position.local_y,c->position.local_x);
+     
+    if (((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->curr_health <= 0){
+      mvwprintw(game_state->logs[MAIN_SCREEN],game_state,((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->position.local_y,((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->position.local_x,((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->standing_on);
+           game_state->current_zone->tiles[global_y][global_x].content[0] = ((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->standing_on[0];
+	   // c_cleanup_creature(c,game_state->current_zone);
+      
+      // If a creature runs out of health, mark it for deletion s.t when we next go through all the creatures that are to act, we see that it is dead and can therefore be free'd and removed from the list of active creatures  
+	         ((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->marked_for_deletion = YES;
+    }
+  }
+  c->curr_ap--;
+  if(c->curr_ap == 0){
+    return END_TURN;
+  }
+  else{
+    return CONTINUE_TURN;
+  }
+} 
 
 
 
@@ -162,34 +188,9 @@ mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s%s%s%d%s", "Pickup ", i_derive_i
  }
 
 
-int move_response_attack_target(int global_x, int global_y,int local_x, int local_y, Creature *c,Game_State *game_state){
-  
-  
-  if  (1){
-    CLEAR_MSG_LINE();
-      ir_print_damage_to_creature(game_state, game_state->player, ((Creature *)game_state->current_zone->tiles[global_y][global_x].foe));
-    msg_update_event_log(game_state);
-      move(c->position.local_y,c->position.local_x);
-     
-    if (((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->curr_health <= 0){
-      mvwprintw(game_state->logs[MAIN_SCREEN],game_state,((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->position.local_y,((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->position.local_x,((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->standing_on);
-           game_state->current_zone->tiles[global_y][global_x].content[0] = ((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->standing_on[0];
-	   // c_cleanup_creature(c,game_state->current_zone);
-      
-      // If a creature runs out of health, mark it for deletion s.t when we next go through all the creatures that are to act, we see that it is dead and can therefore be free'd and removed from the list of active creatures  
-	         ((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->marked_for_deletion = YES;
-    }
-  }
-  c->curr_ap--;
-  if(c->curr_ap == 0){
-    return END_TURN;
-  }
-  else{
-    return CONTINUE_TURN;
-  }
-} 
-
 
 int move_response_initiate_trade(int global_x, int global_y,int local_x, int local_y, Creature *c,Game_State *game_state){
   msg_trading_session(global_x,global_y,game_state);
 }
+
+
