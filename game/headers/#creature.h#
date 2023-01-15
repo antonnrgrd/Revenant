@@ -24,6 +24,8 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "rng.h"
 #include "screen_constants.h"
 
+extern inline void c_recompute_player_coords(Creature *c);
+
 #define COPY_LIMB(creature_limb, source_limb){\
   creature_limb.kind = source_limb.kind; \
   creature_limb.status = healthy; \

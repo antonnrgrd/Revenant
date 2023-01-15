@@ -16,15 +16,27 @@ void game_loop(Game_State *game_state){
   REDRAW_MAP(game_state->player,game_state->current_zone,game_state->logs[MAIN_SCREEN], game_state->player->position.global_x,game_state->player->position.global_y,rows, cols);
   wrefresh(game_state->logs[MAIN_SCREEN]);
   while(1){
+    getmaxyx(stdscr,game_state->found_cols, game_state->found_rows);
+    /* Listenting for KEY_RESIZE is not sufficient to detect that the screen has been reized by clicking of the resize icon on the terminal, so we have to listen for the screen size being different than previously to detect this case */
+    if(game_state->found_cols != game_state->curr_cols ||  game_state->found_rows != game_state->curr_rows){
+      game_state->curr_cols = game_state->found_cols;
+      game_state->curr_rows = game_state->found_rows;
+      REDRAW_MAP(game_state->player,game_state->current_zone,game_state->logs[MAIN_SCREEN], game_state->player->position.global_x,game_state->player->position.global_y,rows, cols);
+         wrefresh(game_state->logs[MAIN_SCREEN]);  
+    }
     while(player_turn == CONTINUE_TURN ){
     wrefresh(game_state->logs[MAIN_SCREEN]);  
     ch = getch();
     switch(ch){
+    case KEY_RESIZE:
+      REDRAW_MAP(game_state->player,game_state->current_zone,game_state->logs[MAIN_SCREEN], game_state->player->position.global_x,game_state->player->position.global_y,rows, cols);
+      player_turn = CONTINUE_TURN;
+      break;
     case KEY_UP:
     player_turn = mv_check_move_handler(game_state->player->position.global_x, game_state->player->position.global_y-1,game_state->player->position.local_x, game_state->player->position.local_y-1, game_state->player,game_state);
       break;
     case KEY_DOWN:
-   player_turn =   mv_check_move_handler(game_state->player->position.global_x, game_state->player->position.global_y+1,game_state->player->position.local_x, game_state->player->position.local_y+1, game_state->player,game_state);      
+   player_turn =   mv_check_move_handler(game_state->player->position.global_x, game_state->player->position.global_y+1,game_state->player->position.local_x, game_state->player->position.local_y+1, game_state->player,game_state);
       break;
     case KEY_LEFT:
      player_turn = mv_check_move_handler(game_state->player->position.global_x-1,game_state->player->position.global_y ,game_state->player->position.local_x-1, game_state->player->position.local_y,game_state->player,game_state);
@@ -48,10 +60,11 @@ void game_loop(Game_State *game_state){
       break;
     default:
       break;
+     }
     }
     ll_iter_list_as_creature(game_state->active_creatures,game_state);
+    game_state->player->curr_ap = game_state->player->max_ap;
     player_turn = CONTINUE_TURN;
-    }
   }
 }
 

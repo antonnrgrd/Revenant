@@ -131,3 +131,12 @@ Game_State *gs_create_game_state(Game_World *game_world){
 }
 
  
+void gs_recompute_creature_local_coords(Linked_List *list){
+   Node *current_node = list->initial_node;
+  // TBD:consider only creatures within range of the player 
+  while(current_node != NULL) {
+    c_compute_relative_coords((struct Creature *)current_node->value, ((struct Creature *)current_node->value)->target);
+    current_node = current_node->next;
+  }
+}
+  

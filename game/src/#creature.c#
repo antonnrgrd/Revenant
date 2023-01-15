@@ -161,7 +161,30 @@ void c_compute_relative_coords(Creature *creature, Creature *player){
   }
 }
 
-
+extern inline void c_recompute_player_coords(Creature *c){
+  if(x <= world->max_x-1){
+    c->position.local_x = x;
+  }
+  else{
+    if(world->max_x % 2 == 0){
+      c->position.local_x = world->max_x/2;
+    }
+    else{
+      c->position.local_x = (world->max_x - 1)/2;
+    }
+  }
+  if(y <= world->max_y-1){
+    c->position.local_y = y;
+  }
+  else{
+    if(world->max_x % 2 == 0){
+      c->position.local_x = world->max_x/2;
+    }
+    else{
+      c->position.local_x = (world->max_x - 1)/2;
+    }
+  }
+}
 
 
 

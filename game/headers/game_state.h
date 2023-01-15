@@ -34,5 +34,8 @@ void ll_iter_list_as_creature(Linked_List *list, Game_State *ggame_state);
 
 void gs_print_foes(Game_State *game_state);
 
+void gs_recompute_creature_local_coords(Linked_List *list);
+
+void gs_update_screen_resize(Game_State *gs);
 #endif
 
