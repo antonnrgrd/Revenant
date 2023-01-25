@@ -30,8 +30,8 @@ int mv_check_move_handler(int global_x, int global_y, int local_x, int local_y, 
 int (*move_response_handler[5])(int global_x, int global_y, int local_x, int local_y, Creature *c,Game_State *game_state) =  {move_response_move_character,move_response_halt_character,move_response_loot_item, move_response_attack_target , move_response_initiate_trade };
 
   int move_response_move_character(int global_x, int global_y, int local_x, int local_y, Creature *c,Game_State *game_state){
-    // mvwprintw(game_state->logs[MAIN_SCREEN],c->position.local_y,c->position.local_x, c->standing_on);
-    //    game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->standing_on[0];
+    mvwprintw(game_state->logs[MAIN_SCREEN],c->position.local_y,c->position.local_x, c->standing_on);
+    game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->standing_on[0];
     c->position.global_x = global_x;
     c->position.global_y = global_y;
     if(local_y  <  0){
@@ -57,12 +57,12 @@ int (*move_response_handler[5])(int global_x, int global_y, int local_x, int loc
     else{
       
   
-      //  c->standing_on[0] = game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
-  //  game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
-  //mvwprintw(game_state->logs[MAIN_SCREEN],local_y,local_x,c->representation);
-  c->position.local_x = local_x;
-  c->position.local_y = local_y;
-  //  move(c->position.local_y,c->position.local_x);
+      c->standing_on[0] = game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
+      game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
+      mvwprintw(game_state->logs[MAIN_SCREEN],local_y,local_x,c->representation);
+      c->position.local_x = local_x;
+      c->position.local_y = local_y;
+    move(c->position.local_y,c->position.local_x);
     }
    c->curr_ap--;
   if(c->curr_ap == 0){

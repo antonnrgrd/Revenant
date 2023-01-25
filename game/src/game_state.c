@@ -84,6 +84,8 @@ Game_State *gs_create_game_state(Game_World *game_world){
   
   
   Game_State *state = malloc(sizeof(Game_State));
+  getmaxyx(stdscr,state->found_cols, state->found_rows);
+  getmaxyx(stdscr,state->curr_cols, state->curr_rows);
   state->twister = rng_generate_twister();
     state->player = c_random_player(20,20, game_world,state->twister);
   state->current_zone = game_world;
