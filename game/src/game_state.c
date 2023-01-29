@@ -84,10 +84,10 @@ Game_State *gs_create_game_state(Game_World *game_world){
   
   
   Game_State *state = malloc(sizeof(Game_State));
-  getmaxyx(stdscr,state->found_cols, state->found_rows);
-  getmaxyx(stdscr,state->curr_cols, state->curr_rows);
+  getmaxyx(stdscr,state->found_rows, state->found_cols);
+  getmaxyx(stdscr,state->num_cols, state->num_rows);
   state->twister = rng_generate_twister();
-    state->player = c_random_player(20,20, game_world,state->twister);
+  state->player = c_random_player(0,5, state,game_world);
   state->current_zone = game_world;
   g_generate_trader(13,13, state->twister, state);
 
@@ -104,9 +104,9 @@ Game_State *gs_create_game_state(Game_World *game_world){
   // windows. Therefore, if the contents of stdscr overlaps the contents of a window, stdscr will overwrite/take precedence of the contents of said window. To achieve the desired windows browsing effect,
   //we are made to make a new panel-managed window that will act as stdscr 
   state->logs[MAIN_SCREEN]  = newwin(0,0,0,0);
-  state->logs[EVENT_LOG] = newwin(LOG_Y_SIZE,LOG_X_SIZE,LOG_START_Y,LOG_START_X);
-  state->logs[INVENTORY_LOG] = newwin(LOG_Y_SIZE,LOG_X_SIZE,LOG_START_Y,LOG_START_X);
-  state->logs[TRADING_LOG] = newwin(LOG_Y_SIZE,LOG_X_SIZE,LOG_START_Y,LOG_START_X);
+  state->logs[EVENT_LOG] = newwin(LOG_Y_SIZE,LOG_X_SIZE,(state->num_cols - 1) / 4 , (state->num_rows - 1) / 4 );
+  state->logs[INVENTORY_LOG] = newwin(LOG_Y_SIZE,LOG_X_SIZE,(state->num_cols - 1) / 4 , (state->num_rows - 1) / 4);
+  state->logs[TRADING_LOG] = newwin(LOG_Y_SIZE,LOG_X_SIZE,(state->num_cols - 1) / 4 , (state->num_rows - 1) / 4);
   state->logs[NOTIFICATION_LOG] = newwin(10,20,5,15);
   
   MSG_ENABLE_SCROLLING(state->logs[TRADING_LOG]);

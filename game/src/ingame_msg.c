@@ -455,3 +455,6 @@ int msg_display_equipped_equipment(Game_State *gs){
   }
 }
 
+void msg_redraw_inventory(Item_Holder **item_list, int context, int num_items){
+  
+}

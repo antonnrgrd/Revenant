@@ -24,6 +24,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "information_reader.h"
 #include "item.h"
 #include "generate.h"
+#include "move_handler.h"
 //screen, y,x, "%s X %d", quality_name_modifier[((union Equipment)item_holder->item->item_specific_info).weapon->quality]
 #define MAX_MSG_LENGTH 50
 
@@ -56,7 +57,7 @@ int msg_find_item_position(WINDOW *log, int max_y,Item_Holder *item, Item_Holder
 
 #define MSG_PRINT_DAMAGE_CREATURE(screen,creature_id,damage) char *file_path_bfr = malloc(sizeof(char) * strlen("/usr/lib/revenant_files/creature_files/") +5); sprintf(file_path_bfr,"/usr/lib/revenant_files/creature_files/%d",creature_id); char *name;  ir_readin_char(file_path_bfr, "name",name); mvwprintw(game_state->logs[MAIN_SCREEN],DEFAULT_MAX_Y,0, "%s%s%s%d%s", "You damage ", name , " for ", 10, " damage"); free(file_path_bfr); free(name);
 
-/*  mvwinnstr(game_state->logs[EVENT_LOG], i,12,msg_bfr,MAX_MSG_LENGTH-1); mvprintw(game_state->logs[EVENT_LOG], i+1,12,msg_bfr); wmove(game_state->logs[EVENT_LOG],i,12); wclrtoeol(game_state->logs[EVENT_LOG]); }  free(msg_bfr); */
+
 
 
 
@@ -95,5 +96,7 @@ int msg_display_equipped_equipment(Game_State *gs);
 #define MSG_ITEM_PICKUP_EQUIPPABLE(game_state, item_holder) item_holder->item->kind == weapon ? MSG_ITEM_PICKUP_WEAPON(game_state, item_holder):MSG_ITEM_PICKUP_ARMOR(game_state, item_holder)
 #define MSG_ITEM_PICKUP(game_state, item_holder) /* item_holder->item->kind == weapon || item_holder->item->kind == armor ? MSG_ITEM_PICKUP_EQUIPPABLE(game_state,item_holder): */ MSG_ITEM_PICKUP_NONEQUIPPABLE(game_state,item_holder)
 int msg_trading_session(int global_x, int global_y,Game_State *gs);
+
+void msg_redraw_inventory(Item_Holder **item_list, int context);
 #endif
 

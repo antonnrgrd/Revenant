@@ -26,13 +26,13 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "generic_macros.h"
 #include "information_reader.h"
 //#define MV_PRINT_DMG(creature) char *fpath = malloc(sizeof(char) * strlen() ) free(fpath);
-#define TEST(c,world, x,y, max_x, max_y) REDRAW_MAP(c,world, x,y, max_x, max_y) printf("%s" "done \n");
+
 #define ADD_TO_PILE(global_x,global_y, item, game_world) Entry *new_entry = malloc(sizeof(Entry)); new_entry->item_holder = item; new_entry->next_entry = game_world->tiles[global_y][global_x].entry; game_world->tiles[global_y][global_x].entry = new_entry;
 #define SPAWN_AT(creature,world, x,y)  mvprintw(c->position.local_y,c->position.local_x, c->representation);  move(c->position.local_y,c->position.local_x);  c->position.local_x = x; c->position.local_y = y; c->position.global_x = 42; c->position.global_y = y; 
 
-#define LOOP_HEIGHT(height, x,y, max_x, max_y) for(int i = 0; i < DEFAULT_MAX_Y  && i+y < height;  i++)
-#define LOOP_WIDTH(width, x,y, max_x, max_y) for(int j = DEFAULT_MAX_INFOBAR_WIDTH; j < DEFAULT_MAX_X  && j+x < width;  j++)
-#define REDRAW_MAP(c,current_zone,draw_screen, x,y, max_x, max_y)  LOOP_HEIGHT(current_zone->height, x,y, max_x, max_y)  LOOP_WIDTH(current_zone->width, x,y, max_x, max_y) mvwprintw(draw_screen,i,j,(current_zone->tiles[(c->position.global_y - (c->position.local_y))+i][(c->position.global_x - (c->position.local_x))+j].content));  mvwprintw(draw_screen,c->position.local_y, c->position.local_x, c->representation); c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0]; current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
+#define LOOP_HEIGHT(screen_height, height, x,y, max_x, max_y) for(int i = 0; i < screen_height -1 && i+y < height;  i++)
+#define LOOP_WIDTH(screen_width,width, x,y, max_x, max_y) for(int j = DEFAULT_MAX_INFOBAR_WIDTH; j < screen_width -1 && j+x < width;  j++)
+#define REDRAW_MAP(gs,c,current_zone,draw_screen, x,y, max_x, max_y)  LOOP_HEIGHT(gs->num_cols,current_zone->height, x,y, max_x, max_y)  LOOP_WIDTH(gs->num_rows,current_zone->width, x,y, max_x, max_y) mvwprintw(draw_screen,i,j,(current_zone->tiles[(c->position.global_y - (c->position.local_y))+i][(c->position.global_x - c->position.local_x )+j].content));  mvwprintw(draw_screen,c->position.local_y, c->position.local_x, c->representation); //c->standing_on[0] = current_zone->tiles[c->position.global_y][c->position.global_x].content[0]; current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
 
 
 #define GET_NEXT_IN_PILE(game_world,x,y) (game_world->tiles[y][x]->entry->next_entry == NULL)? game_world->tiles[y][x]->content[0] = game_world->tiles[y][x]->entry->item_holder->item->standing_on[0]; replacement = game_world->tiles[y][x]->entry->next_entry; free(game_world->tiles[y][x]->entry); : game_world->tiles[y][x]->content[0] = game_world->tiles[y][x]->entry->next_entry->item_holder->item->standing_on[0]; replacement = game_world->tiles[y][x]->entry->next_entry; free(game_world->tiles[y][x]->entry);

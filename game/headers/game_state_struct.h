@@ -31,6 +31,15 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define NOTIFICATION_LOG 6
 #define NUM_WINDOWS 7
 
+#define CONTEXT_MAIN MAIN_SCREEN
+#define CONTEXT_LOG EVENT_LOG
+#define CONTEXT_INVENTORY INVENTORY_LOG
+#define CONTEXT_PLAYER_STATUS 3
+#define CONTEXT_QUEST 4
+#define CONTEXT_TRADING 5
+#define CONTEXT_NOTIFICATION 6
+#define NUM_WINDOWS 7
+
 
 #define CONTEXT_SELLING 0
 #define CONTEXT_INSPECTING 1
@@ -39,9 +48,10 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define LOG_Height 15
 //The main struct that will encapsulate all information about the game currently present 
 typedef struct Game_State{
+  char action_context;
   int notification_log_offset;
-  int curr_rows;
-  int curr_cols;
+  int num_rows;
+  int num_cols;
   int found_rows;
   int found_cols;
   struct Creature *player;

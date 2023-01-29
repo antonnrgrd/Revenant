@@ -59,7 +59,6 @@ Item *weapon = i_make_mele_weapon(epic,bronze,one_hand,sword);
  Item_Holder *reagent = ir_readin_reagent("/usr/lib/revenant_files/item_files/reagent_files/1", 2);
  Item_Holder *food = ir_readin_consumable("/usr/lib/revenant_files/item_files/consumable_files/0", 4);
  
-
   u_add_item(reagent,reagent->amount,((Player_Info * )gs->player->additional_info)->inventory);
   u_add_item(food,food->amount,((Player_Info * )gs->player->additional_info)->inventory);
 
@@ -68,9 +67,7 @@ Item *weapon = i_make_mele_weapon(epic,bronze,one_hand,sword);
   u_add_item(k,k->amount,((Player_Info *)gs->player->additional_info)->inventory);
    u_add_item(l,l->amount,((Player_Info * )gs->player->additional_info)->inventory);
     u_add_item(m,m->amount,((Player_Info * )gs->player->additional_info)->inventory);
-  */
-
-  
+  */  
   initscr();
  start_color();
   
@@ -84,9 +81,8 @@ Item *weapon = i_make_mele_weapon(epic,bronze,one_hand,sword);
     srand(time(NULL));
   raw();
   
-      game_loop(gs);
-  endwin();
-  
+  game_loop(gs);
+  endwin();  
 }
   
  

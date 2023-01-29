@@ -23,7 +23,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "creature_macros.h"
 #include "rng.h"
 #include "screen_constants.h"
-
+#include "game_state_struct.h"
 #define COPY_LIMB(creature_limb, source_limb){\
   creature_limb.kind = source_limb.kind; \
   creature_limb.status = healthy; \
@@ -167,7 +167,7 @@ void c_initialize_humanoid_inf(Creature *c, int id);
 
 Color *c_copy_color(Color color);
 
-Creature *c_random_player(int y, int x ,Game_World *world, Mersienne_Twister *twister);
+Creature *c_random_player(int y, int x ,Game_State *gs, Game_World *gw);
 
 void c_compute_relative_coords(Creature *creature, Creature *player);
 
