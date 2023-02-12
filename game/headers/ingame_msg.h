@@ -1,5 +1,5 @@
 /*This file is part of Revenant.
-65;6800;1cRevenant is free software: you can redistribute it and/or modify
+Revenant is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 Revenant  is distributed in the hope that it will be useful,
@@ -97,6 +97,8 @@ int msg_display_equipped_equipment(Game_State *gs);
 #define MSG_ITEM_PICKUP(game_state, item_holder) /* item_holder->item->kind == weapon || item_holder->item->kind == armor ? MSG_ITEM_PICKUP_EQUIPPABLE(game_state,item_holder): */ MSG_ITEM_PICKUP_NONEQUIPPABLE(game_state,item_holder)
 int msg_trading_session(int global_x, int global_y,Game_State *gs);
 
-void msg_redraw_inventory(Item_Holder **item_list, int context);
+void msg_redraw_inventory(Game_State *gs, Item_Holder **item_list, int context, int num_items);
+void msg_redraw_equipped_equipment(Game_State *gs);
+void msg_redraw_inventory_equip_context(Game_State *gs, Item_Holder **item_list, int num_items);
 #endif
 

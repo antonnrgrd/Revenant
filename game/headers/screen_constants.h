@@ -23,5 +23,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 #define LOG_X_SIZE (DEFAULT_MAX_X-DEFAULT_MAX_INFOBAR_WIDTH)
 #define LOG_Y_SIZE DEFAULT_MAX_Y
+#define MIN_X 10
+#define MIN_Y 10
 #endif
 

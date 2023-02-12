@@ -105,7 +105,7 @@ Creature *c_random_player(int x, int y,Game_State *gs, Game_World *gw){
     }
   }
   
-  printf("local x: %d, local y: %d, global x: %d, global_y: %d, expr: %d", c->position.local_x, c->position.local_y, c->position.global_x, c->position.global_y,(x  + (DEFAULT_MAX_INFOBAR_WIDTH  - 1 )));
+  // printf("local x: %d, local y: %d, global x: %d, global_y: %d, expr: %d", c->position.local_x, c->position.local_y, c->position.global_x, c->position.global_y,(x  + (DEFAULT_MAX_INFOBAR_WIDTH  - 1 )));
 
   c->representation = malloc(sizeof(char));
   c->representation[0] = '@';
