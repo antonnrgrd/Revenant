@@ -36,7 +36,7 @@ static inline void msg_pickup_item(Game_State *game_state, Item_Holder *item_hol
 
 //MSG_MOVE_TO_NEW_POS(item_list, init_free_pos, max_index, log)
 /* We stop at second last index because we set pointers to null and if we include the last index, we attempt to print the item at the last index, which is null, causing seg fault*/
-#define MSG_COMPRESS_ITEM_LIST(item_list, init_free_pos, max_index, log) for(int i = init_free_pos; i < max_index-1; i++ ){ item_list[i] = item_list[i+1]; item_list[i+1] = NULL;  wmove(log,i+2,5); wclrtoeol(log);  msg_print_item(item_list[i],log,5,i+2); } /* item_list[max_index-1] = NULL; */ wmove(log,max_index-1+2,5); wclrtoeol(log); box(gs->logs[INVENTORY_LOG],0,0); wmove(log,init_free_pos+2,5); UPDATE_PANEL_INFO();
+#define MSG_COMPRESS_ITEM_LIST(item_list, init_free_pos, max_index, log) for(int i = init_free_pos; i < max_index-1; i++ ){ item_list[i] = item_list[i+1]; wmove(log,i+2,5); wclrtoeol(log);  msg_print_item(item_list[i],log,5,i+2); } /* item_list[max_index-1] = NULL; */ wmove(log,max_index-1+2,5); wclrtoeol(log); box(gs->logs[INVENTORY_LOG],0,0); wmove(log,init_free_pos+2,5); UPDATE_PANEL_INFO();
 
 int msg_show_log(Game_State *gs, int panel_index);
 

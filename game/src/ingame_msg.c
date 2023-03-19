@@ -227,7 +227,7 @@ int msg_find_item_position(WINDOW *log, int max_y,Item_Holder *item, Item_Holder
   //when we add the item, we increase the number of items in the list, so we have have to add a +1
   //By how we malloc for the item_list, we SHOULD be guaranteed that there are enough free pointers to do this 
   //printf("ITEM NOT ALREADY IN LIST");
-  printf(" free position: %d",max_y+1);
+  //printf(" free position: %d",max_y+1);
   return max_y+1;
 }
 
@@ -370,7 +370,7 @@ int msg_display_inventory_equip_context(Game_State *gs){
     }
     //probably faulty with how we assign item holder pointers to the item list
     else if (ch == 'y' && ( item_list != NULL && item_list[curr_curs_pos-2]!= NULL)){
-      //printf("equip called");
+      //printf(" quality: %d ",((struct Weapon *)item_list[curr_curs_pos-2]->item->item_specific_info)->quality );
      mvwprintw(gs->logs[MAIN_SCREEN],DEFAULT_MAX_Y,0, "%s", "You equip ");
      /*We temporarily set the amount of the item we equip to be one since
       item printer prints the amount of the item, unless the amount we have is 1
@@ -389,10 +389,12 @@ int msg_display_inventory_equip_context(Game_State *gs){
      if(item_list[curr_curs_pos-2]->amount == 0 ){
        	wclrtoeol(gs->logs[INVENTORY_LOG]);
 	item_list[curr_curs_pos-2]=NULL;
+      
       	MSG_COMPRESS_ITEM_LIST(item_list,curr_curs_pos-2,available_equipment,gs->logs[INVENTORY_LOG]);
-	available_equipment--;
-	
-
+	available_equipment--; 
+	//if(item_list[curr_curs_pos-2] == NULL){
+	// printf( "still null ");
+	//}
 	//	any_null(item_list);     
            }
       
@@ -431,8 +433,8 @@ int msg_display_inventory_equip_context(Game_State *gs){
      }
 
      */
-    /*Provided the next item is null OR that the current cursor position mapped to the available equipment +1 exeecds the avilalbe equipment (are at the end of the equipment list), we have to move upwards to the next available piece of equipment. The exception being that (curr_curs_pos-2)-1 > -1 (we are are the only/last item in the item list)   */
-	if((item_list[(curr_curs_pos-2)+1] == NULL || (curr_curs_pos -1 ) +1 > available_equipment ) && (curr_curs_pos-2)-1 > -1){
+    /*Provided that the item at the cursor is null af compressing the item list and that the current cursor position mapped to the available equipment +1 exceeds the avilalbe equipment (we are at the end of the equipment list), we have to move upwards to the next available piece of equipment. The exception being that (curr_curs_pos-2)-1 > -1 (we are are the only/last item in the item list)   */
+     if( (item_list[(curr_curs_pos-2)] == NULL &&  (curr_curs_pos -1 ) +1 > available_equipment)  && (curr_curs_pos-2)-1 > -1){
 	  //printf("null,just as expected");
 	  
 	  curr_curs_pos--;

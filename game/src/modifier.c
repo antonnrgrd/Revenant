@@ -17,7 +17,7 @@ extern const char* handed_modifier[]= {" 1-handed"," 2-handed"};
 
 extern const char* material_name_modifier[]={" carbon fiber"," plastic"," clay", " leather"," gold"," silver"," custom", " granite", " marble"," flint"," iron"," bronze"," steel", " mithril", " adamantite", " runite", " titanium", " laser", " plasma", " matterbane"};
 
-extern const char *quality_name_modifier[]={"Poor","Apprenticeship", "Journeyman","Masterwork", "Grandmaster","Epic" ,"Legendary","Artefact"};
+extern const char *quality_name_modifier[]={"Poor","Apprenticeship", "Journeyman","Excellent" , "Masterwork", "Grandmaster","Epic" ,"Legendary","Artefact"};
 
 //extern const  char *equipment_kind_modifier[]={" helmet"," necklace"," ring"," chestwear"," leggings"," cape"};
 
