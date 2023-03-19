@@ -33,6 +33,7 @@ U_Hashtable *u_initialize_hashtable(int initial_size,Mersienne_Twister *twister)
  
 void u_add_item(Item_Holder *item, int amount,U_Hashtable *table){  
   unsigned long long index = U_HASH_ITEM(item,table);
+  // printf(" on add index is: %llu ",index);
     //Item already present in inventory 
 //Maybe delete item at this point, maybe not since we might not use it after adding to inventory??
      
@@ -83,18 +84,21 @@ void u_add_item(Item_Holder *item, int amount,U_Hashtable *table){
 
 Item_Weight u_remove_item(Item_Holder *item, int amount, U_Hashtable *table, int free_item_if_removed){
   unsigned long long index = U_HASH_ITEM(item,table);
+  //  printf(" On removal, index is: %llu ",index);
   // if(((struct Weapon *)item->item->item_specific_info)->material == bronze){
   //printf("%s%llu", " " , index);
   //}
   Item_Weight item_weight;
   // If the item we are looking for is at the top-level, then assert if we are removing all occurences of the items and act correspondingly
-  // Unsure why but we have to wrap the HAS_SAME_NAME_TRIVIAL macro in parenthesis in this case, but not for item insert for it to actually return a value 
+  // Unsure why but we have to wrap the HAS_SAME_NAME_TRIVIAL macro in parenthesis in this case, but not for item insert for it to actually return a value
+  
   if(table->entries[index] != NULL && (table->entries[index]->item_holder->item->kind == item->item->kind  && (HAS_SAME_NAME_TRIVIAL(table->entries[index]->item_holder, item)) == 0)){
-    //    printf("%s", " first case ");
+    // printf("%s", " first case ");
     if(amount >= table->entries[index]->item_holder->amount){
       if(free_item_if_removed == YES){
 	i_free_item(table->entries[index]->item_holder->item);
 	free(table->entries[index]->item_holder);
+	table->entries[index]->item_holder = NULL;
 	free(table->entries[index]);
 	table->entries[index] = NULL;
       }
@@ -102,6 +106,8 @@ Item_Weight u_remove_item(Item_Holder *item, int amount, U_Hashtable *table, int
       item_weight.item = table->entries[index]->item_holder->item;
       item_weight.weight_loss = (table->entries[index]->item_holder->amount * table->entries[index]->item_holder->item->weight);
       item_weight.deleted = DELETED;
+      table->entries[index]->item_holder->amount = 0;
+      //printf("NULL 1 here");
       Entry *tmp = table->entries[index];      
       Entry *replacement = table->entries[index]->next_entry;
       table->entries[index] = replacement;
@@ -137,12 +143,17 @@ Item_Weight u_remove_item(Item_Holder *item, int amount, U_Hashtable *table, int
       if(free_item_if_removed == YES){
 	i_free_item(current_entry->item_holder->item);
 	free(current_entry->item_holder);
+	current_entry->item_holder = NULL;
 	free(current_entry);
+	current_entry = NULL;
       }
       else{   
       item_weight.item = current_entry->item_holder->item;
       item_weight.weight_loss = (current_entry->item_holder->amount * current_entry->item_holder->item->weight);
       item_weight.deleted = DELETED;
+      
+      current_entry->item_holder->amount = 0;
+      //      printf("NULL 2 here");
       Entry *replacement = current_entry->next_entry;
       previous_entry->next_entry = replacement;
       return item_weight;
@@ -157,26 +168,31 @@ Item_Weight u_remove_item(Item_Holder *item, int amount, U_Hashtable *table, int
      }
     }
     else{
-    while(current_entry->next_entry != NULL){
+    while(current_entry != NULL){
+      //printf("material of weapon: %d,",((Weapon *)current_entry->item_holder->item->item_specific_info)->material);
       //  printf("%s", " checking ");
       if(current_entry->item_holder->item->kind == item->item->kind && (HAS_SAME_NAME_TRIVIAL(current_entry->item_holder, item)) == 0){
 	//	printf("%s", " found item to remove ");
 	if(amount >= current_entry->item_holder->amount){	  
-	  if(free_item_if_removed == YES){
-	    i_free_item(table->entries[index]->item_holder->item);
-	  }
-	  else{
-	    item_weight.item = table->entries[index]->item_holder->item;
-	  }
-	  item_weight.item = table->entries[index]->item_holder->item;
-	  item_weight.weight_loss = (current_entry->item_holder->amount * current_entry->item_holder->item->weight);
-	  item_weight.deleted = DELETED;
-	  previous_entry->next_entry = current_entry->next_entry;
-	  free(current_entry->item_holder);
-	  free(current_entry);
-	  return item_weight;
+	   if(free_item_if_removed == YES){
+	i_free_item(current_entry->item_holder->item);
+	free(current_entry->item_holder);
+	current_entry->item_holder = NULL;
+	free(current_entry);
+	current_entry = NULL;
+      }
+      else{   
+      item_weight.item = current_entry->item_holder->item;
+      item_weight.weight_loss = (current_entry->item_holder->amount * current_entry->item_holder->item->weight);
+      item_weight.deleted = DELETED;
+      current_entry->item_holder->amount = 0;
+      Entry *replacement = current_entry->next_entry;
+      previous_entry->next_entry = replacement;
+      return item_weight;
+      }
 	}
       else{
+	//printf("fell though here 2");
 	table->entries[index]->item_holder->amount -= amount;
 	item_weight.item = table->entries[index]->item_holder->item;
 	item_weight.weight_loss = (amount * current_entry->item_holder->item->weight);
@@ -190,10 +206,12 @@ Item_Weight u_remove_item(Item_Holder *item, int amount, U_Hashtable *table, int
     }
   
   }
+  //printf("fell though here 3");
     // A safety guard more than anything else, if all else fails, we found no item and we stand to lose no weight 
   item_weight.weight_loss = 0;
   item_weight.item = NULL;
   return item_weight;
+  
 }
   
 

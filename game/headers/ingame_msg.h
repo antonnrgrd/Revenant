@@ -83,7 +83,7 @@ int msg_display_equipped_equipment(Game_State *gs);
 /*ncurses has built-in functionality for clearing */
 #define MSG_CLEAR_SCREEN(window)werase(window); box(window,0,0);
 //We print i+2 to print at the desired position in the equipment log
-#define MSG_REDRAW_INVENTORY(available_equipment,num_items,window) MSG_CLEAR_SCREEN(window); for(int i = 0; i < num_items; i++){msg_print_item(available_equipment[i],gs->logs[INVENTORY_LOG],5,i+2);}
+#define MSG_REDRAW_INVENTORY(available_equipment,num_items,window) MSG_CLEAR_SCREEN(window); INIT_INVENTORY_LOG(gs->logs[INVENTORY_LOG], "Available equipment");  for(int i = 0; i < num_items; i++){msg_print_item(available_equipment[i],gs->logs[INVENTORY_LOG],5,i+2);}
 
 
 #define MSG_ENABLE_SCROLLING(window) scrollok(window, TRUE); idlok(window, TRUE);
@@ -99,6 +99,6 @@ int msg_trading_session(int global_x, int global_y,Game_State *gs);
 
 void msg_redraw_inventory(Game_State *gs, Item_Holder **item_list, int context, int num_items);
 void msg_redraw_equipped_equipment(Game_State *gs);
-void msg_redraw_inventory_equip_context(Game_State *gs, Item_Holder **item_list, int num_items);
+void msg_redraw_inventory_equip_context(Game_State *gs, Item_Holder **item_list, int num_items, int curs_pos);
 #endif
 

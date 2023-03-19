@@ -227,6 +227,7 @@ int msg_find_item_position(WINDOW *log, int max_y,Item_Holder *item, Item_Holder
   //when we add the item, we increase the number of items in the list, so we have have to add a +1
   //By how we malloc for the item_list, we SHOULD be guaranteed that there are enough free pointers to do this 
   //printf("ITEM NOT ALREADY IN LIST");
+  printf(" free position: %d",max_y+1);
   return max_y+1;
 }
 
@@ -316,15 +317,20 @@ int msg_display_inventory_equip_context(Game_State *gs){
   int column_position = 2;
   int current_printed_items = 0;
   Item_Holder **item_list = NULL;
+  /*We malloc an itemlist of size item_count to account for the maximal possible items we need to hold and set them to null
+   to account for the fact that potentially not all items in the inventory are equipment*/
   if((((Player_Info * )gs->player->additional_info)->inventory)->item_count > 0){
     item_list = malloc(sizeof(Item_Holder* ) * (((Player_Info * )gs->player->additional_info)->inventory)->item_count);
+  }
+  for(int i = 0; i < (((Player_Info * )gs->player->additional_info)->inventory)->item_count; i++){
+    item_list[i] = NULL;
   }
   for(int i = 0; i < (((Player_Info * )gs->player->additional_info)->inventory)->size; i++ ){
     if((((Player_Info * )gs->player->additional_info)->inventory)->entries[i] != NULL){
       Entry  *current_entry = (((Player_Info * )gs->player->additional_info)->inventory)->entries[i];
       while(current_entry != NULL){
 	if(current_entry->item_holder->item->kind == weapon || current_entry->item_holder->item->kind == armor ){
-	item_list[curr_curs_pos-2] =  current_entry->item_holder;  
+	item_list[column_position-2] =  current_entry->item_holder;  
 	msg_print_item(current_entry->item_holder,gs->logs[INVENTORY_LOG],5,column_position);
 	column_position++;
 	current_printed_items++;
@@ -334,7 +340,6 @@ int msg_display_inventory_equip_context(Game_State *gs){
       }
     }
   }
-  
   wmove(gs->logs[INVENTORY_LOG],curr_curs_pos,5);
   curs_set(TRUE);
   top_panel(gs->panels[INVENTORY_LOG]);
@@ -357,7 +362,7 @@ int msg_display_inventory_equip_context(Game_State *gs){
       update_panels();
       doupdate();
     }       
-    else if (ch == KEY_DOWN && curr_curs_pos < DEFAULT_MAX_Y - 2 && item_list[(curr_curs_pos-2)+1] != NULL && item_list != NULL){
+    else if (ch == KEY_DOWN && curr_curs_pos < DEFAULT_MAX_Y - 2 && (curr_curs_pos-2)+1 < available_equipment && item_list != NULL){
       curr_curs_pos++;
       wmove(gs->logs[INVENTORY_LOG],curr_curs_pos,5);
       update_panels();
@@ -365,6 +370,7 @@ int msg_display_inventory_equip_context(Game_State *gs){
     }
     //probably faulty with how we assign item holder pointers to the item list
     else if (ch == 'y' && ( item_list != NULL && item_list[curr_curs_pos-2]!= NULL)){
+      //printf("equip called");
      mvwprintw(gs->logs[MAIN_SCREEN],DEFAULT_MAX_Y,0, "%s", "You equip ");
      /*We temporarily set the amount of the item we equip to be one since
       item printer prints the amount of the item, unless the amount we have is 1
@@ -378,15 +384,21 @@ int msg_display_inventory_equip_context(Game_State *gs){
       //we subtract 2 from curr_curs_pos to "map" from current cursor position to the actual postion of the item
       //in the item list. This is because the item list starts at index 0, whereas the cursor position starts at 2
      Item_Holder *previously_equipped = inv_equip_item(item_list[curr_curs_pos-2], ((U_Hashtable * )gs->player->additional_info), gs->player);
-      if(item_list[curr_curs_pos-2]->amount == 1){
+
+      /*If the item list is null, it means we equipped the only occurence of that item in the inventory*/
+     if(item_list[curr_curs_pos-2]->amount == 0 ){
        	wclrtoeol(gs->logs[INVENTORY_LOG]);
 	item_list[curr_curs_pos-2]=NULL;
       	MSG_COMPRESS_ITEM_LIST(item_list,curr_curs_pos-2,available_equipment,gs->logs[INVENTORY_LOG]);
 	available_equipment--;
+	
+
 	//	any_null(item_list);     
            }
+      
              
      else{
+       // printf("this bit of logic here");
        wclrtoeol(gs->logs[INVENTORY_LOG]);
 	 box(gs->logs[INVENTORY_LOG],0,0);
 	 msg_print_item(item_list[curr_curs_pos-2],gs->logs[INVENTORY_LOG],5,curr_curs_pos);
@@ -406,10 +418,34 @@ int msg_display_inventory_equip_context(Game_State *gs){
 	 MSG_REDRAW_INVENTORY(item_list,available_equipment,gs->logs[INVENTORY_LOG]);
 	 UPDATE_PANEL_INFO();
        }
-     }  
+     }
+     /*
+     for(int i = 0; i < (((Player_Info * )gs->player->additional_info)->inventory)->item_count; i++ ){
+      if(item_list[i] == NULL){
+	printf("%d null", i);
+      }
+      else{
+		printf("%d NOT null", i);
+      }
+    
+     }
+
+     */
+    /*Provided the next item is null OR that the current cursor position mapped to the available equipment +1 exeecds the avilalbe equipment (are at the end of the equipment list), we have to move upwards to the next available piece of equipment. The exception being that (curr_curs_pos-2)-1 > -1 (we are are the only/last item in the item list)   */
+	if((item_list[(curr_curs_pos-2)+1] == NULL || (curr_curs_pos -1 ) +1 > available_equipment ) && (curr_curs_pos-2)-1 > -1){
+	  //printf("null,just as expected");
+	  
+	  curr_curs_pos--;
+	  wmove(gs->logs[INVENTORY_LOG],curr_curs_pos,5);
+
+	}
+	else{
+	  wmove(gs->logs[INVENTORY_LOG],curr_curs_pos,5);
+	}
+	UPDATE_PANEL_INFO();
     }
     else if(ch == KEY_RESIZE){
-      msg_redraw_inventory_equip_context(gs, item_list, available_equipment);
+      msg_redraw_inventory_equip_context(gs, item_list, available_equipment,curr_curs_pos);
     }
   }
 }
@@ -616,7 +652,7 @@ void msg_redraw_equipped_equipment(Game_State *gs){
 }
 
 
-void msg_redraw_inventory_equip_context(Game_State *gs, Item_Holder **item_list, int num_items){
+void msg_redraw_inventory_equip_context(Game_State *gs, Item_Holder **item_list, int num_items, int curs_pos){
   int row_position = 2;  
   int x,y;
   getmaxyx(stdscr, y,x);
@@ -629,14 +665,17 @@ void msg_redraw_inventory_equip_context(Game_State *gs, Item_Holder **item_list,
       }
     gs->logs[INVENTORY_LOG] = newwin(LOG_Y_SIZE,LOG_X_SIZE,(gs->num_cols - 1) / 4 , (gs->num_rows - 1) / 4);
     gs->panels[INVENTORY_LOG] = new_panel(gs->logs[INVENTORY_LOG]);
+    INIT_INVENTORY_LOG(gs->logs[INVENTORY_LOG], "Available equipment");
       MSG_CLEAR_SCREEN(gs->logs[INVENTORY_LOG]);
       top_panel(gs->panels[INVENTORY_LOG]);
        REDRAW_MAP(gs,gs->player,gs->current_zone,gs->logs[MAIN_SCREEN], gs->player->position.global_x,gs->player->position.global_y,rows, cols);
-  
+  for(int i = 0; i < num_items; i++){
+    msg_print_item(item_list[i],gs->logs[INVENTORY_LOG],5,row_position);
+    row_position++;
   top_panel(gs->panels[INVENTORY_LOG]);
-  UPDATE_PANEL_INFO();
-  free(item_holder);
-    
+  wmove(gs->logs[INVENTORY_LOG],curs_pos,5);
+  UPDATE_PANEL_INFO();    
+   }
   }
   else{
   //For some reason, you explicitly have to reisze the size of the window to the original
@@ -644,10 +683,13 @@ void msg_redraw_inventory_equip_context(Game_State *gs, Item_Holder **item_list,
   //the entire screen
   wresize(gs->logs[INVENTORY_LOG],LOG_Y_SIZE,LOG_X_SIZE);
   MSG_CLEAR_SCREEN(gs->logs[INVENTORY_LOG]);
+  INIT_INVENTORY_LOG(gs->logs[INVENTORY_LOG], "Available equipment");
   REDRAW_MAP(gs,gs->player,gs->current_zone,gs->logs[MAIN_SCREEN], gs->player->position.global_x,gs->player->position.global_y,rows, cols);
   for(int i = 0; i < num_items; i++){
     msg_print_item(item_list[i],gs->logs[INVENTORY_LOG],5,row_position);
     row_position++;
    }
   }
+   wmove(gs->logs[INVENTORY_LOG],curs_pos,5);
+   UPDATE_PANEL_INFO();    
 }

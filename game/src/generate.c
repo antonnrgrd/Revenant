@@ -116,7 +116,7 @@ Item_Holder *g_generate_item(Mersienne_Twister *twister){
     int kind = D2_0(twister);
     Item *weapon = i_make_mele_weapon(quality, valid_materials[GEN_VALUE_RANGE(0,4,twister)], variant,kind);
     item_holder->item = weapon;
-    item_holder->amount = D3(twister);
+    item_holder->amount = 1;//D3(twister);
     return item_holder;
   }
 }
