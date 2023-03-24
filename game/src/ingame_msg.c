@@ -223,12 +223,9 @@ int msg_find_item_position(WINDOW *log, int max_y,Item_Holder *item, Item_Holder
     }
    }  
   }
-  //We return max_y+1 since we add the item to the end of the list. However
-  //when we add the item, we increase the number of items in the list, so we have have to add a +1
-  //By how we malloc for the item_list, we SHOULD be guaranteed that there are enough free pointers to do this 
   //printf("ITEM NOT ALREADY IN LIST");
   //printf(" free position: %d",max_y+1);
-  return max_y+1;
+  return max_y;
 }
 
 void msg_update_event_log(Game_State *gs){
@@ -368,6 +365,9 @@ int msg_display_inventory_equip_context(Game_State *gs){
       update_panels();
       doupdate();
     }
+    //    if( (ch == 'y' && ( item_list != NULL && item_list[curr_curs_pos-2]== NULL))){
+    //    printf("this should not be allowed to happen!");
+    //  }
     //probably faulty with how we assign item holder pointers to the item list
     else if (ch == 'y' && ( item_list != NULL && item_list[curr_curs_pos-2]!= NULL)){
       //printf(" quality: %d ",((struct Weapon *)item_list[curr_curs_pos-2]->item->item_specific_info)->quality );
@@ -389,7 +389,7 @@ int msg_display_inventory_equip_context(Game_State *gs){
      if(item_list[curr_curs_pos-2]->amount == 0 ){
        	wclrtoeol(gs->logs[INVENTORY_LOG]);
 	item_list[curr_curs_pos-2]=NULL;
-      
+	//printf(" diff %d ", curr_curs_pos-2,available_equipment);
       	MSG_COMPRESS_ITEM_LIST(item_list,curr_curs_pos-2,available_equipment,gs->logs[INVENTORY_LOG]);
 	available_equipment--; 
 	//if(item_list[curr_curs_pos-2] == NULL){
@@ -410,29 +410,32 @@ int msg_display_inventory_equip_context(Game_State *gs){
      if(previously_equipped != NULL){
        int list_pos = msg_find_item_position(gs->logs[INVENTORY_LOG],available_equipment,previously_equipped,item_list);
        if(list_pos != ALREADY_LISTED){
+	 //	 printf( "NOT LISTED found free postition in: %d", list_pos);
        item_list[list_pos] = previously_equipped;
-       msg_print_item(item_list[list_pos],gs->logs[INVENTORY_LOG],5,list_pos+1);
+       msg_print_item(item_list[list_pos],gs->logs[INVENTORY_LOG],5,list_pos+2);
        available_equipment++;
        UPDATE_PANEL_INFO();
        }
-       else{ 
+       else{
+	 //printf( " already listed ");
 	 free(previously_equipped);
 	 MSG_REDRAW_INVENTORY(item_list,available_equipment,gs->logs[INVENTORY_LOG]);
 	 UPDATE_PANEL_INFO();
        }
      }
+
      /*
      for(int i = 0; i < (((Player_Info * )gs->player->additional_info)->inventory)->item_count; i++ ){
       if(item_list[i] == NULL){
-	printf("%d null", i);
+	printf(" %d null ", i);
       }
       else{
-		printf("%d NOT null", i);
+		printf(" %d NOT null ", i);
       }
     
      }
-
      */
+     
     /*Provided that the item at the cursor is null af compressing the item list and that the current cursor position mapped to the available equipment +1 exceeds the avilalbe equipment (we are at the end of the equipment list), we have to move upwards to the next available piece of equipment. The exception being that (curr_curs_pos-2)-1 > -1 (we are are the only/last item in the item list)   */
      if( (item_list[(curr_curs_pos-2)] == NULL &&  (curr_curs_pos -1 ) +1 > available_equipment)  && (curr_curs_pos-2)-1 > -1){
 	  //printf("null,just as expected");

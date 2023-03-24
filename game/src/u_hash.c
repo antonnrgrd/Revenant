@@ -77,6 +77,7 @@ void u_add_item(Item_Holder *item, int amount,U_Hashtable *table){
     current_entry->next_entry = malloc(sizeof(Entry));
     current_entry->next_entry->item_holder = item;
     current_entry->next_entry->next_entry = NULL;
+    //printf("called a item count incr");
     table->item_count++;
   }
 }
@@ -95,6 +96,7 @@ Item_Weight u_remove_item(Item_Holder *item, int amount, U_Hashtable *table, int
   if(table->entries[index] != NULL && (table->entries[index]->item_holder->item->kind == item->item->kind  && (HAS_SAME_NAME_TRIVIAL(table->entries[index]->item_holder, item)) == 0)){
     // printf("%s", " first case ");
     if(amount >= table->entries[index]->item_holder->amount){
+      table->item_count--;
       if(free_item_if_removed == YES){
 	i_free_item(table->entries[index]->item_holder->item);
 	free(table->entries[index]->item_holder);
@@ -140,6 +142,7 @@ Item_Weight u_remove_item(Item_Holder *item, int amount, U_Hashtable *table, int
     //Edge case of when the immedediately next entry was the item we were looking for
     if(current_entry->item_holder->item->kind == item->item->kind && (HAS_SAME_NAME_TRIVIAL(current_entry->item_holder, item)) == 0){
        if(amount >= current_entry->item_holder->amount){
+	 table->item_count--;
       if(free_item_if_removed == YES){
 	i_free_item(current_entry->item_holder->item);
 	free(current_entry->item_holder);
@@ -173,7 +176,8 @@ Item_Weight u_remove_item(Item_Holder *item, int amount, U_Hashtable *table, int
       //  printf("%s", " checking ");
       if(current_entry->item_holder->item->kind == item->item->kind && (HAS_SAME_NAME_TRIVIAL(current_entry->item_holder, item)) == 0){
 	//	printf("%s", " found item to remove ");
-	if(amount >= current_entry->item_holder->amount){	  
+	if(amount >= current_entry->item_holder->amount){
+	  table->item_count--;
 	   if(free_item_if_removed == YES){
 	i_free_item(current_entry->item_holder->item);
 	free(current_entry->item_holder);

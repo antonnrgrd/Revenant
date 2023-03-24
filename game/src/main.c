@@ -55,25 +55,22 @@ Item *weapon = i_make_mele_weapon(epic,bronze,one_hand,sword);
   Item_Holder *m = malloc(sizeof(Item_Holder));
   m->item = armor_2;
  m->amount=1;
-
  Item_Holder *reagent = ir_readin_reagent("/usr/lib/revenant_files/item_files/reagent_files/1", 2);
- Item_Holder *food = ir_readin_consumable("/usr/lib/revenant_files/item_files/consumable_files/0", 4);
- 
+ Item_Holder *food = ir_readin_consumable("/usr/lib/revenant_files/item_files/consumable_files/0", 4); 
   u_add_item(reagent,reagent->amount,((Player_Info * )gs->player->additional_info)->inventory);
   u_add_item(food,food->amount,((Player_Info * )gs->player->additional_info)->inventory);
 
  u_add_item(j,j->amount,((Player_Info * )gs->player->additional_info)->inventory);
-  u_add_item(i,i->amount,((Player_Info * )gs->player->additional_info)->inventory);
+ u_add_item(i,i->amount,((Player_Info * )gs->player->additional_info)->inventory);
   u_add_item(k,k->amount,((Player_Info *)gs->player->additional_info)->inventory);
    u_add_item(l,l->amount,((Player_Info * )gs->player->additional_info)->inventory);
-    u_add_item(m,m->amount,((Player_Info * )gs->player->additional_info)->inventory);
+   u_add_item(m,m->amount,((Player_Info * )gs->player->additional_info)->inventory);
   */  
   initscr();
  start_color(); 
    Game_World *game_world = g_generate_game_world(1000,1000);
   Game_State *gs =  gs_create_game_state(game_world);   
-  ((Player_Info *)gs->player->additional_info)->inventory = g_generate_merchant_inventory(2,2,gs->twister);
-  
+  ((Player_Info *)gs->player->additional_info)->inventory = g_generate_merchant_inventory(10,10,gs->twister);  
   noecho();
   curs_set(FALSE);
    keypad(stdscr, TRUE);
