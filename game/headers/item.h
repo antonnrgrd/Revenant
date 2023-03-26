@@ -24,6 +24,28 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include <stdio.h>
 #include <ncurses.h>
 #define PRINT_ITEM 0
+#define I_COPY_ITEM_HOLDER(source_item,target_item) Item_Holder *item_holder = malloc(sizeof(Item_Holder)); \
+  item_holder->item = malloc(sizeof(Item)); \
+  item_holder->item->id = item->item->id; \
+  item_holder->item->representation = malloc(sizeof(char)); \
+  strcpy(item_holder->item->representation,item->item->representation); \
+  item_holder->item->standing_on = malloc(sizeof(char)); \
+  strcpy(item_holder->item->standing_on,item->item->standing_on); \
+  item_holder->item->value = item->item->value; \
+  item_holder->item->kind = item->item->kind; \
+  item_holder->item->weight = item->item->weight; \
+  item_holder->item->quest_item = item->item->quest_item; \
+  (*i_item_holder_copy_handler[item_holder->item->kind])(item_holder);
+
+#define I_FREE_ITEM_HOLDER(item_holder) \
+  (*i_free_item_handler[item_holder->item->kind])(item_holder); \
+  free(item_holder->item->representation);			\
+    free(item_holder->item->standing_on);			\
+  free(item_holder->item);					\
+  free(item_holder);						\
+  item_holder = NULL;
+
+  
 typedef enum Material{carbon_fiber,plastic,clay,leather,gold,silver,custom,granite,marble,flint,iron,bronze,steel,mithril,adamantite,runite,titanium,laser,plasma,matterbane}Material;
 typedef enum Variant{one_hand, two_hand}Variant;
 typedef enum Weapon_Group{mele,ranged}Weapon_Group;
@@ -44,7 +66,6 @@ typedef struct{
 typedef struct{
   int id;
   int hp_change;
-  float weight;
 }Consumable;
 typedef struct Armor{
   Quality_Level quality;
@@ -116,26 +137,15 @@ char *i_variant_name(Variant v);
 char *i_quality_name(Quality_Level q);
 Item *i_make_weapon(Quality_Level q, Material material, Variant v);
 
-void i_free_item(Item *i);
-void i_free_interactable(Item *i);
-void i_free_valuable(Item *i);
-void i_free_reagent(Item *i);
-void i_free_consumable(Item *i);
-void i_free_equippable(Item *i);
-Item *i_copy_item(Item *i);
+void i_free_weapon(Item_Holder *item);
+void i_free_reagent(Item_Holder *item);
+void i_free_consumable(Item_Holder *item);
+Item *i_copy_item(Item_Holder *item);
 
 
-Item *i_copy_item(Item *i);
-
-void i_copy_interactable(Item *i, Item *j);
-void i_copy_valuable(Item *i, Item *j);
-void i_copy_reagent(Item *i, Item *j);
-void i_copy_consumable(Item *i, Item *j);
-void i_copy_equippable(Item *i, Item *j);
-void i_copy_reagent(Item *i, Item *j);
 
 extern void (*copy_item_handler[5])(Item *i);
-extern void (*free_item_handler[5])(Item *i);
+
 
 extern void (*i_print_item_name_handler[3])(Item *i);
 
@@ -161,6 +171,15 @@ void i_print_equippable_name(Item *i, WINDOW *inv_screen,int x, int y);
 
 #define I_GET_FILEPATH(item)(item->kind == reagent ? (I_GET_FILEPATH_REAGNET(item)) : (I_GET_FILEPATH_CONSUMABLE(item)))
 
+extern void (*i_item_holder_copy_handler[4])(Item_Holder *source_item,Item_Holder *target_item);
+extern void (*i_free_item_handler[4])(Item_Holder *item);
+void i_copy_reagent(Item_Holder *source_item,Item_Holder *target_item);
+
+void i_copy_consumable(Item_Holder *source_item,Item_Holder *target_item);
+
+void i_copy_weapon(Item_Holder *source_item,Item_Holder *target_item);
+
+void i_copy_armor(Item_Holder *source_item,Item_Holder *target_item);
 //Item_Holder *i_readin_reagent(char *reagent_file_path);
 
 #endif

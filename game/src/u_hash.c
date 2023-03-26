@@ -98,9 +98,7 @@ Item_Weight u_remove_item(Item_Holder *item, int amount, U_Hashtable *table, int
     if(amount >= table->entries[index]->item_holder->amount){
       table->item_count--;
       if(free_item_if_removed == YES){
-	i_free_item(table->entries[index]->item_holder->item);
-	free(table->entries[index]->item_holder);
-	table->entries[index]->item_holder = NULL;
+	I_FREE_ITEM_HOLDER(table->entries[index]->item_holder);
 	free(table->entries[index]);
 	table->entries[index] = NULL;
       }
@@ -144,9 +142,7 @@ Item_Weight u_remove_item(Item_Holder *item, int amount, U_Hashtable *table, int
        if(amount >= current_entry->item_holder->amount){
 	 table->item_count--;
       if(free_item_if_removed == YES){
-	i_free_item(current_entry->item_holder->item);
-	free(current_entry->item_holder);
-	current_entry->item_holder = NULL;
+	I_FREE_ITEM_HOLDER(current_entry->item_holder);
 	free(current_entry);
 	current_entry = NULL;
       }
@@ -179,9 +175,7 @@ Item_Weight u_remove_item(Item_Holder *item, int amount, U_Hashtable *table, int
 	if(amount >= current_entry->item_holder->amount){
 	  table->item_count--;
 	   if(free_item_if_removed == YES){
-	i_free_item(current_entry->item_holder->item);
-	free(current_entry->item_holder);
-	current_entry->item_holder = NULL;
+	    I_FREE_ITEM_HOLDER(current_entry->item_holder);
 	free(current_entry);
 	current_entry = NULL;
       }

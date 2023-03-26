@@ -386,9 +386,8 @@ int msg_display_inventory_equip_context(Game_State *gs){
      Item_Holder *previously_equipped = inv_equip_item(item_list[curr_curs_pos-2], ((U_Hashtable * )gs->player->additional_info), gs->player);
 
       /*If the item list is null, it means we equipped the only occurence of that item in the inventory*/
-     if(item_list[curr_curs_pos-2]->amount == 0 ){
+     if(item_list[curr_curs_pos-2] == NULL ){
        	wclrtoeol(gs->logs[INVENTORY_LOG]);
-	item_list[curr_curs_pos-2]=NULL;
 	//printf(" diff %d ", curr_curs_pos-2,available_equipment);
       	MSG_COMPRESS_ITEM_LIST(item_list,curr_curs_pos-2,available_equipment,gs->logs[INVENTORY_LOG]);
 	available_equipment--; 

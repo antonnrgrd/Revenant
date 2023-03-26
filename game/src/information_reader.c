@@ -27,6 +27,9 @@ Item_Holder *ir_readin_reagent(char *reagent_file_path, int amount){
   
 Item_Holder *ir_readin_consumable(char *consumable_file_path, int amount){
   Item *i = malloc(sizeof(Item));
+  i->standing_on = malloc(sizeof(char));
+  i->representation = malloc(sizeof(char));
+  i->representation[0] = 'C';
   Consumable *consumable = malloc(sizeof(Consumable));
   consumable->id = ir_readin_int(consumable_file_path,"id");
   i->weight = ir_readin_float(consumable_file_path,"weight");
