@@ -84,6 +84,7 @@ Game_State *gs_create_game_state(Game_World *game_world){
   
   
   Game_State *state = malloc(sizeof(Game_State));
+  state->ingame_log = malloc(sizeof(char *) * NUM_EVENTS);
   getmaxyx(stdscr,state->found_rows, state->found_cols);
   getmaxyx(stdscr,state->num_cols, state->num_rows);
   state->twister = rng_generate_twister();

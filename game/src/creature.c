@@ -33,7 +33,7 @@ void c_initialize_humanoid_inf(Creature *c, int id){
   //  Humanoid_Definition d = humanoid_definitions[id];
   //  c->weight = d.weight;
   // c->height = d.height;
-  c->representation[0] = 'h';
+  //  c->representation = 'h';
   // c->instance.humanoid = c_generate_humanoid_instance(d);
 }
 
@@ -54,7 +54,7 @@ Creature *c_generate_creature(Creature_Kind kind, int id,unsigned x,unsigned y,G
   
   c->species = kind;
   c->id = id;
-  c->standing_on = malloc(sizeof(char));
+  //  c->standing_on = malloc(sizeof(char));
   c->standing_on[0] = world->tiles[c->position.global_y][c->position.global_x].content[0];
   world->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
   world->tiles[c->position.global_y][c->position.global_x].foe = c;
@@ -70,7 +70,7 @@ Creature *c_random_player(int x, int y,Game_State *gs, Game_World *gw){
   Creature *c = malloc(sizeof(Creature));
   c->curr_ap = 1;
   c->max_ap = 1;
-  c->standing_on = malloc(sizeof(char));
+  //c->standing_on = malloc(sizeof(char));
   c->weight = 80.5;
   c->height = 1.80;
   c->species = player_character;
@@ -107,7 +107,7 @@ Creature *c_random_player(int x, int y,Game_State *gs, Game_World *gw){
   
   // printf("local x: %d, local y: %d, global x: %d, global_y: %d, expr: %d", c->position.local_x, c->position.local_y, c->position.global_x, c->position.global_y,(x  + (DEFAULT_MAX_INFOBAR_WIDTH  - 1 )));
 
-  c->representation = malloc(sizeof(char));
+  //c->representation = malloc(sizeof(char));
   c->representation[0] = '@';
   c->color = malloc(sizeof(Color));
   c->standing_on[0] = ' ';

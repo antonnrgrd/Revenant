@@ -27,8 +27,6 @@ Item_Holder *ir_readin_reagent(char *reagent_file_path, int amount){
   
 Item_Holder *ir_readin_consumable(char *consumable_file_path, int amount){
   Item *i = malloc(sizeof(Item));
-  i->standing_on = malloc(sizeof(char));
-  i->representation = malloc(sizeof(char));
   i->representation[0] = 'C';
   Consumable *consumable = malloc(sizeof(Consumable));
   consumable->id = ir_readin_int(consumable_file_path,"id");
@@ -43,15 +41,16 @@ Item_Holder *ir_readin_consumable(char *consumable_file_path, int amount){
 
 
 Creature *ir_readin_creature(char *creature_file_path,unsigned x, unsigned y, Game_World *world, Creature *target){
-   
+  
   Creature *c = malloc(sizeof(Creature));
-
+  /*We initalize the*/
+  c->representation[0] = '0';
   c->position.global_x=x;
   c->position.global_y=y;
   c->curr_ap = 1;
   c->max_ap = 1;
   c_compute_relative_coords(c, target);
-  c->standing_on = malloc(sizeof(char));
+  //c->standing_on = malloc(sizeof(char));
   c->standing_on[0] = world->tiles[c->position.global_y][c->position.global_x].content[0];
   world->tiles[c->position.global_y][c->position.global_x].foe = c;
   c->has_moved_around_vertically = 0;
@@ -60,7 +59,7 @@ Creature *ir_readin_creature(char *creature_file_path,unsigned x, unsigned y, Ga
  
   /* Oh fuck this stupid src file and its buggy crap, see the comment below on readin_char and all the bullshit i went through to
 get it to work*/
-  c->representation = ir_readin_char_nonvoid(creature_file_path, "representation");
+  ir_readin_char(creature_file_path, "representation",c->representation);
   
    //strcpy(c->representation, representation);
    //free(representation);
@@ -84,7 +83,7 @@ get it to work*/
   
 e*/
    
-  world->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];  
+  world->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation;  
   c->target=target;
   return c;
 }
@@ -201,7 +200,6 @@ void ir_readin_char(char *file_path, char *variable, char *bfr) {
     char *variable_pointer = strstr(line, variable);
     if (variable_pointer != NULL) {
       char *value_as_str = strtok(strchr(line, '=') + 1, "\n");
-      bfr = malloc(sizeof(char) * strlen(value_as_str) + 1);
       strcpy(bfr, value_as_str);
       break;
     }

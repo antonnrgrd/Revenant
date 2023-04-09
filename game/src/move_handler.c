@@ -57,7 +57,7 @@ int (*move_response_handler[5])(int global_x, int global_y, int local_x, int loc
     }
     else{        
       c->standing_on[0] = game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
-      game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
+      game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation;
       mvwprintw(game_state->logs[MAIN_SCREEN],local_y,local_x,c->representation);
       c->position.local_x = local_x;
       c->position.local_y = local_y;
@@ -92,7 +92,7 @@ int move_response_attack_target(int global_x, int global_y,int local_x, int loca
       move(c->position.local_y,c->position.local_x);
      
     if (((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->curr_health <= 0){
-      mvwprintw(game_state->logs[MAIN_SCREEN],game_state,((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->position.local_y,((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->position.local_x,((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->standing_on);
+      mvwprintw(game_state->logs[MAIN_SCREEN],game_state,((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->position.local_y,((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->position.local_x,((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->standing_on[0]);
            game_state->current_zone->tiles[global_y][global_x].content[0] = ((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->standing_on[0];
 	   // c_cleanup_creature(c,game_state->current_zone);
       

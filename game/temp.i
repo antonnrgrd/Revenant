@@ -10105,9 +10105,10 @@ extern void exit_curses (int);
  const char * unctrl_sp (SCREEN*, chtype);
 # 2097 "/usr/include/curses.h" 2 3 4
 # 26 "/home/anton/revenant/game/headers/item.h" 2
-# 45 "/home/anton/revenant/game/headers/item.h"
 
-# 45 "/home/anton/revenant/game/headers/item.h"
+
+
+# 28 "/home/anton/revenant/game/headers/item.h"
 typedef enum Material{carbon_fiber,plastic,clay,leather,gold,silver,custom,granite,marble,flint,iron,bronze,steel,mithril,adamantite,runite,titanium,laser,plasma,matterbane}Material;
 typedef enum Variant{one_hand, two_hand}Variant;
 typedef enum Weapon_Group{mele,ranged}Weapon_Group;
@@ -10128,7 +10129,6 @@ typedef struct{
 typedef struct{
   int id;
   int hp_change;
-  float weight;
 }Consumable;
 typedef struct Armor{
   Quality_Level quality;
@@ -10159,8 +10159,8 @@ typedef union Equipment{
 typedef struct Item{
   int id;
   void *item_specific_info;
-  char *representation;
-  char *standing_on;
+  char representation[2];
+  char standing_on[2];
   uint32_t value;
   Item_Kind kind;
   float weight;
@@ -10173,7 +10173,11 @@ typedef struct Item_Holder{ //a struct for an item and how many of that item cur
   int amount;
 }Item_Holder;
 
-
+/*
+#define I_COPY_ITEM_HOLDER(source_item,target_item,amount_copied) source_item = malloc(sizeof(Item));    source_item->id = target_item->item->id;   source_item->representation[0] = target_item->item->representation[0];   source_item->standing_on[0] = target_item->item->standing_on[0];   source_item->value = target_item->item->value;   source_item->kind = target_item->item->kind;   source_item->weight = target_item->item->weight;   source_item->quest_item = target_item->item->quest_item;   (*i_item_holder_copy_handler[source_item->kind])(source_item,target_item);
+m,target_item);
+*/
+# 125 "/home/anton/revenant/game/headers/item.h"
 Item_Holder *i_make_item_holder(Item *item, unsigned amount);
 void i_swap_pointers(Item_Holder *i,Item_Holder *j);
 
@@ -10200,7 +10204,7 @@ char *i_variant_name(Variant v);
 char *i_quality_name(Quality_Level q);
 Item *i_make_weapon(Quality_Level q, Material material, Variant v);
 
-
+void i_free_weapon(Item_Holder *item);
 void i_free_reagent(Item_Holder *item);
 void i_free_consumable(Item_Holder *item);
 Item *i_copy_item(Item_Holder *item);
@@ -10218,23 +10222,23 @@ void i_print_reagent_name(Item *i, WINDOW *inv_screen,int x, int y);
 void i_print_consumable_name(Item *i, WINDOW *inv_screen,int x, int y);
 void i_print_equippable_name(Item *i, WINDOW *inv_screen,int x, int y);
 
-
-
-
-
-
-
+/*
+#define HAS_ITEM_NAME_WEAPON(source_item_holder, target_item_holder)({int is_equal = 0; const char *source_item_holder_quality = quality_name_modifier[((struct Weapon *)source_item_holder->item->item_specific_info)->quality]; const char *source_item_holder_material = material_name_modifier[((struct Weapon *)source_item_holder->item->item_specific_info)->material]; const char *source_item_holder_handed_modifier = handed_modifier[((struct Weapon *)source_item_holder->item->item_specific_info)->variant]; const char *source_item_holder_kind_modifier = mele_weapon_name_modifier[((struct Weapon *)source_item_holder->item->item_specific_info)->kind]; const char *target_item_holder_quality = quality_name_modifier[((struct Weapon *)target_item_holder->item->item_specific_info)->quality]; const char *target_item_holder_material = material_name_modifier[((struct Weapon *)target_item_holder->item->item_specific_info)->material]; const char *target_item_holder_handed_modifier = handed_modifier[((struct Weapon *)target_item_holder->item->item_specific_info)->variant]; const char *target_item_holder_kind_modifier = mele_weapon_name_modifier[((struct Weapon *)target_item_holder->item->item_specific_info)->kind]; is_equal = (strcmp(source_item_holder_quality,target_item_holder_quality)  |  strcmp(source_item_holder_material, target_item_holder_material)  | strcmp(source_item_holder_handed_modifier,target_item_holder_handed_modifier)  | strcmp(source_item_holder_kind_modifier,target_item_holder_kind_modifier)); is_equal;})
+*/
+# 180 "/home/anton/revenant/game/headers/item.h"
 /*if the items are of a different type, we can trivially conlclude that they are not the same*/
-# 171 "/home/anton/revenant/game/headers/item.h"
-extern Item_Holder* (*i_item_holder_copy_handler[4])(Item_Holder *source_item,Item_Holder *target_item);
+# 190 "/home/anton/revenant/game/headers/item.h"
+extern void (*i_item_holder_copy_handler[4])(Item_Holder *source_item,Item_Holder *target_item);
 extern void (*i_free_item_handler[4])(Item_Holder *item);
-Item_Holder *i_copy_reagent(Item_Holder *source_item,Item_Holder *target_item);
 
-Item_Holder *i_copy_consumable(Item_Holder *source_item,Item_Holder *target_item);
 
-Item_Holder *i_copy_weapon(Item_Holder *source_item,Item_Holder *target_item);
+void i_copy_reagent(Item_Holder *source_item,Item_Holder *target_item);
 
-Item_Holder *i_copy_armor(Item_Holder *source_item,Item_Holder *target_item);
+void i_copy_consumable(Item_Holder *source_item,Item_Holder *target_item);
+
+void i_copy_weapon(Item_Holder *source_item,Item_Holder *target_item);
+
+void i_copy_armor(Item_Holder *source_item,Item_Holder *target_item);
 //Item_Holder *i_readin_reagent(char *reagent_file_path);
 # 23 "/home/anton/revenant/game/headers/u_hash.h" 2
 # 1 "/home/anton/revenant/game/headers/rng.h" 1
@@ -10836,7 +10840,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 //Just a highly specialized structure that holds a reference to an item and how much weight there is to be subtracted from the player's
 //carry weight and a flag that indicated if we deleted it from inventory 
 typedef struct Item_Weight{
-  Item *item;
+  Item_Holder *item_h;
   float weight_loss;
   int deleted;
 }Item_Weight;
@@ -10869,7 +10873,7 @@ U_Hashtable *u_initialize_hashtable(int initial_size,Mersienne_Twister *twister)
 
 void u_add_item(Item_Holder *item, int amount,U_Hashtable *table);
 
-Item_Weight u_remove_item(Item_Holder *item, int amount, U_Hashtable *table,int free_item_if_removed);
+Item_Weight u_remove_item(Item_Holder *item, int amount, U_Hashtable *table);
 
 
 char *u_readin_char(char *file_path, char *variable);
@@ -10930,21 +10934,26 @@ void u_add_item(Item_Holder *item, int amount,U_Hashtable *table){
 # 45 "src/u_hash.c" 3 4
                              ((void *)0) 
 # 45 "src/u_hash.c"
-                                  && (table->entries[index]->item_holder->item->kind == item->item->kind && (table->entries[index]->item_holder->item->kind != item->item->kind ? 1 : item->item->kind == weapon || item->item->kind == armor ? item->item->kind == weapon ? ({int is_equal = 0; const char *source_item_holder_quality = quality_name_modifier[((struct Weapon *)table->entries[index]->item_holder->item->item_specific_info)->quality]; const char *source_item_holder_material = material_name_modifier[((struct Weapon *)table->entries[index]->item_holder->item->item_specific_info)->material]; const char *source_item_holder_handed_modifier = handed_modifier[((struct Weapon *)table->entries[index]->item_holder->item->item_specific_info)->variant]; const char *source_item_holder_kind_modifier = mele_weapon_name_modifier[((struct Weapon *)table->entries[index]->item_holder->item->item_specific_info)->kind]; const char *target_item_holder_quality = quality_name_modifier[((struct Weapon *)item->item->item_specific_info)->quality]; const char *target_item_holder_material = material_name_modifier[((struct Weapon *)item->item->item_specific_info)->material]; const char *target_item_holder_handed_modifier = handed_modifier[((struct Weapon *)item->item->item_specific_info)->variant]; const char *target_item_holder_kind_modifier = mele_weapon_name_modifier[((struct Weapon *)item->item->item_specific_info)->kind]; is_equal = (strcmp(source_item_holder_quality,target_item_holder_quality) | strcmp(source_item_holder_material, target_item_holder_material) | strcmp(source_item_holder_handed_modifier,target_item_holder_handed_modifier) | strcmp(source_item_holder_kind_modifier,target_item_holder_kind_modifier)); is_equal;}) : ({int is_equal; const char *source_item_holder_quality = quality_name_modifier[((struct Armor *)table->entries[index]->item_holder->item->item_specific_info)->quality]; const char *source_item_holder_material = material_name_modifier[((struct Armor *)table->entries[index]->item_holder->item->item_specific_info)->material]; const char *source_item_holder_armor_type = equipment_type_modifier[((struct Armor *)table->entries[index]->item_holder->item->item_specific_info)->armor_type]; char *target_item_holder_quality = quality_name_modifier[((struct Armor *)item->item->item_specific_info)->quality]; const char *target_item_holder_material = material_name_modifier[((struct Armor *)item->item->item_specific_info)->material]; const char *target_item_holder_armor_type = equipment_type_modifier[((struct Armor *)item->item->item_specific_info)->armor_type]; is_equal = (strcmp(source_item_holder_quality,target_item_holder_quality) | strcmp(source_item_holder_material,target_item_holder_material) | strcmp(source_item_holder_armor_type,target_item_holder_armor_type) ); is_equal;}) : table->entries[index]->item_holder->item->kind == item->item->kind && table->entries[index]->item_holder->item->id == item->item->id ? 0 : 1) == 0)){
-     table->entries[index]->item_holder->amount += amount;
+                                  && (table->entries[index]->item_holder->item->kind == item->item->kind && (table->entries[index]->item_holder->item->kind != item->item->kind ? 1 : item->item->kind == weapon || item->item->kind == armor ? item->item->kind == weapon ? (((struct Weapon *)table->entries[index]->item_holder->item->item_specific_info)->quality == ((struct Weapon *)item->item->item_specific_info)->quality && ((struct Weapon *)table->entries[index]->item_holder->item->item_specific_info)->material == ((struct Weapon *)item->item->item_specific_info)->material && ((struct Weapon *)table->entries[index]->item_holder->item->item_specific_info)->variant == ((struct Weapon *)item->item->item_specific_info)->variant && ((struct Weapon *)table->entries[index]->item_holder->item->item_specific_info)->kind == ((struct Weapon *)item->item->item_specific_info)->kind ? 0 : 1) : ({int is_equal; const char *source_item_holder_quality = quality_name_modifier[((struct Armor *)table->entries[index]->item_holder->item->item_specific_info)->quality]; const char *source_item_holder_material = material_name_modifier[((struct Armor *)table->entries[index]->item_holder->item->item_specific_info)->material]; const char *source_item_holder_armor_type = equipment_type_modifier[((struct Armor *)table->entries[index]->item_holder->item->item_specific_info)->armor_type]; char *target_item_holder_quality = quality_name_modifier[((struct Armor *)item->item->item_specific_info)->quality]; const char *target_item_holder_material = material_name_modifier[((struct Armor *)item->item->item_specific_info)->material]; const char *target_item_holder_armor_type = equipment_type_modifier[((struct Armor *)item->item->item_specific_info)->armor_type]; is_equal = (strcmp(source_item_holder_quality,target_item_holder_quality) | strcmp(source_item_holder_material,target_item_holder_material) | strcmp(source_item_holder_armor_type,target_item_holder_armor_type) ); is_equal;}) : table->entries[index]->item_holder->item->kind == item->item->kind && table->entries[index]->item_holder->item->id == item->item->id ? 0 : 1) == 0)){
+    { (*i_free_item_handler[item->item->kind])(item); free(item->item); free(item); item = 
+# 46 "src/u_hash.c" 3 4
+   ((void *)0)
+# 46 "src/u_hash.c"
+   ; };
+    table->entries[index]->item_holder->amount += amount;
   }
 
   else if(table->entries[index] == 
-# 49 "src/u_hash.c" 3 4
+# 50 "src/u_hash.c" 3 4
                                   ((void *)0)
-# 49 "src/u_hash.c"
+# 50 "src/u_hash.c"
                                       ){
      table->entries[index] = malloc(sizeof(Entry));
      table->entries[index]->item_holder = item;
      table->entries[index]->next_entry = 
-# 52 "src/u_hash.c" 3 4
+# 53 "src/u_hash.c" 3 4
                                         ((void *)0)
-# 52 "src/u_hash.c"
+# 53 "src/u_hash.c"
                                             ;
      table->item_count++;
      //printf("%s", "Second case, \n");
@@ -10953,17 +10962,17 @@ void u_add_item(Item_Holder *item, int amount,U_Hashtable *table){
    else{
      //      printf("%s", "Third case of u_add_item ");
     if(table->entries[index]->next_entry == 
-# 59 "src/u_hash.c" 3 4
+# 60 "src/u_hash.c" 3 4
                                            ((void *)0)
-# 59 "src/u_hash.c"
+# 60 "src/u_hash.c"
                                                ){
       //printf("%s", " and next entry is null ");
       table->entries[index]->next_entry = malloc(sizeof(Entry));
       table->entries[index]->next_entry->item_holder = item;
       table->entries[index]->next_entry->next_entry = 
-# 63 "src/u_hash.c" 3 4
+# 64 "src/u_hash.c" 3 4
                                                      ((void *)0)
-# 63 "src/u_hash.c"
+# 64 "src/u_hash.c"
                                                          ;
       table->item_count++;
       return;
@@ -10972,11 +10981,16 @@ void u_add_item(Item_Holder *item, int amount,U_Hashtable *table){
 
     Entry *current_entry = table->entries[index]->next_entry;
     while(current_entry->next_entry != 
-# 70 "src/u_hash.c" 3 4
+# 71 "src/u_hash.c" 3 4
                                       ((void *)0)
-# 70 "src/u_hash.c"
+# 71 "src/u_hash.c"
                                           ){
-      if((current_entry->item_holder->item->kind != item->item->kind ? 1 : item->item->kind == weapon || item->item->kind == armor ? item->item->kind == weapon ? ({int is_equal = 0; const char *source_item_holder_quality = quality_name_modifier[((struct Weapon *)current_entry->item_holder->item->item_specific_info)->quality]; const char *source_item_holder_material = material_name_modifier[((struct Weapon *)current_entry->item_holder->item->item_specific_info)->material]; const char *source_item_holder_handed_modifier = handed_modifier[((struct Weapon *)current_entry->item_holder->item->item_specific_info)->variant]; const char *source_item_holder_kind_modifier = mele_weapon_name_modifier[((struct Weapon *)current_entry->item_holder->item->item_specific_info)->kind]; const char *target_item_holder_quality = quality_name_modifier[((struct Weapon *)item->item->item_specific_info)->quality]; const char *target_item_holder_material = material_name_modifier[((struct Weapon *)item->item->item_specific_info)->material]; const char *target_item_holder_handed_modifier = handed_modifier[((struct Weapon *)item->item->item_specific_info)->variant]; const char *target_item_holder_kind_modifier = mele_weapon_name_modifier[((struct Weapon *)item->item->item_specific_info)->kind]; is_equal = (strcmp(source_item_holder_quality,target_item_holder_quality) | strcmp(source_item_holder_material, target_item_holder_material) | strcmp(source_item_holder_handed_modifier,target_item_holder_handed_modifier) | strcmp(source_item_holder_kind_modifier,target_item_holder_kind_modifier)); is_equal;}) : ({int is_equal; const char *source_item_holder_quality = quality_name_modifier[((struct Armor *)current_entry->item_holder->item->item_specific_info)->quality]; const char *source_item_holder_material = material_name_modifier[((struct Armor *)current_entry->item_holder->item->item_specific_info)->material]; const char *source_item_holder_armor_type = equipment_type_modifier[((struct Armor *)current_entry->item_holder->item->item_specific_info)->armor_type]; char *target_item_holder_quality = quality_name_modifier[((struct Armor *)item->item->item_specific_info)->quality]; const char *target_item_holder_material = material_name_modifier[((struct Armor *)item->item->item_specific_info)->material]; const char *target_item_holder_armor_type = equipment_type_modifier[((struct Armor *)item->item->item_specific_info)->armor_type]; is_equal = (strcmp(source_item_holder_quality,target_item_holder_quality) | strcmp(source_item_holder_material,target_item_holder_material) | strcmp(source_item_holder_armor_type,target_item_holder_armor_type) ); is_equal;}) : current_entry->item_holder->item->kind == item->item->kind && current_entry->item_holder->item->id == item->item->id ? 0 : 1) == 0){
+      if((current_entry->item_holder->item->kind != item->item->kind ? 1 : item->item->kind == weapon || item->item->kind == armor ? item->item->kind == weapon ? (((struct Weapon *)current_entry->item_holder->item->item_specific_info)->quality == ((struct Weapon *)item->item->item_specific_info)->quality && ((struct Weapon *)current_entry->item_holder->item->item_specific_info)->material == ((struct Weapon *)item->item->item_specific_info)->material && ((struct Weapon *)current_entry->item_holder->item->item_specific_info)->variant == ((struct Weapon *)item->item->item_specific_info)->variant && ((struct Weapon *)current_entry->item_holder->item->item_specific_info)->kind == ((struct Weapon *)item->item->item_specific_info)->kind ? 0 : 1) : ({int is_equal; const char *source_item_holder_quality = quality_name_modifier[((struct Armor *)current_entry->item_holder->item->item_specific_info)->quality]; const char *source_item_holder_material = material_name_modifier[((struct Armor *)current_entry->item_holder->item->item_specific_info)->material]; const char *source_item_holder_armor_type = equipment_type_modifier[((struct Armor *)current_entry->item_holder->item->item_specific_info)->armor_type]; char *target_item_holder_quality = quality_name_modifier[((struct Armor *)item->item->item_specific_info)->quality]; const char *target_item_holder_material = material_name_modifier[((struct Armor *)item->item->item_specific_info)->material]; const char *target_item_holder_armor_type = equipment_type_modifier[((struct Armor *)item->item->item_specific_info)->armor_type]; is_equal = (strcmp(source_item_holder_quality,target_item_holder_quality) | strcmp(source_item_holder_material,target_item_holder_material) | strcmp(source_item_holder_armor_type,target_item_holder_armor_type) ); is_equal;}) : current_entry->item_holder->item->kind == item->item->kind && current_entry->item_holder->item->id == item->item->id ? 0 : 1) == 0){
+ { (*i_free_item_handler[item->item->kind])(item); free(item->item); free(item); item = 
+# 73 "src/u_hash.c" 3 4
+((void *)0)
+# 73 "src/u_hash.c"
+; };
  current_entry->item_holder->amount += amount;
  return;
       }
@@ -10985,9 +10999,9 @@ void u_add_item(Item_Holder *item, int amount,U_Hashtable *table){
     current_entry->next_entry = malloc(sizeof(Entry));
     current_entry->next_entry->item_holder = item;
     current_entry->next_entry->next_entry = 
-# 79 "src/u_hash.c" 3 4
+# 81 "src/u_hash.c" 3 4
                                            ((void *)0)
-# 79 "src/u_hash.c"
+# 81 "src/u_hash.c"
                                                ;
     //printf("called a item count incr");
     table->item_count++;
@@ -10995,59 +11009,43 @@ void u_add_item(Item_Holder *item, int amount,U_Hashtable *table){
 }
 
 
-Item_Weight u_remove_item(Item_Holder *item, int amount, U_Hashtable *table, int free_item_if_removed){
+Item_Weight u_remove_item(Item_Holder *item, int amount, U_Hashtable *table){
   unsigned long long index = item->item->kind != weapon && item->item->kind != armor ? ({unsigned long long hash; char *filepath = (item->item->kind == reagent ? (({char *file_path; file_path = malloc(sizeof(char) * strlen("/usr/lib/revenant_files/item_files/reagent_files/") +5); sprintf(file_path,"/usr/lib/revenant_files/item_files/reagent_files/%d",item->item->id); file_path;})) : (({char *file_path; file_path = malloc(sizeof(char) * strlen("/usr/lib/revenant_files/item_files/reagent_files/") +5); sprintf(file_path,"/usr/lib/revenant_files/item_files/consumable_files/%d",item->item->id); file_path;}))); hash = ir_hash_string(filepath, "name",table); free(filepath); hash;}) : item->item->kind == weapon ? ({unsigned long long hash; hash = u_hash(2,table, quality_name_modifier[((struct Weapon*)item->item->item_specific_info)->quality] , material_name_modifier[((struct Weapon*)item->item->item_specific_info)->material] , handed_modifier[((struct Weapon*)item->item->item_specific_info)->variant], mele_weapon_name_modifier[((struct Weapon*)item->item->item_specific_info)->kind] ); hash;}) : ({unsigned long long hash; hash = u_hash(1, table,quality_name_modifier[((struct Armor*)item->item->item_specific_info)->quality]); hash;});
-  //  printf(" On removal, index is: %llu ",index);
-  // if(((struct Weapon *)item->item->item_specific_info)->material == bronze){
-  //printf("%s%llu", " " , index);
-  //}
+
+  Entry *previous_entry = table->entries[index];
+  Entry *current_entry = table->entries[index]->next_entry;
   Item_Weight item_weight;
   // If the item we are looking for is at the top-level, then assert if we are removing all occurences of the items and act correspondingly
   // Unsure why but we have to wrap the HAS_SAME_NAME_TRIVIAL macro in parenthesis in this case, but not for item insert for it to actually return a value
+  printf("cmp: %d ",table->entries[index]->item_holder->item->kind != item->item->kind ? 1 : item->item->kind == weapon || item->item->kind == armor ? item->item->kind == weapon ? (((struct Weapon *)table->entries[index]->item_holder->item->item_specific_info)->quality == ((struct Weapon *)item->item->item_specific_info)->quality && ((struct Weapon *)table->entries[index]->item_holder->item->item_specific_info)->material == ((struct Weapon *)item->item->item_specific_info)->material && ((struct Weapon *)table->entries[index]->item_holder->item->item_specific_info)->variant == ((struct Weapon *)item->item->item_specific_info)->variant && ((struct Weapon *)table->entries[index]->item_holder->item->item_specific_info)->kind == ((struct Weapon *)item->item->item_specific_info)->kind ? 0 : 1) : ({int is_equal; const char *source_item_holder_quality = quality_name_modifier[((struct Armor *)table->entries[index]->item_holder->item->item_specific_info)->quality]; const char *source_item_holder_material = material_name_modifier[((struct Armor *)table->entries[index]->item_holder->item->item_specific_info)->material]; const char *source_item_holder_armor_type = equipment_type_modifier[((struct Armor *)table->entries[index]->item_holder->item->item_specific_info)->armor_type]; char *target_item_holder_quality = quality_name_modifier[((struct Armor *)item->item->item_specific_info)->quality]; const char *target_item_holder_material = material_name_modifier[((struct Armor *)item->item->item_specific_info)->material]; const char *target_item_holder_armor_type = equipment_type_modifier[((struct Armor *)item->item->item_specific_info)->armor_type]; is_equal = (strcmp(source_item_holder_quality,target_item_holder_quality) | strcmp(source_item_holder_material,target_item_holder_material) | strcmp(source_item_holder_armor_type,target_item_holder_armor_type) ); is_equal;}) : table->entries[index]->item_holder->item->kind == item->item->kind && table->entries[index]->item_holder->item->id == item->item->id ? 0 : 1);
 
+  printf(" source item: %d %d %d %d , vs current_item: %d %d %d %d ", ((Weapon *)item->item->item_specific_info)->quality,((Weapon *)item->item->item_specific_info)->material, ((Weapon *)item->item->item_specific_info)->variant, ((Weapon *)item->item->item_specific_info)->kind, ((Weapon *)table->entries[index]->item_holder->item->item_specific_info)->quality,((Weapon *)table->entries[index]->item_holder->item->item_specific_info)->material, ((Weapon *)table->entries[index]->item_holder->item->item_specific_info)->variant, ((Weapon *)table->entries[index]->item_holder->item->item_specific_info)->kind );
   if(table->entries[index] != 
-# 96 "src/u_hash.c" 3 4
+# 99 "src/u_hash.c" 3 4
                              ((void *)0) 
-# 96 "src/u_hash.c"
-                                  && (table->entries[index]->item_holder->item->kind == item->item->kind && (table->entries[index]->item_holder->item->kind != item->item->kind ? 1 : item->item->kind == weapon || item->item->kind == armor ? item->item->kind == weapon ? ({int is_equal = 0; const char *source_item_holder_quality = quality_name_modifier[((struct Weapon *)table->entries[index]->item_holder->item->item_specific_info)->quality]; const char *source_item_holder_material = material_name_modifier[((struct Weapon *)table->entries[index]->item_holder->item->item_specific_info)->material]; const char *source_item_holder_handed_modifier = handed_modifier[((struct Weapon *)table->entries[index]->item_holder->item->item_specific_info)->variant]; const char *source_item_holder_kind_modifier = mele_weapon_name_modifier[((struct Weapon *)table->entries[index]->item_holder->item->item_specific_info)->kind]; const char *target_item_holder_quality = quality_name_modifier[((struct Weapon *)item->item->item_specific_info)->quality]; const char *target_item_holder_material = material_name_modifier[((struct Weapon *)item->item->item_specific_info)->material]; const char *target_item_holder_handed_modifier = handed_modifier[((struct Weapon *)item->item->item_specific_info)->variant]; const char *target_item_holder_kind_modifier = mele_weapon_name_modifier[((struct Weapon *)item->item->item_specific_info)->kind]; is_equal = (strcmp(source_item_holder_quality,target_item_holder_quality) | strcmp(source_item_holder_material, target_item_holder_material) | strcmp(source_item_holder_handed_modifier,target_item_holder_handed_modifier) | strcmp(source_item_holder_kind_modifier,target_item_holder_kind_modifier)); is_equal;}) : ({int is_equal; const char *source_item_holder_quality = quality_name_modifier[((struct Armor *)table->entries[index]->item_holder->item->item_specific_info)->quality]; const char *source_item_holder_material = material_name_modifier[((struct Armor *)table->entries[index]->item_holder->item->item_specific_info)->material]; const char *source_item_holder_armor_type = equipment_type_modifier[((struct Armor *)table->entries[index]->item_holder->item->item_specific_info)->armor_type]; char *target_item_holder_quality = quality_name_modifier[((struct Armor *)item->item->item_specific_info)->quality]; const char *target_item_holder_material = material_name_modifier[((struct Armor *)item->item->item_specific_info)->material]; const char *target_item_holder_armor_type = equipment_type_modifier[((struct Armor *)item->item->item_specific_info)->armor_type]; is_equal = (strcmp(source_item_holder_quality,target_item_holder_quality) | strcmp(source_item_holder_material,target_item_holder_material) | strcmp(source_item_holder_armor_type,target_item_holder_armor_type) ); is_equal;}) : table->entries[index]->item_holder->item->kind == item->item->kind && table->entries[index]->item_holder->item->id == item->item->id ? 0 : 1) == 0)){
-    // printf("%s", " first case ");
-    if(amount >= table->entries[index]->item_holder->amount){
-      table->item_count--;
-      if(free_item_if_removed == 0){
- i_free_item(table->entries[index]->item_holder->item);
- free(table->entries[index]->item_holder);
- table->entries[index]->item_holder = 
-# 103 "src/u_hash.c" 3 4
-                                     ((void *)0)
-# 103 "src/u_hash.c"
-                                         ;
- free(table->entries[index]);
- table->entries[index] = 
-# 105 "src/u_hash.c" 3 4
-                        ((void *)0)
-# 105 "src/u_hash.c"
-                            ;
-      }
-      else{
-      item_weight.item = table->entries[index]->item_holder->item;
-      item_weight.weight_loss = (table->entries[index]->item_holder->amount * table->entries[index]->item_holder->item->weight);
-      item_weight.deleted = 1;
-      table->entries[index]->item_holder->amount = 0;
-      //printf("NULL 1 here");
-      Entry *tmp = table->entries[index];
-      Entry *replacement = table->entries[index]->next_entry;
-      table->entries[index] = replacement;
-      free(tmp);
-      return item_weight;
-      }
-    }
+# 99 "src/u_hash.c"
+                                  && (table->entries[index]->item_holder->item->kind == item->item->kind && (table->entries[index]->item_holder->item->kind != item->item->kind ? 1 : item->item->kind == weapon || item->item->kind == armor ? item->item->kind == weapon ? (((struct Weapon *)table->entries[index]->item_holder->item->item_specific_info)->quality == ((struct Weapon *)item->item->item_specific_info)->quality && ((struct Weapon *)table->entries[index]->item_holder->item->item_specific_info)->material == ((struct Weapon *)item->item->item_specific_info)->material && ((struct Weapon *)table->entries[index]->item_holder->item->item_specific_info)->variant == ((struct Weapon *)item->item->item_specific_info)->variant && ((struct Weapon *)table->entries[index]->item_holder->item->item_specific_info)->kind == ((struct Weapon *)item->item->item_specific_info)->kind ? 0 : 1) : ({int is_equal; const char *source_item_holder_quality = quality_name_modifier[((struct Armor *)table->entries[index]->item_holder->item->item_specific_info)->quality]; const char *source_item_holder_material = material_name_modifier[((struct Armor *)table->entries[index]->item_holder->item->item_specific_info)->material]; const char *source_item_holder_armor_type = equipment_type_modifier[((struct Armor *)table->entries[index]->item_holder->item->item_specific_info)->armor_type]; char *target_item_holder_quality = quality_name_modifier[((struct Armor *)item->item->item_specific_info)->quality]; const char *target_item_holder_material = material_name_modifier[((struct Armor *)item->item->item_specific_info)->material]; const char *target_item_holder_armor_type = equipment_type_modifier[((struct Armor *)item->item->item_specific_info)->armor_type]; is_equal = (strcmp(source_item_holder_quality,target_item_holder_quality) | strcmp(source_item_holder_material,target_item_holder_material) | strcmp(source_item_holder_armor_type,target_item_holder_armor_type) ); is_equal;}) : table->entries[index]->item_holder->item->kind == item->item->kind && table->entries[index]->item_holder->item->id == item->item->id ? 0 : 1) == 0)){
+    item_weight.item_h = malloc(sizeof(Item_Holder)); item_weight.item_h->item = malloc(sizeof(Item)); item_weight.item_h->item->id = table->entries[index]->item_holder->item->id; item_weight.item_h->amount = 1; item_weight.item_h->item->representation[0] = table->entries[index]->item_holder->item->representation[0]; item_weight.item_h->item->standing_on[0] = table->entries[index]->item_holder->item->standing_on[0]; item_weight.item_h->item->value = table->entries[index]->item_holder->item->value; item_weight.item_h->item->kind = table->entries[index]->item_holder->item->kind; item_weight.item_h->item->weight = table->entries[index]->item_holder->item->weight; item_weight.item_h->item->quest_item = table->entries[index]->item_holder->item->quest_item; (*i_item_holder_copy_handler[item_weight.item_h->item->kind])(item_weight.item_h,table->entries[index]->item_holder);;
+    item_weight.weight_loss = (table->entries[index]->item_holder->amount * table->entries[index]->item_holder->item->weight);
+  if(amount >= table->entries[index]->item_holder->amount){
+    //error lies somewhere here - it's the free item holder for some reason (it's not properly setting the item holder to null
+    item_weight.deleted = 1;
+    Entry *replacement = table->entries[index]->next_entry;
+    { (*i_free_item_handler[table->entries[index]->item_holder->item->kind])(table->entries[index]->item_holder); free(table->entries[index]->item_holder->item); free(table->entries[index]->item_holder); table->entries[index]->item_holder = 
+# 106 "src/u_hash.c" 3 4
+   ((void *)0)
+# 106 "src/u_hash.c"
+   ; };
+    free(table->entries[index]);
+    table->entries[index] = replacement;
+    table->item_count--;
+  }
     else{
       table->entries[index]->item_holder->amount -= amount;
-      item_weight.item = table->entries[index]->item_holder->item;
       item_weight.weight_loss = (amount * table->entries[index]->item_holder->item->weight);
       item_weight.deleted = 0;
-      return item_weight;
     }
+     return item_weight;
   }
 
 
@@ -11057,113 +11055,87 @@ Item_Weight u_remove_item(Item_Holder *item, int amount, U_Hashtable *table, int
   // If the item was not found at the top-level, start the search in the chained sequence of items and act accordingly, depending on whether we remove all occurences of said item
   //strcmp returns 0 iff the strings are equal, otherwise it returns a nonzero value, so we have to check if the return value is nonzero to see if we have to go through the Entry
   //chain
-  else if(table->entries[index] != 
-# 136 "src/u_hash.c" 3 4
-                                  ((void *)0) 
-# 136 "src/u_hash.c"
-                                       && (table->entries[index]->item_holder->item->kind == item->item->kind && (table->entries[index]->item_holder->item->kind != item->item->kind ? 1 : item->item->kind == weapon || item->item->kind == armor ? item->item->kind == weapon ? ({int is_equal = 0; const char *source_item_holder_quality = quality_name_modifier[((struct Weapon *)table->entries[index]->item_holder->item->item_specific_info)->quality]; const char *source_item_holder_material = material_name_modifier[((struct Weapon *)table->entries[index]->item_holder->item->item_specific_info)->material]; const char *source_item_holder_handed_modifier = handed_modifier[((struct Weapon *)table->entries[index]->item_holder->item->item_specific_info)->variant]; const char *source_item_holder_kind_modifier = mele_weapon_name_modifier[((struct Weapon *)table->entries[index]->item_holder->item->item_specific_info)->kind]; const char *target_item_holder_quality = quality_name_modifier[((struct Weapon *)item->item->item_specific_info)->quality]; const char *target_item_holder_material = material_name_modifier[((struct Weapon *)item->item->item_specific_info)->material]; const char *target_item_holder_handed_modifier = handed_modifier[((struct Weapon *)item->item->item_specific_info)->variant]; const char *target_item_holder_kind_modifier = mele_weapon_name_modifier[((struct Weapon *)item->item->item_specific_info)->kind]; is_equal = (strcmp(source_item_holder_quality,target_item_holder_quality) | strcmp(source_item_holder_material, target_item_holder_material) | strcmp(source_item_holder_handed_modifier,target_item_holder_handed_modifier) | strcmp(source_item_holder_kind_modifier,target_item_holder_kind_modifier)); is_equal;}) : ({int is_equal; const char *source_item_holder_quality = quality_name_modifier[((struct Armor *)table->entries[index]->item_holder->item->item_specific_info)->quality]; const char *source_item_holder_material = material_name_modifier[((struct Armor *)table->entries[index]->item_holder->item->item_specific_info)->material]; const char *source_item_holder_armor_type = equipment_type_modifier[((struct Armor *)table->entries[index]->item_holder->item->item_specific_info)->armor_type]; char *target_item_holder_quality = quality_name_modifier[((struct Armor *)item->item->item_specific_info)->quality]; const char *target_item_holder_material = material_name_modifier[((struct Armor *)item->item->item_specific_info)->material]; const char *target_item_holder_armor_type = equipment_type_modifier[((struct Armor *)item->item->item_specific_info)->armor_type]; is_equal = (strcmp(source_item_holder_quality,target_item_holder_quality) | strcmp(source_item_holder_material,target_item_holder_material) | strcmp(source_item_holder_armor_type,target_item_holder_armor_type) ); is_equal;}) : table->entries[index]->item_holder->item->kind == item->item->kind && table->entries[index]->item_holder->item->id == item->item->id ? 0 : 1) != 0)){
+
     //    int i = HAS_SAME_NAME_TRIVIAL(table->entries[index]->item_holder, item);
     //    printf("%s%d", " second case of removal", i);
     //    printf("%s",material_name_modifier[((struct Weapon *)table->entries[index]->item_holder->item->item_specific_info)->material]);
-    Entry *previous_entry = table->entries[index];
-    Entry *current_entry = table->entries[index]->next_entry;
+
     //Edge case of when the immedediately next entry was the item we were looking for
-    if(current_entry->item_holder->item->kind == item->item->kind && (current_entry->item_holder->item->kind != item->item->kind ? 1 : item->item->kind == weapon || item->item->kind == armor ? item->item->kind == weapon ? ({int is_equal = 0; const char *source_item_holder_quality = quality_name_modifier[((struct Weapon *)current_entry->item_holder->item->item_specific_info)->quality]; const char *source_item_holder_material = material_name_modifier[((struct Weapon *)current_entry->item_holder->item->item_specific_info)->material]; const char *source_item_holder_handed_modifier = handed_modifier[((struct Weapon *)current_entry->item_holder->item->item_specific_info)->variant]; const char *source_item_holder_kind_modifier = mele_weapon_name_modifier[((struct Weapon *)current_entry->item_holder->item->item_specific_info)->kind]; const char *target_item_holder_quality = quality_name_modifier[((struct Weapon *)item->item->item_specific_info)->quality]; const char *target_item_holder_material = material_name_modifier[((struct Weapon *)item->item->item_specific_info)->material]; const char *target_item_holder_handed_modifier = handed_modifier[((struct Weapon *)item->item->item_specific_info)->variant]; const char *target_item_holder_kind_modifier = mele_weapon_name_modifier[((struct Weapon *)item->item->item_specific_info)->kind]; is_equal = (strcmp(source_item_holder_quality,target_item_holder_quality) | strcmp(source_item_holder_material, target_item_holder_material) | strcmp(source_item_holder_handed_modifier,target_item_holder_handed_modifier) | strcmp(source_item_holder_kind_modifier,target_item_holder_kind_modifier)); is_equal;}) : ({int is_equal; const char *source_item_holder_quality = quality_name_modifier[((struct Armor *)current_entry->item_holder->item->item_specific_info)->quality]; const char *source_item_holder_material = material_name_modifier[((struct Armor *)current_entry->item_holder->item->item_specific_info)->material]; const char *source_item_holder_armor_type = equipment_type_modifier[((struct Armor *)current_entry->item_holder->item->item_specific_info)->armor_type]; char *target_item_holder_quality = quality_name_modifier[((struct Armor *)item->item->item_specific_info)->quality]; const char *target_item_holder_material = material_name_modifier[((struct Armor *)item->item->item_specific_info)->material]; const char *target_item_holder_armor_type = equipment_type_modifier[((struct Armor *)item->item->item_specific_info)->armor_type]; is_equal = (strcmp(source_item_holder_quality,target_item_holder_quality) | strcmp(source_item_holder_material,target_item_holder_material) | strcmp(source_item_holder_armor_type,target_item_holder_armor_type) ); is_equal;}) : current_entry->item_holder->item->kind == item->item->kind && current_entry->item_holder->item->id == item->item->id ? 0 : 1) == 0){
+      else if(current_entry->item_holder->item->kind == item->item->kind && (current_entry->item_holder->item->kind != item->item->kind ? 1 : item->item->kind == weapon || item->item->kind == armor ? item->item->kind == weapon ? (((struct Weapon *)current_entry->item_holder->item->item_specific_info)->quality == ((struct Weapon *)item->item->item_specific_info)->quality && ((struct Weapon *)current_entry->item_holder->item->item_specific_info)->material == ((struct Weapon *)item->item->item_specific_info)->material && ((struct Weapon *)current_entry->item_holder->item->item_specific_info)->variant == ((struct Weapon *)item->item->item_specific_info)->variant && ((struct Weapon *)current_entry->item_holder->item->item_specific_info)->kind == ((struct Weapon *)item->item->item_specific_info)->kind ? 0 : 1) : ({int is_equal; const char *source_item_holder_quality = quality_name_modifier[((struct Armor *)current_entry->item_holder->item->item_specific_info)->quality]; const char *source_item_holder_material = material_name_modifier[((struct Armor *)current_entry->item_holder->item->item_specific_info)->material]; const char *source_item_holder_armor_type = equipment_type_modifier[((struct Armor *)current_entry->item_holder->item->item_specific_info)->armor_type]; char *target_item_holder_quality = quality_name_modifier[((struct Armor *)item->item->item_specific_info)->quality]; const char *target_item_holder_material = material_name_modifier[((struct Armor *)item->item->item_specific_info)->material]; const char *target_item_holder_armor_type = equipment_type_modifier[((struct Armor *)item->item->item_specific_info)->armor_type]; is_equal = (strcmp(source_item_holder_quality,target_item_holder_quality) | strcmp(source_item_holder_material,target_item_holder_material) | strcmp(source_item_holder_armor_type,target_item_holder_armor_type) ); is_equal;}) : current_entry->item_holder->item->kind == item->item->kind && current_entry->item_holder->item->id == item->item->id ? 0 : 1) == 0){
+      item_weight.item_h = malloc(sizeof(Item_Holder)); item_weight.item_h->item = malloc(sizeof(Item)); item_weight.item_h->item->id = current_entry->item_holder->item->id; item_weight.item_h->amount = 1; item_weight.item_h->item->representation[0] = current_entry->item_holder->item->representation[0]; item_weight.item_h->item->standing_on[0] = current_entry->item_holder->item->standing_on[0]; item_weight.item_h->item->value = current_entry->item_holder->item->value; item_weight.item_h->item->kind = current_entry->item_holder->item->kind; item_weight.item_h->item->weight = current_entry->item_holder->item->weight; item_weight.item_h->item->quest_item = current_entry->item_holder->item->quest_item; (*i_item_holder_copy_handler[item_weight.item_h->item->kind])(item_weight.item_h,current_entry->item_holder);;
+      item_weight.weight_loss = (table->entries[index]->item_holder->amount * table->entries[index]->item_holder->item->weight);
        if(amount >= current_entry->item_holder->amount){
+  previous_entry->next_entry = current_entry->next_entry;
+  item_weight.deleted = 1;
+  { (*i_free_item_handler[current_entry->item_holder->item->kind])(current_entry->item_holder); free(current_entry->item_holder->item); free(current_entry->item_holder); current_entry->item_holder = 
+# 138 "src/u_hash.c" 3 4
+ ((void *)0)
+# 138 "src/u_hash.c"
+ ; };
+  free(current_entry);
   table->item_count--;
-      if(free_item_if_removed == 0){
- (*i_free_item_handler[current_entry->item_holder->current_entry->item_holder->kind])(current_entry->item_holder); free(current_entry->item_holder); current_entry->item_holder = 
-# 147 "src/u_hash.c" 3 4
-((void *)0)
-# 147 "src/u_hash.c"
-;;
- free(current_entry);
- current_entry = 
-# 149 "src/u_hash.c" 3 4
-                ((void *)0)
-# 149 "src/u_hash.c"
-                    ;
+
       }
       else{
-      item_weight.item = current_entry->item_holder->item;
       item_weight.weight_loss = (current_entry->item_holder->amount * current_entry->item_holder->item->weight);
-      item_weight.deleted = 1;
-
-      current_entry->item_holder->amount = 0;
-      //      printf("NULL 2 here");
-      Entry *replacement = current_entry->next_entry;
-      previous_entry->next_entry = replacement;
-      return item_weight;
-      }
-    }
-    else{
-      current_entry->item_holder->amount -= amount;
-      item_weight.item = current_entry->item_holder->item;
-      item_weight.weight_loss = (amount * current_entry->item_holder->item->weight);
       item_weight.deleted = 0;
-      return item_weight;
-     }
+      current_entry->item_holder->amount -= amount;
+      }
+       return item_weight;
     }
+
     else{
     while(current_entry != 
-# 172 "src/u_hash.c" 3 4
+# 152 "src/u_hash.c" 3 4
                           ((void *)0)
-# 172 "src/u_hash.c"
+# 152 "src/u_hash.c"
                               ){
+
+      printf("cmp %d ",current_entry->item_holder->item->kind != item->item->kind ? 1 : item->item->kind == weapon || item->item->kind == armor ? item->item->kind == weapon ? (((struct Weapon *)current_entry->item_holder->item->item_specific_info)->quality == ((struct Weapon *)item->item->item_specific_info)->quality && ((struct Weapon *)current_entry->item_holder->item->item_specific_info)->material == ((struct Weapon *)item->item->item_specific_info)->material && ((struct Weapon *)current_entry->item_holder->item->item_specific_info)->variant == ((struct Weapon *)item->item->item_specific_info)->variant && ((struct Weapon *)current_entry->item_holder->item->item_specific_info)->kind == ((struct Weapon *)item->item->item_specific_info)->kind ? 0 : 1) : ({int is_equal; const char *source_item_holder_quality = quality_name_modifier[((struct Armor *)current_entry->item_holder->item->item_specific_info)->quality]; const char *source_item_holder_material = material_name_modifier[((struct Armor *)current_entry->item_holder->item->item_specific_info)->material]; const char *source_item_holder_armor_type = equipment_type_modifier[((struct Armor *)current_entry->item_holder->item->item_specific_info)->armor_type]; char *target_item_holder_quality = quality_name_modifier[((struct Armor *)item->item->item_specific_info)->quality]; const char *target_item_holder_material = material_name_modifier[((struct Armor *)item->item->item_specific_info)->material]; const char *target_item_holder_armor_type = equipment_type_modifier[((struct Armor *)item->item->item_specific_info)->armor_type]; is_equal = (strcmp(source_item_holder_quality,target_item_holder_quality) | strcmp(source_item_holder_material,target_item_holder_material) | strcmp(source_item_holder_armor_type,target_item_holder_armor_type) ); is_equal;}) : current_entry->item_holder->item->kind == item->item->kind && current_entry->item_holder->item->id == item->item->id ? 0 : 1);
+      printf(" source item: %d %d %d %d , vs current_item: %d %d %d %d ", ((Weapon *)item->item->item_specific_info)->quality,((Weapon *)item->item->item_specific_info)->material, ((Weapon *)item->item->item_specific_info)->variant, ((Weapon *)item->item->item_specific_info)->kind, ((Weapon *)current_entry->item_holder->item->item_specific_info)->quality,((Weapon *)current_entry->item_holder->item->item_specific_info)->material, ((Weapon *)current_entry->item_holder->item->item_specific_info)->variant, ((Weapon *)current_entry->item_holder->item->item_specific_info)->kind );
       //printf("material of weapon: %d,",((Weapon *)current_entry->item_holder->item->item_specific_info)->material);
       //  printf("%s", " checking ");
-      if(current_entry->item_holder->item->kind == item->item->kind && (current_entry->item_holder->item->kind != item->item->kind ? 1 : item->item->kind == weapon || item->item->kind == armor ? item->item->kind == weapon ? ({int is_equal = 0; const char *source_item_holder_quality = quality_name_modifier[((struct Weapon *)current_entry->item_holder->item->item_specific_info)->quality]; const char *source_item_holder_material = material_name_modifier[((struct Weapon *)current_entry->item_holder->item->item_specific_info)->material]; const char *source_item_holder_handed_modifier = handed_modifier[((struct Weapon *)current_entry->item_holder->item->item_specific_info)->variant]; const char *source_item_holder_kind_modifier = mele_weapon_name_modifier[((struct Weapon *)current_entry->item_holder->item->item_specific_info)->kind]; const char *target_item_holder_quality = quality_name_modifier[((struct Weapon *)item->item->item_specific_info)->quality]; const char *target_item_holder_material = material_name_modifier[((struct Weapon *)item->item->item_specific_info)->material]; const char *target_item_holder_handed_modifier = handed_modifier[((struct Weapon *)item->item->item_specific_info)->variant]; const char *target_item_holder_kind_modifier = mele_weapon_name_modifier[((struct Weapon *)item->item->item_specific_info)->kind]; is_equal = (strcmp(source_item_holder_quality,target_item_holder_quality) | strcmp(source_item_holder_material, target_item_holder_material) | strcmp(source_item_holder_handed_modifier,target_item_holder_handed_modifier) | strcmp(source_item_holder_kind_modifier,target_item_holder_kind_modifier)); is_equal;}) : ({int is_equal; const char *source_item_holder_quality = quality_name_modifier[((struct Armor *)current_entry->item_holder->item->item_specific_info)->quality]; const char *source_item_holder_material = material_name_modifier[((struct Armor *)current_entry->item_holder->item->item_specific_info)->material]; const char *source_item_holder_armor_type = equipment_type_modifier[((struct Armor *)current_entry->item_holder->item->item_specific_info)->armor_type]; char *target_item_holder_quality = quality_name_modifier[((struct Armor *)item->item->item_specific_info)->quality]; const char *target_item_holder_material = material_name_modifier[((struct Armor *)item->item->item_specific_info)->material]; const char *target_item_holder_armor_type = equipment_type_modifier[((struct Armor *)item->item->item_specific_info)->armor_type]; is_equal = (strcmp(source_item_holder_quality,target_item_holder_quality) | strcmp(source_item_holder_material,target_item_holder_material) | strcmp(source_item_holder_armor_type,target_item_holder_armor_type) ); is_equal;}) : current_entry->item_holder->item->kind == item->item->kind && current_entry->item_holder->item->id == item->item->id ? 0 : 1) == 0){
- //	printf("%s", " found item to remove ");
+      if(current_entry->item_holder->item->kind == item->item->kind && (current_entry->item_holder->item->kind != item->item->kind ? 1 : item->item->kind == weapon || item->item->kind == armor ? item->item->kind == weapon ? (((struct Weapon *)current_entry->item_holder->item->item_specific_info)->quality == ((struct Weapon *)item->item->item_specific_info)->quality && ((struct Weapon *)current_entry->item_holder->item->item_specific_info)->material == ((struct Weapon *)item->item->item_specific_info)->material && ((struct Weapon *)current_entry->item_holder->item->item_specific_info)->variant == ((struct Weapon *)item->item->item_specific_info)->variant && ((struct Weapon *)current_entry->item_holder->item->item_specific_info)->kind == ((struct Weapon *)item->item->item_specific_info)->kind ? 0 : 1) : ({int is_equal; const char *source_item_holder_quality = quality_name_modifier[((struct Armor *)current_entry->item_holder->item->item_specific_info)->quality]; const char *source_item_holder_material = material_name_modifier[((struct Armor *)current_entry->item_holder->item->item_specific_info)->material]; const char *source_item_holder_armor_type = equipment_type_modifier[((struct Armor *)current_entry->item_holder->item->item_specific_info)->armor_type]; char *target_item_holder_quality = quality_name_modifier[((struct Armor *)item->item->item_specific_info)->quality]; const char *target_item_holder_material = material_name_modifier[((struct Armor *)item->item->item_specific_info)->material]; const char *target_item_holder_armor_type = equipment_type_modifier[((struct Armor *)item->item->item_specific_info)->armor_type]; is_equal = (strcmp(source_item_holder_quality,target_item_holder_quality) | strcmp(source_item_holder_material,target_item_holder_material) | strcmp(source_item_holder_armor_type,target_item_holder_armor_type) ); is_equal;}) : current_entry->item_holder->item->kind == item->item->kind && current_entry->item_holder->item->id == item->item->id ? 0 : 1) == 0){
+ item_weight.item_h = malloc(sizeof(Item_Holder)); item_weight.item_h->item = malloc(sizeof(Item)); item_weight.item_h->item->id = current_entry->item_holder->item->id; item_weight.item_h->amount = 1; item_weight.item_h->item->representation[0] = current_entry->item_holder->item->representation[0]; item_weight.item_h->item->standing_on[0] = current_entry->item_holder->item->standing_on[0]; item_weight.item_h->item->value = current_entry->item_holder->item->value; item_weight.item_h->item->kind = current_entry->item_holder->item->kind; item_weight.item_h->item->weight = current_entry->item_holder->item->weight; item_weight.item_h->item->quest_item = current_entry->item_holder->item->quest_item; (*i_item_holder_copy_handler[item_weight.item_h->item->kind])(item_weight.item_h,current_entry->item_holder);;
+ item_weight.weight_loss = (table->entries[index]->item_holder->amount * table->entries[index]->item_holder->item->weight);
  if(amount >= current_entry->item_holder->amount){
-   table->item_count--;
-    if(free_item_if_removed == 0){
- i_free_item(current_entry->item_holder->item);
- free(current_entry->item_holder);
- current_entry->item_holder = 
-# 182 "src/u_hash.c" 3 4
-                             ((void *)0)
-# 182 "src/u_hash.c"
-                                 ;
- free(current_entry);
- current_entry = 
-# 184 "src/u_hash.c" 3 4
-                ((void *)0)
-# 184 "src/u_hash.c"
-                    ;
-      }
-      else{
-      item_weight.item = current_entry->item_holder->item;
-      item_weight.weight_loss = (current_entry->item_holder->amount * current_entry->item_holder->item->weight);
-      item_weight.deleted = 1;
-      current_entry->item_holder->amount = 0;
-      Entry *replacement = current_entry->next_entry;
-      previous_entry->next_entry = replacement;
-      return item_weight;
-      }
+  previous_entry->next_entry = current_entry->next_entry;
+  item_weight.deleted = 1;
+  { (*i_free_item_handler[current_entry->item_holder->item->kind])(current_entry->item_holder); free(current_entry->item_holder->item); free(current_entry->item_holder); current_entry->item_holder = 
+# 164 "src/u_hash.c" 3 4
+ ((void *)0)
+# 164 "src/u_hash.c"
+ ; };
+  free(current_entry);
+  current_entry = 
+# 166 "src/u_hash.c" 3 4
+                 ((void *)0)
+# 166 "src/u_hash.c"
+                     ;
+  table->item_count--;
  }
-      else{
+ else{
  //printf("fell though here 2");
  table->entries[index]->item_holder->amount -= amount;
- item_weight.item = table->entries[index]->item_holder->item;
  item_weight.weight_loss = (amount * current_entry->item_holder->item->weight);
  item_weight.deleted = 0;
+
+ }
  return item_weight;
-       }
       }
       previous_entry = current_entry;
       current_entry = current_entry->next_entry;
-      }
+     }
     }
 
-  }
   //printf("fell though here 3");
     // A safety guard more than anything else, if all else fails, we found no item and we stand to lose no weight 
   item_weight.weight_loss = 0;
-  item_weight.item = 
-# 214 "src/u_hash.c" 3 4
-                    ((void *)0)
-# 214 "src/u_hash.c"
-                        ;
+  item_weight.item_h = 
+# 186 "src/u_hash.c" 3 4
+                      ((void *)0)
+# 186 "src/u_hash.c"
+                          ;
   return item_weight;
 
 }
@@ -11178,10 +11150,3 @@ char *faku(){
   return val;
 }
 */
-
-
-
-char *faku(){
-  char *val = "abc";
-  return val;
-}

@@ -38,7 +38,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 //Just a highly specialized structure that holds a reference to an item and how much weight there is to be subtracted from the player's
 //carry weight and a flag that indicated if we deleted it from inventory 
 typedef struct Item_Weight{
-  Item *item;
+  Item_Holder *item_h;
   float weight_loss;
   int deleted;
 }Item_Weight;
@@ -71,7 +71,7 @@ U_Hashtable *u_initialize_hashtable(int initial_size,Mersienne_Twister *twister)
 
 void u_add_item(Item_Holder *item, int amount,U_Hashtable *table);
 
-Item_Weight u_remove_item(Item_Holder *item, int amount, U_Hashtable *table,int free_item_if_removed);
+Item_Weight u_remove_item(Item_Holder *item, int amount, U_Hashtable *table);
 
 
 char *u_readin_char(char *file_path, char *variable);

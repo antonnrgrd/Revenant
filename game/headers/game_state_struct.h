@@ -19,6 +19,9 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "linked_list.h"
 #include "screen_constants.h"
 #include "rng.h"
+
+#define NUM_EVENTS 10
+
 // To avoid using magic numbers, we opt to use macros that represent the indices of the of the panels, e.g index 1 is designated to be the
 //event log and so is represented by the macro EVENT_LOG. Panels are an extension of ncurses that basically simplifies the handling of multiple concurrent windows that overlap each other, which are stored in arrays
  
@@ -48,6 +51,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define LOG_Height 15
 //The main struct that will encapsulate all information about the game currently present 
 typedef struct Game_State{
+  char **ingame_log;
   char action_context;
   int notification_log_offset;
   int num_rows;

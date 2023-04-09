@@ -133,10 +133,10 @@ typedef struct Creature{
   float current_carry;
   // A generic placeholder for any kind of additional info that is highly dependent on the specific creature type
   void *additional_info;
-  char *representation;
+  char representation[2];
   Color *color;
   Position position;
-  char *standing_on;
+  char standing_on[2];
   int marked_for_deletion : 1 ;
   int target_is_within_bound:1;
   behavior behavior;

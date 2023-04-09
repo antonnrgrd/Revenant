@@ -224,7 +224,7 @@ int msg_find_item_position(WINDOW *log, int max_y,Item_Holder *item, Item_Holder
    }  
   }
   //printf("ITEM NOT ALREADY IN LIST");
-  //printf(" free position: %d",max_y+1);
+  //printf(" free position: %d",max_y);
   return max_y;
 }
 
@@ -371,13 +371,13 @@ int msg_display_inventory_equip_context(Game_State *gs){
     //probably faulty with how we assign item holder pointers to the item list
     else if (ch == 'y' && ( item_list != NULL && item_list[curr_curs_pos-2]!= NULL)){
       //printf(" quality: %d ",((struct Weapon *)item_list[curr_curs_pos-2]->item->item_specific_info)->quality );
-     mvwprintw(gs->logs[MAIN_SCREEN],DEFAULT_MAX_Y,0, "%s", "You equip ");
+      mvwprintw(gs->logs[MAIN_SCREEN],gs->num_cols-1,0, "%s", "You equip ");
      /*We temporarily set the amount of the item we equip to be one since
       item printer prints the amount of the item, unless the amount we have is 1
      and we do not want the amount printed, just the item's name*/
      tmp_amount_holder = item_list[curr_curs_pos-2]->amount;
      item_list[curr_curs_pos-2]->amount = 1;
-     msg_print_item(item_list[curr_curs_pos-2],gs->logs[MAIN_SCREEN],11,DEFAULT_MAX_Y);
+     msg_print_item(item_list[curr_curs_pos-2],gs->logs[MAIN_SCREEN],11,gs->num_cols-1);
      item_list[curr_curs_pos-2]->amount = tmp_amount_holder;     
           msg_update_event_log(gs);
       UPDATE_PANEL_INFO();
@@ -386,9 +386,11 @@ int msg_display_inventory_equip_context(Game_State *gs){
      Item_Holder *previously_equipped = inv_equip_item(item_list[curr_curs_pos-2], ((U_Hashtable * )gs->player->additional_info), gs->player);
 
       /*If the item list is null, it means we equipped the only occurence of that item in the inventory*/
-     if(item_list[curr_curs_pos-2] == NULL ){
+     if(item_list[curr_curs_pos-2]->amount == 0 ){
        	wclrtoeol(gs->logs[INVENTORY_LOG]);
-	//printf(" diff %d ", curr_curs_pos-2,available_equipment);
+	/*We deliberately defer freeing the item holder up until this point because when freeing the item holder and setting it to null
+	  afterwards in the function call to remove it from the inventory, the check to assert if it was null at this point in the code would fail for some reason. We are therefore forced to free the item holder here*/
+	I_FREE_ITEM_HOLDER(item_list[curr_curs_pos-2]);
       	MSG_COMPRESS_ITEM_LIST(item_list,curr_curs_pos-2,available_equipment,gs->logs[INVENTORY_LOG]);
 	available_equipment--; 
 	//if(item_list[curr_curs_pos-2] == NULL){
@@ -416,7 +418,7 @@ int msg_display_inventory_equip_context(Game_State *gs){
        UPDATE_PANEL_INFO();
        }
        else{
-	 //printf( " already listed ");
+	 
 	 free(previously_equipped);
 	 MSG_REDRAW_INVENTORY(item_list,available_equipment,gs->logs[INVENTORY_LOG]);
 	 UPDATE_PANEL_INFO();

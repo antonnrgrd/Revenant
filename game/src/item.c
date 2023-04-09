@@ -112,7 +112,7 @@ Item *i_make_armor(Quality_Level q, Material material,Equipment_Kind armor_type)
 Item *i_make_mele_weapon(Quality_Level q, Material material, Variant v, Weapon_Kind weapon_kind){
 
   Item *i = malloc(sizeof(Item));
-  i->representation = s_create_text_const(weapon_representations[1]);
+  
   Weapon *w = i_gen_weapon(q,v,material,mele,weapon_kind);
   i->item_specific_info = w;
   i->kind = weapon;
@@ -125,7 +125,6 @@ Item *i_make_mele_weapon(Quality_Level q, Material material, Variant v, Weapon_K
   
   i->value = (uint32_t)ceil(m.value_modifier * va.value_modifier);
   i->item_specific_info = w;
-  i->standing_on = malloc(sizeof(char));
   strcpy(i->representation, weapon_representations[1]);
  
   return i;
@@ -276,14 +275,49 @@ void i_copy_armor(Item_Holder *source_item,Item_Holder *target_item){
 void i_copy_weapon(Item_Holder *source_item,Item_Holder *target_item){
   source_item->item->item_specific_info = malloc(sizeof(Weapon));
   ((Weapon *)source_item->item->item_specific_info)->quality = ((Weapon *)target_item->item->item_specific_info)->quality;
-  ((Weapon *)source_item->item->item_specific_info)->variant = ((Weapon *)target_item->item->item_specific_info)->variant;
   ((Weapon *)source_item->item->item_specific_info)->material = ((Weapon *)target_item->item->item_specific_info)->material;
+  ((Weapon *)source_item->item->item_specific_info)->variant = ((Weapon *)target_item->item->item_specific_info)->variant;
+  ((Weapon *)source_item->item->item_specific_info)->kind = ((Weapon *)target_item->item->item_specific_info)->kind;
+  ((Weapon *)source_item->item->item_specific_info)->slot = ((Weapon *)target_item->item->item_specific_info)->slot;
+  ((Weapon *)source_item->item->item_specific_info)->group = ((Weapon *)target_item->item->item_specific_info)->group;
 }
 
-extern void (*i_free_item_handler[4])(Item_Holder *item) = {i_free_reagent,i_free_consumable, i_free_armor,i_free_weapon};
+/*
+void i_copy_reagent(Item *source_item,Item_Holder *target_item){
+  source_item->item_specific_info = malloc(sizeof(Reagent));
+  ((Reagent *)source_item->item_specific_info)->reagent_kind = ((Reagent *)target_item->item->item_specific_info)->reagent_kind;
+  ((Reagent *)source_item->item_specific_info)->id = ((Reagent *)target_item->item->item_specific_info)->id;
+}
 
-extern void (*i_item_holder_copy_handler[4])(Item_Holder *source_item,Item_Holder *target_item) = {i_copy_reagent};
+void i_copy_consumable(Item *source_item,Item_Holder *target_item){
+  source_item->item_specific_info = malloc(sizeof(Consumable));
+  ((Consumable *)source_item->item_specific_info)->id = ((Consumable *)target_item->item->item_specific_info)->id;
+  ((Consumable *)source_item->item_specific_info)->hp_change = ((Consumable *)target_item->item->item_specific_info)->hp_change;
+}
+
+void i_copy_armor(Item *source_item,Item_Holder *target_item){
+  source_item->item_specific_info = malloc(sizeof(Armor));
+  ((Armor *)source_item->item_specific_info)->quality = ((Armor *)target_item->item->item_specific_info)->quality;
+  ((Armor *)source_item->item_specific_info)->armor = ((Armor *)target_item->item->item_specific_info)->armor;
+  ((Armor *)source_item->item_specific_info)->slot = ((Armor *)target_item->item->item_specific_info)->slot;
+  ((Armor *)source_item->item_specific_info)->material = ((Armor *)target_item->item->item_specific_info)->material;
+  ((Armor *)source_item->item_specific_info)->skill = ((Armor *)target_item->item->item_specific_info)->skill;
+  ((Armor *)source_item->item_specific_info)->armor = ((Armor *)target_item->item->item_specific_info)->armor;
+  ((Armor *)source_item->item_specific_info)->weight_classification = ((Armor *)target_item->item->item_specific_info)->weight_classification;
+}
+
+void i_copy_weapon(Item *source_item,Item_Holder *target_item){
+  source_item->item_specific_info = malloc(sizeof(Weapon));
+  ((Weapon *)source_item->item_specific_info)->quality = ((Weapon *)target_item->item->item_specific_info)->quality;
+  ((Weapon *)source_item->item_specific_info)->variant = ((Weapon *)target_item->item->item_specific_info)->variant;
+  ((Weapon *)source_item->item_specific_info)->material = ((Weapon *)target_item->item->item_specific_info)->material;
+}
+*/
+
+extern void (*i_free_item_handler[4])(Item_Holder *item) = {i_free_reagent,i_free_consumable , i_free_weapon,i_free_armor};
+
+extern void (*i_item_holder_copy_handler[4])(Item_Holder *source_item,Item_Holder *target_item) = {i_copy_reagent, i_copy_consumable, i_copy_weapon,i_copy_armor};
 
 void i_free_weapon(Item_Holder *item){
-  
+  free((Weapon *)item->item->item_specific_info);
 }
