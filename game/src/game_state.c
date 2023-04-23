@@ -85,6 +85,10 @@ Game_State *gs_create_game_state(Game_World *game_world){
   
   Game_State *state = malloc(sizeof(Game_State));
   state->ingame_log = malloc(sizeof(char *) * NUM_EVENTS);
+  for(int i = 0; i < NUM_EVENTS; i++){
+    state->ingame_log[i] = malloc(sizeof(char) * MAX_MSG_LENGTH);
+  }
+  state->current_event = malloc(sizeof(char) * MAX_MSG_LENGTH);
   getmaxyx(stdscr,state->found_rows, state->found_cols);
   getmaxyx(stdscr,state->num_cols, state->num_rows);
   state->twister = rng_generate_twister();
@@ -94,7 +98,7 @@ Game_State *gs_create_game_state(Game_World *game_world){
 
   
     Creature *opponent = ir_readin_creature("/usr/lib/revenant_files/creature_files/0",20,4,game_world,state->player);
-    opponent->behavior = attacking;
+    opponent->behavior = idle;
   Linked_List *ll = ll_initialize_linked_list();
    ll_prepend_node_creature(ll,opponent);
 

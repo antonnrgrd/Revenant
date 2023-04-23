@@ -38,7 +38,7 @@ int ir_compare_strings(char *first_file_path, char *second_file_path, char *vari
 
 unsigned long long ir_hash_string(char *file_path,char *variable, U_Hashtable *table);
 
-void ir_print_damage_to_creature(Game_State *gs, Creature *c, Creature *target);
+void ir_add_damage_to_creature_to_log(Game_State *gs, Creature *c, Creature *target);
 
 void ir_print_creature_damage();
 #define IR_INITALIZE_STR_VAL(file_path,string_value, var_name) char *value = ir_readin_char(file_path,string_value); var_name = malloc(sizeof(char) * strlen(value)); strcpy(var_name,value); free(value)
@@ -46,6 +46,7 @@ void ir_print_creature_damage();
 
 Item_Holder *ir_readin_consumable(char *consumable_file_path, int amount);
 Item_Holder *ir_readin_reagent(char *reagent_file_path, int amount);
+
 
 
 #endif

@@ -83,7 +83,7 @@ get it to work*/
   
 e*/
    
-  world->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation;  
+  world->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];  
   c->target=target;
   return c;
 }
@@ -530,7 +530,7 @@ Removing this bit of logic will definetly result in a hard to debug segfualt. Th
    
 }
 //game_state->logs[MAIN_SCREEN]
-void ir_print_damage_to_creature(Game_State *gs, Creature *c, Creature *target){
+void ir_add_damage_to_creature_to_log(Game_State *gs, Creature *c, Creature *target){
   char *creature_name;
   if(c->id == target->id && c->species == target->species ){
   char *file_path = NULL;
@@ -564,6 +564,7 @@ void ir_print_damage_to_creature(Game_State *gs, Creature *c, Creature *target){
     char *variable_pointer = strstr(line, "name");
     if(variable_pointer != NULL){
       creature_name = strtok(strchr(line, '=')+1, "\n");
+       sprintf(gs->current_event, " %s damages you for 10 damage ",creature_name);
        break;
       }
     }
@@ -574,7 +575,7 @@ void ir_print_damage_to_creature(Game_State *gs, Creature *c, Creature *target){
     fclose(fp);
   }
   free(file_path);
-  mvwprintw(gs->logs[MAIN_SCREEN], DEFAULT_MAX_Y,0, "%s damages you for 10 damage", creature_name);
+
    } else if(c->species == player_character){
    char *file_path = NULL;
   file_path = malloc(sizeof(char) * strlen(IR_COMMON_CREATURE_FILEPATH) + 5);
@@ -587,7 +588,7 @@ void ir_print_damage_to_creature(Game_State *gs, Creature *c, Creature *target){
     if(variable_pointer != NULL){
       creature_name = strtok(strchr(line, '=')+1, "\n");
       target->curr_health -= 10;
-       mvwprintw(gs->logs[MAIN_SCREEN], DEFAULT_MAX_Y,0, "You damage %s for 10 damage", creature_name);
+      sprintf(gs->current_event, "You damage %s for 10 damage ",creature_name);
        break;
       }
     }
@@ -631,6 +632,8 @@ void ir_print_damage_to_creature(Game_State *gs, Creature *c, Creature *target){
     char *variable_pointer = strstr(line, "name");
     if(variable_pointer != NULL){
       target_name = strtok(strchr(line, '=')+1, "\n");
+      /*NOTE: might be buggy, as seen how strings behave with the information reader program */
+       sprintf(gs->current_event, "%s damages %s for 10 damage",creature_name, target_name);
        break;
       }
     }
@@ -641,7 +644,7 @@ void ir_print_damage_to_creature(Game_State *gs, Creature *c, Creature *target){
     fclose(fp_2);
   }
   free(file_path_2);
-  mvwprintw(gs->logs[MAIN_SCREEN], DEFAULT_MAX_Y,0, "%s damages %s for 10 damage", creature_name, target_name);  
+
   }
 }
 

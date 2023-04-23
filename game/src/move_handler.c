@@ -87,8 +87,7 @@ int move_response_halt_character(int global_x, int global_y,int local_x, int loc
 int move_response_attack_target(int global_x, int global_y,int local_x, int local_y, Creature *c,Game_State *game_state){
   if  (1){
     CLEAR_MSG_LINE();
-      ir_print_damage_to_creature(game_state, game_state->player, ((Creature *)game_state->current_zone->tiles[global_y][global_x].foe));
-    msg_update_event_log(game_state);
+    MSG_ADD_ATTACK_OPPONENT_EVENT_TO_LOG(((Creature *)game_state->current_zone->tiles[global_y][global_x].foe),  game_state);
       move(c->position.local_y,c->position.local_x);
      
     if (((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->curr_health <= 0){

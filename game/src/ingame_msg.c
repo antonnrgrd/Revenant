@@ -190,22 +190,24 @@ do with just redrawing the box around the log*/
       doupdate();
       return CONTINUE_TURN;
     }
+    else if(ch == KEY_RESIZE){
+      msg_redraw_log(gs);
+    }
   }
 }
                
 int msg_find_log_position(Game_State *gs){
-  char *line_contents = malloc(MAX_MSG_LENGTH * sizeof(char));
-  for(int i = 3; i< 13; i++){
+  
+  for(int i = 0; i< NUM_EVENTS; i++){
     //The position at which we check the screen contents could potentially fail
     //Due to the fact that the last position of the message log hhas 2 digits (see the update event log function for more info)
-      mvwinnstr(gs->logs[EVENT_LOG], i,12,line_contents,MAX_MSG_LENGTH-1);
-      if(s_only_whitespace(line_contents) == 1){
-	free(line_contents);
+    
+      if(s_only_whitespace(gs->ingame_log[i]) == 1){
 	return i;
       }
   }
-  free(line_contents);
   return -1;
+  
 }
   
 int msg_find_item_position(WINDOW *log, int max_y,Item_Holder *item, Item_Holder **item_list){
@@ -229,21 +231,24 @@ int msg_find_item_position(WINDOW *log, int max_y,Item_Holder *item, Item_Holder
 }
 
 void msg_update_event_log(Game_State *gs){
-  char *msg_bfr = malloc(MAX_MSG_LENGTH * sizeof(char));
-  mvwinnstr(gs->logs[MAIN_SCREEN], DEFAULT_MAX_Y,0,msg_bfr,MAX_MSG_LENGTH-1);
   int free_log_position = msg_find_log_position(gs);
   if(free_log_position != -1){
-    if(free_log_position < 12){
-      UPDATE_ADD_TO_LOG(gs,position,msg_bfr,12);
+    if(free_log_position < 9){
+      /* We add plus two because the log begins at the cell-wise index of two*/
+      UPDATE_ADD_TO_LOG(gs,free_log_position+2,12);
     }
     else{
       //We change the offset where print is, if the found y position is 13 because the offset position is 2 digits and so we counter that by increasing the offset
-      UPDATE_ADD_TO_LOG(gs,position,msg_bfr,14);
+      UPDATE_ADD_TO_LOG(gs,free_log_position+2,14);
     }
   }
   else{
-    UPDATE_PUSH_ADD_TO_LOG(gs,msg_bfr);
+    UPDATE_PUSH_ADD_TO_LOG(gs);
    }
+  wmove(gs->logs[MAIN_SCREEN],gs->num_cols-1, 0);
+  wclrtoeol(gs->logs[MAIN_SCREEN]);
+  mvwprintw(gs->logs[MAIN_SCREEN],gs->num_cols-1,0, gs->current_event);
+  UPDATE_PANEL_INFO();
 }
  
 int msg_display_inventory(Game_State *gs,int context, U_Hashtable *merchant){
@@ -371,15 +376,15 @@ int msg_display_inventory_equip_context(Game_State *gs){
     //probably faulty with how we assign item holder pointers to the item list
     else if (ch == 'y' && ( item_list != NULL && item_list[curr_curs_pos-2]!= NULL)){
       //printf(" quality: %d ",((struct Weapon *)item_list[curr_curs_pos-2]->item->item_specific_info)->quality );
-      mvwprintw(gs->logs[MAIN_SCREEN],gs->num_cols-1,0, "%s", "You equip ");
+      MSG_ADD_EQUIP_EVENT_TO_LOG(item_list[curr_curs_pos-2], gs);
+      //mvwprintw(gs->logs[MAIN_SCREEN],gs->num_cols-1,0, "%s", "You equip ");
      /*We temporarily set the amount of the item we equip to be one since
       item printer prints the amount of the item, unless the amount we have is 1
      and we do not want the amount printed, just the item's name*/
      tmp_amount_holder = item_list[curr_curs_pos-2]->amount;
      item_list[curr_curs_pos-2]->amount = 1;
-     msg_print_item(item_list[curr_curs_pos-2],gs->logs[MAIN_SCREEN],11,gs->num_cols-1);
+     //msg_print_item(item_list[curr_curs_pos-2],gs->logs[MAIN_SCREEN],11,gs->num_cols-1);
      item_list[curr_curs_pos-2]->amount = tmp_amount_holder;     
-          msg_update_event_log(gs);
       UPDATE_PANEL_INFO();
       //we subtract 2 from curr_curs_pos to "map" from current cursor position to the actual postion of the item
       //in the item list. This is because the item list starts at index 0, whereas the cursor position starts at 2
@@ -698,4 +703,35 @@ void msg_redraw_inventory_equip_context(Game_State *gs, Item_Holder **item_list,
   }
    wmove(gs->logs[INVENTORY_LOG],curs_pos,5);
    UPDATE_PANEL_INFO();    
+}
+
+void msg_redraw_log(Game_State *gs){
+    int x,y;
+  getmaxyx(stdscr, y,x);
+  if (x < 10 || y < 10){
+    while(x < 10 || y < 10){
+      int ch = getch();
+      if(ch == KEY_RESIZE){
+      getmaxyx(stdscr, y,x);
+       }
+      }
+    gs->logs[EVENT_LOG] = newwin(LOG_Y_SIZE,LOG_X_SIZE,(gs->num_cols - 1) / 4 , (gs->num_rows - 1) / 4 );
+    gs->panels[EVENT_LOG] = new_panel(gs->logs[EVENT_LOG]);
+    box(gs->logs[EVENT_LOG],0,0);
+    INIT_EVENT_LOG(gs->logs[EVENT_LOG]);
+    REDRAW_MAP(gs,gs->player,gs->current_zone,gs->logs[MAIN_SCREEN], gs->player->position.global_x,gs->player->position.global_y,rows, cols);
+    for(int i = 0; i < NUM_EVENTS -1 ; i++){
+      mvwprintw(gs->logs[EVENT_LOG], i+3, 12, gs->ingame_log[i]);
+    }
+  }
+  else{
+    INIT_EVENT_LOG(gs->logs[EVENT_LOG]);
+    wresize(gs->logs[EVENT_LOG],LOG_Y_SIZE,LOG_X_SIZE);
+    box(gs->logs[EVENT_LOG],0,0);
+    REDRAW_MAP(gs,gs->player,gs->current_zone,gs->logs[MAIN_SCREEN], gs->player->position.global_x,gs->player->position.global_y,rows, cols);
+    for(int i = 0; i < NUM_EVENTS -1 ; i++){
+      mvwprintw(gs->logs[EVENT_LOG], i+3, 12, gs->ingame_log[i]);
+    }
+  }
+  UPDATE_PANEL_INFO();    
 }

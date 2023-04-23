@@ -1,4 +1,4 @@
-# 0 "src/u_hash.c"
+# 0 "src/ingame_msg.c"
 # 0 "<built-in>"
 # 0 "<command-line>"
 # 1 "/usr/include/stdc-predef.h" 1 3 4
@@ -46,45 +46,194 @@
    - 285 hentaigana
    - 3 additional Zanabazar Square characters */
 # 0 "<command-line>" 2
-# 1 "src/u_hash.c"
+# 1 "src/ingame_msg.c"
 
-# 1 "src/u_hash.c"
+# 1 "src/ingame_msg.c"
 /*This file is part of Revenant.
-
 Revenant is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
-
-Revenant is distributed in the hope that it will be useful,
+Revenant  is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
-
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
-
-# 1 "/home/anton/revenant/game/headers/u_hash.h" 1
+# 1 "/home/anton/revenant/game/headers/ingame_msg.h" 1
 /*This file is part of Revenant.
-
 Revenant is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
-
-Revenant is distributed in the hope that it will be useful,
+Revenant  is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
-
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 
 
-# 1 "/usr/include/stdio.h" 1 3 4
 
-# 1 "/usr/include/stdio.h" 3 4
-/* Define ISO C stdio on top of C++ iostreams.
-   Copyright (C) 1991-2022 Free Software Foundation, Inc.
+
+# 1 "/home/anton/revenant/game/headers/screen_constants.h" 1
+/*This file is part of Revenant.
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+Revenant  is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+# 17 "/home/anton/revenant/game/headers/ingame_msg.h" 2
+# 1 "/usr/include/curses.h" 1 3 4
+
+# 1 "/usr/include/curses.h" 3 4
+/****************************************************************************
+ * Copyright 2018-2020,2021 Thomas E. Dickey                                *
+ * Copyright 1998-2016,2017 Free Software Foundation, Inc.                  *
+ *                                                                          *
+ * Permission is hereby granted, free of charge, to any person obtaining a  *
+ * copy of this software and associated documentation files (the            *
+ * "Software"), to deal in the Software without restriction, including      *
+ * without limitation the rights to use, copy, modify, merge, publish,      *
+ * distribute, distribute with modifications, sublicense, and/or sell       *
+ * copies of the Software, and to permit persons to whom the Software is    *
+ * furnished to do so, subject to the following conditions:                 *
+ *                                                                          *
+ * The above copyright notice and this permission notice shall be included  *
+ * in all copies or substantial portions of the Software.                   *
+ *                                                                          *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS  *
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF               *
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.   *
+ * IN NO EVENT SHALL THE ABOVE COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,   *
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR    *
+ * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR    *
+ * THE USE OR OTHER DEALINGS IN THE SOFTWARE.                               *
+ *                                                                          *
+ * Except as contained in this notice, the name(s) of the above copyright   *
+ * holders shall not be used in advertising or otherwise to promote the     *
+ * sale, use or other dealings in this Software without prior written       *
+ * authorization.                                                           *
+ ****************************************************************************/
+
+/****************************************************************************
+ *  Author: Zeyd M. Ben-Halim <zmbenhal@netcom.com> 1992,1995               *
+ *     and: Eric S. Raymond <esr@snark.thyrsus.com>                         *
+ *     and: Thomas E. Dickey                        1996-on                 *
+ ****************************************************************************/
+
+/* $Id: curses.h.in,v 1.277 2021/09/24 16:07:37 tom Exp $ */
+
+
+
+
+/*
+ The symbols beginning NCURSES_ or USE_ are configuration choices.
+ A few of the former can be overridden by applications at compile-time.
+ Most of the others correspond to configure-script options (or checks
+ by the configure-script for features of the system on which it is built).
+
+ These symbols can be overridden by applications at compile-time:
+ NCURSES_NOMACROS suppresses macro definitions in favor of functions
+ NCURSES_WATTR_MACROS suppresses wattr_* macro definitions
+ NCURSES_WIDECHAR is an alternative for declaring wide-character functions.
+
+ These symbols are used only when building ncurses:
+ NCURSES_ATTR_T
+ NCURSES_FIELD_INTERNALS
+ NCURSES_INTERNALS
+
+ These symbols are set by the configure script:
+ NCURSES_ENABLE_STDBOOL_H
+ NCURSES_EXPANDED
+ NCURSES_EXT_COLORS
+ NCURSES_EXT_FUNCS
+ NCURSES_EXT_PUTWIN
+ NCURSES_NO_PADDING
+ NCURSES_OSPEED_COMPAT
+ NCURSES_PATHSEP
+ NCURSES_REENTRANT
+ */
+
+
+
+
+/* These are defined only in curses.h, and are used for conditional compiles */
+
+
+
+
+/* This is defined in more than one ncurses header, for identification */
+
+
+
+/*
+ * Identify the mouse encoding version.
+ */
+
+
+/*
+ * Definitions to facilitate DLL's.
+ */
+# 1 "/usr/include/ncurses_dll.h" 1 3 4
+/****************************************************************************
+ * Copyright 2018,2020 Thomas E. Dickey                                     *
+ * Copyright 2009,2014 Free Software Foundation, Inc.                       *
+ *                                                                          *
+ * Permission is hereby granted, free of charge, to any person obtaining a  *
+ * copy of this software and associated documentation files (the            *
+ * "Software"), to deal in the Software without restriction, including      *
+ * without limitation the rights to use, copy, modify, merge, publish,      *
+ * distribute, distribute with modifications, sublicense, and/or sell       *
+ * copies of the Software, and to permit persons to whom the Software is    *
+ * furnished to do so, subject to the following conditions:                 *
+ *                                                                          *
+ * The above copyright notice and this permission notice shall be included  *
+ * in all copies or substantial portions of the Software.                   *
+ *                                                                          *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS  *
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF               *
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.   *
+ * IN NO EVENT SHALL THE ABOVE COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,   *
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR    *
+ * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR    *
+ * THE USE OR OTHER DEALINGS IN THE SOFTWARE.                               *
+ *                                                                          *
+ * Except as contained in this notice, the name(s) of the above copyright   *
+ * holders shall not be used in advertising or otherwise to promote the     *
+ * sale, use or other dealings in this Software without prior written       *
+ * authorization.                                                           *
+ ****************************************************************************/
+/* $Id: ncurses_dll.h.in,v 1.17 2020/09/05 17:58:47 juergen Exp $ */
+
+
+
+
+/*
+ * MinGW gcc (unlike MSYS2 and Cygwin) should define _WIN32 and possibly _WIN64.
+ */
+# 64 "/usr/include/ncurses_dll.h" 3 4
+/*
+ * For reentrant code, we map the various global variables into SCREEN by
+ * using functions to access them.
+ */
+# 81 "/usr/include/ncurses_dll.h" 3 4
+/*
+ * These symbols hide dllimport/dllexport, for compilers which care about it.
+ */
+# 90 "/usr/include/curses.h" 2 3 4
+
+/*
+ * Extra headers.
+ */
+
+# 1 "/usr/lib/gcc/x86_64-linux-gnu/11/include/stdint.h" 1 3 4
+# 9 "/usr/lib/gcc/x86_64-linux-gnu/11/include/stdint.h" 3 4
+# 1 "/usr/include/stdint.h" 1 3 4
+/* Copyright (C) 1997-2022 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -102,7 +251,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
    <https://www.gnu.org/licenses/>.  */
 
 /*
- *	ISO C99 Standard: 7.19 Input/output	<stdio.h>
+ *	ISO C99: 7.18 Integer types <stdint.h>
  */
 
 
@@ -905,134 +1054,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 # 103 "/usr/include/x86_64-linux-gnu/bits/libc-header-start.h" 3 4
 /* ISO/IEC TS 18661-3:2015 defines the
    __STDC_WANT_IEC_60559_TYPES_EXT__ macro.  */
-# 28 "/usr/include/stdio.h" 2 3 4
-
-
-
-
-
-# 1 "/usr/lib/gcc/x86_64-linux-gnu/11/include/stddef.h" 1 3 4
-/* Copyright (C) 1989-2021 Free Software Foundation, Inc.
-
-This file is part of GCC.
-
-GCC is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 3, or (at your option)
-any later version.
-
-GCC is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-Under Section 7 of GPL version 3, you are granted additional
-permissions described in the GCC Runtime Library Exception, version
-3.1, as published by the Free Software Foundation.
-
-You should have received a copy of the GNU General Public License and
-a copy of the GCC Runtime Library Exception along with this program;
-see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
-<http://www.gnu.org/licenses/>.  */
-
-/*
- * ISO C Standard:  7.17  Common definitions  <stddef.h>
- */
-
-
-
-
-
-
-/* Any one of these symbols __need_* means that GNU libc
-   wants us just to define one data type.  So don't define
-   the symbols that indicate this file's entire job has been done.  */
-# 46 "/usr/lib/gcc/x86_64-linux-gnu/11/include/stddef.h" 3 4
-/* This avoids lossage on SunOS but only if stdtypes.h comes first.
-   There's no way to win with the other order!  Sun lossage.  */
-# 86 "/usr/lib/gcc/x86_64-linux-gnu/11/include/stddef.h" 3 4
-/* Sequent's header files use _PTRDIFF_T_ in some conflicting way.
-   Just ignore it.  */
-
-
-
-
-/* On VxWorks, <type/vxTypesBase.h> may have defined macros like
-   _TYPE_size_t which will typedef size_t.  fixincludes patched the
-   vxTypesBase.h so that this macro is only defined if _GCC_SIZE_T is
-   not defined, and so that defining this macro defines _GCC_SIZE_T.
-   If we find that the macros are still defined at this point, we must
-   invoke them so that the type is defined as expected.  */
-# 111 "/usr/lib/gcc/x86_64-linux-gnu/11/include/stddef.h" 3 4
-/* In case nobody has defined these types, but we aren't running under
-   GCC 2.00, make sure that __PTRDIFF_TYPE__, __SIZE_TYPE__, and
-   __WCHAR_TYPE__ have reasonable values.  This can happen if the
-   parts of GCC is compiled by an older compiler, that actually
-   include gstddef.h, such as collect2.  */
-
-/* Signed type of difference of two pointers.  */
-
-/* Define this type if we are doing the whole job,
-   or if we want this type in particular.  */
-# 159 "/usr/lib/gcc/x86_64-linux-gnu/11/include/stddef.h" 3 4
-/* Unsigned type of `sizeof' something.  */
-
-/* Define this type if we are doing the whole job,
-   or if we want this type in particular.  */
-# 209 "/usr/lib/gcc/x86_64-linux-gnu/11/include/stddef.h" 3 4
-typedef long unsigned int size_t;
-# 235 "/usr/lib/gcc/x86_64-linux-gnu/11/include/stddef.h" 3 4
-/* Wide character type.
-   Locale-writers should change this as necessary to
-   be big enough to hold unique values not between 0 and 127,
-   and not (wchar_t) -1, for each defined multibyte character.  */
-
-/* Define this type if we are doing the whole job,
-   or if we want this type in particular.  */
-# 387 "/usr/lib/gcc/x86_64-linux-gnu/11/include/stddef.h" 3 4
-/* A null pointer constant.  */
-# 34 "/usr/include/stdio.h" 2 3 4
-
-
-# 1 "/usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h" 1 3 4
-/* Copyright (C) 1989-2021 Free Software Foundation, Inc.
-
-This file is part of GCC.
-
-GCC is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 3, or (at your option)
-any later version.
-
-GCC is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-Under Section 7 of GPL version 3, you are granted additional
-permissions described in the GCC Runtime Library Exception, version
-3.1, as published by the Free Software Foundation.
-
-You should have received a copy of the GNU General Public License and
-a copy of the GCC Runtime Library Exception along with this program;
-see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
-<http://www.gnu.org/licenses/>.  */
-
-/*
- * ISO C Standard:  7.15  Variable arguments  <stdarg.h>
- */
-# 36 "/usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h" 3 4
-/* Define __gnuc_va_list.  */
-
-
-
-typedef __builtin_va_list __gnuc_va_list;
-
-
-/* Define the standard macros for the user,
-   if this invocation was from the user program.  */
-# 37 "/usr/include/stdio.h" 2 3 4
-
+# 27 "/usr/include/stdint.h" 2 3 4
 # 1 "/usr/include/x86_64-linux-gnu/bits/types.h" 1 3 4
 /* bits/types.h -- definitions of __*_t types underlying *_t types.
    Copyright (C) 2002-2022 Free Software Foundation, Inc.
@@ -1341,6 +1363,675 @@ typedef int __sig_atomic_t;
 /* Seconds since the Epoch, visible to user code when time_t is too
    narrow only for consistency with the old way of widening too-narrow
    types.  User code should never use __time64_t.  */
+# 28 "/usr/include/stdint.h" 2 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/wchar.h" 1 3 4
+/* wchar_t type related definitions.
+   Copyright (C) 2000-2022 Free Software Foundation, Inc.
+   This file is part of the GNU C Library.
+
+   The GNU C Library is free software; you can redistribute it and/or
+   modify it under the terms of the GNU Lesser General Public
+   License as published by the Free Software Foundation; either
+   version 2.1 of the License, or (at your option) any later version.
+
+   The GNU C Library is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   Lesser General Public License for more details.
+
+   You should have received a copy of the GNU Lesser General Public
+   License along with the GNU C Library; if not, see
+   <https://www.gnu.org/licenses/>.  */
+
+
+
+
+/* The fallback definitions, for when __WCHAR_MAX__ or __WCHAR_MIN__
+   are not defined, give the right value and type as long as both int
+   and wchar_t are 32-bit types.  Adding L'\0' to a constant value
+   ensures that the type is correct; it is necessary to use (L'\0' +
+   0) rather than just L'\0' so that the type in C++ is the promoted
+   version of wchar_t rather than the distinct wchar_t type itself.
+   Because wchar_t in preprocessor #if expressions is treated as
+   intmax_t or uintmax_t, the expression (L'\0' - 1) would have the
+   wrong value for WCHAR_MAX in such expressions and so cannot be used
+   to define __WCHAR_MAX in the unsigned case.  */
+# 29 "/usr/include/stdint.h" 2 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/wordsize.h" 1 3 4
+/* Determine the wordsize from the preprocessor defines.  */
+# 13 "/usr/include/x86_64-linux-gnu/bits/wordsize.h" 3 4
+/* Both x86-64 and x32 use the 64-bit system call interface.  */
+# 30 "/usr/include/stdint.h" 2 3 4
+
+/* Exact integral types.  */
+
+/* Signed.  */
+# 1 "/usr/include/x86_64-linux-gnu/bits/stdint-intn.h" 1 3 4
+/* Define intN_t types.
+   Copyright (C) 2017-2022 Free Software Foundation, Inc.
+   This file is part of the GNU C Library.
+
+   The GNU C Library is free software; you can redistribute it and/or
+   modify it under the terms of the GNU Lesser General Public
+   License as published by the Free Software Foundation; either
+   version 2.1 of the License, or (at your option) any later version.
+
+   The GNU C Library is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   Lesser General Public License for more details.
+
+   You should have received a copy of the GNU Lesser General Public
+   License along with the GNU C Library; if not, see
+   <https://www.gnu.org/licenses/>.  */
+
+
+
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/types.h" 1 3 4
+/* bits/types.h -- definitions of __*_t types underlying *_t types.
+   Copyright (C) 2002-2022 Free Software Foundation, Inc.
+   This file is part of the GNU C Library.
+
+   The GNU C Library is free software; you can redistribute it and/or
+   modify it under the terms of the GNU Lesser General Public
+   License as published by the Free Software Foundation; either
+   version 2.1 of the License, or (at your option) any later version.
+
+   The GNU C Library is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   Lesser General Public License for more details.
+
+   You should have received a copy of the GNU Lesser General Public
+   License along with the GNU C Library; if not, see
+   <https://www.gnu.org/licenses/>.  */
+
+/*
+ * Never include this file directly; use <sys/types.h> instead.
+ */
+# 23 "/usr/include/x86_64-linux-gnu/bits/stdint-intn.h" 2 3 4
+
+typedef __int8_t int8_t;
+typedef __int16_t int16_t;
+typedef __int32_t int32_t;
+typedef __int64_t int64_t;
+# 35 "/usr/include/stdint.h" 2 3 4
+
+/* Unsigned.  */
+# 1 "/usr/include/x86_64-linux-gnu/bits/stdint-uintn.h" 1 3 4
+/* Define uintN_t types.
+   Copyright (C) 2017-2022 Free Software Foundation, Inc.
+   This file is part of the GNU C Library.
+
+   The GNU C Library is free software; you can redistribute it and/or
+   modify it under the terms of the GNU Lesser General Public
+   License as published by the Free Software Foundation; either
+   version 2.1 of the License, or (at your option) any later version.
+
+   The GNU C Library is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   Lesser General Public License for more details.
+
+   You should have received a copy of the GNU Lesser General Public
+   License along with the GNU C Library; if not, see
+   <https://www.gnu.org/licenses/>.  */
+
+
+
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/types.h" 1 3 4
+/* bits/types.h -- definitions of __*_t types underlying *_t types.
+   Copyright (C) 2002-2022 Free Software Foundation, Inc.
+   This file is part of the GNU C Library.
+
+   The GNU C Library is free software; you can redistribute it and/or
+   modify it under the terms of the GNU Lesser General Public
+   License as published by the Free Software Foundation; either
+   version 2.1 of the License, or (at your option) any later version.
+
+   The GNU C Library is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   Lesser General Public License for more details.
+
+   You should have received a copy of the GNU Lesser General Public
+   License along with the GNU C Library; if not, see
+   <https://www.gnu.org/licenses/>.  */
+
+/*
+ * Never include this file directly; use <sys/types.h> instead.
+ */
+# 23 "/usr/include/x86_64-linux-gnu/bits/stdint-uintn.h" 2 3 4
+
+typedef __uint8_t uint8_t;
+typedef __uint16_t uint16_t;
+typedef __uint32_t uint32_t;
+typedef __uint64_t uint64_t;
+# 38 "/usr/include/stdint.h" 2 3 4
+
+
+/* Small types.  */
+
+/* Signed.  */
+typedef __int_least8_t int_least8_t;
+typedef __int_least16_t int_least16_t;
+typedef __int_least32_t int_least32_t;
+typedef __int_least64_t int_least64_t;
+
+/* Unsigned.  */
+typedef __uint_least8_t uint_least8_t;
+typedef __uint_least16_t uint_least16_t;
+typedef __uint_least32_t uint_least32_t;
+typedef __uint_least64_t uint_least64_t;
+
+
+/* Fast types.  */
+
+/* Signed.  */
+typedef signed char int_fast8_t;
+
+typedef long int int_fast16_t;
+typedef long int int_fast32_t;
+typedef long int int_fast64_t;
+
+
+
+
+
+
+
+/* Unsigned.  */
+typedef unsigned char uint_fast8_t;
+
+typedef unsigned long int uint_fast16_t;
+typedef unsigned long int uint_fast32_t;
+typedef unsigned long int uint_fast64_t;
+# 84 "/usr/include/stdint.h" 3 4
+/* Types for `void *' pointers.  */
+
+
+typedef long int intptr_t;
+
+
+typedef unsigned long int uintptr_t;
+# 100 "/usr/include/stdint.h" 3 4
+/* Largest integral types.  */
+typedef __intmax_t intmax_t;
+typedef __uintmax_t uintmax_t;
+# 113 "/usr/include/stdint.h" 3 4
+/* Limits of integral types.  */
+
+/* Minimum of signed integral types.  */
+
+
+
+
+/* Maximum of signed integral types.  */
+
+
+
+
+
+/* Maximum of unsigned integral types.  */
+
+
+
+
+
+
+/* Minimum of signed integral types having a minimum size.  */
+
+
+
+
+/* Maximum of signed integral types having a minimum size.  */
+
+
+
+
+
+/* Maximum of unsigned integral types having a minimum size.  */
+
+
+
+
+
+
+/* Minimum of fast signed integral types having a minimum size.  */
+# 161 "/usr/include/stdint.h" 3 4
+/* Maximum of fast signed integral types having a minimum size.  */
+# 172 "/usr/include/stdint.h" 3 4
+/* Maximum of fast unsigned integral types having a minimum size.  */
+# 184 "/usr/include/stdint.h" 3 4
+/* Values to test for integral types holding `void *' pointer.  */
+# 196 "/usr/include/stdint.h" 3 4
+/* Minimum for largest signed integral type.  */
+
+/* Maximum for largest signed integral type.  */
+
+
+/* Maximum for largest unsigned integral type.  */
+
+
+
+/* Limits of other integer types.  */
+
+/* Limits of `ptrdiff_t' type.  */
+# 221 "/usr/include/stdint.h" 3 4
+/* Limits of `sig_atomic_t'.  */
+
+
+
+/* Limit of `size_t' type.  */
+# 236 "/usr/include/stdint.h" 3 4
+/* Limits of `wchar_t'.  */
+
+/* These constants might also be defined in <wchar.h>.  */
+
+
+
+
+/* Limits of `wint_t'.  */
+
+
+
+/* Signed.  */
+# 257 "/usr/include/stdint.h" 3 4
+/* Unsigned.  */
+# 267 "/usr/include/stdint.h" 3 4
+/* Maximal type.  */
+# 10 "/usr/lib/gcc/x86_64-linux-gnu/11/include/stdint.h" 2 3 4
+# 96 "/usr/include/curses.h" 2 3 4
+# 107 "/usr/include/curses.h" 3 4
+/*
+ * User-definable tweak to disable the include of <stdbool.h>.
+ */
+
+
+
+
+/*
+ * NCURSES_ATTR_T is used to quiet compiler warnings when building ncurses
+ * configured using --disable-macros.
+ */
+
+
+
+
+/*
+ * Expands to 'const' if ncurses is configured using --enable-const.  Note that
+ * doing so makes it incompatible with other implementations of X/Open Curses.
+ */
+
+
+
+
+
+
+/*
+ * The standard type used for color values, and for color-pairs.  The latter
+ * allows the curses library to enumerate the combinations of foreground and
+ * background colors used by an application, and is normally the product of the
+ * total foreground and background colors.
+ *
+ * X/Open uses "short" for both of these types, ultimately because they are
+ * numbers from the SVr4 terminal database, which uses 16-bit signed values.
+ */
+
+
+
+
+
+
+/*
+ * Definitions used to make WINDOW and similar structs opaque.
+ */
+
+
+
+
+
+
+
+/*
+ * Definition used to optionally suppress wattr* macros to help with the
+ * transition from ncurses5 to ncurses6 by allowing the header files to
+ * be shared across development packages for ncursesw in both ABIs.
+ */
+
+
+
+
+/*
+ * The reentrant code relies on the opaque setting, but adds features.
+ */
+
+
+
+
+/*
+ * In certain environments, we must work around linker problems for data
+ */
+
+
+
+
+
+/*
+ * Control whether bindings for interop support are added.
+ */
+
+
+
+/*
+ * The internal type used for window dimensions.
+ */
+
+
+
+/*
+ * Control whether tparm() supports varargs or fixed-parameter list.
+ */
+
+
+
+/*
+ * Control type used for tparm's arguments.  While X/Open equates long and
+ * char* values, this is not always workable for 64-bit platforms.
+ */
+
+
+
+/*
+ * Control whether ncurses uses wcwidth() for checking width of line-drawing
+ * characters.
+ */
+
+
+
+/*
+ * NCURSES_CH_T is used in building the library, but not used otherwise in
+ * this header file, since that would make the normal/wide-character versions
+ * of the header incompatible.
+ */
+
+
+
+
+typedef unsigned chtype;
+typedef unsigned mmask_t;
+
+
+
+
+
+/*
+ * We need FILE, etc.  Include this before checking any feature symbols.
+ */
+# 1 "/usr/include/stdio.h" 1 3 4
+/* Define ISO C stdio on top of C++ iostreams.
+   Copyright (C) 1991-2022 Free Software Foundation, Inc.
+   This file is part of the GNU C Library.
+
+   The GNU C Library is free software; you can redistribute it and/or
+   modify it under the terms of the GNU Lesser General Public
+   License as published by the Free Software Foundation; either
+   version 2.1 of the License, or (at your option) any later version.
+
+   The GNU C Library is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   Lesser General Public License for more details.
+
+   You should have received a copy of the GNU Lesser General Public
+   License along with the GNU C Library; if not, see
+   <https://www.gnu.org/licenses/>.  */
+
+/*
+ *	ISO C99 Standard: 7.19 Input/output	<stdio.h>
+ */
+
+
+
+
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/libc-header-start.h" 1 3 4
+/* Handle feature test macros at the start of a header.
+   Copyright (C) 2016-2022 Free Software Foundation, Inc.
+   This file is part of the GNU C Library.
+
+   The GNU C Library is free software; you can redistribute it and/or
+   modify it under the terms of the GNU Lesser General Public
+   License as published by the Free Software Foundation; either
+   version 2.1 of the License, or (at your option) any later version.
+
+   The GNU C Library is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   Lesser General Public License for more details.
+
+   You should have received a copy of the GNU Lesser General Public
+   License along with the GNU C Library; if not, see
+   <https://www.gnu.org/licenses/>.  */
+
+/* This header is internal to glibc and should not be included outside
+   of glibc headers.  Headers including it must define
+   __GLIBC_INTERNAL_STARTING_HEADER_IMPLEMENTATION first.  This header
+   cannot have multiple include guards because ISO C feature test
+   macros depend on the definition of the macro when an affected
+   header is included, not when the first system header is
+   included.  */
+
+
+
+
+
+
+
+# 1 "/usr/include/features.h" 1 3 4
+/* Copyright (C) 1991-2022 Free Software Foundation, Inc.
+   This file is part of the GNU C Library.
+
+   The GNU C Library is free software; you can redistribute it and/or
+   modify it under the terms of the GNU Lesser General Public
+   License as published by the Free Software Foundation; either
+   version 2.1 of the License, or (at your option) any later version.
+
+   The GNU C Library is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   Lesser General Public License for more details.
+
+   You should have received a copy of the GNU Lesser General Public
+   License along with the GNU C Library; if not, see
+   <https://www.gnu.org/licenses/>.  */
+# 34 "/usr/include/x86_64-linux-gnu/bits/libc-header-start.h" 2 3 4
+
+/* ISO/IEC TR 24731-2:2010 defines the __STDC_WANT_LIB_EXT2__
+   macro.  */
+# 45 "/usr/include/x86_64-linux-gnu/bits/libc-header-start.h" 3 4
+/* ISO/IEC TS 18661-1:2014 defines the __STDC_WANT_IEC_60559_BFP_EXT__
+   macro.  Most but not all symbols enabled by that macro in TS
+   18661-1 are enabled unconditionally in C2X.  In C2X, the symbols in
+   Annex F still require a new feature test macro
+   __STDC_WANT_IEC_60559_EXT__ instead (C2X does not define
+   __STDC_WANT_IEC_60559_BFP_EXT__), while a few features from TS
+   18661-1 are not included in C2X (and thus should depend on
+   __STDC_WANT_IEC_60559_BFP_EXT__ even when C2X features are
+   enabled).
+
+   __GLIBC_USE (IEC_60559_BFP_EXT) controls those features from TS
+   18661-1 not included in C2X.
+
+   __GLIBC_USE (IEC_60559_BFP_EXT_C2X) controls those features from TS
+   18661-1 that are also included in C2X (with no feature test macro
+   required in C2X).
+
+   __GLIBC_USE (IEC_60559_EXT) controls those features from TS 18661-1
+   that are included in C2X but conditional on
+   __STDC_WANT_IEC_60559_EXT__.  (There are currently no features
+   conditional on __STDC_WANT_IEC_60559_EXT__ that are not in TS
+   18661-1.)  */
+# 86 "/usr/include/x86_64-linux-gnu/bits/libc-header-start.h" 3 4
+/* ISO/IEC TS 18661-4:2015 defines the
+   __STDC_WANT_IEC_60559_FUNCS_EXT__ macro.  Other than the reduction
+   functions, the symbols from this TS are enabled unconditionally in
+   C2X.  */
+# 103 "/usr/include/x86_64-linux-gnu/bits/libc-header-start.h" 3 4
+/* ISO/IEC TS 18661-3:2015 defines the
+   __STDC_WANT_IEC_60559_TYPES_EXT__ macro.  */
+# 28 "/usr/include/stdio.h" 2 3 4
+
+
+
+
+
+# 1 "/usr/lib/gcc/x86_64-linux-gnu/11/include/stddef.h" 1 3 4
+/* Copyright (C) 1989-2021 Free Software Foundation, Inc.
+
+This file is part of GCC.
+
+GCC is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3, or (at your option)
+any later version.
+
+GCC is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+Under Section 7 of GPL version 3, you are granted additional
+permissions described in the GCC Runtime Library Exception, version
+3.1, as published by the Free Software Foundation.
+
+You should have received a copy of the GNU General Public License and
+a copy of the GCC Runtime Library Exception along with this program;
+see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<http://www.gnu.org/licenses/>.  */
+
+/*
+ * ISO C Standard:  7.17  Common definitions  <stddef.h>
+ */
+
+
+
+
+
+
+/* Any one of these symbols __need_* means that GNU libc
+   wants us just to define one data type.  So don't define
+   the symbols that indicate this file's entire job has been done.  */
+# 46 "/usr/lib/gcc/x86_64-linux-gnu/11/include/stddef.h" 3 4
+/* This avoids lossage on SunOS but only if stdtypes.h comes first.
+   There's no way to win with the other order!  Sun lossage.  */
+# 86 "/usr/lib/gcc/x86_64-linux-gnu/11/include/stddef.h" 3 4
+/* Sequent's header files use _PTRDIFF_T_ in some conflicting way.
+   Just ignore it.  */
+
+
+
+
+/* On VxWorks, <type/vxTypesBase.h> may have defined macros like
+   _TYPE_size_t which will typedef size_t.  fixincludes patched the
+   vxTypesBase.h so that this macro is only defined if _GCC_SIZE_T is
+   not defined, and so that defining this macro defines _GCC_SIZE_T.
+   If we find that the macros are still defined at this point, we must
+   invoke them so that the type is defined as expected.  */
+# 111 "/usr/lib/gcc/x86_64-linux-gnu/11/include/stddef.h" 3 4
+/* In case nobody has defined these types, but we aren't running under
+   GCC 2.00, make sure that __PTRDIFF_TYPE__, __SIZE_TYPE__, and
+   __WCHAR_TYPE__ have reasonable values.  This can happen if the
+   parts of GCC is compiled by an older compiler, that actually
+   include gstddef.h, such as collect2.  */
+
+/* Signed type of difference of two pointers.  */
+
+/* Define this type if we are doing the whole job,
+   or if we want this type in particular.  */
+# 159 "/usr/lib/gcc/x86_64-linux-gnu/11/include/stddef.h" 3 4
+/* Unsigned type of `sizeof' something.  */
+
+/* Define this type if we are doing the whole job,
+   or if we want this type in particular.  */
+# 209 "/usr/lib/gcc/x86_64-linux-gnu/11/include/stddef.h" 3 4
+typedef long unsigned int size_t;
+# 235 "/usr/lib/gcc/x86_64-linux-gnu/11/include/stddef.h" 3 4
+/* Wide character type.
+   Locale-writers should change this as necessary to
+   be big enough to hold unique values not between 0 and 127,
+   and not (wchar_t) -1, for each defined multibyte character.  */
+
+/* Define this type if we are doing the whole job,
+   or if we want this type in particular.  */
+# 387 "/usr/lib/gcc/x86_64-linux-gnu/11/include/stddef.h" 3 4
+/* A null pointer constant.  */
+# 34 "/usr/include/stdio.h" 2 3 4
+
+
+# 1 "/usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h" 1 3 4
+/* Copyright (C) 1989-2021 Free Software Foundation, Inc.
+
+This file is part of GCC.
+
+GCC is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3, or (at your option)
+any later version.
+
+GCC is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+Under Section 7 of GPL version 3, you are granted additional
+permissions described in the GCC Runtime Library Exception, version
+3.1, as published by the Free Software Foundation.
+
+You should have received a copy of the GNU General Public License and
+a copy of the GCC Runtime Library Exception along with this program;
+see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<http://www.gnu.org/licenses/>.  */
+
+/*
+ * ISO C Standard:  7.15  Variable arguments  <stdarg.h>
+ */
+# 36 "/usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h" 3 4
+/* Define __gnuc_va_list.  */
+
+
+
+typedef __builtin_va_list __gnuc_va_list;
+
+
+/* Define the standard macros for the user,
+   if this invocation was from the user program.  */
+# 37 "/usr/include/stdio.h" 2 3 4
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/types.h" 1 3 4
+/* bits/types.h -- definitions of __*_t types underlying *_t types.
+   Copyright (C) 2002-2022 Free Software Foundation, Inc.
+   This file is part of the GNU C Library.
+
+   The GNU C Library is free software; you can redistribute it and/or
+   modify it under the terms of the GNU Lesser General Public
+   License as published by the Free Software Foundation; either
+   version 2.1 of the License, or (at your option) any later version.
+
+   The GNU C Library is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   Lesser General Public License for more details.
+
+   You should have received a copy of the GNU Lesser General Public
+   License along with the GNU C Library; if not, see
+   <https://www.gnu.org/licenses/>.  */
+
+/*
+ * Never include this file directly; use <sys/types.h> instead.
+ */
 # 39 "/usr/include/stdio.h" 2 3 4
 # 1 "/usr/include/x86_64-linux-gnu/bits/types/__fpos_t.h" 1 3 4
 
@@ -2418,6 +3109,1292 @@ extern int __overflow (FILE *, int);
 
 
 
+# 233 "/usr/include/curses.h" 2 3 4
+
+/*
+ * With XPG4, you must define _XOPEN_SOURCE_EXTENDED, it is redundant (or
+ * conflicting) when _XOPEN_SOURCE is 500 or greater.  If NCURSES_WIDECHAR is
+ * not already defined, e.g., if the platform relies upon nonstandard feature
+ * test macros, define it at this point if the standard feature test macros
+ * indicate that it should be defined.
+ */
+# 249 "/usr/include/curses.h" 3 4
+# 1 "/usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h" 1 3 4
+/* Copyright (C) 1989-2021 Free Software Foundation, Inc.
+
+This file is part of GCC.
+
+GCC is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3, or (at your option)
+any later version.
+
+GCC is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+Under Section 7 of GPL version 3, you are granted additional
+permissions described in the GCC Runtime Library Exception, version
+3.1, as published by the Free Software Foundation.
+
+You should have received a copy of the GNU General Public License and
+a copy of the GCC Runtime Library Exception along with this program;
+see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<http://www.gnu.org/licenses/>.  */
+
+/*
+ * ISO C Standard:  7.15  Variable arguments  <stdarg.h>
+ */
+# 36 "/usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h" 3 4
+/* Define __gnuc_va_list.  */
+
+
+
+
+
+
+/* Define the standard macros for the user,
+   if this invocation was from the user program.  */
+# 56 "/usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h" 3 4
+/* Define va_list, if desired, from __gnuc_va_list. */
+/* We deliberately do not define va_list when called from
+   stdio.h, because ANSI C says that stdio.h is not supposed to define
+   va_list.  stdio.h needs to have access to that data type, 
+   but must not use that name.  It should use the name __gnuc_va_list,
+   which is safe because it is reserved for the implementation.  */
+# 86 "/usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h" 3 4
+/* The macro _VA_LIST_ is the same thing used by this file in Ultrix.
+   But on BSD NET2 we must not test or define or undef it.
+   (Note that the comments in NET 2's ansi.h
+   are incorrect for _VA_LIST_--see stdio.h!)  */
+
+/* The macro _VA_LIST_DEFINED is used in Windows NT 3.5  */
+# 250 "/usr/include/curses.h" 2 3 4
+
+
+
+
+/* X/Open and SVr4 specify that curses implements 'bool'.  However, C++ may also
+ * implement it.  If so, we must use the C++ compiler's type to avoid conflict
+ * with other interfaces.
+ *
+ * A further complication is that <stdbool.h> may declare 'bool' to be a
+ * different type, such as an enum which is not necessarily compatible with
+ * C++.  If we have <stdbool.h>, make 'bool' a macro, so users may #undef it.
+ * Otherwise, let it remain a typedef to avoid conflicts with other #define's.
+ * In either case, make a typedef for NCURSES_BOOL which can be used if needed
+ * from either C or C++.
+ */
+
+
+
+
+
+
+
+typedef unsigned char NCURSES_BOOL;
+# 282 "/usr/include/curses.h" 3 4
+# 1 "/usr/lib/gcc/x86_64-linux-gnu/11/include/stdbool.h" 1 3 4
+/* Copyright (C) 1998-2021 Free Software Foundation, Inc.
+
+This file is part of GCC.
+
+GCC is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3, or (at your option)
+any later version.
+
+GCC is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+Under Section 7 of GPL version 3, you are granted additional
+permissions described in the GCC Runtime Library Exception, version
+3.1, as published by the Free Software Foundation.
+
+You should have received a copy of the GNU General Public License and
+a copy of the GCC Runtime Library Exception along with this program;
+see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<http://www.gnu.org/licenses/>.  */
+
+/*
+ * ISO C Standard:  7.16  Boolean type and values  <stdbool.h>
+ */
+# 49 "/usr/lib/gcc/x86_64-linux-gnu/11/include/stdbool.h" 3 4
+/* Signal that all the definitions are present.  */
+# 283 "/usr/include/curses.h" 2 3 4
+/* use whatever the C compiler decides bool really is */
+# 302 "/usr/include/curses.h" 3 4
+/*
+ * X/Open attributes.  In the ncurses implementation, they are identical to the
+ * A_ attributes.
+ */
+# 328 "/usr/include/curses.h" 3 4
+/* colors */
+# 338 "/usr/include/curses.h" 3 4
+/* line graphics */
+
+
+
+
+
+extern chtype acs_map[];
+
+
+
+
+/* VT100 symbols begin here */
+# 368 "/usr/include/curses.h" 3 4
+/* Teletype 5410v1 symbols begin here */
+
+
+
+
+
+
+
+/*
+ * These aren't documented, but a lot of System Vs have them anyway
+ * (you can spot pprryyzz{{||}} in a lot of AT&T terminfo strings).
+ * The ACS_names may not match AT&T's, our source didn't know them.
+ */
+# 389 "/usr/include/curses.h" 3 4
+/*
+ * Line drawing ACS names are of the form ACS_trbl, where t is the top, r
+ * is the right, b is the bottom, and l is the left.  t, r, b, and l might
+ * be B (blank), S (single), D (double), or T (thick).  The subset defined
+ * here only uses B and S.
+ */
+# 413 "/usr/include/curses.h" 3 4
+/* values for the _flags member */
+# 422 "/usr/include/curses.h" 3 4
+/*
+ * this value is used in the firstchar and lastchar fields to mark
+ * unchanged lines
+ */
+
+
+/*
+ * this value is used in the oldindex field to mark lines created by insertions
+ * and scrolls.
+ */
+
+
+
+
+
+
+
+typedef struct screen SCREEN;
+
+
+typedef struct _win_st WINDOW;
+
+typedef chtype attr_t; /* ...must be at least as wide as chtype */
+# 489 "/usr/include/curses.h" 3 4
+struct ldat;
+
+struct _win_st
+{
+ short _cury, _curx; /* current cursor position */
+
+ /* window location and size */
+ short _maxy, _maxx; /* maximums of x and y, NOT window size */
+ short _begy, _begx; /* screen coords of upper-left-hand corner */
+
+ short _flags; /* window state flags */
+
+ /* attribute tracking */
+ attr_t _attrs; /* current attribute for non-space character */
+ chtype _bkgd; /* current background char/attribute pair */
+
+ /* option values set by user */
+ _Bool _notimeout; /* no time out on function-key entry? */
+ _Bool _clear; /* consider all data in the window invalid? */
+ _Bool _leaveok; /* OK to not reset cursor on exit? */
+ _Bool _scroll; /* OK to scroll this window? */
+ _Bool _idlok; /* OK to use insert/delete line? */
+ _Bool _idcok; /* OK to use insert/delete char? */
+ _Bool _immed; /* window in immed mode? (not yet used) */
+ _Bool _sync; /* window in sync mode? */
+ _Bool _use_keypad; /* process function keys into KEY_ symbols? */
+ int _delay; /* 0 = nodelay, <0 = blocking, >0 = delay */
+
+ struct ldat *_line; /* the actual line data */
+
+ /* global screen state */
+ short _regtop; /* top line of scrolling region */
+ short _regbottom; /* bottom line of scrolling region */
+
+ /* these are used only if this is a sub-window */
+ int _parx; /* x coordinate of this window in parent */
+ int _pary; /* y coordinate of this window in parent */
+ WINDOW *_parent; /* pointer to parent if a sub-window */
+
+ /* these are used only if this is a pad */
+ struct pdat
+ {
+     short _pad_y, _pad_x;
+     short _pad_top, _pad_left;
+     short _pad_bottom, _pad_right;
+ } _pad;
+
+ short _yoffset; /* real begy is _begy + _yoffset */
+
+
+
+
+
+
+
+};
+
+
+/*
+ * GCC (and some other compilers) define '__attribute__'; we're using this
+ * macro to alert the compiler to flag inconsistencies in printf/scanf-like
+ * function calls.  Just in case '__attribute__' isn't defined, make a dummy.
+ * Old versions of G++ do not accept it anyway, at least not consistently with
+ * GCC.
+ */
+
+
+
+
+/*
+ * We cannot define these in ncurses_cfg.h, since they require parameters to be
+ * passed (that is non-portable).
+ */
+# 593 "/usr/include/curses.h" 3 4
+/*
+ * Curses uses a helper function.  Define our type for this to simplify
+ * extending it for the sp-funcs feature.
+ */
+typedef int (*NCURSES_OUTC)(int);
+
+/*
+ * Function prototypes.  This is the complete X/Open Curses list of required
+ * functions.  Those marked `generated' will have sources generated from the
+ * macro definitions later in this file, in order to satisfy XPG4.2
+ * requirements.
+ */
+
+extern int addch (const chtype); /* generated */
+extern int addchnstr (const chtype *, int); /* generated */
+extern int addchstr (const chtype *); /* generated */
+extern int addnstr (const char *, int); /* generated */
+extern int addstr (const char *); /* generated */
+extern int attroff (int); /* generated */
+extern int attron (int); /* generated */
+extern int attrset (int); /* generated */
+extern int attr_get (attr_t *, short *, void *); /* generated */
+extern int attr_off (attr_t, void *); /* generated */
+extern int attr_on (attr_t, void *); /* generated */
+extern int attr_set (attr_t, short, void *); /* generated */
+extern int baudrate (void); /* implemented */
+extern int beep (void); /* implemented */
+extern int bkgd (chtype); /* generated */
+extern void bkgdset (chtype); /* generated */
+extern int border (chtype,chtype,chtype,chtype,chtype,chtype,chtype,chtype); /* generated */
+extern int box (WINDOW *, chtype, chtype); /* generated */
+extern _Bool can_change_color (void); /* implemented */
+extern int cbreak (void); /* implemented */
+extern int chgat (int, attr_t, short, const void *); /* generated */
+extern int clear (void); /* generated */
+extern int clearok (WINDOW *,_Bool); /* implemented */
+extern int clrtobot (void); /* generated */
+extern int clrtoeol (void); /* generated */
+extern int color_content (short,short*,short*,short*); /* implemented */
+extern int color_set (short,void*); /* generated */
+extern int COLOR_PAIR (int); /* generated */
+extern int copywin (const WINDOW*,WINDOW*,int,int,int,int,int,int,int); /* implemented */
+extern int curs_set (int); /* implemented */
+extern int def_prog_mode (void); /* implemented */
+extern int def_shell_mode (void); /* implemented */
+extern int delay_output (int); /* implemented */
+extern int delch (void); /* generated */
+extern void delscreen (SCREEN *); /* implemented */
+extern int delwin (WINDOW *); /* implemented */
+extern int deleteln (void); /* generated */
+extern WINDOW * derwin (WINDOW *,int,int,int,int); /* implemented */
+extern int doupdate (void); /* implemented */
+extern WINDOW * dupwin (WINDOW *); /* implemented */
+extern int echo (void); /* implemented */
+extern int echochar (const chtype); /* generated */
+extern int erase (void); /* generated */
+extern int endwin (void); /* implemented */
+extern char erasechar (void); /* implemented */
+extern void filter (void); /* implemented */
+extern int flash (void); /* implemented */
+extern int flushinp (void); /* implemented */
+extern chtype getbkgd (WINDOW *); /* generated */
+extern int getch (void); /* generated */
+extern int getnstr (char *, int); /* generated */
+extern int getstr (char *); /* generated */
+extern WINDOW * getwin (FILE *); /* implemented */
+extern int halfdelay (int); /* implemented */
+extern _Bool has_colors (void); /* implemented */
+extern _Bool has_ic (void); /* implemented */
+extern _Bool has_il (void); /* implemented */
+extern int hline (chtype, int); /* generated */
+extern void idcok (WINDOW *, _Bool); /* implemented */
+extern int idlok (WINDOW *, _Bool); /* implemented */
+extern void immedok (WINDOW *, _Bool); /* implemented */
+extern chtype inch (void); /* generated */
+extern int inchnstr (chtype *, int); /* generated */
+extern int inchstr (chtype *); /* generated */
+extern WINDOW * initscr (void); /* implemented */
+extern int init_color (short,short,short,short); /* implemented */
+extern int init_pair (short,short,short); /* implemented */
+extern int innstr (char *, int); /* generated */
+extern int insch (chtype); /* generated */
+extern int insdelln (int); /* generated */
+extern int insertln (void); /* generated */
+extern int insnstr (const char *, int); /* generated */
+extern int insstr (const char *); /* generated */
+extern int instr (char *); /* generated */
+extern int intrflush (WINDOW *,_Bool); /* implemented */
+extern _Bool isendwin (void); /* implemented */
+extern _Bool is_linetouched (WINDOW *,int); /* implemented */
+extern _Bool is_wintouched (WINDOW *); /* implemented */
+extern const char * keyname (int); /* implemented */
+extern int keypad (WINDOW *,_Bool); /* implemented */
+extern char killchar (void); /* implemented */
+extern int leaveok (WINDOW *,_Bool); /* implemented */
+extern char * longname (void); /* implemented */
+extern int meta (WINDOW *,_Bool); /* implemented */
+extern int move (int, int); /* generated */
+extern int mvaddch (int, int, const chtype); /* generated */
+extern int mvaddchnstr (int, int, const chtype *, int); /* generated */
+extern int mvaddchstr (int, int, const chtype *); /* generated */
+extern int mvaddnstr (int, int, const char *, int); /* generated */
+extern int mvaddstr (int, int, const char *); /* generated */
+extern int mvchgat (int, int, int, attr_t, short, const void *); /* generated */
+extern int mvcur (int,int,int,int); /* implemented */
+extern int mvdelch (int, int); /* generated */
+extern int mvderwin (WINDOW *, int, int); /* implemented */
+extern int mvgetch (int, int); /* generated */
+extern int mvgetnstr (int, int, char *, int); /* generated */
+extern int mvgetstr (int, int, char *); /* generated */
+extern int mvhline (int, int, chtype, int); /* generated */
+extern chtype mvinch (int, int); /* generated */
+extern int mvinchnstr (int, int, chtype *, int); /* generated */
+extern int mvinchstr (int, int, chtype *); /* generated */
+extern int mvinnstr (int, int, char *, int); /* generated */
+extern int mvinsch (int, int, chtype); /* generated */
+extern int mvinsnstr (int, int, const char *, int); /* generated */
+extern int mvinsstr (int, int, const char *); /* generated */
+extern int mvinstr (int, int, char *); /* generated */
+extern int mvprintw (int,int, const char *,...) /* implemented */
+  __attribute__((format(printf,3,4)));
+extern int mvscanw (int,int, const char *,...) /* implemented */
+  __attribute__((format(scanf,3,4)));
+extern int mvvline (int, int, chtype, int); /* generated */
+extern int mvwaddch (WINDOW *, int, int, const chtype); /* generated */
+extern int mvwaddchnstr (WINDOW *, int, int, const chtype *, int);/* generated */
+extern int mvwaddchstr (WINDOW *, int, int, const chtype *); /* generated */
+extern int mvwaddnstr (WINDOW *, int, int, const char *, int); /* generated */
+extern int mvwaddstr (WINDOW *, int, int, const char *); /* generated */
+extern int mvwchgat (WINDOW *, int, int, int, attr_t, short, const void *);/* generated */
+extern int mvwdelch (WINDOW *, int, int); /* generated */
+extern int mvwgetch (WINDOW *, int, int); /* generated */
+extern int mvwgetnstr (WINDOW *, int, int, char *, int); /* generated */
+extern int mvwgetstr (WINDOW *, int, int, char *); /* generated */
+extern int mvwhline (WINDOW *, int, int, chtype, int); /* generated */
+extern int mvwin (WINDOW *,int,int); /* implemented */
+extern chtype mvwinch (WINDOW *, int, int); /* generated */
+extern int mvwinchnstr (WINDOW *, int, int, chtype *, int); /* generated */
+extern int mvwinchstr (WINDOW *, int, int, chtype *); /* generated */
+extern int mvwinnstr (WINDOW *, int, int, char *, int); /* generated */
+extern int mvwinsch (WINDOW *, int, int, chtype); /* generated */
+extern int mvwinsnstr (WINDOW *, int, int, const char *, int); /* generated */
+extern int mvwinsstr (WINDOW *, int, int, const char *); /* generated */
+extern int mvwinstr (WINDOW *, int, int, char *); /* generated */
+extern int mvwprintw (WINDOW*,int,int, const char *,...) /* implemented */
+  __attribute__((format(printf,4,5)));
+extern int mvwscanw (WINDOW *,int,int, const char *,...) /* implemented */
+  __attribute__((format(scanf,4,5)));
+extern int mvwvline (WINDOW *,int, int, chtype, int); /* generated */
+extern int napms (int); /* implemented */
+extern WINDOW * newpad (int,int); /* implemented */
+extern SCREEN * newterm (const char *,FILE *,FILE *); /* implemented */
+extern WINDOW * newwin (int,int,int,int); /* implemented */
+extern int nl (void); /* implemented */
+extern int nocbreak (void); /* implemented */
+extern int nodelay (WINDOW *,_Bool); /* implemented */
+extern int noecho (void); /* implemented */
+extern int nonl (void); /* implemented */
+extern void noqiflush (void); /* implemented */
+extern int noraw (void); /* implemented */
+extern int notimeout (WINDOW *,_Bool); /* implemented */
+extern int overlay (const WINDOW*,WINDOW *); /* implemented */
+extern int overwrite (const WINDOW*,WINDOW *); /* implemented */
+extern int pair_content (short,short*,short*); /* implemented */
+extern int PAIR_NUMBER (int); /* generated */
+extern int pechochar (WINDOW *, const chtype); /* implemented */
+extern int pnoutrefresh (WINDOW*,int,int,int,int,int,int);/* implemented */
+extern int prefresh (WINDOW *,int,int,int,int,int,int); /* implemented */
+extern int printw (const char *,...) /* implemented */
+  __attribute__((format(printf,1,2)));
+extern int putwin (WINDOW *, FILE *); /* implemented */
+extern void qiflush (void); /* implemented */
+extern int raw (void); /* implemented */
+extern int redrawwin (WINDOW *); /* generated */
+extern int refresh (void); /* generated */
+extern int resetty (void); /* implemented */
+extern int reset_prog_mode (void); /* implemented */
+extern int reset_shell_mode (void); /* implemented */
+extern int ripoffline (int, int (*)(WINDOW *, int)); /* implemented */
+extern int savetty (void); /* implemented */
+extern int scanw (const char *,...) /* implemented */
+  __attribute__((format(scanf,1,2)));
+extern int scr_dump (const char *); /* implemented */
+extern int scr_init (const char *); /* implemented */
+extern int scrl (int); /* generated */
+extern int scroll (WINDOW *); /* generated */
+extern int scrollok (WINDOW *,_Bool); /* implemented */
+extern int scr_restore (const char *); /* implemented */
+extern int scr_set (const char *); /* implemented */
+extern int setscrreg (int,int); /* generated */
+extern SCREEN * set_term (SCREEN *); /* implemented */
+extern int slk_attroff (const chtype); /* implemented */
+extern int slk_attr_off (const attr_t, void *); /* generated:WIDEC */
+extern int slk_attron (const chtype); /* implemented */
+extern int slk_attr_on (attr_t,void*); /* generated:WIDEC */
+extern int slk_attrset (const chtype); /* implemented */
+extern attr_t slk_attr (void); /* implemented */
+extern int slk_attr_set (const attr_t,short,void*); /* implemented */
+extern int slk_clear (void); /* implemented */
+extern int slk_color (short); /* implemented */
+extern int slk_init (int); /* implemented */
+extern char * slk_label (int); /* implemented */
+extern int slk_noutrefresh (void); /* implemented */
+extern int slk_refresh (void); /* implemented */
+extern int slk_restore (void); /* implemented */
+extern int slk_set (int,const char *,int); /* implemented */
+extern int slk_touch (void); /* implemented */
+extern int standout (void); /* generated */
+extern int standend (void); /* generated */
+extern int start_color (void); /* implemented */
+extern WINDOW * subpad (WINDOW *, int, int, int, int); /* implemented */
+extern WINDOW * subwin (WINDOW *, int, int, int, int); /* implemented */
+extern int syncok (WINDOW *, _Bool); /* implemented */
+extern chtype termattrs (void); /* implemented */
+extern char * termname (void); /* implemented */
+extern void timeout (int); /* generated */
+extern int touchline (WINDOW *, int, int); /* generated */
+extern int touchwin (WINDOW *); /* generated */
+extern int typeahead (int); /* implemented */
+extern int ungetch (int); /* implemented */
+extern int untouchwin (WINDOW *); /* generated */
+extern void use_env (_Bool); /* implemented */
+extern void use_tioctl (_Bool); /* implemented */
+extern int vidattr (chtype); /* implemented */
+extern int vidputs (chtype, NCURSES_OUTC); /* implemented */
+extern int vline (chtype, int); /* generated */
+extern int vwprintw (WINDOW *, const char *, va_list) __attribute__((deprecated)) /* implemented */
+  __attribute__((format(printf,2,0)));
+extern int vw_printw (WINDOW *, const char *, va_list) /* implemented */
+  __attribute__((format(printf,2,0)));
+extern int vwscanw (WINDOW *, const char *, va_list) __attribute__((deprecated)) /* implemented */
+  __attribute__((format(scanf,2,0)));
+extern int vw_scanw (WINDOW *, const char *, va_list) /* implemented */
+  __attribute__((format(scanf,2,0)));
+extern int waddch (WINDOW *, const chtype); /* implemented */
+extern int waddchnstr (WINDOW *,const chtype *,int); /* implemented */
+extern int waddchstr (WINDOW *,const chtype *); /* generated */
+extern int waddnstr (WINDOW *,const char *,int); /* implemented */
+extern int waddstr (WINDOW *,const char *); /* generated */
+extern int wattron (WINDOW *, int); /* generated */
+extern int wattroff (WINDOW *, int); /* generated */
+extern int wattrset (WINDOW *, int); /* generated */
+extern int wattr_get (WINDOW *, attr_t *, short *, void *); /* generated */
+extern int wattr_on (WINDOW *, attr_t, void *); /* implemented */
+extern int wattr_off (WINDOW *, attr_t, void *); /* implemented */
+extern int wattr_set (WINDOW *, attr_t, short, void *); /* generated */
+extern int wbkgd (WINDOW *, chtype); /* implemented */
+extern void wbkgdset (WINDOW *,chtype); /* implemented */
+extern int wborder (WINDOW *,chtype,chtype,chtype,chtype,chtype,chtype,chtype,chtype); /* implemented */
+extern int wchgat (WINDOW *, int, attr_t, short, const void *);/* implemented */
+extern int wclear (WINDOW *); /* implemented */
+extern int wclrtobot (WINDOW *); /* implemented */
+extern int wclrtoeol (WINDOW *); /* implemented */
+extern int wcolor_set (WINDOW*,short,void*); /* implemented */
+extern void wcursyncup (WINDOW *); /* implemented */
+extern int wdelch (WINDOW *); /* implemented */
+extern int wdeleteln (WINDOW *); /* generated */
+extern int wechochar (WINDOW *, const chtype); /* implemented */
+extern int werase (WINDOW *); /* implemented */
+extern int wgetch (WINDOW *); /* implemented */
+extern int wgetnstr (WINDOW *,char *,int); /* implemented */
+extern int wgetstr (WINDOW *, char *); /* generated */
+extern int whline (WINDOW *, chtype, int); /* implemented */
+extern chtype winch (WINDOW *); /* implemented */
+extern int winchnstr (WINDOW *, chtype *, int); /* implemented */
+extern int winchstr (WINDOW *, chtype *); /* generated */
+extern int winnstr (WINDOW *, char *, int); /* implemented */
+extern int winsch (WINDOW *, chtype); /* implemented */
+extern int winsdelln (WINDOW *,int); /* implemented */
+extern int winsertln (WINDOW *); /* generated */
+extern int winsnstr (WINDOW *, const char *,int); /* implemented */
+extern int winsstr (WINDOW *, const char *); /* generated */
+extern int winstr (WINDOW *, char *); /* generated */
+extern int wmove (WINDOW *,int,int); /* implemented */
+extern int wnoutrefresh (WINDOW *); /* implemented */
+extern int wprintw (WINDOW *, const char *,...) /* implemented */
+  __attribute__((format(printf,2,3)));
+extern int wredrawln (WINDOW *,int,int); /* implemented */
+extern int wrefresh (WINDOW *); /* implemented */
+extern int wscanw (WINDOW *, const char *,...) /* implemented */
+  __attribute__((format(scanf,2,3)));
+extern int wscrl (WINDOW *,int); /* implemented */
+extern int wsetscrreg (WINDOW *,int,int); /* implemented */
+extern int wstandout (WINDOW *); /* generated */
+extern int wstandend (WINDOW *); /* generated */
+extern void wsyncdown (WINDOW *); /* implemented */
+extern void wsyncup (WINDOW *); /* implemented */
+extern void wtimeout (WINDOW *,int); /* implemented */
+extern int wtouchln (WINDOW *,int,int,int); /* implemented */
+extern int wvline (WINDOW *,chtype,int); /* implemented */
+
+/*
+ * These are also declared in <term.h>:
+ */
+extern int tigetflag (const char *); /* implemented */
+extern int tigetnum (const char *); /* implemented */
+extern char * tigetstr (const char *); /* implemented */
+extern int putp (const char *); /* implemented */
+
+
+extern char * tparm (const char *, ...); /* special */
+
+
+
+
+extern char * tiparm (const char *, ...); /* special */
+
+/*
+ * These functions are not in X/Open, but we use them in macro definitions:
+ */
+extern int getattrs (const WINDOW *); /* generated */
+extern int getcurx (const WINDOW *); /* generated */
+extern int getcury (const WINDOW *); /* generated */
+extern int getbegx (const WINDOW *); /* generated */
+extern int getbegy (const WINDOW *); /* generated */
+extern int getmaxx (const WINDOW *); /* generated */
+extern int getmaxy (const WINDOW *); /* generated */
+extern int getparx (const WINDOW *); /* generated */
+extern int getpary (const WINDOW *); /* generated */
+
+/*
+ * vid_attr() was implemented originally based on a draft of X/Open curses.
+ */
+
+
+
+
+/*
+ * These functions are extensions - not in X/Open Curses.
+ */
+
+
+
+typedef int (*NCURSES_WINDOW_CB)(WINDOW *, void *);
+typedef int (*NCURSES_SCREEN_CB)(SCREEN *, void *);
+extern _Bool is_term_resized (int, int);
+extern char * keybound (int, int);
+extern const char * curses_version (void);
+extern int alloc_pair (int, int);
+extern int assume_default_colors (int, int);
+extern int define_key (const char *, int);
+extern int extended_color_content(int, int *, int *, int *);
+extern int extended_pair_content(int, int *, int *);
+extern int extended_slk_color(int);
+extern int find_pair (int, int);
+extern int free_pair (int);
+extern int get_escdelay (void);
+extern int init_extended_color(int, int, int, int);
+extern int init_extended_pair(int, int, int);
+extern int key_defined (const char *);
+extern int keyok (int, _Bool);
+extern void reset_color_pairs (void);
+extern int resize_term (int, int);
+extern int resizeterm (int, int);
+extern int set_escdelay (int);
+extern int set_tabsize (int);
+extern int use_default_colors (void);
+extern int use_extended_names (_Bool);
+extern int use_legacy_coding (int);
+extern int use_screen (SCREEN *, NCURSES_SCREEN_CB, void *);
+extern int use_window (WINDOW *, NCURSES_WINDOW_CB, void *);
+extern int wresize (WINDOW *, int, int);
+extern void nofilter(void);
+
+/*
+ * These extensions provide access to information stored in the WINDOW even
+ * when NCURSES_OPAQUE is set:
+ */
+extern WINDOW * wgetparent (const WINDOW *); /* generated */
+extern _Bool is_cleared (const WINDOW *); /* generated */
+extern _Bool is_idcok (const WINDOW *); /* generated */
+extern _Bool is_idlok (const WINDOW *); /* generated */
+extern _Bool is_immedok (const WINDOW *); /* generated */
+extern _Bool is_keypad (const WINDOW *); /* generated */
+extern _Bool is_leaveok (const WINDOW *); /* generated */
+extern _Bool is_nodelay (const WINDOW *); /* generated */
+extern _Bool is_notimeout (const WINDOW *); /* generated */
+extern _Bool is_pad (const WINDOW *); /* generated */
+extern _Bool is_scrollok (const WINDOW *); /* generated */
+extern _Bool is_subwin (const WINDOW *); /* generated */
+extern _Bool is_syncok (const WINDOW *); /* generated */
+extern int wgetdelay (const WINDOW *); /* generated */
+extern int wgetscrreg (const WINDOW *, int *, int *); /* generated */
+
+
+
+
+
+/*
+ * Extra extension-functions, which pass a SCREEN pointer rather than using
+ * a global variable SP.
+ */
+
+
+
+
+
+/* Define the sp-funcs helper function */
+
+typedef int (*NCURSES_OUTC_sp)(SCREEN*, int);
+
+extern SCREEN * new_prescr (void); /* implemented:SP_FUNC */
+
+extern int baudrate_sp (SCREEN*); /* implemented:SP_FUNC */
+extern int beep_sp (SCREEN*); /* implemented:SP_FUNC */
+extern _Bool can_change_color_sp (SCREEN*); /* implemented:SP_FUNC */
+extern int cbreak_sp (SCREEN*); /* implemented:SP_FUNC */
+extern int curs_set_sp (SCREEN*, int); /* implemented:SP_FUNC */
+extern int color_content_sp (SCREEN*, short, short*, short*, short*); /* implemented:SP_FUNC */
+extern int def_prog_mode_sp (SCREEN*); /* implemented:SP_FUNC */
+extern int def_shell_mode_sp (SCREEN*); /* implemented:SP_FUNC */
+extern int delay_output_sp (SCREEN*, int); /* implemented:SP_FUNC */
+extern int doupdate_sp (SCREEN*); /* implemented:SP_FUNC */
+extern int echo_sp (SCREEN*); /* implemented:SP_FUNC */
+extern int endwin_sp (SCREEN*); /* implemented:SP_FUNC */
+extern char erasechar_sp (SCREEN*);/* implemented:SP_FUNC */
+extern void filter_sp (SCREEN*); /* implemented:SP_FUNC */
+extern int flash_sp (SCREEN*); /* implemented:SP_FUNC */
+extern int flushinp_sp (SCREEN*); /* implemented:SP_FUNC */
+extern WINDOW * getwin_sp (SCREEN*, FILE *); /* implemented:SP_FUNC */
+extern int halfdelay_sp (SCREEN*, int); /* implemented:SP_FUNC */
+extern _Bool has_colors_sp (SCREEN*); /* implemented:SP_FUNC */
+extern _Bool has_ic_sp (SCREEN*); /* implemented:SP_FUNC */
+extern _Bool has_il_sp (SCREEN*); /* implemented:SP_FUNC */
+extern int init_color_sp (SCREEN*, short, short, short, short); /* implemented:SP_FUNC */
+extern int init_pair_sp (SCREEN*, short, short, short); /* implemented:SP_FUNC */
+extern int intrflush_sp (SCREEN*, WINDOW*, _Bool); /* implemented:SP_FUNC */
+extern _Bool isendwin_sp (SCREEN*); /* implemented:SP_FUNC */
+extern const char * keyname_sp (SCREEN*, int); /* implemented:SP_FUNC */
+extern char killchar_sp (SCREEN*); /* implemented:SP_FUNC */
+extern char * longname_sp (SCREEN*); /* implemented:SP_FUNC */
+extern int mvcur_sp (SCREEN*, int, int, int, int); /* implemented:SP_FUNC */
+extern int napms_sp (SCREEN*, int); /* implemented:SP_FUNC */
+extern WINDOW * newpad_sp (SCREEN*, int, int); /* implemented:SP_FUNC */
+extern SCREEN * newterm_sp (SCREEN*, const char *, FILE *, FILE *); /* implemented:SP_FUNC */
+extern WINDOW * newwin_sp (SCREEN*, int, int, int, int); /* implemented:SP_FUNC */
+extern int nl_sp (SCREEN*); /* implemented:SP_FUNC */
+extern int nocbreak_sp (SCREEN*); /* implemented:SP_FUNC */
+extern int noecho_sp (SCREEN*); /* implemented:SP_FUNC */
+extern int nonl_sp (SCREEN*); /* implemented:SP_FUNC */
+extern void noqiflush_sp (SCREEN*); /* implemented:SP_FUNC */
+extern int noraw_sp (SCREEN*); /* implemented:SP_FUNC */
+extern int pair_content_sp (SCREEN*, short, short*, short*); /* implemented:SP_FUNC */
+extern void qiflush_sp (SCREEN*); /* implemented:SP_FUNC */
+extern int raw_sp (SCREEN*); /* implemented:SP_FUNC */
+extern int reset_prog_mode_sp (SCREEN*); /* implemented:SP_FUNC */
+extern int reset_shell_mode_sp (SCREEN*); /* implemented:SP_FUNC */
+extern int resetty_sp (SCREEN*); /* implemented:SP_FUNC */
+extern int ripoffline_sp (SCREEN*, int, int (*)(WINDOW *, int)); /* implemented:SP_FUNC */
+extern int savetty_sp (SCREEN*); /* implemented:SP_FUNC */
+extern int scr_init_sp (SCREEN*, const char *); /* implemented:SP_FUNC */
+extern int scr_restore_sp (SCREEN*, const char *); /* implemented:SP_FUNC */
+extern int scr_set_sp (SCREEN*, const char *); /* implemented:SP_FUNC */
+extern int slk_attroff_sp (SCREEN*, const chtype); /* implemented:SP_FUNC */
+extern int slk_attron_sp (SCREEN*, const chtype); /* implemented:SP_FUNC */
+extern int slk_attrset_sp (SCREEN*, const chtype); /* implemented:SP_FUNC */
+extern attr_t slk_attr_sp (SCREEN*); /* implemented:SP_FUNC */
+extern int slk_attr_set_sp (SCREEN*, const attr_t, short, void*); /* implemented:SP_FUNC */
+extern int slk_clear_sp (SCREEN*); /* implemented:SP_FUNC */
+extern int slk_color_sp (SCREEN*, short); /* implemented:SP_FUNC */
+extern int slk_init_sp (SCREEN*, int); /* implemented:SP_FUNC */
+extern char * slk_label_sp (SCREEN*, int); /* implemented:SP_FUNC */
+extern int slk_noutrefresh_sp (SCREEN*); /* implemented:SP_FUNC */
+extern int slk_refresh_sp (SCREEN*); /* implemented:SP_FUNC */
+extern int slk_restore_sp (SCREEN*); /* implemented:SP_FUNC */
+extern int slk_set_sp (SCREEN*, int, const char *, int); /* implemented:SP_FUNC */
+extern int slk_touch_sp (SCREEN*); /* implemented:SP_FUNC */
+extern int start_color_sp (SCREEN*); /* implemented:SP_FUNC */
+extern chtype termattrs_sp (SCREEN*); /* implemented:SP_FUNC */
+extern char * termname_sp (SCREEN*); /* implemented:SP_FUNC */
+extern int typeahead_sp (SCREEN*, int); /* implemented:SP_FUNC */
+extern int ungetch_sp (SCREEN*, int); /* implemented:SP_FUNC */
+extern void use_env_sp (SCREEN*, _Bool); /* implemented:SP_FUNC */
+extern void use_tioctl_sp (SCREEN*, _Bool); /* implemented:SP_FUNC */
+extern int vidattr_sp (SCREEN*, chtype); /* implemented:SP_FUNC */
+extern int vidputs_sp (SCREEN*, chtype, NCURSES_OUTC_sp); /* implemented:SP_FUNC */
+
+extern char * keybound_sp (SCREEN*, int, int); /* implemented:EXT_SP_FUNC */
+extern int alloc_pair_sp (SCREEN*, int, int); /* implemented:EXT_SP_FUNC */
+extern int assume_default_colors_sp (SCREEN*, int, int); /* implemented:EXT_SP_FUNC */
+extern int define_key_sp (SCREEN*, const char *, int); /* implemented:EXT_SP_FUNC */
+extern int extended_color_content_sp (SCREEN*, int, int *, int *, int *); /* implemented:EXT_SP_FUNC */
+extern int extended_pair_content_sp (SCREEN*, int, int *, int *); /* implemented:EXT_SP_FUNC */
+extern int extended_slk_color_sp (SCREEN*, int); /* implemented:EXT_SP_FUNC */
+extern int get_escdelay_sp (SCREEN*); /* implemented:EXT_SP_FUNC */
+extern int find_pair_sp (SCREEN*, int, int); /* implemented:EXT_SP_FUNC */
+extern int free_pair_sp (SCREEN*, int); /* implemented:EXT_SP_FUNC */
+extern int init_extended_color_sp (SCREEN*, int, int, int, int); /* implemented:EXT_SP_FUNC */
+extern int init_extended_pair_sp (SCREEN*, int, int, int); /* implemented:EXT_SP_FUNC */
+extern _Bool is_term_resized_sp (SCREEN*, int, int); /* implemented:EXT_SP_FUNC */
+extern int key_defined_sp (SCREEN*, const char *); /* implemented:EXT_SP_FUNC */
+extern int keyok_sp (SCREEN*, int, _Bool); /* implemented:EXT_SP_FUNC */
+extern void nofilter_sp (SCREEN*); /* implemented */ /* implemented:EXT_SP_FUNC */
+extern void reset_color_pairs_sp (SCREEN*); /* implemented:EXT_SP_FUNC */
+extern int resize_term_sp (SCREEN*, int, int); /* implemented:EXT_SP_FUNC */
+extern int resizeterm_sp (SCREEN*, int, int); /* implemented:EXT_SP_FUNC */
+extern int set_escdelay_sp (SCREEN*, int); /* implemented:EXT_SP_FUNC */
+extern int set_tabsize_sp (SCREEN*, int); /* implemented:EXT_SP_FUNC */
+extern int use_default_colors_sp (SCREEN*); /* implemented:EXT_SP_FUNC */
+extern int use_legacy_coding_sp (SCREEN*, int); /* implemented:EXT_SP_FUNC */
+# 1101 "/usr/include/curses.h" 3 4
+/* attributes */
+# 1130 "/usr/include/curses.h" 3 4
+/*
+ * Most of the pseudo functions are macros that either provide compatibility
+ * with older versions of curses, or provide inline functionality to improve
+ * performance.
+ */
+
+/*
+ * These pseudo functions are always implemented as macros:
+ */
+# 1165 "/usr/include/curses.h" 3 4
+/*
+ * These miscellaneous pseudo functions are provided for compatibility:
+ */
+# 1181 "/usr/include/curses.h" 3 4
+/* It seems older SYSV curses versions define these */
+# 1241 "/usr/include/curses.h" 3 4
+/*
+ * These apply to the first 256 color pairs.
+ */
+
+
+
+/*
+ * pseudo functions for standard screen
+ */
+# 1296 "/usr/include/curses.h" 3 4
+/*
+ * mv functions
+ */
+# 1342 "/usr/include/curses.h" 3 4
+/*
+ * Some wide-character functions can be implemented without the extensions.
+ */
+# 1395 "/usr/include/curses.h" 3 4
+/*
+ * X/Open curses deprecates SVr4 vwprintw/vwscanw, which are supposed to use
+ * varargs.h.  It adds new calls vw_printw/vw_scanw, which are supposed to
+ * use POSIX stdarg.h.  The ncurses versions of vwprintw/vwscanw already
+ * use stdarg.h, so...
+ */
+/* define vw_printw		vwprintw */
+/* define vw_scanw		vwscanw */
+
+/*
+ * Export fallback function for use in C++ binding.
+ */
+
+
+
+
+
+/*
+ * These macros are extensions - not in X/Open Curses.
+ */
+# 1435 "/usr/include/curses.h" 3 4
+/*
+ * X/Open says this returns a bool; SVr4 also checked for out-of-range line.
+ * The macro provides compatibility:
+ */
+
+
+
+
+/*
+ * Public variables.
+ *
+ * Notes:
+ *	a. ESCDELAY was an undocumented feature under AIX curses.
+ *	   It gives the ESC expire time in milliseconds.
+ *	b. ttytype is needed for backward compatibility
+ */
+# 1477 "/usr/include/curses.h" 3 4
+extern WINDOW * curscr;
+extern WINDOW * newscr;
+extern WINDOW * stdscr;
+extern char ttytype[];
+extern int COLORS;
+extern int COLOR_PAIRS;
+extern int COLS;
+extern int ESCDELAY;
+extern int LINES;
+extern int TABSIZE;
+
+
+
+/*
+ * Pseudo-character tokens outside ASCII range.  The curses wgetch() function
+ * will return any given one of these only if the corresponding k- capability
+ * is defined in your terminal's terminfo entry.
+ *
+ * Some keys (KEY_A1, etc) are arranged like this:
+ *	a1     up    a3
+ *	left   b2    right
+ *	c1     down  c3
+ *
+ * A few key codes do not depend upon the terminfo entry.
+ */
+
+
+
+
+
+/*
+ * These definitions were generated by ./MKkey_defs.sh ../../include/Caps ../../include/Caps-ncurses
+ */
+# 1604 "/usr/include/curses.h" 3 4
+/* $Id: curses.wide,v 1.51 2021/05/22 20:28:29 tom Exp $ */
+/*
+ * vile:cmode:
+ * This file is part of ncurses, designed to be appended after curses.h.in
+ * (see that file for the relevant copyright).
+ */
+# 1918 "/usr/include/curses.h" 3 4
+/* $Id: curses.tail,v 1.26 2021/03/20 15:49:25 tom Exp $ */
+/*
+ * vile:cmode:
+ * This file is part of ncurses, designed to be appended after curses.h.in
+ * (see that file for the relevant copyright).
+ */
+
+/* mouse interface */
+# 1940 "/usr/include/curses.h" 3 4
+/* event masks */
+# 1965 "/usr/include/curses.h" 3 4
+/*
+ * In 32 bits the version-1 scheme does not provide enough space for a 5th
+ * button, unless we choose to change the ABI by omitting the reserved-events.
+ */
+# 1998 "/usr/include/curses.h" 3 4
+/* macros to extract single event-bits from masks */
+
+
+
+
+
+
+
+typedef struct
+{
+    short id; /* ID to distinguish multiple devices */
+    int x, y, z; /* event coordinates (character-cell) */
+    mmask_t bstate; /* button state bits */
+}
+MEVENT;
+
+extern _Bool has_mouse(void);
+extern int getmouse (MEVENT *);
+extern int ungetmouse (MEVENT *);
+extern mmask_t mousemask (mmask_t, mmask_t *);
+extern _Bool wenclose (const WINDOW *, int, int);
+extern int mouseinterval (int);
+extern _Bool wmouse_trafo (const WINDOW*, int*, int*, _Bool);
+extern _Bool mouse_trafo (int*, int*, _Bool); /* generated */
+
+
+extern _Bool has_mouse_sp (SCREEN*);
+extern int getmouse_sp (SCREEN*, MEVENT *);
+extern int ungetmouse_sp (SCREEN*,MEVENT *);
+extern mmask_t mousemask_sp (SCREEN*, mmask_t, mmask_t *);
+extern int mouseinterval_sp (SCREEN*, int);
+
+
+
+
+
+
+/* other non-XSI functions */
+
+extern int mcprint (char *, int); /* direct data to printer */
+extern int has_key (int); /* do we have given key? */
+
+
+extern int has_key_sp (SCREEN*, int); /* do we have given key? */
+extern int mcprint_sp (SCREEN*, char *, int); /* direct data to printer */
+
+
+/* Debugging : use with libncurses_g.a */
+
+extern void _tracef (const char *, ...) __attribute__((format(printf,1,2)));
+extern char * _traceattr (attr_t);
+extern char * _traceattr2 (int, chtype);
+extern char * _tracechar (int);
+extern char * _tracechtype (chtype);
+extern char * _tracechtype2 (int, chtype);
+# 2062 "/usr/include/curses.h" 3 4
+extern void trace (const unsigned) __attribute__((deprecated));
+extern unsigned curses_trace (const unsigned);
+
+/* trace masks */
+# 2094 "/usr/include/curses.h" 3 4
+extern void exit_curses (int);
+
+# 1 "/usr/include/unctrl.h" 1 3 4
+/****************************************************************************
+ * Copyright 2020 Thomas E. Dickey                                          *
+ * Copyright 1998-2001,2009 Free Software Foundation, Inc.                  *
+ *                                                                          *
+ * Permission is hereby granted, free of charge, to any person obtaining a  *
+ * copy of this software and associated documentation files (the            *
+ * "Software"), to deal in the Software without restriction, including      *
+ * without limitation the rights to use, copy, modify, merge, publish,      *
+ * distribute, distribute with modifications, sublicense, and/or sell       *
+ * copies of the Software, and to permit persons to whom the Software is    *
+ * furnished to do so, subject to the following conditions:                 *
+ *                                                                          *
+ * The above copyright notice and this permission notice shall be included  *
+ * in all copies or substantial portions of the Software.                   *
+ *                                                                          *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS  *
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF               *
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.   *
+ * IN NO EVENT SHALL THE ABOVE COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,   *
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR    *
+ * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR    *
+ * THE USE OR OTHER DEALINGS IN THE SOFTWARE.                               *
+ *                                                                          *
+ * Except as contained in this notice, the name(s) of the above copyright   *
+ * holders shall not be used in advertising or otherwise to promote the     *
+ * sale, use or other dealings in this Software without prior written       *
+ * authorization.                                                           *
+ ****************************************************************************/
+
+/****************************************************************************
+ *  Author: Zeyd M. Ben-Halim <zmbenhal@netcom.com> 1992,1995               *
+ *     and: Eric S. Raymond <esr@snark.thyrsus.com>                         *
+ ****************************************************************************/
+
+/*
+ * unctrl.h
+ *
+ * Display a printable version of a control character.
+ * Control characters are displayed in caret notation (^x), DELETE is displayed
+ * as ^?. Printable characters are displayed as is.
+ */
+
+/* $Id: unctrl.h.in,v 1.12 2020/02/02 23:34:34 tom Exp $ */
+# 55 "/usr/include/unctrl.h" 3 4
+# 1 "/usr/include/curses.h" 1 3 4
+/****************************************************************************
+ * Copyright 2018-2020,2021 Thomas E. Dickey                                *
+ * Copyright 1998-2016,2017 Free Software Foundation, Inc.                  *
+ *                                                                          *
+ * Permission is hereby granted, free of charge, to any person obtaining a  *
+ * copy of this software and associated documentation files (the            *
+ * "Software"), to deal in the Software without restriction, including      *
+ * without limitation the rights to use, copy, modify, merge, publish,      *
+ * distribute, distribute with modifications, sublicense, and/or sell       *
+ * copies of the Software, and to permit persons to whom the Software is    *
+ * furnished to do so, subject to the following conditions:                 *
+ *                                                                          *
+ * The above copyright notice and this permission notice shall be included  *
+ * in all copies or substantial portions of the Software.                   *
+ *                                                                          *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS  *
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF               *
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.   *
+ * IN NO EVENT SHALL THE ABOVE COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,   *
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR    *
+ * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR    *
+ * THE USE OR OTHER DEALINGS IN THE SOFTWARE.                               *
+ *                                                                          *
+ * Except as contained in this notice, the name(s) of the above copyright   *
+ * holders shall not be used in advertising or otherwise to promote the     *
+ * sale, use or other dealings in this Software without prior written       *
+ * authorization.                                                           *
+ ****************************************************************************/
+
+/****************************************************************************
+ *  Author: Zeyd M. Ben-Halim <zmbenhal@netcom.com> 1992,1995               *
+ *     and: Eric S. Raymond <esr@snark.thyrsus.com>                         *
+ *     and: Thomas E. Dickey                        1996-on                 *
+ ****************************************************************************/
+
+/* $Id: curses.h.in,v 1.277 2021/09/24 16:07:37 tom Exp $ */
+# 56 "/usr/include/unctrl.h" 2 3 4
+
+
+ const char * unctrl (chtype);
+
+
+ const char * unctrl_sp (SCREEN*, chtype);
+# 2097 "/usr/include/curses.h" 2 3 4
+# 18 "/home/anton/revenant/game/headers/ingame_msg.h" 2
+# 1 "/usr/include/panel.h" 1 3 4
+/****************************************************************************
+ * Copyright 2020 Thomas E. Dickey                                          *
+ * Copyright 1998-2009,2017 Free Software Foundation, Inc.                  *
+ *                                                                          *
+ * Permission is hereby granted, free of charge, to any person obtaining a  *
+ * copy of this software and associated documentation files (the            *
+ * "Software"), to deal in the Software without restriction, including      *
+ * without limitation the rights to use, copy, modify, merge, publish,      *
+ * distribute, distribute with modifications, sublicense, and/or sell       *
+ * copies of the Software, and to permit persons to whom the Software is    *
+ * furnished to do so, subject to the following conditions:                 *
+ *                                                                          *
+ * The above copyright notice and this permission notice shall be included  *
+ * in all copies or substantial portions of the Software.                   *
+ *                                                                          *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS  *
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF               *
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.   *
+ * IN NO EVENT SHALL THE ABOVE COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,   *
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR    *
+ * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR    *
+ * THE USE OR OTHER DEALINGS IN THE SOFTWARE.                               *
+ *                                                                          *
+ * Except as contained in this notice, the name(s) of the above copyright   *
+ * holders shall not be used in advertising or otherwise to promote the     *
+ * sale, use or other dealings in this Software without prior written       *
+ * authorization.                                                           *
+ ****************************************************************************/
+
+/****************************************************************************
+ *  Author: Zeyd M. Ben-Halim <zmbenhal@netcom.com> 1995                    *
+ *     and: Eric S. Raymond <esr@snark.thyrsus.com>                         *
+ *     and: Juergen Pfeifer                         1996-1999,2008          *
+ ****************************************************************************/
+
+/* $Id: panel.h,v 1.14 2020/07/04 20:38:43 tom Exp $ */
+
+/* panel.h -- interface file for panels library */
+
+
+
+
+# 1 "/usr/include/curses.h" 1 3 4
+/****************************************************************************
+ * Copyright 2018-2020,2021 Thomas E. Dickey                                *
+ * Copyright 1998-2016,2017 Free Software Foundation, Inc.                  *
+ *                                                                          *
+ * Permission is hereby granted, free of charge, to any person obtaining a  *
+ * copy of this software and associated documentation files (the            *
+ * "Software"), to deal in the Software without restriction, including      *
+ * without limitation the rights to use, copy, modify, merge, publish,      *
+ * distribute, distribute with modifications, sublicense, and/or sell       *
+ * copies of the Software, and to permit persons to whom the Software is    *
+ * furnished to do so, subject to the following conditions:                 *
+ *                                                                          *
+ * The above copyright notice and this permission notice shall be included  *
+ * in all copies or substantial portions of the Software.                   *
+ *                                                                          *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS  *
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF               *
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.   *
+ * IN NO EVENT SHALL THE ABOVE COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,   *
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR    *
+ * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR    *
+ * THE USE OR OTHER DEALINGS IN THE SOFTWARE.                               *
+ *                                                                          *
+ * Except as contained in this notice, the name(s) of the above copyright   *
+ * holders shall not be used in advertising or otherwise to promote the     *
+ * sale, use or other dealings in this Software without prior written       *
+ * authorization.                                                           *
+ ****************************************************************************/
+
+/****************************************************************************
+ *  Author: Zeyd M. Ben-Halim <zmbenhal@netcom.com> 1992,1995               *
+ *     and: Eric S. Raymond <esr@snark.thyrsus.com>                         *
+ *     and: Thomas E. Dickey                        1996-on                 *
+ ****************************************************************************/
+
+/* $Id: curses.h.in,v 1.277 2021/09/24 16:07:37 tom Exp $ */
+# 44 "/usr/include/panel.h" 2 3 4
+
+typedef struct panel
+
+{
+  WINDOW *win;
+  struct panel *below;
+  struct panel *above;
+  const void *user;
+}
+
+PANEL;
+# 71 "/usr/include/panel.h" 3 4
+extern WINDOW* panel_window (const PANEL *);
+extern void update_panels (void);
+extern int hide_panel (PANEL *);
+extern int show_panel (PANEL *);
+extern int del_panel (PANEL *);
+extern int top_panel (PANEL *);
+extern int bottom_panel (PANEL *);
+extern PANEL* new_panel (WINDOW *);
+extern PANEL* panel_above (const PANEL *);
+extern PANEL* panel_below (const PANEL *);
+extern int set_panel_userptr (PANEL *, const void *);
+extern const void* panel_userptr (const PANEL *);
+extern int move_panel (PANEL *, int, int);
+extern int replace_panel (PANEL *,WINDOW *);
+extern int panel_hidden (const PANEL *);
+
+
+extern PANEL * ground_panel(SCREEN *);
+extern PANEL * ceiling_panel(SCREEN *);
+
+extern void update_panels_sp (SCREEN*);
+# 100 "/usr/include/panel.h" 3 4
+/* end of panel.h */
+# 19 "/home/anton/revenant/game/headers/ingame_msg.h" 2
+# 1 "/home/anton/revenant/game/headers/game_state_struct.h" 1
+
+# 1 "/home/anton/revenant/game/headers/game_state_struct.h"
+/*This file is part of Revenant.
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+Revenant  is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+
+
+
+
+
+
+# 1 "/usr/include/panel.h" 1 3 4
+
+# 1 "/usr/include/panel.h" 3 4
+/****************************************************************************
+ * Copyright 2020 Thomas E. Dickey                                          *
+ * Copyright 1998-2009,2017 Free Software Foundation, Inc.                  *
+ *                                                                          *
+ * Permission is hereby granted, free of charge, to any person obtaining a  *
+ * copy of this software and associated documentation files (the            *
+ * "Software"), to deal in the Software without restriction, including      *
+ * without limitation the rights to use, copy, modify, merge, publish,      *
+ * distribute, distribute with modifications, sublicense, and/or sell       *
+ * copies of the Software, and to permit persons to whom the Software is    *
+ * furnished to do so, subject to the following conditions:                 *
+ *                                                                          *
+ * The above copyright notice and this permission notice shall be included  *
+ * in all copies or substantial portions of the Software.                   *
+ *                                                                          *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS  *
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF               *
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.   *
+ * IN NO EVENT SHALL THE ABOVE COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,   *
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR    *
+ * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR    *
+ * THE USE OR OTHER DEALINGS IN THE SOFTWARE.                               *
+ *                                                                          *
+ * Except as contained in this notice, the name(s) of the above copyright   *
+ * holders shall not be used in advertising or otherwise to promote the     *
+ * sale, use or other dealings in this Software without prior written       *
+ * authorization.                                                           *
+ ****************************************************************************/
+
+/****************************************************************************
+ *  Author: Zeyd M. Ben-Halim <zmbenhal@netcom.com> 1995                    *
+ *     and: Eric S. Raymond <esr@snark.thyrsus.com>                         *
+ *     and: Juergen Pfeifer                         1996-1999,2008          *
+ ****************************************************************************/
+
+/* $Id: panel.h,v 1.14 2020/07/04 20:38:43 tom Exp $ */
+
+/* panel.h -- interface file for panels library */
+# 100 "/usr/include/panel.h" 3 4
+/* end of panel.h */
+# 18 "/home/anton/revenant/game/headers/game_state_struct.h" 2
+# 1 "/home/anton/revenant/game/headers/gameinfo.h" 1
+
+# 1 "/home/anton/revenant/game/headers/gameinfo.h"
+/*This file is part of Revenant.
+
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Revenant is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+
+
+
+
+# 1 "/home/anton/revenant/game/headers/u_hash.h" 1
+/*This file is part of Revenant.
+
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Revenant is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+
+
+
+# 1 "/usr/include/stdio.h" 1 3 4
+
+# 1 "/usr/include/stdio.h" 3 4
+/* Define ISO C stdio on top of C++ iostreams.
+   Copyright (C) 1991-2022 Free Software Foundation, Inc.
+   This file is part of the GNU C Library.
+
+   The GNU C Library is free software; you can redistribute it and/or
+   modify it under the terms of the GNU Lesser General Public
+   License as published by the Free Software Foundation; either
+   version 2.1 of the License, or (at your option) any later version.
+
+   The GNU C Library is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   Lesser General Public License for more details.
+
+   You should have received a copy of the GNU Lesser General Public
+   License along with the GNU C Library; if not, see
+   <https://www.gnu.org/licenses/>.  */
+
+/*
+ *	ISO C99 Standard: 7.19 Input/output	<stdio.h>
+ */
 # 18 "/home/anton/revenant/game/headers/u_hash.h" 2
 # 1 "/usr/lib/gcc/x86_64-linux-gnu/11/include/float.h" 1 3 4
 /* Copyright (C) 2002-2021 Free Software Foundation, Inc.
@@ -3315,423 +5292,7 @@ see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
 /* This administrivia gets added to the end of limits.h
    if the system has its own version of limits.h.  */
 # 20 "/home/anton/revenant/game/headers/u_hash.h" 2
-# 1 "/usr/lib/gcc/x86_64-linux-gnu/11/include/stdint.h" 1 3 4
-# 9 "/usr/lib/gcc/x86_64-linux-gnu/11/include/stdint.h" 3 4
-# 1 "/usr/include/stdint.h" 1 3 4
-/* Copyright (C) 1997-2022 Free Software Foundation, Inc.
-   This file is part of the GNU C Library.
 
-   The GNU C Library is free software; you can redistribute it and/or
-   modify it under the terms of the GNU Lesser General Public
-   License as published by the Free Software Foundation; either
-   version 2.1 of the License, or (at your option) any later version.
-
-   The GNU C Library is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-   Lesser General Public License for more details.
-
-   You should have received a copy of the GNU Lesser General Public
-   License along with the GNU C Library; if not, see
-   <https://www.gnu.org/licenses/>.  */
-
-/*
- *	ISO C99: 7.18 Integer types <stdint.h>
- */
-
-
-
-
-
-# 1 "/usr/include/x86_64-linux-gnu/bits/libc-header-start.h" 1 3 4
-/* Handle feature test macros at the start of a header.
-   Copyright (C) 2016-2022 Free Software Foundation, Inc.
-   This file is part of the GNU C Library.
-
-   The GNU C Library is free software; you can redistribute it and/or
-   modify it under the terms of the GNU Lesser General Public
-   License as published by the Free Software Foundation; either
-   version 2.1 of the License, or (at your option) any later version.
-
-   The GNU C Library is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-   Lesser General Public License for more details.
-
-   You should have received a copy of the GNU Lesser General Public
-   License along with the GNU C Library; if not, see
-   <https://www.gnu.org/licenses/>.  */
-
-/* This header is internal to glibc and should not be included outside
-   of glibc headers.  Headers including it must define
-   __GLIBC_INTERNAL_STARTING_HEADER_IMPLEMENTATION first.  This header
-   cannot have multiple include guards because ISO C feature test
-   macros depend on the definition of the macro when an affected
-   header is included, not when the first system header is
-   included.  */
-
-
-
-
-
-
-
-# 1 "/usr/include/features.h" 1 3 4
-/* Copyright (C) 1991-2022 Free Software Foundation, Inc.
-   This file is part of the GNU C Library.
-
-   The GNU C Library is free software; you can redistribute it and/or
-   modify it under the terms of the GNU Lesser General Public
-   License as published by the Free Software Foundation; either
-   version 2.1 of the License, or (at your option) any later version.
-
-   The GNU C Library is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-   Lesser General Public License for more details.
-
-   You should have received a copy of the GNU Lesser General Public
-   License along with the GNU C Library; if not, see
-   <https://www.gnu.org/licenses/>.  */
-# 34 "/usr/include/x86_64-linux-gnu/bits/libc-header-start.h" 2 3 4
-
-/* ISO/IEC TR 24731-2:2010 defines the __STDC_WANT_LIB_EXT2__
-   macro.  */
-# 45 "/usr/include/x86_64-linux-gnu/bits/libc-header-start.h" 3 4
-/* ISO/IEC TS 18661-1:2014 defines the __STDC_WANT_IEC_60559_BFP_EXT__
-   macro.  Most but not all symbols enabled by that macro in TS
-   18661-1 are enabled unconditionally in C2X.  In C2X, the symbols in
-   Annex F still require a new feature test macro
-   __STDC_WANT_IEC_60559_EXT__ instead (C2X does not define
-   __STDC_WANT_IEC_60559_BFP_EXT__), while a few features from TS
-   18661-1 are not included in C2X (and thus should depend on
-   __STDC_WANT_IEC_60559_BFP_EXT__ even when C2X features are
-   enabled).
-
-   __GLIBC_USE (IEC_60559_BFP_EXT) controls those features from TS
-   18661-1 not included in C2X.
-
-   __GLIBC_USE (IEC_60559_BFP_EXT_C2X) controls those features from TS
-   18661-1 that are also included in C2X (with no feature test macro
-   required in C2X).
-
-   __GLIBC_USE (IEC_60559_EXT) controls those features from TS 18661-1
-   that are included in C2X but conditional on
-   __STDC_WANT_IEC_60559_EXT__.  (There are currently no features
-   conditional on __STDC_WANT_IEC_60559_EXT__ that are not in TS
-   18661-1.)  */
-# 86 "/usr/include/x86_64-linux-gnu/bits/libc-header-start.h" 3 4
-/* ISO/IEC TS 18661-4:2015 defines the
-   __STDC_WANT_IEC_60559_FUNCS_EXT__ macro.  Other than the reduction
-   functions, the symbols from this TS are enabled unconditionally in
-   C2X.  */
-# 103 "/usr/include/x86_64-linux-gnu/bits/libc-header-start.h" 3 4
-/* ISO/IEC TS 18661-3:2015 defines the
-   __STDC_WANT_IEC_60559_TYPES_EXT__ macro.  */
-# 27 "/usr/include/stdint.h" 2 3 4
-# 1 "/usr/include/x86_64-linux-gnu/bits/types.h" 1 3 4
-/* bits/types.h -- definitions of __*_t types underlying *_t types.
-   Copyright (C) 2002-2022 Free Software Foundation, Inc.
-   This file is part of the GNU C Library.
-
-   The GNU C Library is free software; you can redistribute it and/or
-   modify it under the terms of the GNU Lesser General Public
-   License as published by the Free Software Foundation; either
-   version 2.1 of the License, or (at your option) any later version.
-
-   The GNU C Library is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-   Lesser General Public License for more details.
-
-   You should have received a copy of the GNU Lesser General Public
-   License along with the GNU C Library; if not, see
-   <https://www.gnu.org/licenses/>.  */
-
-/*
- * Never include this file directly; use <sys/types.h> instead.
- */
-# 28 "/usr/include/stdint.h" 2 3 4
-# 1 "/usr/include/x86_64-linux-gnu/bits/wchar.h" 1 3 4
-/* wchar_t type related definitions.
-   Copyright (C) 2000-2022 Free Software Foundation, Inc.
-   This file is part of the GNU C Library.
-
-   The GNU C Library is free software; you can redistribute it and/or
-   modify it under the terms of the GNU Lesser General Public
-   License as published by the Free Software Foundation; either
-   version 2.1 of the License, or (at your option) any later version.
-
-   The GNU C Library is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-   Lesser General Public License for more details.
-
-   You should have received a copy of the GNU Lesser General Public
-   License along with the GNU C Library; if not, see
-   <https://www.gnu.org/licenses/>.  */
-
-
-
-
-/* The fallback definitions, for when __WCHAR_MAX__ or __WCHAR_MIN__
-   are not defined, give the right value and type as long as both int
-   and wchar_t are 32-bit types.  Adding L'\0' to a constant value
-   ensures that the type is correct; it is necessary to use (L'\0' +
-   0) rather than just L'\0' so that the type in C++ is the promoted
-   version of wchar_t rather than the distinct wchar_t type itself.
-   Because wchar_t in preprocessor #if expressions is treated as
-   intmax_t or uintmax_t, the expression (L'\0' - 1) would have the
-   wrong value for WCHAR_MAX in such expressions and so cannot be used
-   to define __WCHAR_MAX in the unsigned case.  */
-# 29 "/usr/include/stdint.h" 2 3 4
-# 1 "/usr/include/x86_64-linux-gnu/bits/wordsize.h" 1 3 4
-/* Determine the wordsize from the preprocessor defines.  */
-# 13 "/usr/include/x86_64-linux-gnu/bits/wordsize.h" 3 4
-/* Both x86-64 and x32 use the 64-bit system call interface.  */
-# 30 "/usr/include/stdint.h" 2 3 4
-
-/* Exact integral types.  */
-
-/* Signed.  */
-# 1 "/usr/include/x86_64-linux-gnu/bits/stdint-intn.h" 1 3 4
-/* Define intN_t types.
-   Copyright (C) 2017-2022 Free Software Foundation, Inc.
-   This file is part of the GNU C Library.
-
-   The GNU C Library is free software; you can redistribute it and/or
-   modify it under the terms of the GNU Lesser General Public
-   License as published by the Free Software Foundation; either
-   version 2.1 of the License, or (at your option) any later version.
-
-   The GNU C Library is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-   Lesser General Public License for more details.
-
-   You should have received a copy of the GNU Lesser General Public
-   License along with the GNU C Library; if not, see
-   <https://www.gnu.org/licenses/>.  */
-
-
-
-
-# 1 "/usr/include/x86_64-linux-gnu/bits/types.h" 1 3 4
-/* bits/types.h -- definitions of __*_t types underlying *_t types.
-   Copyright (C) 2002-2022 Free Software Foundation, Inc.
-   This file is part of the GNU C Library.
-
-   The GNU C Library is free software; you can redistribute it and/or
-   modify it under the terms of the GNU Lesser General Public
-   License as published by the Free Software Foundation; either
-   version 2.1 of the License, or (at your option) any later version.
-
-   The GNU C Library is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-   Lesser General Public License for more details.
-
-   You should have received a copy of the GNU Lesser General Public
-   License along with the GNU C Library; if not, see
-   <https://www.gnu.org/licenses/>.  */
-
-/*
- * Never include this file directly; use <sys/types.h> instead.
- */
-# 23 "/usr/include/x86_64-linux-gnu/bits/stdint-intn.h" 2 3 4
-
-typedef __int8_t int8_t;
-typedef __int16_t int16_t;
-typedef __int32_t int32_t;
-typedef __int64_t int64_t;
-# 35 "/usr/include/stdint.h" 2 3 4
-
-/* Unsigned.  */
-# 1 "/usr/include/x86_64-linux-gnu/bits/stdint-uintn.h" 1 3 4
-/* Define uintN_t types.
-   Copyright (C) 2017-2022 Free Software Foundation, Inc.
-   This file is part of the GNU C Library.
-
-   The GNU C Library is free software; you can redistribute it and/or
-   modify it under the terms of the GNU Lesser General Public
-   License as published by the Free Software Foundation; either
-   version 2.1 of the License, or (at your option) any later version.
-
-   The GNU C Library is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-   Lesser General Public License for more details.
-
-   You should have received a copy of the GNU Lesser General Public
-   License along with the GNU C Library; if not, see
-   <https://www.gnu.org/licenses/>.  */
-
-
-
-
-# 1 "/usr/include/x86_64-linux-gnu/bits/types.h" 1 3 4
-/* bits/types.h -- definitions of __*_t types underlying *_t types.
-   Copyright (C) 2002-2022 Free Software Foundation, Inc.
-   This file is part of the GNU C Library.
-
-   The GNU C Library is free software; you can redistribute it and/or
-   modify it under the terms of the GNU Lesser General Public
-   License as published by the Free Software Foundation; either
-   version 2.1 of the License, or (at your option) any later version.
-
-   The GNU C Library is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-   Lesser General Public License for more details.
-
-   You should have received a copy of the GNU Lesser General Public
-   License along with the GNU C Library; if not, see
-   <https://www.gnu.org/licenses/>.  */
-
-/*
- * Never include this file directly; use <sys/types.h> instead.
- */
-# 23 "/usr/include/x86_64-linux-gnu/bits/stdint-uintn.h" 2 3 4
-
-typedef __uint8_t uint8_t;
-typedef __uint16_t uint16_t;
-typedef __uint32_t uint32_t;
-typedef __uint64_t uint64_t;
-# 38 "/usr/include/stdint.h" 2 3 4
-
-
-/* Small types.  */
-
-/* Signed.  */
-typedef __int_least8_t int_least8_t;
-typedef __int_least16_t int_least16_t;
-typedef __int_least32_t int_least32_t;
-typedef __int_least64_t int_least64_t;
-
-/* Unsigned.  */
-typedef __uint_least8_t uint_least8_t;
-typedef __uint_least16_t uint_least16_t;
-typedef __uint_least32_t uint_least32_t;
-typedef __uint_least64_t uint_least64_t;
-
-
-/* Fast types.  */
-
-/* Signed.  */
-typedef signed char int_fast8_t;
-
-typedef long int int_fast16_t;
-typedef long int int_fast32_t;
-typedef long int int_fast64_t;
-
-
-
-
-
-
-
-/* Unsigned.  */
-typedef unsigned char uint_fast8_t;
-
-typedef unsigned long int uint_fast16_t;
-typedef unsigned long int uint_fast32_t;
-typedef unsigned long int uint_fast64_t;
-# 84 "/usr/include/stdint.h" 3 4
-/* Types for `void *' pointers.  */
-
-
-typedef long int intptr_t;
-
-
-typedef unsigned long int uintptr_t;
-# 100 "/usr/include/stdint.h" 3 4
-/* Largest integral types.  */
-typedef __intmax_t intmax_t;
-typedef __uintmax_t uintmax_t;
-# 113 "/usr/include/stdint.h" 3 4
-/* Limits of integral types.  */
-
-/* Minimum of signed integral types.  */
-
-
-
-
-/* Maximum of signed integral types.  */
-
-
-
-
-
-/* Maximum of unsigned integral types.  */
-
-
-
-
-
-
-/* Minimum of signed integral types having a minimum size.  */
-
-
-
-
-/* Maximum of signed integral types having a minimum size.  */
-
-
-
-
-
-/* Maximum of unsigned integral types having a minimum size.  */
-
-
-
-
-
-
-/* Minimum of fast signed integral types having a minimum size.  */
-# 161 "/usr/include/stdint.h" 3 4
-/* Maximum of fast signed integral types having a minimum size.  */
-# 172 "/usr/include/stdint.h" 3 4
-/* Maximum of fast unsigned integral types having a minimum size.  */
-# 184 "/usr/include/stdint.h" 3 4
-/* Values to test for integral types holding `void *' pointer.  */
-# 196 "/usr/include/stdint.h" 3 4
-/* Minimum for largest signed integral type.  */
-
-/* Maximum for largest signed integral type.  */
-
-
-/* Maximum for largest unsigned integral type.  */
-
-
-
-/* Limits of other integer types.  */
-
-/* Limits of `ptrdiff_t' type.  */
-# 221 "/usr/include/stdint.h" 3 4
-/* Limits of `sig_atomic_t'.  */
-
-
-
-/* Limit of `size_t' type.  */
-# 236 "/usr/include/stdint.h" 3 4
-/* Limits of `wchar_t'.  */
-
-/* These constants might also be defined in <wchar.h>.  */
-
-
-
-
-/* Limits of `wint_t'.  */
-
-
-
-/* Signed.  */
-# 257 "/usr/include/stdint.h" 3 4
-/* Unsigned.  */
-# 267 "/usr/include/stdint.h" 3 4
-/* Maximal type.  */
-# 10 "/usr/lib/gcc/x86_64-linux-gnu/11/include/stdint.h" 2 3 4
-# 21 "/home/anton/revenant/game/headers/u_hash.h" 2
 # 1 "/usr/include/string.h" 1 3 4
 /* Copyright (C) 1991-2022 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
@@ -8531,30 +10092,6 @@ see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
 /*
  * ISO C Standard:  7.15  Variable arguments  <stdarg.h>
  */
-# 36 "/usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h" 3 4
-/* Define __gnuc_va_list.  */
-
-
-
-
-
-
-/* Define the standard macros for the user,
-   if this invocation was from the user program.  */
-# 56 "/usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h" 3 4
-/* Define va_list, if desired, from __gnuc_va_list. */
-/* We deliberately do not define va_list when called from
-   stdio.h, because ANSI C says that stdio.h is not supposed to define
-   va_list.  stdio.h needs to have access to that data type, 
-   but must not use that name.  It should use the name __gnuc_va_list,
-   which is safe because it is reserved for the implementation.  */
-# 86 "/usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h" 3 4
-/* The macro _VA_LIST_ is the same thing used by this file in Ultrix.
-   But on BSD NET2 we must not test or define or undef it.
-   (Note that the comments in NET 2's ansi.h
-   are incorrect for _VA_LIST_--see stdio.h!)  */
-
-/* The macro _VA_LIST_DEFINED is used in Windows NT 3.5  */
 # 24 "/home/anton/revenant/game/headers/strings.h" 2 3 4
 
 
@@ -8833,1277 +10370,6 @@ extern const char *equipment_type_modifier[];
  ****************************************************************************/
 
 /* $Id: curses.h.in,v 1.277 2021/09/24 16:07:37 tom Exp $ */
-
-
-
-
-/*
- The symbols beginning NCURSES_ or USE_ are configuration choices.
- A few of the former can be overridden by applications at compile-time.
- Most of the others correspond to configure-script options (or checks
- by the configure-script for features of the system on which it is built).
-
- These symbols can be overridden by applications at compile-time:
- NCURSES_NOMACROS suppresses macro definitions in favor of functions
- NCURSES_WATTR_MACROS suppresses wattr_* macro definitions
- NCURSES_WIDECHAR is an alternative for declaring wide-character functions.
-
- These symbols are used only when building ncurses:
- NCURSES_ATTR_T
- NCURSES_FIELD_INTERNALS
- NCURSES_INTERNALS
-
- These symbols are set by the configure script:
- NCURSES_ENABLE_STDBOOL_H
- NCURSES_EXPANDED
- NCURSES_EXT_COLORS
- NCURSES_EXT_FUNCS
- NCURSES_EXT_PUTWIN
- NCURSES_NO_PADDING
- NCURSES_OSPEED_COMPAT
- NCURSES_PATHSEP
- NCURSES_REENTRANT
- */
-
-
-
-
-/* These are defined only in curses.h, and are used for conditional compiles */
-
-
-
-
-/* This is defined in more than one ncurses header, for identification */
-
-
-
-/*
- * Identify the mouse encoding version.
- */
-
-
-/*
- * Definitions to facilitate DLL's.
- */
-# 1 "/usr/include/ncurses_dll.h" 1 3 4
-/****************************************************************************
- * Copyright 2018,2020 Thomas E. Dickey                                     *
- * Copyright 2009,2014 Free Software Foundation, Inc.                       *
- *                                                                          *
- * Permission is hereby granted, free of charge, to any person obtaining a  *
- * copy of this software and associated documentation files (the            *
- * "Software"), to deal in the Software without restriction, including      *
- * without limitation the rights to use, copy, modify, merge, publish,      *
- * distribute, distribute with modifications, sublicense, and/or sell       *
- * copies of the Software, and to permit persons to whom the Software is    *
- * furnished to do so, subject to the following conditions:                 *
- *                                                                          *
- * The above copyright notice and this permission notice shall be included  *
- * in all copies or substantial portions of the Software.                   *
- *                                                                          *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS  *
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF               *
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.   *
- * IN NO EVENT SHALL THE ABOVE COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,   *
- * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR    *
- * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR    *
- * THE USE OR OTHER DEALINGS IN THE SOFTWARE.                               *
- *                                                                          *
- * Except as contained in this notice, the name(s) of the above copyright   *
- * holders shall not be used in advertising or otherwise to promote the     *
- * sale, use or other dealings in this Software without prior written       *
- * authorization.                                                           *
- ****************************************************************************/
-/* $Id: ncurses_dll.h.in,v 1.17 2020/09/05 17:58:47 juergen Exp $ */
-
-
-
-
-/*
- * MinGW gcc (unlike MSYS2 and Cygwin) should define _WIN32 and possibly _WIN64.
- */
-# 64 "/usr/include/ncurses_dll.h" 3 4
-/*
- * For reentrant code, we map the various global variables into SCREEN by
- * using functions to access them.
- */
-# 81 "/usr/include/ncurses_dll.h" 3 4
-/*
- * These symbols hide dllimport/dllexport, for compilers which care about it.
- */
-# 90 "/usr/include/curses.h" 2 3 4
-
-/*
- * Extra headers.
- */
-# 107 "/usr/include/curses.h" 3 4
-/*
- * User-definable tweak to disable the include of <stdbool.h>.
- */
-
-
-
-
-/*
- * NCURSES_ATTR_T is used to quiet compiler warnings when building ncurses
- * configured using --disable-macros.
- */
-
-
-
-
-/*
- * Expands to 'const' if ncurses is configured using --enable-const.  Note that
- * doing so makes it incompatible with other implementations of X/Open Curses.
- */
-
-
-
-
-
-
-/*
- * The standard type used for color values, and for color-pairs.  The latter
- * allows the curses library to enumerate the combinations of foreground and
- * background colors used by an application, and is normally the product of the
- * total foreground and background colors.
- *
- * X/Open uses "short" for both of these types, ultimately because they are
- * numbers from the SVr4 terminal database, which uses 16-bit signed values.
- */
-
-
-
-
-
-
-/*
- * Definitions used to make WINDOW and similar structs opaque.
- */
-
-
-
-
-
-
-
-/*
- * Definition used to optionally suppress wattr* macros to help with the
- * transition from ncurses5 to ncurses6 by allowing the header files to
- * be shared across development packages for ncursesw in both ABIs.
- */
-
-
-
-
-/*
- * The reentrant code relies on the opaque setting, but adds features.
- */
-
-
-
-
-/*
- * In certain environments, we must work around linker problems for data
- */
-
-
-
-
-
-/*
- * Control whether bindings for interop support are added.
- */
-
-
-
-/*
- * The internal type used for window dimensions.
- */
-
-
-
-/*
- * Control whether tparm() supports varargs or fixed-parameter list.
- */
-
-
-
-/*
- * Control type used for tparm's arguments.  While X/Open equates long and
- * char* values, this is not always workable for 64-bit platforms.
- */
-
-
-
-/*
- * Control whether ncurses uses wcwidth() for checking width of line-drawing
- * characters.
- */
-
-
-
-/*
- * NCURSES_CH_T is used in building the library, but not used otherwise in
- * this header file, since that would make the normal/wide-character versions
- * of the header incompatible.
- */
-
-
-
-
-typedef unsigned chtype;
-typedef unsigned mmask_t;
-
-
-
-
-
-/*
- * We need FILE, etc.  Include this before checking any feature symbols.
- */
-# 1 "/usr/include/stdio.h" 1 3 4
-/* Define ISO C stdio on top of C++ iostreams.
-   Copyright (C) 1991-2022 Free Software Foundation, Inc.
-   This file is part of the GNU C Library.
-
-   The GNU C Library is free software; you can redistribute it and/or
-   modify it under the terms of the GNU Lesser General Public
-   License as published by the Free Software Foundation; either
-   version 2.1 of the License, or (at your option) any later version.
-
-   The GNU C Library is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-   Lesser General Public License for more details.
-
-   You should have received a copy of the GNU Lesser General Public
-   License along with the GNU C Library; if not, see
-   <https://www.gnu.org/licenses/>.  */
-
-/*
- *	ISO C99 Standard: 7.19 Input/output	<stdio.h>
- */
-# 233 "/usr/include/curses.h" 2 3 4
-
-/*
- * With XPG4, you must define _XOPEN_SOURCE_EXTENDED, it is redundant (or
- * conflicting) when _XOPEN_SOURCE is 500 or greater.  If NCURSES_WIDECHAR is
- * not already defined, e.g., if the platform relies upon nonstandard feature
- * test macros, define it at this point if the standard feature test macros
- * indicate that it should be defined.
- */
-# 249 "/usr/include/curses.h" 3 4
-# 1 "/usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h" 1 3 4
-/* Copyright (C) 1989-2021 Free Software Foundation, Inc.
-
-This file is part of GCC.
-
-GCC is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 3, or (at your option)
-any later version.
-
-GCC is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-Under Section 7 of GPL version 3, you are granted additional
-permissions described in the GCC Runtime Library Exception, version
-3.1, as published by the Free Software Foundation.
-
-You should have received a copy of the GNU General Public License and
-a copy of the GCC Runtime Library Exception along with this program;
-see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
-<http://www.gnu.org/licenses/>.  */
-
-/*
- * ISO C Standard:  7.15  Variable arguments  <stdarg.h>
- */
-# 250 "/usr/include/curses.h" 2 3 4
-
-
-
-
-/* X/Open and SVr4 specify that curses implements 'bool'.  However, C++ may also
- * implement it.  If so, we must use the C++ compiler's type to avoid conflict
- * with other interfaces.
- *
- * A further complication is that <stdbool.h> may declare 'bool' to be a
- * different type, such as an enum which is not necessarily compatible with
- * C++.  If we have <stdbool.h>, make 'bool' a macro, so users may #undef it.
- * Otherwise, let it remain a typedef to avoid conflicts with other #define's.
- * In either case, make a typedef for NCURSES_BOOL which can be used if needed
- * from either C or C++.
- */
-
-
-
-
-
-
-
-typedef unsigned char NCURSES_BOOL;
-# 282 "/usr/include/curses.h" 3 4
-# 1 "/usr/lib/gcc/x86_64-linux-gnu/11/include/stdbool.h" 1 3 4
-/* Copyright (C) 1998-2021 Free Software Foundation, Inc.
-
-This file is part of GCC.
-
-GCC is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 3, or (at your option)
-any later version.
-
-GCC is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-Under Section 7 of GPL version 3, you are granted additional
-permissions described in the GCC Runtime Library Exception, version
-3.1, as published by the Free Software Foundation.
-
-You should have received a copy of the GNU General Public License and
-a copy of the GCC Runtime Library Exception along with this program;
-see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
-<http://www.gnu.org/licenses/>.  */
-
-/*
- * ISO C Standard:  7.16  Boolean type and values  <stdbool.h>
- */
-# 49 "/usr/lib/gcc/x86_64-linux-gnu/11/include/stdbool.h" 3 4
-/* Signal that all the definitions are present.  */
-# 283 "/usr/include/curses.h" 2 3 4
-/* use whatever the C compiler decides bool really is */
-# 302 "/usr/include/curses.h" 3 4
-/*
- * X/Open attributes.  In the ncurses implementation, they are identical to the
- * A_ attributes.
- */
-# 328 "/usr/include/curses.h" 3 4
-/* colors */
-# 338 "/usr/include/curses.h" 3 4
-/* line graphics */
-
-
-
-
-
-extern chtype acs_map[];
-
-
-
-
-/* VT100 symbols begin here */
-# 368 "/usr/include/curses.h" 3 4
-/* Teletype 5410v1 symbols begin here */
-
-
-
-
-
-
-
-/*
- * These aren't documented, but a lot of System Vs have them anyway
- * (you can spot pprryyzz{{||}} in a lot of AT&T terminfo strings).
- * The ACS_names may not match AT&T's, our source didn't know them.
- */
-# 389 "/usr/include/curses.h" 3 4
-/*
- * Line drawing ACS names are of the form ACS_trbl, where t is the top, r
- * is the right, b is the bottom, and l is the left.  t, r, b, and l might
- * be B (blank), S (single), D (double), or T (thick).  The subset defined
- * here only uses B and S.
- */
-# 413 "/usr/include/curses.h" 3 4
-/* values for the _flags member */
-# 422 "/usr/include/curses.h" 3 4
-/*
- * this value is used in the firstchar and lastchar fields to mark
- * unchanged lines
- */
-
-
-/*
- * this value is used in the oldindex field to mark lines created by insertions
- * and scrolls.
- */
-
-
-
-
-
-
-
-typedef struct screen SCREEN;
-
-
-typedef struct _win_st WINDOW;
-
-typedef chtype attr_t; /* ...must be at least as wide as chtype */
-# 489 "/usr/include/curses.h" 3 4
-struct ldat;
-
-struct _win_st
-{
- short _cury, _curx; /* current cursor position */
-
- /* window location and size */
- short _maxy, _maxx; /* maximums of x and y, NOT window size */
- short _begy, _begx; /* screen coords of upper-left-hand corner */
-
- short _flags; /* window state flags */
-
- /* attribute tracking */
- attr_t _attrs; /* current attribute for non-space character */
- chtype _bkgd; /* current background char/attribute pair */
-
- /* option values set by user */
- _Bool _notimeout; /* no time out on function-key entry? */
- _Bool _clear; /* consider all data in the window invalid? */
- _Bool _leaveok; /* OK to not reset cursor on exit? */
- _Bool _scroll; /* OK to scroll this window? */
- _Bool _idlok; /* OK to use insert/delete line? */
- _Bool _idcok; /* OK to use insert/delete char? */
- _Bool _immed; /* window in immed mode? (not yet used) */
- _Bool _sync; /* window in sync mode? */
- _Bool _use_keypad; /* process function keys into KEY_ symbols? */
- int _delay; /* 0 = nodelay, <0 = blocking, >0 = delay */
-
- struct ldat *_line; /* the actual line data */
-
- /* global screen state */
- short _regtop; /* top line of scrolling region */
- short _regbottom; /* bottom line of scrolling region */
-
- /* these are used only if this is a sub-window */
- int _parx; /* x coordinate of this window in parent */
- int _pary; /* y coordinate of this window in parent */
- WINDOW *_parent; /* pointer to parent if a sub-window */
-
- /* these are used only if this is a pad */
- struct pdat
- {
-     short _pad_y, _pad_x;
-     short _pad_top, _pad_left;
-     short _pad_bottom, _pad_right;
- } _pad;
-
- short _yoffset; /* real begy is _begy + _yoffset */
-
-
-
-
-
-
-
-};
-
-
-/*
- * GCC (and some other compilers) define '__attribute__'; we're using this
- * macro to alert the compiler to flag inconsistencies in printf/scanf-like
- * function calls.  Just in case '__attribute__' isn't defined, make a dummy.
- * Old versions of G++ do not accept it anyway, at least not consistently with
- * GCC.
- */
-
-
-
-
-/*
- * We cannot define these in ncurses_cfg.h, since they require parameters to be
- * passed (that is non-portable).
- */
-# 593 "/usr/include/curses.h" 3 4
-/*
- * Curses uses a helper function.  Define our type for this to simplify
- * extending it for the sp-funcs feature.
- */
-typedef int (*NCURSES_OUTC)(int);
-
-/*
- * Function prototypes.  This is the complete X/Open Curses list of required
- * functions.  Those marked `generated' will have sources generated from the
- * macro definitions later in this file, in order to satisfy XPG4.2
- * requirements.
- */
-
-extern int addch (const chtype); /* generated */
-extern int addchnstr (const chtype *, int); /* generated */
-extern int addchstr (const chtype *); /* generated */
-extern int addnstr (const char *, int); /* generated */
-extern int addstr (const char *); /* generated */
-extern int attroff (int); /* generated */
-extern int attron (int); /* generated */
-extern int attrset (int); /* generated */
-extern int attr_get (attr_t *, short *, void *); /* generated */
-extern int attr_off (attr_t, void *); /* generated */
-extern int attr_on (attr_t, void *); /* generated */
-extern int attr_set (attr_t, short, void *); /* generated */
-extern int baudrate (void); /* implemented */
-extern int beep (void); /* implemented */
-extern int bkgd (chtype); /* generated */
-extern void bkgdset (chtype); /* generated */
-extern int border (chtype,chtype,chtype,chtype,chtype,chtype,chtype,chtype); /* generated */
-extern int box (WINDOW *, chtype, chtype); /* generated */
-extern _Bool can_change_color (void); /* implemented */
-extern int cbreak (void); /* implemented */
-extern int chgat (int, attr_t, short, const void *); /* generated */
-extern int clear (void); /* generated */
-extern int clearok (WINDOW *,_Bool); /* implemented */
-extern int clrtobot (void); /* generated */
-extern int clrtoeol (void); /* generated */
-extern int color_content (short,short*,short*,short*); /* implemented */
-extern int color_set (short,void*); /* generated */
-extern int COLOR_PAIR (int); /* generated */
-extern int copywin (const WINDOW*,WINDOW*,int,int,int,int,int,int,int); /* implemented */
-extern int curs_set (int); /* implemented */
-extern int def_prog_mode (void); /* implemented */
-extern int def_shell_mode (void); /* implemented */
-extern int delay_output (int); /* implemented */
-extern int delch (void); /* generated */
-extern void delscreen (SCREEN *); /* implemented */
-extern int delwin (WINDOW *); /* implemented */
-extern int deleteln (void); /* generated */
-extern WINDOW * derwin (WINDOW *,int,int,int,int); /* implemented */
-extern int doupdate (void); /* implemented */
-extern WINDOW * dupwin (WINDOW *); /* implemented */
-extern int echo (void); /* implemented */
-extern int echochar (const chtype); /* generated */
-extern int erase (void); /* generated */
-extern int endwin (void); /* implemented */
-extern char erasechar (void); /* implemented */
-extern void filter (void); /* implemented */
-extern int flash (void); /* implemented */
-extern int flushinp (void); /* implemented */
-extern chtype getbkgd (WINDOW *); /* generated */
-extern int getch (void); /* generated */
-extern int getnstr (char *, int); /* generated */
-extern int getstr (char *); /* generated */
-extern WINDOW * getwin (FILE *); /* implemented */
-extern int halfdelay (int); /* implemented */
-extern _Bool has_colors (void); /* implemented */
-extern _Bool has_ic (void); /* implemented */
-extern _Bool has_il (void); /* implemented */
-extern int hline (chtype, int); /* generated */
-extern void idcok (WINDOW *, _Bool); /* implemented */
-extern int idlok (WINDOW *, _Bool); /* implemented */
-extern void immedok (WINDOW *, _Bool); /* implemented */
-extern chtype inch (void); /* generated */
-extern int inchnstr (chtype *, int); /* generated */
-extern int inchstr (chtype *); /* generated */
-extern WINDOW * initscr (void); /* implemented */
-extern int init_color (short,short,short,short); /* implemented */
-extern int init_pair (short,short,short); /* implemented */
-extern int innstr (char *, int); /* generated */
-extern int insch (chtype); /* generated */
-extern int insdelln (int); /* generated */
-extern int insertln (void); /* generated */
-extern int insnstr (const char *, int); /* generated */
-extern int insstr (const char *); /* generated */
-extern int instr (char *); /* generated */
-extern int intrflush (WINDOW *,_Bool); /* implemented */
-extern _Bool isendwin (void); /* implemented */
-extern _Bool is_linetouched (WINDOW *,int); /* implemented */
-extern _Bool is_wintouched (WINDOW *); /* implemented */
-extern const char * keyname (int); /* implemented */
-extern int keypad (WINDOW *,_Bool); /* implemented */
-extern char killchar (void); /* implemented */
-extern int leaveok (WINDOW *,_Bool); /* implemented */
-extern char * longname (void); /* implemented */
-extern int meta (WINDOW *,_Bool); /* implemented */
-extern int move (int, int); /* generated */
-extern int mvaddch (int, int, const chtype); /* generated */
-extern int mvaddchnstr (int, int, const chtype *, int); /* generated */
-extern int mvaddchstr (int, int, const chtype *); /* generated */
-extern int mvaddnstr (int, int, const char *, int); /* generated */
-extern int mvaddstr (int, int, const char *); /* generated */
-extern int mvchgat (int, int, int, attr_t, short, const void *); /* generated */
-extern int mvcur (int,int,int,int); /* implemented */
-extern int mvdelch (int, int); /* generated */
-extern int mvderwin (WINDOW *, int, int); /* implemented */
-extern int mvgetch (int, int); /* generated */
-extern int mvgetnstr (int, int, char *, int); /* generated */
-extern int mvgetstr (int, int, char *); /* generated */
-extern int mvhline (int, int, chtype, int); /* generated */
-extern chtype mvinch (int, int); /* generated */
-extern int mvinchnstr (int, int, chtype *, int); /* generated */
-extern int mvinchstr (int, int, chtype *); /* generated */
-extern int mvinnstr (int, int, char *, int); /* generated */
-extern int mvinsch (int, int, chtype); /* generated */
-extern int mvinsnstr (int, int, const char *, int); /* generated */
-extern int mvinsstr (int, int, const char *); /* generated */
-extern int mvinstr (int, int, char *); /* generated */
-extern int mvprintw (int,int, const char *,...) /* implemented */
-  __attribute__((format(printf,3,4)));
-extern int mvscanw (int,int, const char *,...) /* implemented */
-  __attribute__((format(scanf,3,4)));
-extern int mvvline (int, int, chtype, int); /* generated */
-extern int mvwaddch (WINDOW *, int, int, const chtype); /* generated */
-extern int mvwaddchnstr (WINDOW *, int, int, const chtype *, int);/* generated */
-extern int mvwaddchstr (WINDOW *, int, int, const chtype *); /* generated */
-extern int mvwaddnstr (WINDOW *, int, int, const char *, int); /* generated */
-extern int mvwaddstr (WINDOW *, int, int, const char *); /* generated */
-extern int mvwchgat (WINDOW *, int, int, int, attr_t, short, const void *);/* generated */
-extern int mvwdelch (WINDOW *, int, int); /* generated */
-extern int mvwgetch (WINDOW *, int, int); /* generated */
-extern int mvwgetnstr (WINDOW *, int, int, char *, int); /* generated */
-extern int mvwgetstr (WINDOW *, int, int, char *); /* generated */
-extern int mvwhline (WINDOW *, int, int, chtype, int); /* generated */
-extern int mvwin (WINDOW *,int,int); /* implemented */
-extern chtype mvwinch (WINDOW *, int, int); /* generated */
-extern int mvwinchnstr (WINDOW *, int, int, chtype *, int); /* generated */
-extern int mvwinchstr (WINDOW *, int, int, chtype *); /* generated */
-extern int mvwinnstr (WINDOW *, int, int, char *, int); /* generated */
-extern int mvwinsch (WINDOW *, int, int, chtype); /* generated */
-extern int mvwinsnstr (WINDOW *, int, int, const char *, int); /* generated */
-extern int mvwinsstr (WINDOW *, int, int, const char *); /* generated */
-extern int mvwinstr (WINDOW *, int, int, char *); /* generated */
-extern int mvwprintw (WINDOW*,int,int, const char *,...) /* implemented */
-  __attribute__((format(printf,4,5)));
-extern int mvwscanw (WINDOW *,int,int, const char *,...) /* implemented */
-  __attribute__((format(scanf,4,5)));
-extern int mvwvline (WINDOW *,int, int, chtype, int); /* generated */
-extern int napms (int); /* implemented */
-extern WINDOW * newpad (int,int); /* implemented */
-extern SCREEN * newterm (const char *,FILE *,FILE *); /* implemented */
-extern WINDOW * newwin (int,int,int,int); /* implemented */
-extern int nl (void); /* implemented */
-extern int nocbreak (void); /* implemented */
-extern int nodelay (WINDOW *,_Bool); /* implemented */
-extern int noecho (void); /* implemented */
-extern int nonl (void); /* implemented */
-extern void noqiflush (void); /* implemented */
-extern int noraw (void); /* implemented */
-extern int notimeout (WINDOW *,_Bool); /* implemented */
-extern int overlay (const WINDOW*,WINDOW *); /* implemented */
-extern int overwrite (const WINDOW*,WINDOW *); /* implemented */
-extern int pair_content (short,short*,short*); /* implemented */
-extern int PAIR_NUMBER (int); /* generated */
-extern int pechochar (WINDOW *, const chtype); /* implemented */
-extern int pnoutrefresh (WINDOW*,int,int,int,int,int,int);/* implemented */
-extern int prefresh (WINDOW *,int,int,int,int,int,int); /* implemented */
-extern int printw (const char *,...) /* implemented */
-  __attribute__((format(printf,1,2)));
-extern int putwin (WINDOW *, FILE *); /* implemented */
-extern void qiflush (void); /* implemented */
-extern int raw (void); /* implemented */
-extern int redrawwin (WINDOW *); /* generated */
-extern int refresh (void); /* generated */
-extern int resetty (void); /* implemented */
-extern int reset_prog_mode (void); /* implemented */
-extern int reset_shell_mode (void); /* implemented */
-extern int ripoffline (int, int (*)(WINDOW *, int)); /* implemented */
-extern int savetty (void); /* implemented */
-extern int scanw (const char *,...) /* implemented */
-  __attribute__((format(scanf,1,2)));
-extern int scr_dump (const char *); /* implemented */
-extern int scr_init (const char *); /* implemented */
-extern int scrl (int); /* generated */
-extern int scroll (WINDOW *); /* generated */
-extern int scrollok (WINDOW *,_Bool); /* implemented */
-extern int scr_restore (const char *); /* implemented */
-extern int scr_set (const char *); /* implemented */
-extern int setscrreg (int,int); /* generated */
-extern SCREEN * set_term (SCREEN *); /* implemented */
-extern int slk_attroff (const chtype); /* implemented */
-extern int slk_attr_off (const attr_t, void *); /* generated:WIDEC */
-extern int slk_attron (const chtype); /* implemented */
-extern int slk_attr_on (attr_t,void*); /* generated:WIDEC */
-extern int slk_attrset (const chtype); /* implemented */
-extern attr_t slk_attr (void); /* implemented */
-extern int slk_attr_set (const attr_t,short,void*); /* implemented */
-extern int slk_clear (void); /* implemented */
-extern int slk_color (short); /* implemented */
-extern int slk_init (int); /* implemented */
-extern char * slk_label (int); /* implemented */
-extern int slk_noutrefresh (void); /* implemented */
-extern int slk_refresh (void); /* implemented */
-extern int slk_restore (void); /* implemented */
-extern int slk_set (int,const char *,int); /* implemented */
-extern int slk_touch (void); /* implemented */
-extern int standout (void); /* generated */
-extern int standend (void); /* generated */
-extern int start_color (void); /* implemented */
-extern WINDOW * subpad (WINDOW *, int, int, int, int); /* implemented */
-extern WINDOW * subwin (WINDOW *, int, int, int, int); /* implemented */
-extern int syncok (WINDOW *, _Bool); /* implemented */
-extern chtype termattrs (void); /* implemented */
-extern char * termname (void); /* implemented */
-extern void timeout (int); /* generated */
-extern int touchline (WINDOW *, int, int); /* generated */
-extern int touchwin (WINDOW *); /* generated */
-extern int typeahead (int); /* implemented */
-extern int ungetch (int); /* implemented */
-extern int untouchwin (WINDOW *); /* generated */
-extern void use_env (_Bool); /* implemented */
-extern void use_tioctl (_Bool); /* implemented */
-extern int vidattr (chtype); /* implemented */
-extern int vidputs (chtype, NCURSES_OUTC); /* implemented */
-extern int vline (chtype, int); /* generated */
-extern int vwprintw (WINDOW *, const char *, va_list) __attribute__((deprecated)) /* implemented */
-  __attribute__((format(printf,2,0)));
-extern int vw_printw (WINDOW *, const char *, va_list) /* implemented */
-  __attribute__((format(printf,2,0)));
-extern int vwscanw (WINDOW *, const char *, va_list) __attribute__((deprecated)) /* implemented */
-  __attribute__((format(scanf,2,0)));
-extern int vw_scanw (WINDOW *, const char *, va_list) /* implemented */
-  __attribute__((format(scanf,2,0)));
-extern int waddch (WINDOW *, const chtype); /* implemented */
-extern int waddchnstr (WINDOW *,const chtype *,int); /* implemented */
-extern int waddchstr (WINDOW *,const chtype *); /* generated */
-extern int waddnstr (WINDOW *,const char *,int); /* implemented */
-extern int waddstr (WINDOW *,const char *); /* generated */
-extern int wattron (WINDOW *, int); /* generated */
-extern int wattroff (WINDOW *, int); /* generated */
-extern int wattrset (WINDOW *, int); /* generated */
-extern int wattr_get (WINDOW *, attr_t *, short *, void *); /* generated */
-extern int wattr_on (WINDOW *, attr_t, void *); /* implemented */
-extern int wattr_off (WINDOW *, attr_t, void *); /* implemented */
-extern int wattr_set (WINDOW *, attr_t, short, void *); /* generated */
-extern int wbkgd (WINDOW *, chtype); /* implemented */
-extern void wbkgdset (WINDOW *,chtype); /* implemented */
-extern int wborder (WINDOW *,chtype,chtype,chtype,chtype,chtype,chtype,chtype,chtype); /* implemented */
-extern int wchgat (WINDOW *, int, attr_t, short, const void *);/* implemented */
-extern int wclear (WINDOW *); /* implemented */
-extern int wclrtobot (WINDOW *); /* implemented */
-extern int wclrtoeol (WINDOW *); /* implemented */
-extern int wcolor_set (WINDOW*,short,void*); /* implemented */
-extern void wcursyncup (WINDOW *); /* implemented */
-extern int wdelch (WINDOW *); /* implemented */
-extern int wdeleteln (WINDOW *); /* generated */
-extern int wechochar (WINDOW *, const chtype); /* implemented */
-extern int werase (WINDOW *); /* implemented */
-extern int wgetch (WINDOW *); /* implemented */
-extern int wgetnstr (WINDOW *,char *,int); /* implemented */
-extern int wgetstr (WINDOW *, char *); /* generated */
-extern int whline (WINDOW *, chtype, int); /* implemented */
-extern chtype winch (WINDOW *); /* implemented */
-extern int winchnstr (WINDOW *, chtype *, int); /* implemented */
-extern int winchstr (WINDOW *, chtype *); /* generated */
-extern int winnstr (WINDOW *, char *, int); /* implemented */
-extern int winsch (WINDOW *, chtype); /* implemented */
-extern int winsdelln (WINDOW *,int); /* implemented */
-extern int winsertln (WINDOW *); /* generated */
-extern int winsnstr (WINDOW *, const char *,int); /* implemented */
-extern int winsstr (WINDOW *, const char *); /* generated */
-extern int winstr (WINDOW *, char *); /* generated */
-extern int wmove (WINDOW *,int,int); /* implemented */
-extern int wnoutrefresh (WINDOW *); /* implemented */
-extern int wprintw (WINDOW *, const char *,...) /* implemented */
-  __attribute__((format(printf,2,3)));
-extern int wredrawln (WINDOW *,int,int); /* implemented */
-extern int wrefresh (WINDOW *); /* implemented */
-extern int wscanw (WINDOW *, const char *,...) /* implemented */
-  __attribute__((format(scanf,2,3)));
-extern int wscrl (WINDOW *,int); /* implemented */
-extern int wsetscrreg (WINDOW *,int,int); /* implemented */
-extern int wstandout (WINDOW *); /* generated */
-extern int wstandend (WINDOW *); /* generated */
-extern void wsyncdown (WINDOW *); /* implemented */
-extern void wsyncup (WINDOW *); /* implemented */
-extern void wtimeout (WINDOW *,int); /* implemented */
-extern int wtouchln (WINDOW *,int,int,int); /* implemented */
-extern int wvline (WINDOW *,chtype,int); /* implemented */
-
-/*
- * These are also declared in <term.h>:
- */
-extern int tigetflag (const char *); /* implemented */
-extern int tigetnum (const char *); /* implemented */
-extern char * tigetstr (const char *); /* implemented */
-extern int putp (const char *); /* implemented */
-
-
-extern char * tparm (const char *, ...); /* special */
-
-
-
-
-extern char * tiparm (const char *, ...); /* special */
-
-/*
- * These functions are not in X/Open, but we use them in macro definitions:
- */
-extern int getattrs (const WINDOW *); /* generated */
-extern int getcurx (const WINDOW *); /* generated */
-extern int getcury (const WINDOW *); /* generated */
-extern int getbegx (const WINDOW *); /* generated */
-extern int getbegy (const WINDOW *); /* generated */
-extern int getmaxx (const WINDOW *); /* generated */
-extern int getmaxy (const WINDOW *); /* generated */
-extern int getparx (const WINDOW *); /* generated */
-extern int getpary (const WINDOW *); /* generated */
-
-/*
- * vid_attr() was implemented originally based on a draft of X/Open curses.
- */
-
-
-
-
-/*
- * These functions are extensions - not in X/Open Curses.
- */
-
-
-
-typedef int (*NCURSES_WINDOW_CB)(WINDOW *, void *);
-typedef int (*NCURSES_SCREEN_CB)(SCREEN *, void *);
-extern _Bool is_term_resized (int, int);
-extern char * keybound (int, int);
-extern const char * curses_version (void);
-extern int alloc_pair (int, int);
-extern int assume_default_colors (int, int);
-extern int define_key (const char *, int);
-extern int extended_color_content(int, int *, int *, int *);
-extern int extended_pair_content(int, int *, int *);
-extern int extended_slk_color(int);
-extern int find_pair (int, int);
-extern int free_pair (int);
-extern int get_escdelay (void);
-extern int init_extended_color(int, int, int, int);
-extern int init_extended_pair(int, int, int);
-extern int key_defined (const char *);
-extern int keyok (int, _Bool);
-extern void reset_color_pairs (void);
-extern int resize_term (int, int);
-extern int resizeterm (int, int);
-extern int set_escdelay (int);
-extern int set_tabsize (int);
-extern int use_default_colors (void);
-extern int use_extended_names (_Bool);
-extern int use_legacy_coding (int);
-extern int use_screen (SCREEN *, NCURSES_SCREEN_CB, void *);
-extern int use_window (WINDOW *, NCURSES_WINDOW_CB, void *);
-extern int wresize (WINDOW *, int, int);
-extern void nofilter(void);
-
-/*
- * These extensions provide access to information stored in the WINDOW even
- * when NCURSES_OPAQUE is set:
- */
-extern WINDOW * wgetparent (const WINDOW *); /* generated */
-extern _Bool is_cleared (const WINDOW *); /* generated */
-extern _Bool is_idcok (const WINDOW *); /* generated */
-extern _Bool is_idlok (const WINDOW *); /* generated */
-extern _Bool is_immedok (const WINDOW *); /* generated */
-extern _Bool is_keypad (const WINDOW *); /* generated */
-extern _Bool is_leaveok (const WINDOW *); /* generated */
-extern _Bool is_nodelay (const WINDOW *); /* generated */
-extern _Bool is_notimeout (const WINDOW *); /* generated */
-extern _Bool is_pad (const WINDOW *); /* generated */
-extern _Bool is_scrollok (const WINDOW *); /* generated */
-extern _Bool is_subwin (const WINDOW *); /* generated */
-extern _Bool is_syncok (const WINDOW *); /* generated */
-extern int wgetdelay (const WINDOW *); /* generated */
-extern int wgetscrreg (const WINDOW *, int *, int *); /* generated */
-
-
-
-
-
-/*
- * Extra extension-functions, which pass a SCREEN pointer rather than using
- * a global variable SP.
- */
-
-
-
-
-
-/* Define the sp-funcs helper function */
-
-typedef int (*NCURSES_OUTC_sp)(SCREEN*, int);
-
-extern SCREEN * new_prescr (void); /* implemented:SP_FUNC */
-
-extern int baudrate_sp (SCREEN*); /* implemented:SP_FUNC */
-extern int beep_sp (SCREEN*); /* implemented:SP_FUNC */
-extern _Bool can_change_color_sp (SCREEN*); /* implemented:SP_FUNC */
-extern int cbreak_sp (SCREEN*); /* implemented:SP_FUNC */
-extern int curs_set_sp (SCREEN*, int); /* implemented:SP_FUNC */
-extern int color_content_sp (SCREEN*, short, short*, short*, short*); /* implemented:SP_FUNC */
-extern int def_prog_mode_sp (SCREEN*); /* implemented:SP_FUNC */
-extern int def_shell_mode_sp (SCREEN*); /* implemented:SP_FUNC */
-extern int delay_output_sp (SCREEN*, int); /* implemented:SP_FUNC */
-extern int doupdate_sp (SCREEN*); /* implemented:SP_FUNC */
-extern int echo_sp (SCREEN*); /* implemented:SP_FUNC */
-extern int endwin_sp (SCREEN*); /* implemented:SP_FUNC */
-extern char erasechar_sp (SCREEN*);/* implemented:SP_FUNC */
-extern void filter_sp (SCREEN*); /* implemented:SP_FUNC */
-extern int flash_sp (SCREEN*); /* implemented:SP_FUNC */
-extern int flushinp_sp (SCREEN*); /* implemented:SP_FUNC */
-extern WINDOW * getwin_sp (SCREEN*, FILE *); /* implemented:SP_FUNC */
-extern int halfdelay_sp (SCREEN*, int); /* implemented:SP_FUNC */
-extern _Bool has_colors_sp (SCREEN*); /* implemented:SP_FUNC */
-extern _Bool has_ic_sp (SCREEN*); /* implemented:SP_FUNC */
-extern _Bool has_il_sp (SCREEN*); /* implemented:SP_FUNC */
-extern int init_color_sp (SCREEN*, short, short, short, short); /* implemented:SP_FUNC */
-extern int init_pair_sp (SCREEN*, short, short, short); /* implemented:SP_FUNC */
-extern int intrflush_sp (SCREEN*, WINDOW*, _Bool); /* implemented:SP_FUNC */
-extern _Bool isendwin_sp (SCREEN*); /* implemented:SP_FUNC */
-extern const char * keyname_sp (SCREEN*, int); /* implemented:SP_FUNC */
-extern char killchar_sp (SCREEN*); /* implemented:SP_FUNC */
-extern char * longname_sp (SCREEN*); /* implemented:SP_FUNC */
-extern int mvcur_sp (SCREEN*, int, int, int, int); /* implemented:SP_FUNC */
-extern int napms_sp (SCREEN*, int); /* implemented:SP_FUNC */
-extern WINDOW * newpad_sp (SCREEN*, int, int); /* implemented:SP_FUNC */
-extern SCREEN * newterm_sp (SCREEN*, const char *, FILE *, FILE *); /* implemented:SP_FUNC */
-extern WINDOW * newwin_sp (SCREEN*, int, int, int, int); /* implemented:SP_FUNC */
-extern int nl_sp (SCREEN*); /* implemented:SP_FUNC */
-extern int nocbreak_sp (SCREEN*); /* implemented:SP_FUNC */
-extern int noecho_sp (SCREEN*); /* implemented:SP_FUNC */
-extern int nonl_sp (SCREEN*); /* implemented:SP_FUNC */
-extern void noqiflush_sp (SCREEN*); /* implemented:SP_FUNC */
-extern int noraw_sp (SCREEN*); /* implemented:SP_FUNC */
-extern int pair_content_sp (SCREEN*, short, short*, short*); /* implemented:SP_FUNC */
-extern void qiflush_sp (SCREEN*); /* implemented:SP_FUNC */
-extern int raw_sp (SCREEN*); /* implemented:SP_FUNC */
-extern int reset_prog_mode_sp (SCREEN*); /* implemented:SP_FUNC */
-extern int reset_shell_mode_sp (SCREEN*); /* implemented:SP_FUNC */
-extern int resetty_sp (SCREEN*); /* implemented:SP_FUNC */
-extern int ripoffline_sp (SCREEN*, int, int (*)(WINDOW *, int)); /* implemented:SP_FUNC */
-extern int savetty_sp (SCREEN*); /* implemented:SP_FUNC */
-extern int scr_init_sp (SCREEN*, const char *); /* implemented:SP_FUNC */
-extern int scr_restore_sp (SCREEN*, const char *); /* implemented:SP_FUNC */
-extern int scr_set_sp (SCREEN*, const char *); /* implemented:SP_FUNC */
-extern int slk_attroff_sp (SCREEN*, const chtype); /* implemented:SP_FUNC */
-extern int slk_attron_sp (SCREEN*, const chtype); /* implemented:SP_FUNC */
-extern int slk_attrset_sp (SCREEN*, const chtype); /* implemented:SP_FUNC */
-extern attr_t slk_attr_sp (SCREEN*); /* implemented:SP_FUNC */
-extern int slk_attr_set_sp (SCREEN*, const attr_t, short, void*); /* implemented:SP_FUNC */
-extern int slk_clear_sp (SCREEN*); /* implemented:SP_FUNC */
-extern int slk_color_sp (SCREEN*, short); /* implemented:SP_FUNC */
-extern int slk_init_sp (SCREEN*, int); /* implemented:SP_FUNC */
-extern char * slk_label_sp (SCREEN*, int); /* implemented:SP_FUNC */
-extern int slk_noutrefresh_sp (SCREEN*); /* implemented:SP_FUNC */
-extern int slk_refresh_sp (SCREEN*); /* implemented:SP_FUNC */
-extern int slk_restore_sp (SCREEN*); /* implemented:SP_FUNC */
-extern int slk_set_sp (SCREEN*, int, const char *, int); /* implemented:SP_FUNC */
-extern int slk_touch_sp (SCREEN*); /* implemented:SP_FUNC */
-extern int start_color_sp (SCREEN*); /* implemented:SP_FUNC */
-extern chtype termattrs_sp (SCREEN*); /* implemented:SP_FUNC */
-extern char * termname_sp (SCREEN*); /* implemented:SP_FUNC */
-extern int typeahead_sp (SCREEN*, int); /* implemented:SP_FUNC */
-extern int ungetch_sp (SCREEN*, int); /* implemented:SP_FUNC */
-extern void use_env_sp (SCREEN*, _Bool); /* implemented:SP_FUNC */
-extern void use_tioctl_sp (SCREEN*, _Bool); /* implemented:SP_FUNC */
-extern int vidattr_sp (SCREEN*, chtype); /* implemented:SP_FUNC */
-extern int vidputs_sp (SCREEN*, chtype, NCURSES_OUTC_sp); /* implemented:SP_FUNC */
-
-extern char * keybound_sp (SCREEN*, int, int); /* implemented:EXT_SP_FUNC */
-extern int alloc_pair_sp (SCREEN*, int, int); /* implemented:EXT_SP_FUNC */
-extern int assume_default_colors_sp (SCREEN*, int, int); /* implemented:EXT_SP_FUNC */
-extern int define_key_sp (SCREEN*, const char *, int); /* implemented:EXT_SP_FUNC */
-extern int extended_color_content_sp (SCREEN*, int, int *, int *, int *); /* implemented:EXT_SP_FUNC */
-extern int extended_pair_content_sp (SCREEN*, int, int *, int *); /* implemented:EXT_SP_FUNC */
-extern int extended_slk_color_sp (SCREEN*, int); /* implemented:EXT_SP_FUNC */
-extern int get_escdelay_sp (SCREEN*); /* implemented:EXT_SP_FUNC */
-extern int find_pair_sp (SCREEN*, int, int); /* implemented:EXT_SP_FUNC */
-extern int free_pair_sp (SCREEN*, int); /* implemented:EXT_SP_FUNC */
-extern int init_extended_color_sp (SCREEN*, int, int, int, int); /* implemented:EXT_SP_FUNC */
-extern int init_extended_pair_sp (SCREEN*, int, int, int); /* implemented:EXT_SP_FUNC */
-extern _Bool is_term_resized_sp (SCREEN*, int, int); /* implemented:EXT_SP_FUNC */
-extern int key_defined_sp (SCREEN*, const char *); /* implemented:EXT_SP_FUNC */
-extern int keyok_sp (SCREEN*, int, _Bool); /* implemented:EXT_SP_FUNC */
-extern void nofilter_sp (SCREEN*); /* implemented */ /* implemented:EXT_SP_FUNC */
-extern void reset_color_pairs_sp (SCREEN*); /* implemented:EXT_SP_FUNC */
-extern int resize_term_sp (SCREEN*, int, int); /* implemented:EXT_SP_FUNC */
-extern int resizeterm_sp (SCREEN*, int, int); /* implemented:EXT_SP_FUNC */
-extern int set_escdelay_sp (SCREEN*, int); /* implemented:EXT_SP_FUNC */
-extern int set_tabsize_sp (SCREEN*, int); /* implemented:EXT_SP_FUNC */
-extern int use_default_colors_sp (SCREEN*); /* implemented:EXT_SP_FUNC */
-extern int use_legacy_coding_sp (SCREEN*, int); /* implemented:EXT_SP_FUNC */
-# 1101 "/usr/include/curses.h" 3 4
-/* attributes */
-# 1130 "/usr/include/curses.h" 3 4
-/*
- * Most of the pseudo functions are macros that either provide compatibility
- * with older versions of curses, or provide inline functionality to improve
- * performance.
- */
-
-/*
- * These pseudo functions are always implemented as macros:
- */
-# 1165 "/usr/include/curses.h" 3 4
-/*
- * These miscellaneous pseudo functions are provided for compatibility:
- */
-# 1181 "/usr/include/curses.h" 3 4
-/* It seems older SYSV curses versions define these */
-# 1241 "/usr/include/curses.h" 3 4
-/*
- * These apply to the first 256 color pairs.
- */
-
-
-
-/*
- * pseudo functions for standard screen
- */
-# 1296 "/usr/include/curses.h" 3 4
-/*
- * mv functions
- */
-# 1342 "/usr/include/curses.h" 3 4
-/*
- * Some wide-character functions can be implemented without the extensions.
- */
-# 1395 "/usr/include/curses.h" 3 4
-/*
- * X/Open curses deprecates SVr4 vwprintw/vwscanw, which are supposed to use
- * varargs.h.  It adds new calls vw_printw/vw_scanw, which are supposed to
- * use POSIX stdarg.h.  The ncurses versions of vwprintw/vwscanw already
- * use stdarg.h, so...
- */
-/* define vw_printw		vwprintw */
-/* define vw_scanw		vwscanw */
-
-/*
- * Export fallback function for use in C++ binding.
- */
-
-
-
-
-
-/*
- * These macros are extensions - not in X/Open Curses.
- */
-# 1435 "/usr/include/curses.h" 3 4
-/*
- * X/Open says this returns a bool; SVr4 also checked for out-of-range line.
- * The macro provides compatibility:
- */
-
-
-
-
-/*
- * Public variables.
- *
- * Notes:
- *	a. ESCDELAY was an undocumented feature under AIX curses.
- *	   It gives the ESC expire time in milliseconds.
- *	b. ttytype is needed for backward compatibility
- */
-# 1477 "/usr/include/curses.h" 3 4
-extern WINDOW * curscr;
-extern WINDOW * newscr;
-extern WINDOW * stdscr;
-extern char ttytype[];
-extern int COLORS;
-extern int COLOR_PAIRS;
-extern int COLS;
-extern int ESCDELAY;
-extern int LINES;
-extern int TABSIZE;
-
-
-
-/*
- * Pseudo-character tokens outside ASCII range.  The curses wgetch() function
- * will return any given one of these only if the corresponding k- capability
- * is defined in your terminal's terminfo entry.
- *
- * Some keys (KEY_A1, etc) are arranged like this:
- *	a1     up    a3
- *	left   b2    right
- *	c1     down  c3
- *
- * A few key codes do not depend upon the terminfo entry.
- */
-
-
-
-
-
-/*
- * These definitions were generated by ./MKkey_defs.sh ../../include/Caps ../../include/Caps-ncurses
- */
-# 1604 "/usr/include/curses.h" 3 4
-/* $Id: curses.wide,v 1.51 2021/05/22 20:28:29 tom Exp $ */
-/*
- * vile:cmode:
- * This file is part of ncurses, designed to be appended after curses.h.in
- * (see that file for the relevant copyright).
- */
-# 1918 "/usr/include/curses.h" 3 4
-/* $Id: curses.tail,v 1.26 2021/03/20 15:49:25 tom Exp $ */
-/*
- * vile:cmode:
- * This file is part of ncurses, designed to be appended after curses.h.in
- * (see that file for the relevant copyright).
- */
-
-/* mouse interface */
-# 1940 "/usr/include/curses.h" 3 4
-/* event masks */
-# 1965 "/usr/include/curses.h" 3 4
-/*
- * In 32 bits the version-1 scheme does not provide enough space for a 5th
- * button, unless we choose to change the ABI by omitting the reserved-events.
- */
-# 1998 "/usr/include/curses.h" 3 4
-/* macros to extract single event-bits from masks */
-
-
-
-
-
-
-
-typedef struct
-{
-    short id; /* ID to distinguish multiple devices */
-    int x, y, z; /* event coordinates (character-cell) */
-    mmask_t bstate; /* button state bits */
-}
-MEVENT;
-
-extern _Bool has_mouse(void);
-extern int getmouse (MEVENT *);
-extern int ungetmouse (MEVENT *);
-extern mmask_t mousemask (mmask_t, mmask_t *);
-extern _Bool wenclose (const WINDOW *, int, int);
-extern int mouseinterval (int);
-extern _Bool wmouse_trafo (const WINDOW*, int*, int*, _Bool);
-extern _Bool mouse_trafo (int*, int*, _Bool); /* generated */
-
-
-extern _Bool has_mouse_sp (SCREEN*);
-extern int getmouse_sp (SCREEN*, MEVENT *);
-extern int ungetmouse_sp (SCREEN*,MEVENT *);
-extern mmask_t mousemask_sp (SCREEN*, mmask_t, mmask_t *);
-extern int mouseinterval_sp (SCREEN*, int);
-
-
-
-
-
-
-/* other non-XSI functions */
-
-extern int mcprint (char *, int); /* direct data to printer */
-extern int has_key (int); /* do we have given key? */
-
-
-extern int has_key_sp (SCREEN*, int); /* do we have given key? */
-extern int mcprint_sp (SCREEN*, char *, int); /* direct data to printer */
-
-
-/* Debugging : use with libncurses_g.a */
-
-extern void _tracef (const char *, ...) __attribute__((format(printf,1,2)));
-extern char * _traceattr (attr_t);
-extern char * _traceattr2 (int, chtype);
-extern char * _tracechar (int);
-extern char * _tracechtype (chtype);
-extern char * _tracechtype2 (int, chtype);
-# 2062 "/usr/include/curses.h" 3 4
-extern void trace (const unsigned) __attribute__((deprecated));
-extern unsigned curses_trace (const unsigned);
-
-/* trace masks */
-# 2094 "/usr/include/curses.h" 3 4
-extern void exit_curses (int);
-
-# 1 "/usr/include/unctrl.h" 1 3 4
-/****************************************************************************
- * Copyright 2020 Thomas E. Dickey                                          *
- * Copyright 1998-2001,2009 Free Software Foundation, Inc.                  *
- *                                                                          *
- * Permission is hereby granted, free of charge, to any person obtaining a  *
- * copy of this software and associated documentation files (the            *
- * "Software"), to deal in the Software without restriction, including      *
- * without limitation the rights to use, copy, modify, merge, publish,      *
- * distribute, distribute with modifications, sublicense, and/or sell       *
- * copies of the Software, and to permit persons to whom the Software is    *
- * furnished to do so, subject to the following conditions:                 *
- *                                                                          *
- * The above copyright notice and this permission notice shall be included  *
- * in all copies or substantial portions of the Software.                   *
- *                                                                          *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS  *
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF               *
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.   *
- * IN NO EVENT SHALL THE ABOVE COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,   *
- * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR    *
- * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR    *
- * THE USE OR OTHER DEALINGS IN THE SOFTWARE.                               *
- *                                                                          *
- * Except as contained in this notice, the name(s) of the above copyright   *
- * holders shall not be used in advertising or otherwise to promote the     *
- * sale, use or other dealings in this Software without prior written       *
- * authorization.                                                           *
- ****************************************************************************/
-
-/****************************************************************************
- *  Author: Zeyd M. Ben-Halim <zmbenhal@netcom.com> 1992,1995               *
- *     and: Eric S. Raymond <esr@snark.thyrsus.com>                         *
- ****************************************************************************/
-
-/*
- * unctrl.h
- *
- * Display a printable version of a control character.
- * Control characters are displayed in caret notation (^x), DELETE is displayed
- * as ^?. Printable characters are displayed as is.
- */
-
-/* $Id: unctrl.h.in,v 1.12 2020/02/02 23:34:34 tom Exp $ */
-# 55 "/usr/include/unctrl.h" 3 4
-# 1 "/usr/include/curses.h" 1 3 4
-/****************************************************************************
- * Copyright 2018-2020,2021 Thomas E. Dickey                                *
- * Copyright 1998-2016,2017 Free Software Foundation, Inc.                  *
- *                                                                          *
- * Permission is hereby granted, free of charge, to any person obtaining a  *
- * copy of this software and associated documentation files (the            *
- * "Software"), to deal in the Software without restriction, including      *
- * without limitation the rights to use, copy, modify, merge, publish,      *
- * distribute, distribute with modifications, sublicense, and/or sell       *
- * copies of the Software, and to permit persons to whom the Software is    *
- * furnished to do so, subject to the following conditions:                 *
- *                                                                          *
- * The above copyright notice and this permission notice shall be included  *
- * in all copies or substantial portions of the Software.                   *
- *                                                                          *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS  *
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF               *
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.   *
- * IN NO EVENT SHALL THE ABOVE COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,   *
- * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR    *
- * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR    *
- * THE USE OR OTHER DEALINGS IN THE SOFTWARE.                               *
- *                                                                          *
- * Except as contained in this notice, the name(s) of the above copyright   *
- * holders shall not be used in advertising or otherwise to promote the     *
- * sale, use or other dealings in this Software without prior written       *
- * authorization.                                                           *
- ****************************************************************************/
-
-/****************************************************************************
- *  Author: Zeyd M. Ben-Halim <zmbenhal@netcom.com> 1992,1995               *
- *     and: Eric S. Raymond <esr@snark.thyrsus.com>                         *
- *     and: Thomas E. Dickey                        1996-on                 *
- ****************************************************************************/
-
-/* $Id: curses.h.in,v 1.277 2021/09/24 16:07:37 tom Exp $ */
-# 56 "/usr/include/unctrl.h" 2 3 4
-
-
- const char * unctrl (chtype);
-
-
- const char * unctrl_sp (SCREEN*, chtype);
-# 2097 "/usr/include/curses.h" 2 3 4
 # 26 "/home/anton/revenant/game/headers/item.h" 2
 
 
@@ -10177,7 +10443,7 @@ typedef struct Item_Holder{ //a struct for an item and how many of that item cur
 #define I_COPY_ITEM_HOLDER(source_item,target_item,amount_copied) source_item = malloc(sizeof(Item));    source_item->id = target_item->item->id;   source_item->representation[0] = target_item->item->representation[0];   source_item->standing_on[0] = target_item->item->standing_on[0];   source_item->value = target_item->item->value;   source_item->kind = target_item->item->kind;   source_item->weight = target_item->item->weight;   source_item->quest_item = target_item->item->quest_item;   (*i_item_holder_copy_handler[source_item->kind])(source_item,target_item);
 m,target_item);
 */
-# 125 "/home/anton/revenant/game/headers/item.h"
+# 124 "/home/anton/revenant/game/headers/item.h"
 Item_Holder *i_make_item_holder(Item *item, unsigned amount);
 void i_swap_pointers(Item_Holder *i,Item_Holder *j);
 
@@ -10225,9 +10491,9 @@ void i_print_equippable_name(Item *i, WINDOW *inv_screen,int x, int y);
 /*
 #define HAS_ITEM_NAME_WEAPON(source_item_holder, target_item_holder)({int is_equal = 0; const char *source_item_holder_quality = quality_name_modifier[((struct Weapon *)source_item_holder->item->item_specific_info)->quality]; const char *source_item_holder_material = material_name_modifier[((struct Weapon *)source_item_holder->item->item_specific_info)->material]; const char *source_item_holder_handed_modifier = handed_modifier[((struct Weapon *)source_item_holder->item->item_specific_info)->variant]; const char *source_item_holder_kind_modifier = mele_weapon_name_modifier[((struct Weapon *)source_item_holder->item->item_specific_info)->kind]; const char *target_item_holder_quality = quality_name_modifier[((struct Weapon *)target_item_holder->item->item_specific_info)->quality]; const char *target_item_holder_material = material_name_modifier[((struct Weapon *)target_item_holder->item->item_specific_info)->material]; const char *target_item_holder_handed_modifier = handed_modifier[((struct Weapon *)target_item_holder->item->item_specific_info)->variant]; const char *target_item_holder_kind_modifier = mele_weapon_name_modifier[((struct Weapon *)target_item_holder->item->item_specific_info)->kind]; is_equal = (strcmp(source_item_holder_quality,target_item_holder_quality)  |  strcmp(source_item_holder_material, target_item_holder_material)  | strcmp(source_item_holder_handed_modifier,target_item_holder_handed_modifier)  | strcmp(source_item_holder_kind_modifier,target_item_holder_kind_modifier)); is_equal;})
 */
-# 180 "/home/anton/revenant/game/headers/item.h"
+# 179 "/home/anton/revenant/game/headers/item.h"
 /*if the items are of a different type, we can trivially conlclude that they are not the same*/
-# 190 "/home/anton/revenant/game/headers/item.h"
+# 189 "/home/anton/revenant/game/headers/item.h"
 extern void (*i_item_holder_copy_handler[4])(Item_Holder *source_item,Item_Holder *target_item);
 extern void (*i_free_item_handler[4])(Item_Holder *item);
 
@@ -10885,7 +11151,105 @@ char *u_readin_char(char *file_path, char *variable);
 
 
 //#define U_DECIDE_FILEPATH(item)({char *file_path; item->kind == reagent ? (file_path = malloc(sizeof(char) * strlen("/usr/lib/revenant_files/item_files/reagent_files/") +5); sprintf(file_path,"/usr/lib/revenant_files/item_files/reagent_files/%d",item->id);) :(file_path = malloc(sizeof(char) * strlen("/usr/lib/revenant_files/item_files/reagent_files/") +5); sprintf(file_path,"/usr/lib/revenant_files/item_files/reagent_files/%d",item->id);) file_path;  })
-# 16 "src/u_hash.c" 2
+# 19 "/home/anton/revenant/game/headers/gameinfo.h" 2
+# 1 "/home/anton/revenant/game/headers/linked_list.h" 1
+/*This file is part of Revenant.
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+Revenant  is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+
+
+
+
+# 1 "/usr/include/stdlib.h" 1 3 4
+
+# 1 "/usr/include/stdlib.h" 3 4
+/* Copyright (C) 1991-2022 Free Software Foundation, Inc.
+   Copyright The GNU Toolchain Authors.
+   This file is part of the GNU C Library.
+
+   The GNU C Library is free software; you can redistribute it and/or
+   modify it under the terms of the GNU Lesser General Public
+   License as published by the Free Software Foundation; either
+   version 2.1 of the License, or (at your option) any later version.
+
+   The GNU C Library is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   Lesser General Public License for more details.
+
+   You should have received a copy of the GNU Lesser General Public
+   License along with the GNU C Library; if not, see
+   <https://www.gnu.org/licenses/>.  */
+
+/*
+ *	ISO C99 Standard: 7.20 General utilities	<stdlib.h>
+ */
+# 16 "/home/anton/revenant/game/headers/linked_list.h" 2
+
+# 16 "/home/anton/revenant/game/headers/linked_list.h"
+typedef struct Node{
+  struct Node *next;
+  void *value;
+}Node;
+
+typedef struct Linked_List{
+  Node *initial_node;
+}Linked_List;
+
+
+
+Linked_List *ll_initialize_linked_list();
+# 20 "/home/anton/revenant/game/headers/gameinfo.h" 2
+
+typedef struct Position{
+  // Each creature will have two coordinate types, local and global. Global indicates where they are globally on the map, local
+  // refers to where they are on the screen
+  int global_x;
+  int global_y;
+  int local_x;
+  int local_y;
+}Position;
+
+typedef struct Tile{
+  char *content;
+  Entry *entry;
+  //Instead of specifying that the tile can contain a creature struct, we use a void pointer instead because otherwise I would have to
+  // re-structure the organization of the header files due to how certain structs are defined in certain header files 
+  void *foe;
+}Tile;
+
+
+typedef struct Game_World{
+  int width;
+  int height;
+  struct Tile **tiles;
+  // Not exactly sure how expensive getmaxyx calls are, but at they very least, storing the values in max_x,max_y helps us avoid spamming
+  //calls over and over 
+  int max_x;
+  int max_y;
+}Game_World;
+
+extern int numerical_responses[256];
+# 19 "/home/anton/revenant/game/headers/game_state_struct.h" 2
+# 1 "/home/anton/revenant/game/headers/linked_list.h" 1
+/*This file is part of Revenant.
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+Revenant  is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+# 20 "/home/anton/revenant/game/headers/game_state_struct.h" 2
 # 1 "/home/anton/revenant/game/headers/screen_constants.h" 1
 /*This file is part of Revenant.
 Revenant is free software: you can redistribute it and/or modify
@@ -10897,256 +11261,2764 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
-# 17 "src/u_hash.c" 2
-unsigned long long u_hash(int char_count,U_Hashtable *table, char *strings, ...){
-  return((table->a * s_uint_from_string(char_count,strings) + table->b) % 18446744073709551615ULL) % table->size;
-}
-
-U_Hashtable *u_initialize_hashtable(int initial_size,Mersienne_Twister *twister){
-  U_Hashtable *table = malloc(sizeof(U_Hashtable));
-  table->size = initial_size;
-  table->item_count = 0;
-  table->entries = malloc(sizeof(Entry *) * initial_size);
-  for(int i = 0; i < initial_size; i++){
-    table->entries[i] = 
-# 27 "src/u_hash.c" 3 4
-                       ((void *)0)
-# 27 "src/u_hash.c"
-                           ;
-  }
-  table->a = (rng_extract_number(twister) % (18446744073709551615ULL -1) + 1);
-  table->b = (rng_extract_number(twister) % (18446744073709551615ULL -0) + 0);
-  return table;
-}
-
-void u_add_item(Item_Holder *item, int amount,U_Hashtable *table){
-  unsigned long long index = item->item->kind != weapon && item->item->kind != armor ? ({unsigned long long hash; char *filepath = (item->item->kind == reagent ? (({char *file_path; file_path = malloc(sizeof(char) * strlen("/usr/lib/revenant_files/item_files/reagent_files/") +5); sprintf(file_path,"/usr/lib/revenant_files/item_files/reagent_files/%d",item->item->id); file_path;})) : (({char *file_path; file_path = malloc(sizeof(char) * strlen("/usr/lib/revenant_files/item_files/reagent_files/") +5); sprintf(file_path,"/usr/lib/revenant_files/item_files/consumable_files/%d",item->item->id); file_path;}))); hash = ir_hash_string(filepath, "name",table); free(filepath); hash;}) : item->item->kind == weapon ? ({unsigned long long hash; hash = u_hash(2,table, quality_name_modifier[((struct Weapon*)item->item->item_specific_info)->quality] , material_name_modifier[((struct Weapon*)item->item->item_specific_info)->material] , handed_modifier[((struct Weapon*)item->item->item_specific_info)->variant], mele_weapon_name_modifier[((struct Weapon*)item->item->item_specific_info)->kind] ); hash;}) : ({unsigned long long hash; hash = u_hash(1, table,quality_name_modifier[((struct Armor*)item->item->item_specific_info)->quality]); hash;});
-  // printf(" on add index is: %llu ",index);
-    //Item already present in inventory 
-//Maybe delete item at this point, maybe not since we might not use it after adding to inventory??
-
-  //It's very important that we put parenthesis around the two last conditions because otherwise the logical short circuiting of the first statement won't kick into effect for
-  // some reason, thus checking the second condition, potentially accessing a null pointer value, which woud cause a segmentation fault
-  //Zero, in the case of strcmp means "True"
+# 21 "/home/anton/revenant/game/headers/game_state_struct.h" 2
+# 1 "/home/anton/revenant/game/headers/rng.h" 1
+/*This file is part of Revenant.
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+Revenant  is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+# 22 "/home/anton/revenant/game/headers/game_state_struct.h" 2
 
 
-  if(table->entries[index] != 
-# 45 "src/u_hash.c" 3 4
-                             ((void *)0) 
-# 45 "src/u_hash.c"
-                                  && (table->entries[index]->item_holder->item->kind == item->item->kind && (table->entries[index]->item_holder->item->kind != item->item->kind ? 1 : item->item->kind == weapon || item->item->kind == armor ? item->item->kind == weapon ? (((struct Weapon *)table->entries[index]->item_holder->item->item_specific_info)->quality == ((struct Weapon *)item->item->item_specific_info)->quality && ((struct Weapon *)table->entries[index]->item_holder->item->item_specific_info)->material == ((struct Weapon *)item->item->item_specific_info)->material && ((struct Weapon *)table->entries[index]->item_holder->item->item_specific_info)->variant == ((struct Weapon *)item->item->item_specific_info)->variant && ((struct Weapon *)table->entries[index]->item_holder->item->item_specific_info)->kind == ((struct Weapon *)item->item->item_specific_info)->kind ? 0 : 1) : ({int is_equal; const char *source_item_holder_quality = quality_name_modifier[((struct Armor *)table->entries[index]->item_holder->item->item_specific_info)->quality]; const char *source_item_holder_material = material_name_modifier[((struct Armor *)table->entries[index]->item_holder->item->item_specific_info)->material]; const char *source_item_holder_armor_type = equipment_type_modifier[((struct Armor *)table->entries[index]->item_holder->item->item_specific_info)->armor_type]; char *target_item_holder_quality = quality_name_modifier[((struct Armor *)item->item->item_specific_info)->quality]; const char *target_item_holder_material = material_name_modifier[((struct Armor *)item->item->item_specific_info)->material]; const char *target_item_holder_armor_type = equipment_type_modifier[((struct Armor *)item->item->item_specific_info)->armor_type]; is_equal = (strcmp(source_item_holder_quality,target_item_holder_quality) | strcmp(source_item_holder_material,target_item_holder_material) | strcmp(source_item_holder_armor_type,target_item_holder_armor_type) ); is_equal;}) : table->entries[index]->item_holder->item->kind == item->item->kind && table->entries[index]->item_holder->item->id == item->item->id ? 0 : 1) == 0)){
-    { (*i_free_item_handler[item->item->kind])(item); free(item->item); free(item); item = 
-# 46 "src/u_hash.c" 3 4
-   ((void *)0)
-# 46 "src/u_hash.c"
-   ; };
-    table->entries[index]->item_holder->amount += amount;
-  }
 
-  else if(table->entries[index] == 
-# 50 "src/u_hash.c" 3 4
-                                  ((void *)0)
-# 50 "src/u_hash.c"
-                                      ){
-     table->entries[index] = malloc(sizeof(Entry));
-     table->entries[index]->item_holder = item;
-     table->entries[index]->next_entry = 
-# 53 "src/u_hash.c" 3 4
-                                        ((void *)0)
-# 53 "src/u_hash.c"
-                                            ;
-     table->item_count++;
-     //printf("%s", "Second case, \n");
-  }
-  //   else it must be that table->entries[index] != NULL && (table->entries[index]->item_holder->item->kind == item->item->kind && HAS_SAME_NAME_TRIVIAL(table->entries[index]->item_holder, item) == 0)  
-   else{
-     //      printf("%s", "Third case of u_add_item ");
-    if(table->entries[index]->next_entry == 
-# 60 "src/u_hash.c" 3 4
-                                           ((void *)0)
-# 60 "src/u_hash.c"
-                                               ){
-      //printf("%s", " and next entry is null ");
-      table->entries[index]->next_entry = malloc(sizeof(Entry));
-      table->entries[index]->next_entry->item_holder = item;
-      table->entries[index]->next_entry->next_entry = 
-# 64 "src/u_hash.c" 3 4
-                                                     ((void *)0)
-# 64 "src/u_hash.c"
-                                                         ;
-      table->item_count++;
-      return;
-
-    }
-
-    Entry *current_entry = table->entries[index]->next_entry;
-    while(current_entry->next_entry != 
-# 71 "src/u_hash.c" 3 4
-                                      ((void *)0)
-# 71 "src/u_hash.c"
-                                          ){
-      if((current_entry->item_holder->item->kind != item->item->kind ? 1 : item->item->kind == weapon || item->item->kind == armor ? item->item->kind == weapon ? (((struct Weapon *)current_entry->item_holder->item->item_specific_info)->quality == ((struct Weapon *)item->item->item_specific_info)->quality && ((struct Weapon *)current_entry->item_holder->item->item_specific_info)->material == ((struct Weapon *)item->item->item_specific_info)->material && ((struct Weapon *)current_entry->item_holder->item->item_specific_info)->variant == ((struct Weapon *)item->item->item_specific_info)->variant && ((struct Weapon *)current_entry->item_holder->item->item_specific_info)->kind == ((struct Weapon *)item->item->item_specific_info)->kind ? 0 : 1) : ({int is_equal; const char *source_item_holder_quality = quality_name_modifier[((struct Armor *)current_entry->item_holder->item->item_specific_info)->quality]; const char *source_item_holder_material = material_name_modifier[((struct Armor *)current_entry->item_holder->item->item_specific_info)->material]; const char *source_item_holder_armor_type = equipment_type_modifier[((struct Armor *)current_entry->item_holder->item->item_specific_info)->armor_type]; char *target_item_holder_quality = quality_name_modifier[((struct Armor *)item->item->item_specific_info)->quality]; const char *target_item_holder_material = material_name_modifier[((struct Armor *)item->item->item_specific_info)->material]; const char *target_item_holder_armor_type = equipment_type_modifier[((struct Armor *)item->item->item_specific_info)->armor_type]; is_equal = (strcmp(source_item_holder_quality,target_item_holder_quality) | strcmp(source_item_holder_material,target_item_holder_material) | strcmp(source_item_holder_armor_type,target_item_holder_armor_type) ); is_equal;}) : current_entry->item_holder->item->kind == item->item->kind && current_entry->item_holder->item->id == item->item->id ? 0 : 1) == 0){
- { (*i_free_item_handler[item->item->kind])(item); free(item->item); free(item); item = 
-# 73 "src/u_hash.c" 3 4
-((void *)0)
-# 73 "src/u_hash.c"
-; };
- current_entry->item_holder->amount += amount;
- return;
-      }
-      current_entry = current_entry->next_entry;
-    }
-    current_entry->next_entry = malloc(sizeof(Entry));
-    current_entry->next_entry->item_holder = item;
-    current_entry->next_entry->next_entry = 
-# 81 "src/u_hash.c" 3 4
-                                           ((void *)0)
-# 81 "src/u_hash.c"
-                                               ;
-    //printf("called a item count incr");
-    table->item_count++;
-  }
-}
+// To avoid using magic numbers, we opt to use macros that represent the indices of the of the panels, e.g index 1 is designated to be the
+//event log and so is represented by the macro EVENT_LOG. Panels are an extension of ncurses that basically simplifies the handling of multiple concurrent windows that overlap each other, which are stored in arrays
+# 49 "/home/anton/revenant/game/headers/game_state_struct.h"
+//
 
 
-Item_Weight u_remove_item(Item_Holder *item, int amount, U_Hashtable *table){
-  unsigned long long index = item->item->kind != weapon && item->item->kind != armor ? ({unsigned long long hash; char *filepath = (item->item->kind == reagent ? (({char *file_path; file_path = malloc(sizeof(char) * strlen("/usr/lib/revenant_files/item_files/reagent_files/") +5); sprintf(file_path,"/usr/lib/revenant_files/item_files/reagent_files/%d",item->item->id); file_path;})) : (({char *file_path; file_path = malloc(sizeof(char) * strlen("/usr/lib/revenant_files/item_files/reagent_files/") +5); sprintf(file_path,"/usr/lib/revenant_files/item_files/consumable_files/%d",item->item->id); file_path;}))); hash = ir_hash_string(filepath, "name",table); free(filepath); hash;}) : item->item->kind == weapon ? ({unsigned long long hash; hash = u_hash(2,table, quality_name_modifier[((struct Weapon*)item->item->item_specific_info)->quality] , material_name_modifier[((struct Weapon*)item->item->item_specific_info)->material] , handed_modifier[((struct Weapon*)item->item->item_specific_info)->variant], mele_weapon_name_modifier[((struct Weapon*)item->item->item_specific_info)->kind] ); hash;}) : ({unsigned long long hash; hash = u_hash(1, table,quality_name_modifier[((struct Armor*)item->item->item_specific_info)->quality]); hash;});
+//The main struct that will encapsulate all information about the game currently present 
+typedef struct Game_State{
+  char *current_event;
+  char **ingame_log;
+  char action_context;
+  int notification_log_offset;
+  int num_rows;
+  int num_cols;
+  int found_rows;
+  int found_cols;
+  struct Creature *player;
+  Game_World *current_zone;
+  Linked_List *active_creatures;
+  PANEL *panels[7];
+  WINDOW *logs[7];
+  Mersienne_Twister *twister;
+}Game_State;
+# 20 "/home/anton/revenant/game/headers/ingame_msg.h" 2
+# 1 "/home/anton/revenant/game/headers/strings.h" 1
+/*This file is part of Revnant.
 
-  Entry *previous_entry = table->entries[index];
-  Entry *current_entry = table->entries[index]->next_entry;
-  Item_Weight item_weight;
-  // If the item we are looking for is at the top-level, then assert if we are removing all occurences of the items and act correspondingly
-  // Unsure why but we have to wrap the HAS_SAME_NAME_TRIVIAL macro in parenthesis in this case, but not for item insert for it to actually return a value
-  printf("cmp: %d ",table->entries[index]->item_holder->item->kind != item->item->kind ? 1 : item->item->kind == weapon || item->item->kind == armor ? item->item->kind == weapon ? (((struct Weapon *)table->entries[index]->item_holder->item->item_specific_info)->quality == ((struct Weapon *)item->item->item_specific_info)->quality && ((struct Weapon *)table->entries[index]->item_holder->item->item_specific_info)->material == ((struct Weapon *)item->item->item_specific_info)->material && ((struct Weapon *)table->entries[index]->item_holder->item->item_specific_info)->variant == ((struct Weapon *)item->item->item_specific_info)->variant && ((struct Weapon *)table->entries[index]->item_holder->item->item_specific_info)->kind == ((struct Weapon *)item->item->item_specific_info)->kind ? 0 : 1) : ({int is_equal; const char *source_item_holder_quality = quality_name_modifier[((struct Armor *)table->entries[index]->item_holder->item->item_specific_info)->quality]; const char *source_item_holder_material = material_name_modifier[((struct Armor *)table->entries[index]->item_holder->item->item_specific_info)->material]; const char *source_item_holder_armor_type = equipment_type_modifier[((struct Armor *)table->entries[index]->item_holder->item->item_specific_info)->armor_type]; char *target_item_holder_quality = quality_name_modifier[((struct Armor *)item->item->item_specific_info)->quality]; const char *target_item_holder_material = material_name_modifier[((struct Armor *)item->item->item_specific_info)->material]; const char *target_item_holder_armor_type = equipment_type_modifier[((struct Armor *)item->item->item_specific_info)->armor_type]; is_equal = (strcmp(source_item_holder_quality,target_item_holder_quality) | strcmp(source_item_holder_material,target_item_holder_material) | strcmp(source_item_holder_armor_type,target_item_holder_armor_type) ); is_equal;}) : table->entries[index]->item_holder->item->kind == item->item->kind && table->entries[index]->item_holder->item->id == item->item->id ? 0 : 1);
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-  printf(" source item: %d %d %d %d , vs current_item: %d %d %d %d ", ((Weapon *)item->item->item_specific_info)->quality,((Weapon *)item->item->item_specific_info)->material, ((Weapon *)item->item->item_specific_info)->variant, ((Weapon *)item->item->item_specific_info)->kind, ((Weapon *)table->entries[index]->item_holder->item->item_specific_info)->quality,((Weapon *)table->entries[index]->item_holder->item->item_specific_info)->material, ((Weapon *)table->entries[index]->item_holder->item->item_specific_info)->variant, ((Weapon *)table->entries[index]->item_holder->item->item_specific_info)->kind );
-  if(table->entries[index] != 
-# 99 "src/u_hash.c" 3 4
-                             ((void *)0) 
-# 99 "src/u_hash.c"
-                                  && (table->entries[index]->item_holder->item->kind == item->item->kind && (table->entries[index]->item_holder->item->kind != item->item->kind ? 1 : item->item->kind == weapon || item->item->kind == armor ? item->item->kind == weapon ? (((struct Weapon *)table->entries[index]->item_holder->item->item_specific_info)->quality == ((struct Weapon *)item->item->item_specific_info)->quality && ((struct Weapon *)table->entries[index]->item_holder->item->item_specific_info)->material == ((struct Weapon *)item->item->item_specific_info)->material && ((struct Weapon *)table->entries[index]->item_holder->item->item_specific_info)->variant == ((struct Weapon *)item->item->item_specific_info)->variant && ((struct Weapon *)table->entries[index]->item_holder->item->item_specific_info)->kind == ((struct Weapon *)item->item->item_specific_info)->kind ? 0 : 1) : ({int is_equal; const char *source_item_holder_quality = quality_name_modifier[((struct Armor *)table->entries[index]->item_holder->item->item_specific_info)->quality]; const char *source_item_holder_material = material_name_modifier[((struct Armor *)table->entries[index]->item_holder->item->item_specific_info)->material]; const char *source_item_holder_armor_type = equipment_type_modifier[((struct Armor *)table->entries[index]->item_holder->item->item_specific_info)->armor_type]; char *target_item_holder_quality = quality_name_modifier[((struct Armor *)item->item->item_specific_info)->quality]; const char *target_item_holder_material = material_name_modifier[((struct Armor *)item->item->item_specific_info)->material]; const char *target_item_holder_armor_type = equipment_type_modifier[((struct Armor *)item->item->item_specific_info)->armor_type]; is_equal = (strcmp(source_item_holder_quality,target_item_holder_quality) | strcmp(source_item_holder_material,target_item_holder_material) | strcmp(source_item_holder_armor_type,target_item_holder_armor_type) ); is_equal;}) : table->entries[index]->item_holder->item->kind == item->item->kind && table->entries[index]->item_holder->item->id == item->item->id ? 0 : 1) == 0)){
-    item_weight.item_h = malloc(sizeof(Item_Holder)); item_weight.item_h->item = malloc(sizeof(Item)); item_weight.item_h->item->id = table->entries[index]->item_holder->item->id; item_weight.item_h->amount = 1; item_weight.item_h->item->representation[0] = table->entries[index]->item_holder->item->representation[0]; item_weight.item_h->item->standing_on[0] = table->entries[index]->item_holder->item->standing_on[0]; item_weight.item_h->item->value = table->entries[index]->item_holder->item->value; item_weight.item_h->item->kind = table->entries[index]->item_holder->item->kind; item_weight.item_h->item->weight = table->entries[index]->item_holder->item->weight; item_weight.item_h->item->quest_item = table->entries[index]->item_holder->item->quest_item; (*i_item_holder_copy_handler[item_weight.item_h->item->kind])(item_weight.item_h,table->entries[index]->item_holder);;
-    item_weight.weight_loss = (table->entries[index]->item_holder->amount * table->entries[index]->item_holder->item->weight);
-  if(amount >= table->entries[index]->item_holder->amount){
-    //error lies somewhere here - it's the free item holder for some reason (it's not properly setting the item holder to null
-    item_weight.deleted = 1;
-    Entry *replacement = table->entries[index]->next_entry;
-    { (*i_free_item_handler[table->entries[index]->item_holder->item->kind])(table->entries[index]->item_holder); free(table->entries[index]->item_holder->item); free(table->entries[index]->item_holder); table->entries[index]->item_holder = 
-# 106 "src/u_hash.c" 3 4
-   ((void *)0)
-# 106 "src/u_hash.c"
-   ; };
-    free(table->entries[index]);
-    table->entries[index] = replacement;
-    table->item_count--;
-  }
-    else{
-      table->entries[index]->item_holder->amount -= amount;
-      item_weight.weight_loss = (amount * table->entries[index]->item_holder->item->weight);
-      item_weight.deleted = 0;
-    }
-     return item_weight;
-  }
+Revenant is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+# 21 "/home/anton/revenant/game/headers/ingame_msg.h" 2
+# 1 "/home/anton/revenant/game/headers/generic_macros.h" 1
+/*This file is part of Revenant.
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+Revenant  is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+
+
+# 1 "/usr/include/stdlib.h" 1 3 4
+
+# 1 "/usr/include/stdlib.h" 3 4
+/* Copyright (C) 1991-2022 Free Software Foundation, Inc.
+   Copyright The GNU Toolchain Authors.
+   This file is part of the GNU C Library.
+
+   The GNU C Library is free software; you can redistribute it and/or
+   modify it under the terms of the GNU Lesser General Public
+   License as published by the Free Software Foundation; either
+   version 2.1 of the License, or (at your option) any later version.
+
+   The GNU C Library is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   Lesser General Public License for more details.
+
+   You should have received a copy of the GNU Lesser General Public
+   License along with the GNU C Library; if not, see
+   <https://www.gnu.org/licenses/>.  */
+
+/*
+ *	ISO C99 Standard: 7.20 General utilities	<stdlib.h>
+ */
+# 14 "/home/anton/revenant/game/headers/generic_macros.h" 2
+# 22 "/home/anton/revenant/game/headers/ingame_msg.h" 2
+# 1 "/home/anton/revenant/game/headers/u_hash.h" 1
+
+# 1 "/home/anton/revenant/game/headers/u_hash.h"
+/*This file is part of Revenant.
+
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Revenant is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+# 23 "/home/anton/revenant/game/headers/ingame_msg.h" 2
+# 1 "/home/anton/revenant/game/headers/game_state.h" 1
+/*This file is part of Revenant.
+
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Revenant is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+
+
+
+# 1 "/home/anton/revenant/game/headers/move_handler.h" 1
+/*This file is part of Revenant.
+
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Revenant is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 
 
 
+# 1 "/usr/include/curses.h" 1 3 4
 
-  // If the item was not found at the top-level, start the search in the chained sequence of items and act accordingly, depending on whether we remove all occurences of said item
-  //strcmp returns 0 iff the strings are equal, otherwise it returns a nonzero value, so we have to check if the return value is nonzero to see if we have to go through the Entry
-  //chain
+# 1 "/usr/include/curses.h" 3 4
+/****************************************************************************
+ * Copyright 2018-2020,2021 Thomas E. Dickey                                *
+ * Copyright 1998-2016,2017 Free Software Foundation, Inc.                  *
+ *                                                                          *
+ * Permission is hereby granted, free of charge, to any person obtaining a  *
+ * copy of this software and associated documentation files (the            *
+ * "Software"), to deal in the Software without restriction, including      *
+ * without limitation the rights to use, copy, modify, merge, publish,      *
+ * distribute, distribute with modifications, sublicense, and/or sell       *
+ * copies of the Software, and to permit persons to whom the Software is    *
+ * furnished to do so, subject to the following conditions:                 *
+ *                                                                          *
+ * The above copyright notice and this permission notice shall be included  *
+ * in all copies or substantial portions of the Software.                   *
+ *                                                                          *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS  *
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF               *
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.   *
+ * IN NO EVENT SHALL THE ABOVE COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,   *
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR    *
+ * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR    *
+ * THE USE OR OTHER DEALINGS IN THE SOFTWARE.                               *
+ *                                                                          *
+ * Except as contained in this notice, the name(s) of the above copyright   *
+ * holders shall not be used in advertising or otherwise to promote the     *
+ * sale, use or other dealings in this Software without prior written       *
+ * authorization.                                                           *
+ ****************************************************************************/
 
-    //    int i = HAS_SAME_NAME_TRIVIAL(table->entries[index]->item_holder, item);
-    //    printf("%s%d", " second case of removal", i);
-    //    printf("%s",material_name_modifier[((struct Weapon *)table->entries[index]->item_holder->item->item_specific_info)->material]);
+/****************************************************************************
+ *  Author: Zeyd M. Ben-Halim <zmbenhal@netcom.com> 1992,1995               *
+ *     and: Eric S. Raymond <esr@snark.thyrsus.com>                         *
+ *     and: Thomas E. Dickey                        1996-on                 *
+ ****************************************************************************/
 
-    //Edge case of when the immedediately next entry was the item we were looking for
-      else if(current_entry->item_holder->item->kind == item->item->kind && (current_entry->item_holder->item->kind != item->item->kind ? 1 : item->item->kind == weapon || item->item->kind == armor ? item->item->kind == weapon ? (((struct Weapon *)current_entry->item_holder->item->item_specific_info)->quality == ((struct Weapon *)item->item->item_specific_info)->quality && ((struct Weapon *)current_entry->item_holder->item->item_specific_info)->material == ((struct Weapon *)item->item->item_specific_info)->material && ((struct Weapon *)current_entry->item_holder->item->item_specific_info)->variant == ((struct Weapon *)item->item->item_specific_info)->variant && ((struct Weapon *)current_entry->item_holder->item->item_specific_info)->kind == ((struct Weapon *)item->item->item_specific_info)->kind ? 0 : 1) : ({int is_equal; const char *source_item_holder_quality = quality_name_modifier[((struct Armor *)current_entry->item_holder->item->item_specific_info)->quality]; const char *source_item_holder_material = material_name_modifier[((struct Armor *)current_entry->item_holder->item->item_specific_info)->material]; const char *source_item_holder_armor_type = equipment_type_modifier[((struct Armor *)current_entry->item_holder->item->item_specific_info)->armor_type]; char *target_item_holder_quality = quality_name_modifier[((struct Armor *)item->item->item_specific_info)->quality]; const char *target_item_holder_material = material_name_modifier[((struct Armor *)item->item->item_specific_info)->material]; const char *target_item_holder_armor_type = equipment_type_modifier[((struct Armor *)item->item->item_specific_info)->armor_type]; is_equal = (strcmp(source_item_holder_quality,target_item_holder_quality) | strcmp(source_item_holder_material,target_item_holder_material) | strcmp(source_item_holder_armor_type,target_item_holder_armor_type) ); is_equal;}) : current_entry->item_holder->item->kind == item->item->kind && current_entry->item_holder->item->id == item->item->id ? 0 : 1) == 0){
-      item_weight.item_h = malloc(sizeof(Item_Holder)); item_weight.item_h->item = malloc(sizeof(Item)); item_weight.item_h->item->id = current_entry->item_holder->item->id; item_weight.item_h->amount = 1; item_weight.item_h->item->representation[0] = current_entry->item_holder->item->representation[0]; item_weight.item_h->item->standing_on[0] = current_entry->item_holder->item->standing_on[0]; item_weight.item_h->item->value = current_entry->item_holder->item->value; item_weight.item_h->item->kind = current_entry->item_holder->item->kind; item_weight.item_h->item->weight = current_entry->item_holder->item->weight; item_weight.item_h->item->quest_item = current_entry->item_holder->item->quest_item; (*i_item_holder_copy_handler[item_weight.item_h->item->kind])(item_weight.item_h,current_entry->item_holder);;
-      item_weight.weight_loss = (table->entries[index]->item_holder->amount * table->entries[index]->item_holder->item->weight);
-       if(amount >= current_entry->item_holder->amount){
-  previous_entry->next_entry = current_entry->next_entry;
-  item_weight.deleted = 1;
-  { (*i_free_item_handler[current_entry->item_holder->item->kind])(current_entry->item_holder); free(current_entry->item_holder->item); free(current_entry->item_holder); current_entry->item_holder = 
-# 138 "src/u_hash.c" 3 4
- ((void *)0)
-# 138 "src/u_hash.c"
- ; };
-  free(current_entry);
-  table->item_count--;
+/* $Id: curses.h.in,v 1.277 2021/09/24 16:07:37 tom Exp $ */
+# 19 "/home/anton/revenant/game/headers/move_handler.h" 2
+# 1 "/home/anton/revenant/game/headers/gameinfo.h" 1
 
-      }
-      else{
-      item_weight.weight_loss = (current_entry->item_holder->amount * current_entry->item_holder->item->weight);
-      item_weight.deleted = 0;
-      current_entry->item_holder->amount -= amount;
-      }
-       return item_weight;
-    }
+# 1 "/home/anton/revenant/game/headers/gameinfo.h"
+/*This file is part of Revenant.
 
-    else{
-    while(current_entry != 
-# 152 "src/u_hash.c" 3 4
-                          ((void *)0)
-# 152 "src/u_hash.c"
-                              ){
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-      printf("cmp %d ",current_entry->item_holder->item->kind != item->item->kind ? 1 : item->item->kind == weapon || item->item->kind == armor ? item->item->kind == weapon ? (((struct Weapon *)current_entry->item_holder->item->item_specific_info)->quality == ((struct Weapon *)item->item->item_specific_info)->quality && ((struct Weapon *)current_entry->item_holder->item->item_specific_info)->material == ((struct Weapon *)item->item->item_specific_info)->material && ((struct Weapon *)current_entry->item_holder->item->item_specific_info)->variant == ((struct Weapon *)item->item->item_specific_info)->variant && ((struct Weapon *)current_entry->item_holder->item->item_specific_info)->kind == ((struct Weapon *)item->item->item_specific_info)->kind ? 0 : 1) : ({int is_equal; const char *source_item_holder_quality = quality_name_modifier[((struct Armor *)current_entry->item_holder->item->item_specific_info)->quality]; const char *source_item_holder_material = material_name_modifier[((struct Armor *)current_entry->item_holder->item->item_specific_info)->material]; const char *source_item_holder_armor_type = equipment_type_modifier[((struct Armor *)current_entry->item_holder->item->item_specific_info)->armor_type]; char *target_item_holder_quality = quality_name_modifier[((struct Armor *)item->item->item_specific_info)->quality]; const char *target_item_holder_material = material_name_modifier[((struct Armor *)item->item->item_specific_info)->material]; const char *target_item_holder_armor_type = equipment_type_modifier[((struct Armor *)item->item->item_specific_info)->armor_type]; is_equal = (strcmp(source_item_holder_quality,target_item_holder_quality) | strcmp(source_item_holder_material,target_item_holder_material) | strcmp(source_item_holder_armor_type,target_item_holder_armor_type) ); is_equal;}) : current_entry->item_holder->item->kind == item->item->kind && current_entry->item_holder->item->id == item->item->id ? 0 : 1);
-      printf(" source item: %d %d %d %d , vs current_item: %d %d %d %d ", ((Weapon *)item->item->item_specific_info)->quality,((Weapon *)item->item->item_specific_info)->material, ((Weapon *)item->item->item_specific_info)->variant, ((Weapon *)item->item->item_specific_info)->kind, ((Weapon *)current_entry->item_holder->item->item_specific_info)->quality,((Weapon *)current_entry->item_holder->item->item_specific_info)->material, ((Weapon *)current_entry->item_holder->item->item_specific_info)->variant, ((Weapon *)current_entry->item_holder->item->item_specific_info)->kind );
-      //printf("material of weapon: %d,",((Weapon *)current_entry->item_holder->item->item_specific_info)->material);
-      //  printf("%s", " checking ");
-      if(current_entry->item_holder->item->kind == item->item->kind && (current_entry->item_holder->item->kind != item->item->kind ? 1 : item->item->kind == weapon || item->item->kind == armor ? item->item->kind == weapon ? (((struct Weapon *)current_entry->item_holder->item->item_specific_info)->quality == ((struct Weapon *)item->item->item_specific_info)->quality && ((struct Weapon *)current_entry->item_holder->item->item_specific_info)->material == ((struct Weapon *)item->item->item_specific_info)->material && ((struct Weapon *)current_entry->item_holder->item->item_specific_info)->variant == ((struct Weapon *)item->item->item_specific_info)->variant && ((struct Weapon *)current_entry->item_holder->item->item_specific_info)->kind == ((struct Weapon *)item->item->item_specific_info)->kind ? 0 : 1) : ({int is_equal; const char *source_item_holder_quality = quality_name_modifier[((struct Armor *)current_entry->item_holder->item->item_specific_info)->quality]; const char *source_item_holder_material = material_name_modifier[((struct Armor *)current_entry->item_holder->item->item_specific_info)->material]; const char *source_item_holder_armor_type = equipment_type_modifier[((struct Armor *)current_entry->item_holder->item->item_specific_info)->armor_type]; char *target_item_holder_quality = quality_name_modifier[((struct Armor *)item->item->item_specific_info)->quality]; const char *target_item_holder_material = material_name_modifier[((struct Armor *)item->item->item_specific_info)->material]; const char *target_item_holder_armor_type = equipment_type_modifier[((struct Armor *)item->item->item_specific_info)->armor_type]; is_equal = (strcmp(source_item_holder_quality,target_item_holder_quality) | strcmp(source_item_holder_material,target_item_holder_material) | strcmp(source_item_holder_armor_type,target_item_holder_armor_type) ); is_equal;}) : current_entry->item_holder->item->kind == item->item->kind && current_entry->item_holder->item->id == item->item->id ? 0 : 1) == 0){
- item_weight.item_h = malloc(sizeof(Item_Holder)); item_weight.item_h->item = malloc(sizeof(Item)); item_weight.item_h->item->id = current_entry->item_holder->item->id; item_weight.item_h->amount = 1; item_weight.item_h->item->representation[0] = current_entry->item_holder->item->representation[0]; item_weight.item_h->item->standing_on[0] = current_entry->item_holder->item->standing_on[0]; item_weight.item_h->item->value = current_entry->item_holder->item->value; item_weight.item_h->item->kind = current_entry->item_holder->item->kind; item_weight.item_h->item->weight = current_entry->item_holder->item->weight; item_weight.item_h->item->quest_item = current_entry->item_holder->item->quest_item; (*i_item_holder_copy_handler[item_weight.item_h->item->kind])(item_weight.item_h,current_entry->item_holder);;
- item_weight.weight_loss = (table->entries[index]->item_holder->amount * table->entries[index]->item_holder->item->weight);
- if(amount >= current_entry->item_holder->amount){
-  previous_entry->next_entry = current_entry->next_entry;
-  item_weight.deleted = 1;
-  { (*i_free_item_handler[current_entry->item_holder->item->kind])(current_entry->item_holder); free(current_entry->item_holder->item); free(current_entry->item_holder); current_entry->item_holder = 
-# 164 "src/u_hash.c" 3 4
- ((void *)0)
-# 164 "src/u_hash.c"
- ; };
-  free(current_entry);
-  current_entry = 
-# 166 "src/u_hash.c" 3 4
-                 ((void *)0)
-# 166 "src/u_hash.c"
-                     ;
-  table->item_count--;
- }
- else{
- //printf("fell though here 2");
- table->entries[index]->item_holder->amount -= amount;
- item_weight.weight_loss = (amount * current_entry->item_holder->item->weight);
- item_weight.deleted = 0;
+Revenant is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
- }
- return item_weight;
-      }
-      previous_entry = current_entry;
-      current_entry = current_entry->next_entry;
-     }
-    }
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+# 20 "/home/anton/revenant/game/headers/move_handler.h" 2
+# 1 "/home/anton/revenant/game/headers/creature.h" 1
+/*This file is part of Revenant.
 
-  //printf("fell though here 3");
-    // A safety guard more than anything else, if all else fails, we found no item and we stand to lose no weight 
-  item_weight.weight_loss = 0;
-  item_weight.item_h = 
-# 186 "src/u_hash.c" 3 4
-                      ((void *)0)
-# 186 "src/u_hash.c"
-                          ;
-  return item_weight;
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-}
+Revenant is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 
+
+
+# 1 "/usr/include/inttypes.h" 1 3 4
+
+# 1 "/usr/include/inttypes.h" 3 4
+/* Copyright (C) 1997-2022 Free Software Foundation, Inc.
+   This file is part of the GNU C Library.
+
+   The GNU C Library is free software; you can redistribute it and/or
+   modify it under the terms of the GNU Lesser General Public
+   License as published by the Free Software Foundation; either
+   version 2.1 of the License, or (at your option) any later version.
+
+   The GNU C Library is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   Lesser General Public License for more details.
+
+   You should have received a copy of the GNU Lesser General Public
+   License along with the GNU C Library; if not, see
+   <https://www.gnu.org/licenses/>.  */
+
+/*
+ *	ISO C99: 7.8 Format conversion of integer types	<inttypes.h>
+ */
+# 19 "/home/anton/revenant/game/headers/creature.h" 2
+# 1 "/home/anton/revenant/game/headers/strings.h" 1
+
+# 1 "/home/anton/revenant/game/headers/strings.h"
+/*This file is part of Revnant.
+
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Revenant is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+# 20 "/home/anton/revenant/game/headers/creature.h" 2
+# 1 "/home/anton/revenant/game/headers/u_hash.h" 1
+/*This file is part of Revenant.
+
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Revenant is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+# 21 "/home/anton/revenant/game/headers/creature.h" 2
+# 1 "/usr/include/curses.h" 1 3 4
+
+# 1 "/usr/include/curses.h" 3 4
+/****************************************************************************
+ * Copyright 2018-2020,2021 Thomas E. Dickey                                *
+ * Copyright 1998-2016,2017 Free Software Foundation, Inc.                  *
+ *                                                                          *
+ * Permission is hereby granted, free of charge, to any person obtaining a  *
+ * copy of this software and associated documentation files (the            *
+ * "Software"), to deal in the Software without restriction, including      *
+ * without limitation the rights to use, copy, modify, merge, publish,      *
+ * distribute, distribute with modifications, sublicense, and/or sell       *
+ * copies of the Software, and to permit persons to whom the Software is    *
+ * furnished to do so, subject to the following conditions:                 *
+ *                                                                          *
+ * The above copyright notice and this permission notice shall be included  *
+ * in all copies or substantial portions of the Software.                   *
+ *                                                                          *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS  *
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF               *
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.   *
+ * IN NO EVENT SHALL THE ABOVE COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,   *
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR    *
+ * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR    *
+ * THE USE OR OTHER DEALINGS IN THE SOFTWARE.                               *
+ *                                                                          *
+ * Except as contained in this notice, the name(s) of the above copyright   *
+ * holders shall not be used in advertising or otherwise to promote the     *
+ * sale, use or other dealings in this Software without prior written       *
+ * authorization.                                                           *
+ ****************************************************************************/
+
+/****************************************************************************
+ *  Author: Zeyd M. Ben-Halim <zmbenhal@netcom.com> 1992,1995               *
+ *     and: Eric S. Raymond <esr@snark.thyrsus.com>                         *
+ *     and: Thomas E. Dickey                        1996-on                 *
+ ****************************************************************************/
+
+/* $Id: curses.h.in,v 1.277 2021/09/24 16:07:37 tom Exp $ */
+# 22 "/home/anton/revenant/game/headers/creature.h" 2
+# 1 "/home/anton/revenant/game/headers/gameinfo.h" 1
+
+# 1 "/home/anton/revenant/game/headers/gameinfo.h"
+/*This file is part of Revenant.
+
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Revenant is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+# 23 "/home/anton/revenant/game/headers/creature.h" 2
+# 1 "/home/anton/revenant/game/headers/creature_macros.h" 1
+/*This file is part of Revenant.
+cRevenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+Revenant  is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+
+
+
+// basically a crap ton of macros, intended to replace indices to avoid using magic numbers 
+
+# 1 "/home/anton/revenant/game/headers/screen_constants.h" 1
+/*This file is part of Revenant.
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+Revenant  is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+# 17 "/home/anton/revenant/game/headers/creature_macros.h" 2
+
+
+//Note to self: these cases SHOULD also work when y or x coordinates are equal since then MAX == MIN and then local coord + ( max - min ) -> within bounds -> creature gets drawn on map 
+# 40 "/home/anton/revenant/game/headers/creature_macros.h"
+// This is basically a relic of my attempt at assigning the local coordinates to the creatures with a macro that uses the ternary operator. I still kept it around as a reminder for me about the limitations of nested ternary operators
+
+
+//#define COMPUTE_RELATIVE_X_COORDS(creature,player)(creature->position.global_x > player->position.global_x) ? (player->position.local_x + (creature->position.global_x - player->position.global_x)) <= DEFAULT_MAX_X-1 ? (creature->position.local_x = (player->position.local_x + (creature->position.global_x - player->position.global_x))); : (creature->position.local_x =  DEFAULT_MAX_INFOBAR_WIDTH + ((creature->position.global_x - SET_TO_MIN_X(player)) % ((DEFAULT_MAX_X - DEFAULT_MAX_INFOBAR_WIDTH) + 1))); : (player->position.local_x - (player->position.global_x - creature->position.global_x)) >= DEFAULT_MAX_INFOBAR_WIDTH ? (creature->position.local_x = player->position.local_x - (player->position.global_x - creature->position.global_x)); : (creature->position.local_x = ((DEFAULT_MAX_X -1) - (((SET_TO_MAX_X(player)) - creature->position.global_x ) % ((DEFAULT_MAX_X - DEFAULT_MAX_INFOBAR_WIDTH) + 1)))); 
+
+//#define COMPUTE_RELATIVE_Y_COORDS(creature,player)(creature->position.global_y > player->position.global_y ? ((player->position.local_y + (creature->position.global_y - player->position.global_y )) <= DEFAULT_MAX_Y - 1 ? creature->position.local_y = (creature->position.local_y - player->position.local_y) : creature->position.local_y = DEFAULT_MIN_Y + ((creature->position.global_y - SET_TO_MIN_Y(player) ) % ((DEFAULT_MAX_Y - DEFAULT_MIN_Y)+1)) ) : player->position.local_y - (player->position.global_y - creature->position.global_y) >= DEFAULT_MIN_Y ? creature->position.local_y = player->position.local_y - (player->position.global_y - creature->position.global_y) : creature->position.local_y = (DEFAULT_MAX_Y-1) -  ((SET_TO_MAX_Y(player) - creature->position.global_y ) % ((DEFAULT_MAX_Y - DEFAULT_MIN_Y)+1))
+
+//#define COMPUTE_RELATIVE_COORDS(creature,player)COMPUTE_RELATIVE_X_COORDS(creature,player)COMPUTE_RELATIVE_Y_COORDS(creature,player)
+# 24 "/home/anton/revenant/game/headers/creature.h" 2
+# 1 "/home/anton/revenant/game/headers/rng.h" 1
+/*This file is part of Revenant.
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+Revenant  is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+# 25 "/home/anton/revenant/game/headers/creature.h" 2
+# 1 "/home/anton/revenant/game/headers/screen_constants.h" 1
+/*This file is part of Revenant.
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+Revenant  is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+# 26 "/home/anton/revenant/game/headers/creature.h" 2
+# 1 "/home/anton/revenant/game/headers/game_state_struct.h" 1
+/*This file is part of Revenant.
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+Revenant  is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+# 27 "/home/anton/revenant/game/headers/creature.h" 2
+# 45 "/home/anton/revenant/game/headers/creature.h"
+typedef enum Creature_Kind{animal, humanoid,cyborg,mechanical,mathematical,vegetative,player_character}Creature_Kind;
+typedef enum Environment{cavern,forest,aquatic,plains,mountain}Environment;
+typedef enum Disposition{friendly,hostile, territorial,neutral,passive,undefined}Disposition;
+typedef enum Styling{land,flying,burrowing,diving}Styling;
+typedef enum Limb_Kind{head,torso,arm,leg,tail,wing,hand,foot,throat,appendage,finn,gill,noone}Limb_Kind;
+typedef enum Limb_Status{healthy,bleeding,infected,disabled,frozen,poisons}Limb_Status;
+typedef enum Status{immobile,poisoned,haemorrhaging,unconscious,frostbit}Status;
+typedef enum Animal_ID{short_nosed_bear,elk,}Animal_ID;
+typedef enum behavior{idle, roaming, pursuing, attacking}behavior;
+typedef enum attack_type{biting, clawing, charging, headbutting}attack_type;
+typedef enum{paw}limb_subtype;
+typedef struct Limb{
+  Limb_Kind kind;
+  Limb_Status status;
+  int durability;
+  int damage;
+}Limb;
+
+typedef struct{
+   Item **equipment_list;
+   U_Hashtable *inventory;
+}Player_Info;
+
+typedef struct Color{
+  // will be defined by the constants in ncurses i.e COLOR_RED, COLOR_CYAN etc. 
+  unsigned primary_color:4;
+// extra parameters to vary color intensity 
+  unsigned second_color:10;
+  unsigned third_color:10;
+  unsigned fourth_color:10;
+}Color;
+typedef struct Attributes{
+  uint32_t stamina;
+  uint32_t strength;
+  uint32_t dexterity;
+  uint32_t luck;
+  uint32_t charisma;
+  uint32_t intelligence;
+  uint32_t wisdom;
+}Attributes;
+//As a side note i choose the scheme of animal definitions as the specifications of the stats a creature should have and animal instances as the actually initialized structs since C apparenty doesn't allow you to declare AND initialize a pointer at compile time. Instead, what you must do is declare a pointer and then instantiate with something that is NOT a pointer 
+typedef struct Animal_Definition{ // Anything ending with an Definitions is an array that defines the stats of a given creature of a given type
+  char *name;
+  char *description;
+  float weight;
+  float height;
+  float width;
+  Attributes attributes;
+  Color color;
+  behavior behavior;
+  int limb_count;
+  Limb *limbs;
+}Animal_Definition;
+
+typedef struct Humanoid_Definition{
+  char *name;
+  char *description;
+  float weight;
+  float height;
+  Material head_m;
+  Material neck_m;
+  Material finger_m;
+  Material torso_m;
+  Material legs_m;
+  Material main_hand_m;
+  Variant main_hand_variant;
+  //  Mele_Weapon_Kind mele_weapon_kind;
+  Material off_hand_m;
+  Material back_m;
+  Attributes attributes;
+  Quality_Level equipment_quality;
+  //  Mele_Weapon_Kind secondary_weapon_kind;  in the case that their offhand is a weapon, use this, if not, let it be some arbitrary value
+  behavior behavior;
+}Humanoid_Definition;
+
+
+typedef struct Creature{
+  int id;
+  unsigned int limb_count:10;
+  Limb *limbs;
+  float weight;
+  float height;
+  Creature_Kind species;
+  Disposition disposition;
+  Attributes attributes;
+  uint32_t max_health;
+  uint32_t curr_health;
+  float max_carry;
+  float current_carry;
+  // A generic placeholder for any kind of additional info that is highly dependent on the specific creature type
+  void *additional_info;
+  char representation[2];
+  Color *color;
+  Position position;
+  char standing_on[2];
+  int marked_for_deletion : 1 ;
+  int target_is_within_bound:1;
+  behavior behavior;
+  behavior default_behavior;
+  struct Creature *target;
+  unsigned int has_moved_around_vertically:1;
+  unsigned int has_moved_around_horizontally:1;
+  unsigned int curr_ap:10;
+  unsigned int max_ap:10;
+  unsigned preferred_attack_type;
+  int alive : 1;
+  int status_flags;
+}Creature;
+
+
+
+extern void (*c_free_creature_body_type[1])(Creature *c);
+void c_free_animal(Creature *c);
+
+
+
+Creature *c_generate_creature(Creature_Kind kind, int id,unsigned x,unsigned y,Game_World *world,Creature *target);
+
+
+
+void c_initialize_humanoid_inf(Creature *c, int id);
+
+
+Color *c_copy_color(Color color);
+
+Creature *c_random_player(int y, int x ,Game_State *gs, Game_World *gw);
+
+void c_compute_relative_coords(Creature *creature, Creature *player);
+
+void c_cleanup_creature(Creature *c,Game_World *world);
+ char *c_retrieve_creature_name(Creature *c);
+
+char *creature_attack_bodytype_quad(Creature *c,Mersienne_Twister *twister);
+# 21 "/home/anton/revenant/game/headers/move_handler.h" 2
+# 1 "/home/anton/revenant/game/headers/item.h" 1
+/*This file is part of Revenant.
+
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Revenant is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+# 22 "/home/anton/revenant/game/headers/move_handler.h" 2
+# 1 "/home/anton/revenant/game/headers/inventory.h" 1
+/*This file is part of Revenant.
+
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Revenant is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+
+
+
+
+
+# 1 "/home/anton/revenant/game/headers/u_hash.h" 1
+/*This file is part of Revenant.
+
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Revenant is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+# 20 "/home/anton/revenant/game/headers/inventory.h" 2
+# 1 "/home/anton/revenant/game/headers/creature.h" 1
+/*This file is part of Revenant.
+
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Revenant is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+# 21 "/home/anton/revenant/game/headers/inventory.h" 2
+
+
+Item_Holder *inv_equip_item(Item_Holder *target_item_holder,Player_Info *player_info, Creature *player);
+void inv_remove_item(int argcount,char *name, int amount, U_Hashtable *inventory, Creature *player);
+int inv_add_item(Item_Holder *item_h, U_Hashtable *inventory, Creature *player);
+# 23 "/home/anton/revenant/game/headers/move_handler.h" 2
+# 1 "/home/anton/revenant/game/headers/screen_constants.h" 1
+/*This file is part of Revenant.
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+Revenant  is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+# 24 "/home/anton/revenant/game/headers/move_handler.h" 2
+# 1 "/home/anton/revenant/game/headers/ingame_msg.h" 1
+/*This file is part of Revenant.
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+Revenant  is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+# 25 "/home/anton/revenant/game/headers/move_handler.h" 2
+# 1 "/home/anton/revenant/game/headers/game_state_struct.h" 1
+/*This file is part of Revenant.
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+Revenant  is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+# 26 "/home/anton/revenant/game/headers/move_handler.h" 2
+# 1 "/home/anton/revenant/game/headers/generic_macros.h" 1
+/*This file is part of Revenant.
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+Revenant  is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+# 27 "/home/anton/revenant/game/headers/move_handler.h" 2
+# 1 "/home/anton/revenant/game/headers/information_reader.h" 1
+/*This file is part of Revenant.
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+Revenant  is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+
+
+
+# 1 "/usr/include/stdlib.h" 1 3 4
+
+# 1 "/usr/include/stdlib.h" 3 4
+/* Copyright (C) 1991-2022 Free Software Foundation, Inc.
+   Copyright The GNU Toolchain Authors.
+   This file is part of the GNU C Library.
+
+   The GNU C Library is free software; you can redistribute it and/or
+   modify it under the terms of the GNU Lesser General Public
+   License as published by the Free Software Foundation; either
+   version 2.1 of the License, or (at your option) any later version.
+
+   The GNU C Library is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   Lesser General Public License for more details.
+
+   You should have received a copy of the GNU Lesser General Public
+   License along with the GNU C Library; if not, see
+   <https://www.gnu.org/licenses/>.  */
+
+/*
+ *	ISO C99 Standard: 7.20 General utilities	<stdlib.h>
+ */
+# 15 "/home/anton/revenant/game/headers/information_reader.h" 2
+# 1 "/usr/include/stdio.h" 1 3 4
+/* Define ISO C stdio on top of C++ iostreams.
+   Copyright (C) 1991-2022 Free Software Foundation, Inc.
+   This file is part of the GNU C Library.
+
+   The GNU C Library is free software; you can redistribute it and/or
+   modify it under the terms of the GNU Lesser General Public
+   License as published by the Free Software Foundation; either
+   version 2.1 of the License, or (at your option) any later version.
+
+   The GNU C Library is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   Lesser General Public License for more details.
+
+   You should have received a copy of the GNU Lesser General Public
+   License along with the GNU C Library; if not, see
+   <https://www.gnu.org/licenses/>.  */
+
+/*
+ *	ISO C99 Standard: 7.19 Input/output	<stdio.h>
+ */
+# 16 "/home/anton/revenant/game/headers/information_reader.h" 2
+# 1 "/usr/include/string.h" 1 3 4
+/* Copyright (C) 1991-2022 Free Software Foundation, Inc.
+   This file is part of the GNU C Library.
+
+   The GNU C Library is free software; you can redistribute it and/or
+   modify it under the terms of the GNU Lesser General Public
+   License as published by the Free Software Foundation; either
+   version 2.1 of the License, or (at your option) any later version.
+
+   The GNU C Library is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   Lesser General Public License for more details.
+
+   You should have received a copy of the GNU Lesser General Public
+   License along with the GNU C Library; if not, see
+   <https://www.gnu.org/licenses/>.  */
+
+/*
+ *	ISO C99 Standard: 7.21 String handling	<string.h>
+ */
+# 17 "/home/anton/revenant/game/headers/information_reader.h" 2
+# 1 "/home/anton/revenant/game/headers/creature.h" 1
+
+# 1 "/home/anton/revenant/game/headers/creature.h"
+/*This file is part of Revenant.
+
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Revenant is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+# 18 "/home/anton/revenant/game/headers/information_reader.h" 2
+# 1 "/home/anton/revenant/game/headers/generic_macros.h" 1
+/*This file is part of Revenant.
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+Revenant  is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+# 19 "/home/anton/revenant/game/headers/information_reader.h" 2
+# 1 "/home/anton/revenant/game/headers/game_state_struct.h" 1
+/*This file is part of Revenant.
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+Revenant  is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+# 20 "/home/anton/revenant/game/headers/information_reader.h" 2
+# 1 "/home/anton/revenant/game/headers/item.h" 1
+/*This file is part of Revenant.
+
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Revenant is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+# 21 "/home/anton/revenant/game/headers/information_reader.h" 2
+
+typedef enum{integer, string, floating,struct_limb,struct_attributes}Return_Type;
+void ir_readin_data(char *file_path, char *variable,Return_Type expected_type, void *value);
+Creature *ir_readin_creature(char *creature_file_path,unsigned x, unsigned y, Game_World *world, Creature *target);
+void ir_readin_struct_limb_values(Limb *limbs,char *limb_as_string, int limb_count);
+void ir_readin_struct_attributes(char *creature_file_path,char *variable,Attributes attributes);
+int ir_readin_int(char *file_path, char *variable);
+void ir_readin_char(char *file_path, char *variable,char *bfr);
+char *ir_readin_char_nonvoid(char *file_path, char *variable);
+int ir_readin_int(char *file_path, char *variable);
+float ir_readin_float(char *file_path, char *variable);
+Limb *ir_readin_struct_limb(char *file_path, char *variable);
+void ir_readin_struct_attributes_values(Attributes attributes,char *attributes_as_string);
+
+void ir_print_string(char *file_path,char *variable, WINDOW *screen, int x, int y, int printing_specification,Item_Holder *item_holder);
+
+int ir_compare_strings(char *first_file_path, char *second_file_path, char *variable);
+
+unsigned long long ir_hash_string(char *file_path,char *variable, U_Hashtable *table);
+
+void ir_print_damage_to_creature(Game_State *gs, Creature *c, Creature *target);
+
+void ir_print_creature_damage();
+
+
+
+Item_Holder *ir_readin_consumable(char *consumable_file_path, int amount);
+Item_Holder *ir_readin_reagent(char *reagent_file_path, int amount);
+# 28 "/home/anton/revenant/game/headers/move_handler.h" 2
+//#define MV_PRINT_DMG(creature) char *fpath = malloc(sizeof(char) * strlen() ) free(fpath);
+# 45 "/home/anton/revenant/game/headers/move_handler.h"
+void gw_add_to_pile(Item_Holder *item, Entry *item_pile);
+
+int mv_check_move_handler(int global_x, int gloval_y, int local_x, int local_y, Creature *c,Game_State *game_state);
+
+extern int (*move_response_handler[5])(int global_x, int global_y, int local_x, int local_y,Creature *c,Game_State *game_state);
+
+
+int move_response_move_character(int global_x, int global_y, int local_x, int local_y,Creature *c,Game_State *game_state);
+
+int move_response_halt_character(int global_x, int global_y,int local_x, int local_y, Creature *c,Game_State *game_state);
+
+int move_response_loot_item(int global_x, int global_y,int local_x, int local_y, Creature *c,Game_State *game_state);
+
+int move_response_attack_target(int global_x, int global_y,int local_x, int local_y, Creature *c,Game_State *game_state);
+
+int move_response_initiate_trade(int global_x, int global_y,int local_x, int local_y, Creature *c,Game_State *game_state);
+# 18 "/home/anton/revenant/game/headers/game_state.h" 2
+# 1 "/home/anton/revenant/game/headers/linked_list.h" 1
+/*This file is part of Revenant.
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+Revenant  is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+# 19 "/home/anton/revenant/game/headers/game_state.h" 2
+# 1 "/home/anton/revenant/game/headers/creature_behavior.h" 1
+
+
+
+# 1 "/home/anton/revenant/game/headers/creature.h" 1
+/*This file is part of Revenant.
+
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Revenant is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+# 5 "/home/anton/revenant/game/headers/creature_behavior.h" 2
+# 1 "/usr/include/math.h" 1 3 4
+
+# 1 "/usr/include/math.h" 3 4
+/* Declarations for math functions.
+   Copyright (C) 1991-2022 Free Software Foundation, Inc.
+   This file is part of the GNU C Library.
+
+   The GNU C Library is free software; you can redistribute it and/or
+   modify it under the terms of the GNU Lesser General Public
+   License as published by the Free Software Foundation; either
+   version 2.1 of the License, or (at your option) any later version.
+
+   The GNU C Library is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   Lesser General Public License for more details.
+
+   You should have received a copy of the GNU Lesser General Public
+   License along with the GNU C Library; if not, see
+   <https://www.gnu.org/licenses/>.  */
+
+/*
+ *	ISO C99 Standard: 7.12 Mathematics	<math.h>
+ */
+# 6 "/home/anton/revenant/game/headers/creature_behavior.h" 2
+# 1 "/home/anton/revenant/game/headers/move_handler.h" 1
+
+# 1 "/home/anton/revenant/game/headers/move_handler.h"
+/*This file is part of Revenant.
+
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Revenant is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+# 7 "/home/anton/revenant/game/headers/creature_behavior.h" 2
+# 1 "/home/anton/revenant/game/headers/game_state_struct.h" 1
+/*This file is part of Revenant.
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+Revenant  is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+# 8 "/home/anton/revenant/game/headers/creature_behavior.h" 2
+# 1 "/home/anton/revenant/game/headers/information_reader.h" 1
+/*This file is part of Revenant.
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+Revenant  is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+# 9 "/home/anton/revenant/game/headers/creature_behavior.h" 2
+
+
+
+
+
+// We want to avoid looking out of bounds of the current zone we are in and so if the range we attempt to look in when looking for a path around an obstacle, we always make sure that we looking within min-max of the 
+
+
+// We create separate boundary search macros for x and y coordinates. Technically, a single macro that checks wehther it is the y or x boundary that we are testing for could be devised, but i already have enough ugly-ass macros 
+
+
+
+
+
+void cb_pursue_target(Creature *c,Game_State *game_state);
+
+void cb_from_target(Creature *c,Game_State *game_state);
+
+void cb_follow_target(Creature *c,Game_State *game_state);
+
+void cb_attack_target(Creature *c,Game_State *game_state);
+
+void cb_idle(Creature *c,Game_State *game_state);
+
+extern void (*creature_behavior_handler[4])(Creature *c,Game_State *game_state);
+
+void cb_act(Creature *c,Game_State *game_state);
+
+void cb_pursure_target_oob(Creature *c,Game_State *game_state);
+
+void cb_pursue_target_inb(Creature *c,Game_State *game_state);
+# 20 "/home/anton/revenant/game/headers/game_state.h" 2
+# 1 "/home/anton/revenant/game/headers/game_state_struct.h" 1
+/*This file is part of Revenant.
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+Revenant  is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+# 21 "/home/anton/revenant/game/headers/game_state.h" 2
+# 1 "/home/anton/revenant/game/headers/generic_macros.h" 1
+/*This file is part of Revenant.
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+Revenant  is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+# 22 "/home/anton/revenant/game/headers/game_state.h" 2
+# 1 "/home/anton/revenant/game/headers/information_reader.h" 1
+/*This file is part of Revenant.
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+Revenant  is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+# 23 "/home/anton/revenant/game/headers/game_state.h" 2
 
 
 
 /*
-char *faku(){
-  char *val = malloc(sizeof(char));
-  return val;
-}
+Unlike the other fields which we can initiaize from the inside of the creation of the Game_State struct, we have to create a Game_World struct, THEN pass it as an argument and assign it as the value
+for the Game_world field for the Game_State. I suspect this is because how the values of max_x and max_y in the Game_World are affected by calls of the getmaxyx function, which are somehow not initialized from the gatmaxyx function call when creating the Game_World struct from inside of the create_game_state struct. Attempting to create the  Game_World struct from inside the function will cause seg fault, so this is how it has to be done.
 */
+Game_State *gs_create_game_state(Game_World *game_world);
+
+
+void ll_iter_list_as_creature(Linked_List *list, Game_State *ggame_state);
+
+void gs_print_foes(Game_State *game_state);
+
+void gs_recompute_creature_local_coords(Linked_List *list);
+
+void gs_update_screen_resize(Game_State *gs);
+# 24 "/home/anton/revenant/game/headers/ingame_msg.h" 2
+# 1 "/home/anton/revenant/game/headers/information_reader.h" 1
+/*This file is part of Revenant.
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+Revenant  is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+# 25 "/home/anton/revenant/game/headers/ingame_msg.h" 2
+# 1 "/home/anton/revenant/game/headers/item.h" 1
+/*This file is part of Revenant.
+
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Revenant is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+# 26 "/home/anton/revenant/game/headers/ingame_msg.h" 2
+# 1 "/home/anton/revenant/game/headers/generate.h" 1
+/*This file is part of Revenant.
+
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Revenant is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+# 23 "/home/anton/revenant/game/headers/generate.h"
+# 1 "/home/anton/revenant/game/headers/information_reader.h" 1
+/*This file is part of Revenant.
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+Revenant  is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+# 24 "/home/anton/revenant/game/headers/generate.h" 2
+# 1 "/usr/include/curses.h" 1 3 4
+
+# 1 "/usr/include/curses.h" 3 4
+/****************************************************************************
+ * Copyright 2018-2020,2021 Thomas E. Dickey                                *
+ * Copyright 1998-2016,2017 Free Software Foundation, Inc.                  *
+ *                                                                          *
+ * Permission is hereby granted, free of charge, to any person obtaining a  *
+ * copy of this software and associated documentation files (the            *
+ * "Software"), to deal in the Software without restriction, including      *
+ * without limitation the rights to use, copy, modify, merge, publish,      *
+ * distribute, distribute with modifications, sublicense, and/or sell       *
+ * copies of the Software, and to permit persons to whom the Software is    *
+ * furnished to do so, subject to the following conditions:                 *
+ *                                                                          *
+ * The above copyright notice and this permission notice shall be included  *
+ * in all copies or substantial portions of the Software.                   *
+ *                                                                          *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS  *
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF               *
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.   *
+ * IN NO EVENT SHALL THE ABOVE COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,   *
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR    *
+ * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR    *
+ * THE USE OR OTHER DEALINGS IN THE SOFTWARE.                               *
+ *                                                                          *
+ * Except as contained in this notice, the name(s) of the above copyright   *
+ * holders shall not be used in advertising or otherwise to promote the     *
+ * sale, use or other dealings in this Software without prior written       *
+ * authorization.                                                           *
+ ****************************************************************************/
+
+/****************************************************************************
+ *  Author: Zeyd M. Ben-Halim <zmbenhal@netcom.com> 1992,1995               *
+ *     and: Eric S. Raymond <esr@snark.thyrsus.com>                         *
+ *     and: Thomas E. Dickey                        1996-on                 *
+ ****************************************************************************/
+
+/* $Id: curses.h.in,v 1.277 2021/09/24 16:07:37 tom Exp $ */
+# 25 "/home/anton/revenant/game/headers/generate.h" 2
+# 1 "/home/anton/revenant/game/headers/gameinfo.h" 1
+
+# 1 "/home/anton/revenant/game/headers/gameinfo.h"
+/*This file is part of Revenant.
+
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Revenant is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+# 26 "/home/anton/revenant/game/headers/generate.h" 2
+# 1 "/home/anton/revenant/game/headers/rng.h" 1
+/*This file is part of Revenant.
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+Revenant  is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+# 27 "/home/anton/revenant/game/headers/generate.h" 2
+# 1 "/home/anton/revenant/game/headers/item.h" 1
+/*This file is part of Revenant.
+
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Revenant is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+# 28 "/home/anton/revenant/game/headers/generate.h" 2
+
+
+extern const char *alphabet;
+
+Game_World *g_generate_game_world(int width, int height);
+
+Item_Holder *g_generate_item(Mersienne_Twister *twister);
+
+U_Hashtable *g_generate_merchant_inventory(int min_amount, int max_amount, Mersienne_Twister *twister);
+
+void g_generate_trader(int global_x, int global_y ,Mersienne_Twister *twister, Game_State *gs);
+# 27 "/home/anton/revenant/game/headers/ingame_msg.h" 2
+# 1 "/home/anton/revenant/game/headers/move_handler.h" 1
+/*This file is part of Revenant.
+
+Revenant is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Revenant is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+# 28 "/home/anton/revenant/game/headers/ingame_msg.h" 2
+//screen, y,x, "%s X %d", quality_name_modifier[((union Equipment)item_holder->item->item_specific_info).weapon->quality]
+
+
+extern inline void msg_print_item(Item_Holder *item_holder, WINDOW *screen, int x, int y);
+static inline void msg_pickup_item(Game_State *game_state, Item_Holder *item_holder);
+// In order to make changes to a panel visible, we firstly need to call update panel to make the changes to the panels visible, then make doupdate to make said changes ivisible to the physical screen. To avoid having to call these methods all the time, we wrap them inside a macro
+
+
+
+//MSG_MOVE_TO_NEW_POS(item_list, init_free_pos, max_index, log)
+/* We stop at second last index because we set pointers to null and if we include the last index, we attempt to print the item at the last index, which is null, causing seg fault*/
+
+
+int msg_show_log(Game_State *gs, int panel_index);
+
+//We only bother moving down the first 9 messages because the we intend only to have the last 10 actions available in the log so we delete the last message(the one to be "pushed" out of the "stack") 
+
+//We malloc a message buffer of type (chtype * MAX_MSG_LENGTH) as mvwinchnstr needs a sufficiently big enough buffer to store the copied string to and 50 is the guessed biggest possible length we will need. chtype is a special datatype used by ncurses a type of string, if you will.
+
+int msg_find_log_position(Game_State *gs);
+
+int msg_find_item_position(WINDOW *log, int max_y,Item_Holder *item, Item_Holder **item_list);
+# 64 "/home/anton/revenant/game/headers/ingame_msg.h"
+void msg_update_event_log(Game_State *gs);
+
+//     
+
+
+
+
+
+
+//For some reason, you have to specify the arguments in this order, in order to print them correctly
+//To the screen. Perhaps because it's a maxture of static and dynamic strings
+
+
+int msg_display_inventory(Game_State *gs,int context, U_Hashtable *merchant);
+
+int msg_display_inventory_equip_context(Game_State *gs);
+
+int msg_display_equipped_equipment(Game_State *gs);
+
+/*ncurses has built-in functionality for clearing */
+
+//We print i+2 to print at the desired position in the equipment log
+# 98 "/home/anton/revenant/game/headers/ingame_msg.h"
+int msg_trading_session(int global_x, int global_y,Game_State *gs);
+
+void msg_redraw_inventory(Game_State *gs, Item_Holder **item_list, int context, int num_items);
+void msg_redraw_equipped_equipment(Game_State *gs);
+void msg_redraw_inventory_equip_context(Game_State *gs, Item_Holder **item_list, int num_items, int curs_pos);
+
+
+
+void msg_add_attack_event_to_log(Item_Holder *item_holder);
+
+void msg_add_attack_player_event_to_log();
+# 12 "src/ingame_msg.c" 2
+
+int msg_trading_session(int global_x, int global_y,Game_State *gs){
+  int tmp_amount_holder;
+  int curr_curs_pos = 2;
+  int column_position = 2;
+  int current_printed_item = 0;
+  Item_Holder **item_list = malloc(sizeof(Item_Holder* ) * ((U_Hashtable * )gs->current_zone->tiles[global_y][global_x].foe)->item_count);
+  werase(gs->logs[5]); 
+# 19 "src/ingame_msg.c" 3 4
+ wborder(
+# 19 "src/ingame_msg.c"
+ gs->logs[5]
+# 19 "src/ingame_msg.c" 3 4
+ , 
+# 19 "src/ingame_msg.c"
+ 0
+# 19 "src/ingame_msg.c" 3 4
+ , 
+# 19 "src/ingame_msg.c"
+ 0
+# 19 "src/ingame_msg.c" 3 4
+ , 
+# 19 "src/ingame_msg.c"
+ 0
+# 19 "src/ingame_msg.c" 3 4
+ , 
+# 19 "src/ingame_msg.c"
+ 0
+# 19 "src/ingame_msg.c" 3 4
+ , 0, 0, 0, 0)
+# 19 "src/ingame_msg.c"
+ ;;
+  mvwprintw(gs->logs[5],1,25, "Merchant\'s wares" );;
+  for(int i = 0; i < ((U_Hashtable * )gs->current_zone->tiles[global_y][global_x].foe)->size; i++ ){
+    if(((U_Hashtable * )gs->current_zone->tiles[global_y][global_x].foe)->entries[i] != 
+# 22 "src/ingame_msg.c" 3 4
+                                                                                       ((void *)0)
+# 22 "src/ingame_msg.c"
+                                                                                           ){
+      Entry *current_entry = ((U_Hashtable * )gs->current_zone->tiles[global_y][global_x].foe)->entries[i];
+      while(current_entry != 
+# 24 "src/ingame_msg.c" 3 4
+                            ((void *)0)
+# 24 "src/ingame_msg.c"
+                                ){
+ msg_print_item(current_entry->item_holder,gs->logs[5],5,column_position);
+        current_entry = current_entry->next_entry;
+ column_position++;
+      }
+    }
+  }
+  top_panel(gs->panels[5]);
+  update_panels(); doupdate();;
+  int ch;
+  while (1){
+    ch = 
+# 35 "src/ingame_msg.c" 3 4
+        wgetch(stdscr)
+# 35 "src/ingame_msg.c"
+               ;
+      if (ch == 'q'){
+      free(item_list);
+      curs_set(
+# 38 "src/ingame_msg.c" 3 4
+              0
+# 38 "src/ingame_msg.c"
+                   );
+      hide_panel(gs->panels[5]);
+      update_panels();
+      doupdate();
+      return 1;
+    }
+    else if (ch == 'y'){
+      char amount_bfr[5];
+      int bfr_index = 0;
+      werase(gs->logs[6]); 
+# 47 "src/ingame_msg.c" 3 4
+     wborder(
+# 47 "src/ingame_msg.c"
+     gs->logs[6]
+# 47 "src/ingame_msg.c" 3 4
+     , 
+# 47 "src/ingame_msg.c"
+     0
+# 47 "src/ingame_msg.c" 3 4
+     , 
+# 47 "src/ingame_msg.c"
+     0
+# 47 "src/ingame_msg.c" 3 4
+     , 
+# 47 "src/ingame_msg.c"
+     0
+# 47 "src/ingame_msg.c" 3 4
+     , 
+# 47 "src/ingame_msg.c"
+     0
+# 47 "src/ingame_msg.c" 3 4
+     , 0, 0, 0, 0)
+# 47 "src/ingame_msg.c"
+     ;;
+      mvprintw(gs->logs[6],5,15, "Enter amount you want to buy");
+      top_panel(gs->panels[6]);
+      update_panels(); doupdate();;
+      while(1){
+ ch = 
+# 52 "src/ingame_msg.c" 3 4
+     wgetch(stdscr)
+# 52 "src/ingame_msg.c"
+            ;
+ if(bfr_index < 4 && ch != 
+# 53 "src/ingame_msg.c" 3 4
+                          0407
+# 53 "src/ingame_msg.c"
+                                       ){
+   amount_bfr[bfr_index] = ch;
+   bfr_index ++;
+ }
+ else if(ch == 
+# 57 "src/ingame_msg.c" 3 4
+              0407 
+# 57 "src/ingame_msg.c"
+                            && bfr_index != 0){
+   amount_bfr[bfr_index] = "";
+   bfr_index --;
+ }
+ else if(ch == 'q'){
+   break;
+ }
+ else if(ch == 'y'){
+   char *endptr;
+   int amount = strtol(amount_bfr, &endptr, 10);
+   if( *endptr == '\0' && amount > 0){
+     int cost = amount * item_list[curr_curs_pos-2]->item->value;
+     float additional_weight = amount * item_list[curr_curs_pos-2]->item->weight;
+     if( cost <= (((Player_Info * )gs->player->additional_info)->inventory)->money && gs->player->current_carry + additional_weight <= gs->player->max_carry){
+
+     }
+     else if (cost > (((Player_Info * )gs->player->additional_info)->inventory)->money){
+       werase(gs->logs[6]); 
+# 74 "src/ingame_msg.c" 3 4
+      wborder(
+# 74 "src/ingame_msg.c"
+      gs->logs[6]
+# 74 "src/ingame_msg.c" 3 4
+      , 
+# 74 "src/ingame_msg.c"
+      0
+# 74 "src/ingame_msg.c" 3 4
+      , 
+# 74 "src/ingame_msg.c"
+      0
+# 74 "src/ingame_msg.c" 3 4
+      , 
+# 74 "src/ingame_msg.c"
+      0
+# 74 "src/ingame_msg.c" 3 4
+      , 
+# 74 "src/ingame_msg.c"
+      0
+# 74 "src/ingame_msg.c" 3 4
+      , 0, 0, 0, 0)
+# 74 "src/ingame_msg.c"
+      ;;
+       mvprintw(gs->logs[6],5,5, "You do not have suffcient money to buy that many");
+       update_panels(); doupdate();;
+     }
+     else{
+       werase(gs->logs[6]); 
+# 79 "src/ingame_msg.c" 3 4
+      wborder(
+# 79 "src/ingame_msg.c"
+      gs->logs[6]
+# 79 "src/ingame_msg.c" 3 4
+      , 
+# 79 "src/ingame_msg.c"
+      0
+# 79 "src/ingame_msg.c" 3 4
+      , 
+# 79 "src/ingame_msg.c"
+      0
+# 79 "src/ingame_msg.c" 3 4
+      , 
+# 79 "src/ingame_msg.c"
+      0
+# 79 "src/ingame_msg.c" 3 4
+      , 
+# 79 "src/ingame_msg.c"
+      0
+# 79 "src/ingame_msg.c" 3 4
+      , 0, 0, 0, 0)
+# 79 "src/ingame_msg.c"
+      ;;
+       mvprintw(gs->logs[6],5,5, "You cannot carry that much");
+       update_panels(); doupdate();;
+     }
+   }
+   else if(amount < 0 ){
+     werase(gs->logs[6]); 
+# 85 "src/ingame_msg.c" 3 4
+    wborder(
+# 85 "src/ingame_msg.c"
+    gs->logs[6]
+# 85 "src/ingame_msg.c" 3 4
+    , 
+# 85 "src/ingame_msg.c"
+    0
+# 85 "src/ingame_msg.c" 3 4
+    , 
+# 85 "src/ingame_msg.c"
+    0
+# 85 "src/ingame_msg.c" 3 4
+    , 
+# 85 "src/ingame_msg.c"
+    0
+# 85 "src/ingame_msg.c" 3 4
+    , 
+# 85 "src/ingame_msg.c"
+    0
+# 85 "src/ingame_msg.c" 3 4
+    , 0, 0, 0, 0)
+# 85 "src/ingame_msg.c"
+    ;;
+     mvprintw(gs->logs[6],5,5, "Don't be silly, you cannot buy a negative amount of items");
+     update_panels(); doupdate();;
+   }
+   else{
+     werase(gs->logs[6]); 
+# 90 "src/ingame_msg.c" 3 4
+    wborder(
+# 90 "src/ingame_msg.c"
+    gs->logs[6]
+# 90 "src/ingame_msg.c" 3 4
+    , 
+# 90 "src/ingame_msg.c"
+    0
+# 90 "src/ingame_msg.c" 3 4
+    , 
+# 90 "src/ingame_msg.c"
+    0
+# 90 "src/ingame_msg.c" 3 4
+    , 
+# 90 "src/ingame_msg.c"
+    0
+# 90 "src/ingame_msg.c" 3 4
+    , 
+# 90 "src/ingame_msg.c"
+    0
+# 90 "src/ingame_msg.c" 3 4
+    , 0, 0, 0, 0)
+# 90 "src/ingame_msg.c"
+    ;;
+     mvprintw(gs->logs[6],5,5, "Please only provide integers when speciyfing the amount");
+     update_panels(); doupdate();;
+   }
+ }
+      }
+    }
+    else if(ch == 's') {
+      msg_display_inventory(gs,0, ((U_Hashtable * )gs->current_zone->tiles[global_y][global_x].foe));
+    }
+  }
+}
+
+
+static inline void msg_pickup_item(Game_State *game_state, Item_Holder *item_holder){
+  if(item_holder->item->kind == weapon){
+    if(item_holder->amount != 1){
+      mvwprintw(game_state->logs[0],0,0, "%s%s%s%s%s%s%d%s", "Pickup ",quality_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->quality], material_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->material],handed_modifier[((struct Weapon *)item_holder->item->item_specific_info)->variant],mele_weapon_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->kind] , " amount: ", item_holder->amount, " ? [y/n/a/d]");
+  }
+    else{
+      mvwprintw(game_state->logs[0],0,0, "%s%s%s%s%s%s", "Pickup ",quality_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->quality], material_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->material],handed_modifier[((struct Weapon *)item_holder->item->item_specific_info)->variant],mele_weapon_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->kind] , " ? [y/n/a/d]");
+    }
+  }
+
+  else if(item_holder->item->kind == armor){
+    if(item_holder->amount != 1){
+      mvwprintw(game_state->logs[0],0,0, "%s%s%s%s%s%d%s", "Pickup ",quality_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->quality], material_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->material],equipment_type_modifier[((struct Armor *)item_holder->item->item_specific_info)->armor_type], " amount: ", item_holder->amount, " ? [y/n/a/d]");
+    }
+    else{
+      mvwprintw(game_state->logs[0],0,0, "%s%s%s%s%s", "Pickup ",quality_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->quality], material_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->material],equipment_type_modifier[((struct Armor *)item_holder->item->item_specific_info)->armor_type], " ? [y/n/a/d]");
+    }
+  }
+
+  else{
+    char *name;
+    i_derive_item_name(item_holder->item,name);
+    if (item_holder->amount != 1){
+      mvwprintw(game_state->logs[0],0,0, "%s%s%s%d%s", "Pickup ", name , " amount: ", item_holder->amount, " ? [y/n/a/d]"); free(name);
+    }
+      else{
+ mvwprintw(game_state->logs[0],0,0, "%s%s%s", "Pickup ", name , " ? [y/n/a/d]"); free(name);
+   }
+      free(name);
+    }
+}
+
+extern inline void msg_print_item(Item_Holder *item_holder, WINDOW *screen, int x, int y){
+  if(item_holder->item == 
+# 137 "src/ingame_msg.c" 3 4
+                         ((void *)0)
+# 137 "src/ingame_msg.c"
+                             ){
+    mvwprintw(screen, y,x,"None");
+  }
+
+  else if(item_holder->item->kind == weapon){
+    if(item_holder->amount != 1){
+      mvwprintw(screen, y,x, "%s%s%s%s%s%d", quality_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->quality],handed_modifier[((struct Weapon *)item_holder->item->item_specific_info)->variant],material_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->material], mele_weapon_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->kind], " X ", item_holder->amount);
+  }
+    else{
+      mvwprintw(screen, y,x, "%s%s%s%s", quality_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->quality],handed_modifier[((struct Weapon *)item_holder->item->item_specific_info)->variant],material_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->material], mele_weapon_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->kind]);
+    }
+  }
+
+  else if(item_holder->item->kind == armor){
+    if(item_holder->amount != 1){
+      mvwprintw(screen, y,x, "%s%s%s%s%d", quality_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->quality],material_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->material], equipment_type_modifier[((struct Armor *)item_holder->item->item_specific_info)->armor_type], " X ", item_holder->amount);
+    }
+    else{
+      mvwprintw(screen, y,x, "%s%s%s", quality_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->quality],material_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->material], equipment_type_modifier[((struct Armor *)item_holder->item->item_specific_info)->armor_type]);
+    }
+  }
+
+  else{
+    char *file_path = (item_holder->item->kind == reagent ? (({char *file_path; file_path = malloc(sizeof(char) * strlen("/usr/lib/revenant_files/item_files/reagent_files/") +5); sprintf(file_path,"/usr/lib/revenant_files/item_files/reagent_files/%d",item_holder->item->id); file_path;})) : (({char *file_path; file_path = malloc(sizeof(char) * strlen("/usr/lib/revenant_files/item_files/reagent_files/") +5); sprintf(file_path,"/usr/lib/revenant_files/item_files/consumable_files/%d",item_holder->item->id); file_path;})));
+      ir_print_string(file_path, "name", screen,x,y,0, item_holder);
+      free(file_path);
+    }
+}
+
+void any_null(Item_Holder **item_list){
+  printf("%s", "This run ");
+  for(int i = 0; i < 4; i++)
+    if(item_list[i] == 
+# 169 "src/ingame_msg.c" 3 4
+                      ((void *)0)
+# 169 "src/ingame_msg.c"
+                          ){
+      printf("%s%d"," " ,i);
+    }
+}
+
+int msg_show_log(Game_State *gs, int panel_index){
+  top_panel(gs->panels[panel_index]);
+  /*MSG_CLEAR_SCREEN is not a suitable macro as it additionally clears the log screen entirely, so we will have to make
+do with just redrawing the box around the log*/
+  
+# 178 "src/ingame_msg.c" 3 4
+ wborder(
+# 178 "src/ingame_msg.c"
+ gs->logs[1]
+# 178 "src/ingame_msg.c" 3 4
+ , 
+# 178 "src/ingame_msg.c"
+ 0
+# 178 "src/ingame_msg.c" 3 4
+ , 
+# 178 "src/ingame_msg.c"
+ 0
+# 178 "src/ingame_msg.c" 3 4
+ , 
+# 178 "src/ingame_msg.c"
+ 0
+# 178 "src/ingame_msg.c" 3 4
+ , 
+# 178 "src/ingame_msg.c"
+ 0
+# 178 "src/ingame_msg.c" 3 4
+ , 0, 0, 0, 0)
+# 178 "src/ingame_msg.c"
+                             ;
+  // We defer the refreshing of screen contents of the panels until
+  // we actually want to see them, because if we refresh them immedately upon manipulating it conflicts
+  //with the contents of the main screen. update_panels + doupdate does this for us so no need to call wfrefresh
+  update_panels();
+  doupdate();
+  int ch;
+  while (1){
+    ch = 
+# 186 "src/ingame_msg.c" 3 4
+        wgetch(stdscr)
+# 186 "src/ingame_msg.c"
+               ;
+    if (ch == 'q'){
+      hide_panel(gs->panels[panel_index]);
+      update_panels();
+      doupdate();
+      return 1;
+    }
+    else if(ch == 
+# 193 "src/ingame_msg.c" 3 4
+                 0632
+# 193 "src/ingame_msg.c"
+                           ){
+      ;
+    }
+  }
+}
+
+int msg_find_log_position(Game_State *gs){
+
+  for(int i = 0; i< 10; i++){
+    //The position at which we check the screen contents could potentially fail
+    //Due to the fact that the last position of the message log hhas 2 digits (see the update event log function for more info)
+
+      if(s_only_whitespace(gs->ingame_log[i]) == 1){
+ return i;
+      }
+  }
+  return -1;
+
+}
+
+int msg_find_item_position(WINDOW *log, int max_y,Item_Holder *item, Item_Holder **item_list){
+  for(int i = 0; i < max_y; i++){
+  // Because the equipment can be either of type armor or weapon, we have to be sure that they are the same type before even
+  //bothering to check if the names are the same
+
+    //printf("%d", max_y);
+  if(item->item->kind == item_list[i]->item->kind){
+    //It is very important to put parenthesis around the macro call because otherwise, for unknown causes
+    //it returns a faulty value
+    if((item_list[i]->item->kind == weapon || item_list[i]->item->kind == armor ? item_list[i]->item->kind == weapon ? (((struct Weapon *)item->item->item_specific_info)->quality == ((struct Weapon *)item_list[i]->item->item_specific_info)->quality && ((struct Weapon *)item->item->item_specific_info)->material == ((struct Weapon *)item_list[i]->item->item_specific_info)->material && ((struct Weapon *)item->item->item_specific_info)->variant == ((struct Weapon *)item_list[i]->item->item_specific_info)->variant && ((struct Weapon *)item->item->item_specific_info)->kind == ((struct Weapon *)item_list[i]->item->item_specific_info)->kind ? 0 : 1) : ({int is_equal; const char *source_item_holder_quality = quality_name_modifier[((struct Armor *)item->item->item_specific_info)->quality]; const char *source_item_holder_material = material_name_modifier[((struct Armor *)item->item->item_specific_info)->material]; const char *source_item_holder_armor_type = equipment_type_modifier[((struct Armor *)item->item->item_specific_info)->armor_type]; char *target_item_holder_quality = quality_name_modifier[((struct Armor *)item_list[i]->item->item_specific_info)->quality]; const char *target_item_holder_material = material_name_modifier[((struct Armor *)item_list[i]->item->item_specific_info)->material]; const char *target_item_holder_armor_type = equipment_type_modifier[((struct Armor *)item_list[i]->item->item_specific_info)->armor_type]; is_equal = (strcmp(source_item_holder_quality,target_item_holder_quality) | strcmp(source_item_holder_material,target_item_holder_material) | strcmp(source_item_holder_armor_type,target_item_holder_armor_type) ); is_equal;}) : item->item->kind == item->item->kind && item->item->id == item->item->id ? 0 : 1) == 0){
+      //printf("ITEM ALREADY IN LIST");
+      return -2;
+    }
+   }
+  }
+  //printf("ITEM NOT ALREADY IN LIST");
+  //printf(" free position: %d",max_y);
+  return max_y;
+}
+
+void msg_update_event_log(Game_State *gs){
+  int free_log_position = msg_find_log_position(gs);
+  if(free_log_position != -1){
+    if(free_log_position < 9){
+      /* We add plus two because the log begins at the cell-wise index of two*/
+      mvwprintw(gs->logs[1],free_log_position,12, gs->current_event);;
+    }
+    else{
+      //We change the offset where print is, if the found y position is 13 because the offset position is 2 digits and so we counter that by increasing the offset
+      mvwprintw(gs->logs[1],free_log_position,14, gs->current_event);;
+    }
+  }
+  else{
+    wmove(gs->logs[1],12,14); wclrtoeol(gs->logs[1]); strcpy(gs->ingame_log[9], gs->ingame_log[8]); mvwprintw(gs->logs[1],12,14, gs->ingame_log[9]); for(int i = 8; i > 0; i--){ wmove(gs->logs[1],i+2,12); wclrtoeol(gs->logs[1]); strcpy(gs->ingame_log[i], gs->ingame_log[i-1]); mvwprintw(gs->logs[1],i+2,12, gs->ingame_log[i]); } wmove(gs->logs[1],2,14); wclrtoeol(gs->logs[1]); strcpy(gs->ingame_log[0], gs->current_event); mvwprintw(gs->logs[1],2,14, gs->ingame_log[0]);;
+   }
+  wmove(gs->logs[0],gs->num_cols, gs->num_rows);
+  wclrtoeol(gs->logs[0]);
+  mvwprintw(gs->logs[0],12,14, gs->current_event);
+}
+
+int msg_display_inventory(Game_State *gs,int context, U_Hashtable *merchant){
+  int tmp_amount_holder;
+  int curr_curs_pos = 2;
+  int current_printed_item = 0;
+  int num_encountered_items = 0;
+  werase(gs->logs[2]); 
+# 258 "src/ingame_msg.c" 3 4
+ wborder(
+# 258 "src/ingame_msg.c"
+ gs->logs[2]
+# 258 "src/ingame_msg.c" 3 4
+ , 
+# 258 "src/ingame_msg.c"
+ 0
+# 258 "src/ingame_msg.c" 3 4
+ , 
+# 258 "src/ingame_msg.c"
+ 0
+# 258 "src/ingame_msg.c" 3 4
+ , 
+# 258 "src/ingame_msg.c"
+ 0
+# 258 "src/ingame_msg.c" 3 4
+ , 
+# 258 "src/ingame_msg.c"
+ 0
+# 258 "src/ingame_msg.c" 3 4
+ , 0, 0, 0, 0)
+# 258 "src/ingame_msg.c"
+ ;;
+  mvwprintw(gs->logs[2],1,25, "Items in inventory" );;
+  Item_Holder **item_list = 
+# 260 "src/ingame_msg.c" 3 4
+                           ((void *)0)
+# 260 "src/ingame_msg.c"
+                               ;
+  item_list = malloc(sizeof(Item_Holder* ) * (((Player_Info * )gs->player->additional_info)->inventory)->item_count);
+  int column_position = 2;
+  for(int i = 0; i < (((Player_Info * )gs->player->additional_info)->inventory)->size; i++ ){
+    if((((Player_Info * )gs->player->additional_info)->inventory)->entries[i] != 
+# 264 "src/ingame_msg.c" 3 4
+                                                                                ((void *)0)
+# 264 "src/ingame_msg.c"
+                                                                                    ){
+      Entry *current_entry = (((Player_Info * )gs->player->additional_info)->inventory)->entries[i];
+      while(current_entry != 
+# 266 "src/ingame_msg.c" 3 4
+                            ((void *)0)
+# 266 "src/ingame_msg.c"
+                                ){
+ msg_print_item(current_entry->item_holder,gs->logs[2],5,column_position);
+ item_list[column_position-2] = current_entry->item_holder;
+        current_entry = current_entry->next_entry;
+ column_position++;
+ num_encountered_items++;
+      }
+    }
+  }
+  top_panel(gs->panels[2]);
+  if(context == 0){
+    wmove(gs->logs[2],curr_curs_pos,5);
+    curs_set(
+# 278 "src/ingame_msg.c" 3 4
+            1
+# 278 "src/ingame_msg.c"
+                );
+  }
+  update_panels(); doupdate();;
+  int ch;
+  while (1){
+    ch = 
+# 283 "src/ingame_msg.c" 3 4
+        wgetch(stdscr)
+# 283 "src/ingame_msg.c"
+               ;
+    if (ch == 'q'){
+      hide_panel(gs->panels[2]);
+      free(item_list); (item_list) = 
+# 286 "src/ingame_msg.c" 3 4
+     ((void *)0)
+# 286 "src/ingame_msg.c"
+                         ;
+      curs_set(
+# 287 "src/ingame_msg.c" 3 4
+              0
+# 287 "src/ingame_msg.c"
+                   );
+      update_panels(); doupdate();;
+      return 1;
+    }
+    else if (ch == 
+# 291 "src/ingame_msg.c" 3 4
+                  0403 
+# 291 "src/ingame_msg.c"
+                         && curr_curs_pos > 2 && context == 0){
+      curr_curs_pos--;
+      wmove(gs->logs[2],curr_curs_pos,5);
+      update_panels();
+      doupdate();
+    }
+    else if (ch == 
+# 297 "src/ingame_msg.c" 3 4
+                  0402 
+# 297 "src/ingame_msg.c"
+                           && curr_curs_pos < 24 - 2 && item_list[(curr_curs_pos-2)+1] != 
+# 297 "src/ingame_msg.c" 3 4
+                                                                                                     ((void *)0) 
+# 297 "src/ingame_msg.c"
+                                                                                                          && context == 0){
+      curr_curs_pos++;
+      wmove(gs->logs[2],curr_curs_pos,5);
+      update_panels();
+      doupdate();
+    }
+    else if(ch == 
+# 303 "src/ingame_msg.c" 3 4
+                 0632
+# 303 "src/ingame_msg.c"
+                           ){
+      msg_redraw_inventory(gs, item_list, context, num_encountered_items);
+    }
+    else if(ch == 'R'){
+      msg_redraw_inventory(gs, item_list, context, num_encountered_items);
+    }
+  }
+}
+
+int msg_display_inventory_equip_context(Game_State *gs){
+  int available_equipment = 0;
+  int tmp_amount_holder;
+  werase(gs->logs[2]); 
+# 315 "src/ingame_msg.c" 3 4
+ wborder(
+# 315 "src/ingame_msg.c"
+ gs->logs[2]
+# 315 "src/ingame_msg.c" 3 4
+ , 
+# 315 "src/ingame_msg.c"
+ 0
+# 315 "src/ingame_msg.c" 3 4
+ , 
+# 315 "src/ingame_msg.c"
+ 0
+# 315 "src/ingame_msg.c" 3 4
+ , 
+# 315 "src/ingame_msg.c"
+ 0
+# 315 "src/ingame_msg.c" 3 4
+ , 
+# 315 "src/ingame_msg.c"
+ 0
+# 315 "src/ingame_msg.c" 3 4
+ , 0, 0, 0, 0)
+# 315 "src/ingame_msg.c"
+ ;;
+  mvwprintw(gs->logs[2],1,25, "Available equipment" );;
+  int curr_curs_pos = 2;
+  int column_position = 2;
+  int current_printed_items = 0;
+  Item_Holder **item_list = 
+# 320 "src/ingame_msg.c" 3 4
+                           ((void *)0)
+# 320 "src/ingame_msg.c"
+                               ;
+  /*We malloc an itemlist of size item_count to account for the maximal possible items we need to hold and set them to null
+   to account for the fact that potentially not all items in the inventory are equipment*/
+  if((((Player_Info * )gs->player->additional_info)->inventory)->item_count > 0){
+    item_list = malloc(sizeof(Item_Holder* ) * (((Player_Info * )gs->player->additional_info)->inventory)->item_count);
+  }
+  for(int i = 0; i < (((Player_Info * )gs->player->additional_info)->inventory)->item_count; i++){
+    item_list[i] = 
+# 327 "src/ingame_msg.c" 3 4
+                  ((void *)0)
+# 327 "src/ingame_msg.c"
+                      ;
+  }
+  for(int i = 0; i < (((Player_Info * )gs->player->additional_info)->inventory)->size; i++ ){
+    if((((Player_Info * )gs->player->additional_info)->inventory)->entries[i] != 
+# 330 "src/ingame_msg.c" 3 4
+                                                                                ((void *)0)
+# 330 "src/ingame_msg.c"
+                                                                                    ){
+      Entry *current_entry = (((Player_Info * )gs->player->additional_info)->inventory)->entries[i];
+      while(current_entry != 
+# 332 "src/ingame_msg.c" 3 4
+                            ((void *)0)
+# 332 "src/ingame_msg.c"
+                                ){
+ if(current_entry->item_holder->item->kind == weapon || current_entry->item_holder->item->kind == armor ){
+ item_list[column_position-2] = current_entry->item_holder;
+ msg_print_item(current_entry->item_holder,gs->logs[2],5,column_position);
+ column_position++;
+ current_printed_items++;
+ available_equipment++;
+       }
+ current_entry = current_entry->next_entry;
+      }
+    }
+  }
+  wmove(gs->logs[2],curr_curs_pos,5);
+  curs_set(
+# 345 "src/ingame_msg.c" 3 4
+          1
+# 345 "src/ingame_msg.c"
+              );
+  top_panel(gs->panels[2]);
+  update_panels();
+  doupdate();
+  int ch;
+  while (1){
+    ch = 
+# 351 "src/ingame_msg.c" 3 4
+        wgetch(stdscr)
+# 351 "src/ingame_msg.c"
+               ;
+    if (ch == 'q'){
+      free(item_list);
+      curs_set(
+# 354 "src/ingame_msg.c" 3 4
+              0
+# 354 "src/ingame_msg.c"
+                   );
+      hide_panel(gs->panels[2]);
+      update_panels();
+      doupdate();
+      return 1;
+    }
+    else if (ch == 
+# 360 "src/ingame_msg.c" 3 4
+                  0403 
+# 360 "src/ingame_msg.c"
+                         && curr_curs_pos > 2){
+      curr_curs_pos--;
+      wmove(gs->logs[2],curr_curs_pos,5);
+      update_panels();
+      doupdate();
+    }
+    else if (ch == 
+# 366 "src/ingame_msg.c" 3 4
+                  0402 
+# 366 "src/ingame_msg.c"
+                           && curr_curs_pos < 24 - 2 && (curr_curs_pos-2)+1 < available_equipment && item_list != 
+# 366 "src/ingame_msg.c" 3 4
+                                                                                                                             ((void *)0)
+# 366 "src/ingame_msg.c"
+                                                                                                                                 ){
+      curr_curs_pos++;
+      wmove(gs->logs[2],curr_curs_pos,5);
+      update_panels();
+      doupdate();
+    }
+    //    if( (ch == 'y' && ( item_list != NULL && item_list[curr_curs_pos-2]== NULL))){
+    //    printf("this should not be allowed to happen!");
+    //  }
+    //probably faulty with how we assign item holder pointers to the item list
+    else if (ch == 'y' && ( item_list != 
+# 376 "src/ingame_msg.c" 3 4
+                                        ((void *)0) 
+# 376 "src/ingame_msg.c"
+                                             && item_list[curr_curs_pos-2]!= 
+# 376 "src/ingame_msg.c" 3 4
+                                                                             ((void *)0)
+# 376 "src/ingame_msg.c"
+                                                                                 )){
+      //printf(" quality: %d ",((struct Weapon *)item_list[curr_curs_pos-2]->item->item_specific_info)->quality );
+      item_list[curr_curs_pos-2]->item->kind == armor ? sprintf(gs->ingame_log[0], "You equip %s %s %s",quality_name_modifier[((struct Armor *)item_list[curr_curs_pos-2]->item->item_specific_info)->quality], material_name_modifier[((struct Armor *)item_list[curr_curs_pos-2]->item->item_specific_info)->material], equipment_type_modifier[((struct Armor *)item_list[curr_curs_pos-2]->item->item_specific_info)->armor_type]) msg_update_event_log(gs); : sprintf(game_world->ingame_log[0], "You equip %s % %s %s %s",quality_name_modifier[((struct Weapon *)item_list[curr_curs_pos-2]->item->item_specific_info)->quality], material_name_modifier[((struct Weapon *)item_list[curr_curs_pos-2]->item->item_specific_info)->material], equipment_type_modifier[((struct Armor *)item_list[curr_curs_pos-2]->item->item_specific_info)->armor_type] ,handed_modifier[((struct Weapon *)item_list[curr_curs_pos-2]->item->item_specific_info)->variant], mele_weapon_name_modifier[((struct Weapon *)item_list[curr_curs_pos-2]->item->item_specific_info)->kind]) msg_update_event_log(gs);
+      //mvwprintw(gs->logs[MAIN_SCREEN],gs->num_cols-1,0, "%s", "You equip ");
+     /*We temporarily set the amount of the item we equip to be one since
+      item printer prints the amount of the item, unless the amount we have is 1
+     and we do not want the amount printed, just the item's name*/
+     tmp_amount_holder = item_list[curr_curs_pos-2]->amount;
+     item_list[curr_curs_pos-2]->amount = 1;
+     //msg_print_item(item_list[curr_curs_pos-2],gs->logs[MAIN_SCREEN],11,gs->num_cols-1);
+     item_list[curr_curs_pos-2]->amount = tmp_amount_holder;
+          msg_update_event_log(gs);
+      update_panels(); doupdate();;
+      //we subtract 2 from curr_curs_pos to "map" from current cursor position to the actual postion of the item
+      //in the item list. This is because the item list starts at index 0, whereas the cursor position starts at 2
+     Item_Holder *previously_equipped = inv_equip_item(item_list[curr_curs_pos-2], ((U_Hashtable * )gs->player->additional_info), gs->player);
+
+      /*If the item list is null, it means we equipped the only occurence of that item in the inventory*/
+     if(item_list[curr_curs_pos-2]->amount == 0 ){
+        wclrtoeol(gs->logs[2]);
+ /*We deliberately defer freeing the item holder up until this point because when freeing the item holder and setting it to null
+	  afterwards in the function call to remove it from the inventory, the check to assert if it was null at this point in the code would fail for some reason. We are therefore forced to free the item holder here*/
+ (*i_free_item_handler[item_list[curr_curs_pos-2]->item->kind])(item_list[curr_curs_pos-2]); free(item_list[curr_curs_pos-2]->item); free(item_list[curr_curs_pos-2]); item_list[curr_curs_pos-2] = 
+# 398 "src/ingame_msg.c" 3 4
+((void *)0)
+# 398 "src/ingame_msg.c"
+;;
+       for(int i = curr_curs_pos-2; i < available_equipment-1; i++ ){ item_list[i] = item_list[i+1]; wmove(gs->logs[2],i+2,5); wclrtoeol(gs->logs[2]); msg_print_item(item_list[i],gs->logs[2],5,i+2); } wmove(gs->logs[2],available_equipment-1+2,5); wclrtoeol(gs->logs[2]); 
+# 399 "src/ingame_msg.c" 3 4
+      wborder(
+# 399 "src/ingame_msg.c"
+      gs->logs[2]
+# 399 "src/ingame_msg.c" 3 4
+      , 
+# 399 "src/ingame_msg.c"
+      0
+# 399 "src/ingame_msg.c" 3 4
+      , 
+# 399 "src/ingame_msg.c"
+      0
+# 399 "src/ingame_msg.c" 3 4
+      , 
+# 399 "src/ingame_msg.c"
+      0
+# 399 "src/ingame_msg.c" 3 4
+      , 
+# 399 "src/ingame_msg.c"
+      0
+# 399 "src/ingame_msg.c" 3 4
+      , 0, 0, 0, 0)
+# 399 "src/ingame_msg.c"
+      ; wmove(gs->logs[2],curr_curs_pos-2 +2,5); update_panels(); doupdate();;;
+ available_equipment--;
+ //if(item_list[curr_curs_pos-2] == NULL){
+ // printf( "still null ");
+ //}
+ //	any_null(item_list);     
+           }
+
+
+     else{
+       // printf("this bit of logic here");
+       wclrtoeol(gs->logs[2]);
+  
+# 411 "src/ingame_msg.c" 3 4
+ wborder(
+# 411 "src/ingame_msg.c"
+ gs->logs[2]
+# 411 "src/ingame_msg.c" 3 4
+ , 
+# 411 "src/ingame_msg.c"
+ 0
+# 411 "src/ingame_msg.c" 3 4
+ , 
+# 411 "src/ingame_msg.c"
+ 0
+# 411 "src/ingame_msg.c" 3 4
+ , 
+# 411 "src/ingame_msg.c"
+ 0
+# 411 "src/ingame_msg.c" 3 4
+ , 
+# 411 "src/ingame_msg.c"
+ 0
+# 411 "src/ingame_msg.c" 3 4
+ , 0, 0, 0, 0)
+# 411 "src/ingame_msg.c"
+                                 ;
+  msg_print_item(item_list[curr_curs_pos-2],gs->logs[2],5,curr_curs_pos);
+  update_panels(); doupdate();;
+     }
+
+     if(previously_equipped != 
+# 416 "src/ingame_msg.c" 3 4
+                              ((void *)0)
+# 416 "src/ingame_msg.c"
+                                  ){
+       int list_pos = msg_find_item_position(gs->logs[2],available_equipment,previously_equipped,item_list);
+       if(list_pos != -2){
+  //	 printf( "NOT LISTED found free postition in: %d", list_pos);
+       item_list[list_pos] = previously_equipped;
+       msg_print_item(item_list[list_pos],gs->logs[2],5,list_pos+2);
+       available_equipment++;
+       update_panels(); doupdate();;
+       }
+       else{
+
+  free(previously_equipped);
+  werase(gs->logs[2]); 
+# 428 "src/ingame_msg.c" 3 4
+ wborder(
+# 428 "src/ingame_msg.c"
+ gs->logs[2]
+# 428 "src/ingame_msg.c" 3 4
+ , 
+# 428 "src/ingame_msg.c"
+ 0
+# 428 "src/ingame_msg.c" 3 4
+ , 
+# 428 "src/ingame_msg.c"
+ 0
+# 428 "src/ingame_msg.c" 3 4
+ , 
+# 428 "src/ingame_msg.c"
+ 0
+# 428 "src/ingame_msg.c" 3 4
+ , 
+# 428 "src/ingame_msg.c"
+ 0
+# 428 "src/ingame_msg.c" 3 4
+ , 0, 0, 0, 0)
+# 428 "src/ingame_msg.c"
+ ;; mvwprintw(gs->logs[2],1,25, "Available equipment" );; for(int i = 0; i < available_equipment; i++){msg_print_item(item_list[i],gs->logs[2],5,i+2);};
+  update_panels(); doupdate();;
+       }
+     }
+
+     /*
+     for(int i = 0; i < (((Player_Info * )gs->player->additional_info)->inventory)->item_count; i++ ){
+      if(item_list[i] == NULL){
+	printf(" %d null ", i);
+      }
+      else{
+		printf(" %d NOT null ", i);
+      }
+    
+     }
+     */
+
+    /*Provided that the item at the cursor is null af compressing the item list and that the current cursor position mapped to the available equipment +1 exceeds the avilalbe equipment (we are at the end of the equipment list), we have to move upwards to the next available piece of equipment. The exception being that (curr_curs_pos-2)-1 > -1 (we are are the only/last item in the item list)   */
+     if( (item_list[(curr_curs_pos-2)] == 
+# 446 "src/ingame_msg.c" 3 4
+                                         ((void *)0) 
+# 446 "src/ingame_msg.c"
+                                              && (curr_curs_pos -1 ) +1 > available_equipment) && (curr_curs_pos-2)-1 > -1){
+   //printf("null,just as expected");
+
+   curr_curs_pos--;
+   wmove(gs->logs[2],curr_curs_pos,5);
+
+ }
+ else{
+   wmove(gs->logs[2],curr_curs_pos,5);
+ }
+ update_panels(); doupdate();;
+    }
+    else if(ch == 
+# 458 "src/ingame_msg.c" 3 4
+                 0632
+# 458 "src/ingame_msg.c"
+                           ){
+      msg_redraw_inventory_equip_context(gs, item_list, available_equipment,curr_curs_pos);
+    }
+  }
+}
+int msg_display_equipped_equipment(Game_State *gs){
+  werase(gs->logs[2]); 
+# 464 "src/ingame_msg.c" 3 4
+ wborder(
+# 464 "src/ingame_msg.c"
+ gs->logs[2]
+# 464 "src/ingame_msg.c" 3 4
+ , 
+# 464 "src/ingame_msg.c"
+ 0
+# 464 "src/ingame_msg.c" 3 4
+ , 
+# 464 "src/ingame_msg.c"
+ 0
+# 464 "src/ingame_msg.c" 3 4
+ , 
+# 464 "src/ingame_msg.c"
+ 0
+# 464 "src/ingame_msg.c" 3 4
+ , 
+# 464 "src/ingame_msg.c"
+ 0
+# 464 "src/ingame_msg.c" 3 4
+ , 0, 0, 0, 0)
+# 464 "src/ingame_msg.c"
+ ;;
+  //Since the imtem printer macro assumes a item holder,
+  //we make a dummy item holder to temporarily hold the
+  //equipped items we want to print
+  Item_Holder *item_holder = malloc(sizeof(Item_Holder));
+  item_holder->amount = 1;
+  mvwprintw(gs->logs[2],1,25, "Items equipped");
+  mvwprintw(gs->logs[2],4,25, "Head slot:");
+  item_holder->item = ((Player_Info * )gs->player->additional_info)->equipment_list[head_slot];
+  msg_print_item(item_holder,gs->logs[2],25,5);
+  mvwprintw(gs->logs[2],6,25, "Neck slot:");
+  item_holder->item = ((Player_Info * )gs->player->additional_info)->equipment_list[neck_slot];
+  msg_print_item(item_holder,gs->logs[2],25,7);
+  mvwprintw(gs->logs[2],8,25, "Torso slot:");
+  item_holder->item = ((Player_Info * )gs->player->additional_info)->equipment_list[torso_slot];
+  msg_print_item(item_holder,gs->logs[2],25,9);
+  mvwprintw(gs->logs[2],12,5, "Finger slot:");
+  item_holder->item = ((Player_Info * )gs->player->additional_info)->equipment_list[finger_slot];
+  msg_print_item(item_holder,gs->logs[2],5,13);
+  mvwprintw(gs->logs[2],15,25, "Legs slot:");
+  item_holder->item = ((Player_Info * )gs->player->additional_info)->equipment_list[legs_slot];
+  msg_print_item(item_holder,gs->logs[2],25,16);
+  mvwprintw(gs->logs[2],18,25, "Feet slot:");
+  item_holder->item = ((Player_Info * )gs->player->additional_info)->equipment_list[feet_slot];
+  msg_print_item(item_holder,gs->logs[2],25,19);
+  mvwprintw(gs->logs[2],10,3, "Mainhand slot:");
+  item_holder->item = ((Player_Info * )gs->player->additional_info)->equipment_list[mainhand_slot];
+  msg_print_item(item_holder,gs->logs[2],3,11);
+  mvwprintw(gs->logs[2],10,38, "Offhand slot:");
+  item_holder->item = ((Player_Info * )gs->player->additional_info)->equipment_list[offhand_slot];
+  msg_print_item(item_holder,gs->logs[2],38,11);
+  mvwprintw(gs->logs[2],2,40, "Back slot:");
+  item_holder->item = ((Player_Info * )gs->player->additional_info)->equipment_list[back_slot];
+  msg_print_item(item_holder,gs->logs[2],40,3);
+  top_panel(gs->panels[2]);
+  update_panels(); doupdate();;
+  free(item_holder);
+  int ch;
+  while (1){
+    ch = 
+# 503 "src/ingame_msg.c" 3 4
+        wgetch(stdscr)
+# 503 "src/ingame_msg.c"
+               ;
+    if (ch == 'q'){
+      hide_panel(gs->panels[2]);
+      update_panels();
+      doupdate();
+      return 1;
+
+    }
+    else if(ch == 
+# 511 "src/ingame_msg.c" 3 4
+                 0632
+# 511 "src/ingame_msg.c"
+                           ){
+      msg_redraw_equipped_equipment(gs);
+      }
+  }
+}
+
+void msg_redraw_inventory(Game_State *gs, Item_Holder **item_list, int context, int num_items){
+  int x,y;
+  
+# 519 "src/ingame_msg.c" 3 4
+ (
+# 519 "src/ingame_msg.c"
+ y 
+# 519 "src/ingame_msg.c" 3 4
+ = ((0 != (const void *)((
+# 519 "src/ingame_msg.c"
+ stdscr
+# 519 "src/ingame_msg.c" 3 4
+ ))) ? ((
+# 519 "src/ingame_msg.c"
+ stdscr
+# 519 "src/ingame_msg.c" 3 4
+ )->_maxy + 1) : (-1)), 
+# 519 "src/ingame_msg.c"
+ x 
+# 519 "src/ingame_msg.c" 3 4
+ = ((0 != (const void *)((
+# 519 "src/ingame_msg.c"
+ stdscr
+# 519 "src/ingame_msg.c" 3 4
+ ))) ? ((
+# 519 "src/ingame_msg.c"
+ stdscr
+# 519 "src/ingame_msg.c" 3 4
+ )->_maxx + 1) : (-1)))
+# 519 "src/ingame_msg.c"
+                      ;
+  if (x < 10 || y < 10){
+    while(x < 10 || y < 10){
+      int ch = 
+# 522 "src/ingame_msg.c" 3 4
+              wgetch(stdscr)
+# 522 "src/ingame_msg.c"
+                     ;
+      if(ch == 
+# 523 "src/ingame_msg.c" 3 4
+              0632
+# 523 "src/ingame_msg.c"
+                        ){
+      
+# 524 "src/ingame_msg.c" 3 4
+     (
+# 524 "src/ingame_msg.c"
+     y 
+# 524 "src/ingame_msg.c" 3 4
+     = ((0 != (const void *)((
+# 524 "src/ingame_msg.c"
+     stdscr
+# 524 "src/ingame_msg.c" 3 4
+     ))) ? ((
+# 524 "src/ingame_msg.c"
+     stdscr
+# 524 "src/ingame_msg.c" 3 4
+     )->_maxy + 1) : (-1)), 
+# 524 "src/ingame_msg.c"
+     x 
+# 524 "src/ingame_msg.c" 3 4
+     = ((0 != (const void *)((
+# 524 "src/ingame_msg.c"
+     stdscr
+# 524 "src/ingame_msg.c" 3 4
+     ))) ? ((
+# 524 "src/ingame_msg.c"
+     stdscr
+# 524 "src/ingame_msg.c" 3 4
+     )->_maxx + 1) : (-1)))
+# 524 "src/ingame_msg.c"
+                          ;
+       }
+      }
+    gs->logs[2] = newwin(24,(80 -13),(gs->num_cols - 1) / 4 , (gs->num_rows - 1) / 4);
+    gs->panels[2] = new_panel(gs->logs[2]);
+      werase(gs->logs[2]); 
+# 529 "src/ingame_msg.c" 3 4
+     wborder(
+# 529 "src/ingame_msg.c"
+     gs->logs[2]
+# 529 "src/ingame_msg.c" 3 4
+     , 
+# 529 "src/ingame_msg.c"
+     0
+# 529 "src/ingame_msg.c" 3 4
+     , 
+# 529 "src/ingame_msg.c"
+     0
+# 529 "src/ingame_msg.c" 3 4
+     , 
+# 529 "src/ingame_msg.c"
+     0
+# 529 "src/ingame_msg.c" 3 4
+     , 
+# 529 "src/ingame_msg.c"
+     0
+# 529 "src/ingame_msg.c" 3 4
+     , 0, 0, 0, 0)
+# 529 "src/ingame_msg.c"
+     ;;
+      top_panel(gs->panels[2]);
+       for(int i = 0; i < gs->num_cols -1 && i+gs->player->position.global_y < gs->current_zone->height; i++) for(int j = 13; j < gs->num_rows -1 && j+gs->player->position.global_x < gs->current_zone->width; j++) mvwprintw(gs->logs[0],i,j,(gs->current_zone->tiles[(gs->player->position.global_y - (gs->player->position.local_y))+i][(gs->player->position.global_x - gs->player->position.local_x )+j].content)); mvwprintw(gs->logs[0],gs->player->position.local_y, gs->player->position.local_x, gs->player->representation);;
+      if(context == 1){
+    mvwprintw(gs->logs[2],1,25, "Items in inventory" );;
+  }
+  else{
+    mvwprintw(gs->logs[2],1,25, "Merchant\'s wares" );;
+  }
+  int row_position = 2;
+  for(int i = 0; i < num_items; i++){
+  msg_print_item(item_list[i],gs->logs[2],5,row_position);
+  row_position++;
+  }
+      update_panels(); doupdate();;
+
+  }
+  else{
+  //For some reason, you explicitly have to reisze the size of the window to the original
+  //upon detecting a resize, otherwise it will upon being resized grow to beyond its original size, taking up
+  //the entire screen
+  wresize(gs->logs[2],24,(80 -13));
+  werase(gs->logs[2]); 
+# 551 "src/ingame_msg.c" 3 4
+ wborder(
+# 551 "src/ingame_msg.c"
+ gs->logs[2]
+# 551 "src/ingame_msg.c" 3 4
+ , 
+# 551 "src/ingame_msg.c"
+ 0
+# 551 "src/ingame_msg.c" 3 4
+ , 
+# 551 "src/ingame_msg.c"
+ 0
+# 551 "src/ingame_msg.c" 3 4
+ , 
+# 551 "src/ingame_msg.c"
+ 0
+# 551 "src/ingame_msg.c" 3 4
+ , 
+# 551 "src/ingame_msg.c"
+ 0
+# 551 "src/ingame_msg.c" 3 4
+ , 0, 0, 0, 0)
+# 551 "src/ingame_msg.c"
+ ;;
+  for(int i = 0; i < gs->num_cols -1 && i+gs->player->position.global_y < gs->current_zone->height; i++) for(int j = 13; j < gs->num_rows -1 && j+gs->player->position.global_x < gs->current_zone->width; j++) mvwprintw(gs->logs[0],i,j,(gs->current_zone->tiles[(gs->player->position.global_y - (gs->player->position.local_y))+i][(gs->player->position.global_x - gs->player->position.local_x )+j].content)); mvwprintw(gs->logs[0],gs->player->position.local_y, gs->player->position.local_x, gs->player->representation);;
+  if(context == 1){
+    mvwprintw(gs->logs[2],1,25, "Items in inventory" );;
+  }
+  else{
+    mvwprintw(gs->logs[2],1,25, "Merchant\'s wares" );;
+  }
+  int row_position = 2;
+  for(int i = 0; i < num_items; i++){
+  msg_print_item(item_list[i],gs->logs[2],5,row_position);
+  row_position++;
+  }
+  update_panels(); doupdate();;
+  }
+
+}
+
+void msg_redraw_equipped_equipment(Game_State *gs){
+  //Programmers note: i suspect that if stdscr gets small enough, the current open window get automatically free'd
+  //this is because the screen itself becomes transparent, making the background/main screen visisble and attempting to free the window in such a
+  //situation leads to a double free error, implying it has already been deleted.
+  int x,y;
+  
+# 574 "src/ingame_msg.c" 3 4
+ (
+# 574 "src/ingame_msg.c"
+ y 
+# 574 "src/ingame_msg.c" 3 4
+ = ((0 != (const void *)((
+# 574 "src/ingame_msg.c"
+ stdscr
+# 574 "src/ingame_msg.c" 3 4
+ ))) ? ((
+# 574 "src/ingame_msg.c"
+ stdscr
+# 574 "src/ingame_msg.c" 3 4
+ )->_maxy + 1) : (-1)), 
+# 574 "src/ingame_msg.c"
+ x 
+# 574 "src/ingame_msg.c" 3 4
+ = ((0 != (const void *)((
+# 574 "src/ingame_msg.c"
+ stdscr
+# 574 "src/ingame_msg.c" 3 4
+ ))) ? ((
+# 574 "src/ingame_msg.c"
+ stdscr
+# 574 "src/ingame_msg.c" 3 4
+ )->_maxx + 1) : (-1)))
+# 574 "src/ingame_msg.c"
+                      ;
+  if (x < 10 || y < 10){
+    while(x < 10 || y < 10){
+      int ch = 
+# 577 "src/ingame_msg.c" 3 4
+              wgetch(stdscr)
+# 577 "src/ingame_msg.c"
+                     ;
+      if(ch == 
+# 578 "src/ingame_msg.c" 3 4
+              0632
+# 578 "src/ingame_msg.c"
+                        ){
+      
+# 579 "src/ingame_msg.c" 3 4
+     (
+# 579 "src/ingame_msg.c"
+     y 
+# 579 "src/ingame_msg.c" 3 4
+     = ((0 != (const void *)((
+# 579 "src/ingame_msg.c"
+     stdscr
+# 579 "src/ingame_msg.c" 3 4
+     ))) ? ((
+# 579 "src/ingame_msg.c"
+     stdscr
+# 579 "src/ingame_msg.c" 3 4
+     )->_maxy + 1) : (-1)), 
+# 579 "src/ingame_msg.c"
+     x 
+# 579 "src/ingame_msg.c" 3 4
+     = ((0 != (const void *)((
+# 579 "src/ingame_msg.c"
+     stdscr
+# 579 "src/ingame_msg.c" 3 4
+     ))) ? ((
+# 579 "src/ingame_msg.c"
+     stdscr
+# 579 "src/ingame_msg.c" 3 4
+     )->_maxx + 1) : (-1)))
+# 579 "src/ingame_msg.c"
+                          ;
+       }
+      }
+    gs->logs[2] = newwin(24,(80 -13),(gs->num_cols - 1) / 4 , (gs->num_rows - 1) / 4);
+    gs->panels[2] = new_panel(gs->logs[2]);
+      werase(gs->logs[2]); 
+# 584 "src/ingame_msg.c" 3 4
+     wborder(
+# 584 "src/ingame_msg.c"
+     gs->logs[2]
+# 584 "src/ingame_msg.c" 3 4
+     , 
+# 584 "src/ingame_msg.c"
+     0
+# 584 "src/ingame_msg.c" 3 4
+     , 
+# 584 "src/ingame_msg.c"
+     0
+# 584 "src/ingame_msg.c" 3 4
+     , 
+# 584 "src/ingame_msg.c"
+     0
+# 584 "src/ingame_msg.c" 3 4
+     , 
+# 584 "src/ingame_msg.c"
+     0
+# 584 "src/ingame_msg.c" 3 4
+     , 0, 0, 0, 0)
+# 584 "src/ingame_msg.c"
+     ;;
+      top_panel(gs->panels[2]);
+       for(int i = 0; i < gs->num_cols -1 && i+gs->player->position.global_y < gs->current_zone->height; i++) for(int j = 13; j < gs->num_rows -1 && j+gs->player->position.global_x < gs->current_zone->width; j++) mvwprintw(gs->logs[0],i,j,(gs->current_zone->tiles[(gs->player->position.global_y - (gs->player->position.local_y))+i][(gs->player->position.global_x - gs->player->position.local_x )+j].content)); mvwprintw(gs->logs[0],gs->player->position.local_y, gs->player->position.local_x, gs->player->representation);;
+  Item_Holder *item_holder = malloc(sizeof(Item_Holder));
+  item_holder->amount = 1;
+  mvwprintw(gs->logs[2],1,25, "Items equipped");
+  mvwprintw(gs->logs[2],4,25, "Head slot:");
+  item_holder->item = ((Player_Info * )gs->player->additional_info)->equipment_list[head_slot];
+  msg_print_item(item_holder,gs->logs[2],25,5);
+  mvwprintw(gs->logs[2],6,25, "Neck slot:");
+  item_holder->item = ((Player_Info * )gs->player->additional_info)->equipment_list[neck_slot];
+  msg_print_item(item_holder,gs->logs[2],25,7);
+  mvwprintw(gs->logs[2],8,25, "Torso slot:");
+  item_holder->item = ((Player_Info * )gs->player->additional_info)->equipment_list[torso_slot];
+  msg_print_item(item_holder,gs->logs[2],25,9);
+  mvwprintw(gs->logs[2],12,5, "Finger slot:");
+  item_holder->item = ((Player_Info * )gs->player->additional_info)->equipment_list[finger_slot];
+  msg_print_item(item_holder,gs->logs[2],5,13);
+  mvwprintw(gs->logs[2],15,25, "Legs slot:");
+  item_holder->item = ((Player_Info * )gs->player->additional_info)->equipment_list[legs_slot];
+  msg_print_item(item_holder,gs->logs[2],25,16);
+  mvwprintw(gs->logs[2],18,25, "Feet slot:");
+  item_holder->item = ((Player_Info * )gs->player->additional_info)->equipment_list[feet_slot];
+  msg_print_item(item_holder,gs->logs[2],25,19);
+  mvwprintw(gs->logs[2],10,3, "Mainhand slot:");
+  item_holder->item = ((Player_Info * )gs->player->additional_info)->equipment_list[mainhand_slot];
+  msg_print_item(item_holder,gs->logs[2],3,11);
+  mvwprintw(gs->logs[2],10,38, "Offhand slot:");
+  item_holder->item = ((Player_Info * )gs->player->additional_info)->equipment_list[offhand_slot];
+  msg_print_item(item_holder,gs->logs[2],38,11);
+  mvwprintw(gs->logs[2],2,40, "Back slot:");
+  item_holder->item = ((Player_Info * )gs->player->additional_info)->equipment_list[back_slot];
+  msg_print_item(item_holder,gs->logs[2],40,3);
+  top_panel(gs->panels[2]);
+  update_panels(); doupdate();;
+  free(item_holder);
+
+  }
+  else{
+  //For some reason, you explicitly have to reisze the size of the window to the original
+  //upon detecting a resize, otherwise it will upon being resized grow to beyond its original size, taking up
+  //the entire screen
+  wresize(gs->logs[2],24,(80 -13));
+  werase(gs->logs[2]); 
+# 627 "src/ingame_msg.c" 3 4
+ wborder(
+# 627 "src/ingame_msg.c"
+ gs->logs[2]
+# 627 "src/ingame_msg.c" 3 4
+ , 
+# 627 "src/ingame_msg.c"
+ 0
+# 627 "src/ingame_msg.c" 3 4
+ , 
+# 627 "src/ingame_msg.c"
+ 0
+# 627 "src/ingame_msg.c" 3 4
+ , 
+# 627 "src/ingame_msg.c"
+ 0
+# 627 "src/ingame_msg.c" 3 4
+ , 
+# 627 "src/ingame_msg.c"
+ 0
+# 627 "src/ingame_msg.c" 3 4
+ , 0, 0, 0, 0)
+# 627 "src/ingame_msg.c"
+ ;;
+  for(int i = 0; i < gs->num_cols -1 && i+gs->player->position.global_y < gs->current_zone->height; i++) for(int j = 13; j < gs->num_rows -1 && j+gs->player->position.global_x < gs->current_zone->width; j++) mvwprintw(gs->logs[0],i,j,(gs->current_zone->tiles[(gs->player->position.global_y - (gs->player->position.local_y))+i][(gs->player->position.global_x - gs->player->position.local_x )+j].content)); mvwprintw(gs->logs[0],gs->player->position.local_y, gs->player->position.local_x, gs->player->representation);;
+  Item_Holder *item_holder = malloc(sizeof(Item_Holder));
+  item_holder->amount = 1;
+  mvwprintw(gs->logs[2],1,25, "Items equipped");
+  mvwprintw(gs->logs[2],4,25, "Head slot:");
+  item_holder->item = ((Player_Info * )gs->player->additional_info)->equipment_list[head_slot];
+  msg_print_item(item_holder,gs->logs[2],25,5);
+  mvwprintw(gs->logs[2],6,25, "Neck slot:");
+  item_holder->item = ((Player_Info * )gs->player->additional_info)->equipment_list[neck_slot];
+  msg_print_item(item_holder,gs->logs[2],25,7);
+  mvwprintw(gs->logs[2],8,25, "Torso slot:");
+  item_holder->item = ((Player_Info * )gs->player->additional_info)->equipment_list[torso_slot];
+  msg_print_item(item_holder,gs->logs[2],25,9);
+  mvwprintw(gs->logs[2],12,5, "Finger slot:");
+  item_holder->item = ((Player_Info * )gs->player->additional_info)->equipment_list[finger_slot];
+  msg_print_item(item_holder,gs->logs[2],5,13);
+  mvwprintw(gs->logs[2],15,25, "Legs slot:");
+  item_holder->item = ((Player_Info * )gs->player->additional_info)->equipment_list[legs_slot];
+  msg_print_item(item_holder,gs->logs[2],25,16);
+  mvwprintw(gs->logs[2],18,25, "Feet slot:");
+  item_holder->item = ((Player_Info * )gs->player->additional_info)->equipment_list[feet_slot];
+  msg_print_item(item_holder,gs->logs[2],25,19);
+  mvwprintw(gs->logs[2],10,3, "Mainhand slot:");
+  item_holder->item = ((Player_Info * )gs->player->additional_info)->equipment_list[mainhand_slot];
+  msg_print_item(item_holder,gs->logs[2],3,11);
+  mvwprintw(gs->logs[2],10,38, "Offhand slot:");
+  item_holder->item = ((Player_Info * )gs->player->additional_info)->equipment_list[offhand_slot];
+  msg_print_item(item_holder,gs->logs[2],38,11);
+  mvwprintw(gs->logs[2],2,40, "Back slot:");
+  item_holder->item = ((Player_Info * )gs->player->additional_info)->equipment_list[back_slot];
+  msg_print_item(item_holder,gs->logs[2],40,3);
+  top_panel(gs->panels[2]);
+  update_panels(); doupdate();;
+  free(item_holder);
+  }
+}
+
+
+void msg_redraw_inventory_equip_context(Game_State *gs, Item_Holder **item_list, int num_items, int curs_pos){
+  int row_position = 2;
+  int x,y;
+  
+# 669 "src/ingame_msg.c" 3 4
+ (
+# 669 "src/ingame_msg.c"
+ y 
+# 669 "src/ingame_msg.c" 3 4
+ = ((0 != (const void *)((
+# 669 "src/ingame_msg.c"
+ stdscr
+# 669 "src/ingame_msg.c" 3 4
+ ))) ? ((
+# 669 "src/ingame_msg.c"
+ stdscr
+# 669 "src/ingame_msg.c" 3 4
+ )->_maxy + 1) : (-1)), 
+# 669 "src/ingame_msg.c"
+ x 
+# 669 "src/ingame_msg.c" 3 4
+ = ((0 != (const void *)((
+# 669 "src/ingame_msg.c"
+ stdscr
+# 669 "src/ingame_msg.c" 3 4
+ ))) ? ((
+# 669 "src/ingame_msg.c"
+ stdscr
+# 669 "src/ingame_msg.c" 3 4
+ )->_maxx + 1) : (-1)))
+# 669 "src/ingame_msg.c"
+                      ;
+  if (x < 10 || y < 10){
+    while(x < 10 || y < 10){
+      int ch = 
+# 672 "src/ingame_msg.c" 3 4
+              wgetch(stdscr)
+# 672 "src/ingame_msg.c"
+                     ;
+      if(ch == 
+# 673 "src/ingame_msg.c" 3 4
+              0632
+# 673 "src/ingame_msg.c"
+                        ){
+      
+# 674 "src/ingame_msg.c" 3 4
+     (
+# 674 "src/ingame_msg.c"
+     y 
+# 674 "src/ingame_msg.c" 3 4
+     = ((0 != (const void *)((
+# 674 "src/ingame_msg.c"
+     stdscr
+# 674 "src/ingame_msg.c" 3 4
+     ))) ? ((
+# 674 "src/ingame_msg.c"
+     stdscr
+# 674 "src/ingame_msg.c" 3 4
+     )->_maxy + 1) : (-1)), 
+# 674 "src/ingame_msg.c"
+     x 
+# 674 "src/ingame_msg.c" 3 4
+     = ((0 != (const void *)((
+# 674 "src/ingame_msg.c"
+     stdscr
+# 674 "src/ingame_msg.c" 3 4
+     ))) ? ((
+# 674 "src/ingame_msg.c"
+     stdscr
+# 674 "src/ingame_msg.c" 3 4
+     )->_maxx + 1) : (-1)))
+# 674 "src/ingame_msg.c"
+                          ;
+       }
+      }
+    gs->logs[2] = newwin(24,(80 -13),(gs->num_cols - 1) / 4 , (gs->num_rows - 1) / 4);
+    gs->panels[2] = new_panel(gs->logs[2]);
+    mvwprintw(gs->logs[2],1,25, "Available equipment" );;
+      werase(gs->logs[2]); 
+# 680 "src/ingame_msg.c" 3 4
+     wborder(
+# 680 "src/ingame_msg.c"
+     gs->logs[2]
+# 680 "src/ingame_msg.c" 3 4
+     , 
+# 680 "src/ingame_msg.c"
+     0
+# 680 "src/ingame_msg.c" 3 4
+     , 
+# 680 "src/ingame_msg.c"
+     0
+# 680 "src/ingame_msg.c" 3 4
+     , 
+# 680 "src/ingame_msg.c"
+     0
+# 680 "src/ingame_msg.c" 3 4
+     , 
+# 680 "src/ingame_msg.c"
+     0
+# 680 "src/ingame_msg.c" 3 4
+     , 0, 0, 0, 0)
+# 680 "src/ingame_msg.c"
+     ;;
+      top_panel(gs->panels[2]);
+       for(int i = 0; i < gs->num_cols -1 && i+gs->player->position.global_y < gs->current_zone->height; i++) for(int j = 13; j < gs->num_rows -1 && j+gs->player->position.global_x < gs->current_zone->width; j++) mvwprintw(gs->logs[0],i,j,(gs->current_zone->tiles[(gs->player->position.global_y - (gs->player->position.local_y))+i][(gs->player->position.global_x - gs->player->position.local_x )+j].content)); mvwprintw(gs->logs[0],gs->player->position.local_y, gs->player->position.local_x, gs->player->representation);;
+  for(int i = 0; i < num_items; i++){
+    msg_print_item(item_list[i],gs->logs[2],5,row_position);
+    row_position++;
+  top_panel(gs->panels[2]);
+  wmove(gs->logs[2],curs_pos,5);
+  update_panels(); doupdate();;
+   }
+  }
+  else{
+  //For some reason, you explicitly have to reisze the size of the window to the original
+  //upon detecting a resize, otherwise it will upon being resized grow to beyond its original size, taking up
+  //the entire screen
+  wresize(gs->logs[2],24,(80 -13));
+  werase(gs->logs[2]); 
+# 696 "src/ingame_msg.c" 3 4
+ wborder(
+# 696 "src/ingame_msg.c"
+ gs->logs[2]
+# 696 "src/ingame_msg.c" 3 4
+ , 
+# 696 "src/ingame_msg.c"
+ 0
+# 696 "src/ingame_msg.c" 3 4
+ , 
+# 696 "src/ingame_msg.c"
+ 0
+# 696 "src/ingame_msg.c" 3 4
+ , 
+# 696 "src/ingame_msg.c"
+ 0
+# 696 "src/ingame_msg.c" 3 4
+ , 
+# 696 "src/ingame_msg.c"
+ 0
+# 696 "src/ingame_msg.c" 3 4
+ , 0, 0, 0, 0)
+# 696 "src/ingame_msg.c"
+ ;;
+  mvwprintw(gs->logs[2],1,25, "Available equipment" );;
+  for(int i = 0; i < gs->num_cols -1 && i+gs->player->position.global_y < gs->current_zone->height; i++) for(int j = 13; j < gs->num_rows -1 && j+gs->player->position.global_x < gs->current_zone->width; j++) mvwprintw(gs->logs[0],i,j,(gs->current_zone->tiles[(gs->player->position.global_y - (gs->player->position.local_y))+i][(gs->player->position.global_x - gs->player->position.local_x )+j].content)); mvwprintw(gs->logs[0],gs->player->position.local_y, gs->player->position.local_x, gs->player->representation);;
+  for(int i = 0; i < num_items; i++){
+    msg_print_item(item_list[i],gs->logs[2],5,row_position);
+    row_position++;
+   }
+  }
+   wmove(gs->logs[2],curs_pos,5);
+   update_panels(); doupdate();;
+}

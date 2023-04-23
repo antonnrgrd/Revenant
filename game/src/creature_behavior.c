@@ -31,8 +31,8 @@ as the check here has already decided that the distance in at least one directio
     Limb attacking_limb = c->limbs[GEN_VALUE_RANGE(0,c->limb_count-1, game_state->twister)];
     CLEAR_MSG_LINE();
     //    mvwprintw(game_state->logs[MAIN_SCREEN],DEFAULT_MAX_Y,0, "%s%s%d%s", c_retrieve_creature_name(c) , " hits you for ", 10, " damage");
-    ir_print_damage_to_creature(game_state,c,c->target);
-    msg_update_event_log(game_state);
+    MSG_ADD_CREATURE_ATTACK_EVENT_TO_LOG(c,c->target,game_state);
+    
     if(c->target->curr_health <= 0){
     ST_SET_FLAG_BIT(c->target, DEAD);
     CLEAR_MSG_LINE();
