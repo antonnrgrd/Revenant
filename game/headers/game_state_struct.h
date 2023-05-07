@@ -59,6 +59,8 @@ typedef struct Game_State{
   int num_cols;
   int found_rows;
   int found_cols;
+  int notification_log_height_size;
+  int notification_log_width_size;
   struct Creature *player;
   Game_World *current_zone;
   Linked_List *active_creatures;

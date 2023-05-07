@@ -23,6 +23,6 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 Item_Holder *inv_equip_item(Item_Holder *target_item_holder,Player_Info *player_info, Creature *player);
 void inv_remove_item(int argcount,char *name, int amount, U_Hashtable *inventory, Creature *player);
 int inv_add_item(Item_Holder *item_h, U_Hashtable *inventory, Creature *player);
-
+void inv_sell_item(Item_Holder *item_h, U_Hashtable *merchant_inventory, Creature *player, int num);
 #endif
 

@@ -15,6 +15,7 @@ int msg_trading_session(int global_x, int global_y,Game_State *gs){
   int curr_curs_pos = 2;
   int column_position = 2;
   int current_printed_item = 0;
+  int available_items = 0;
   Item_Holder **item_list = malloc(sizeof(Item_Holder* ) * ((U_Hashtable * )gs->current_zone->tiles[global_y][global_x].foe)->item_count);
   MSG_CLEAR_SCREEN(gs->logs[TRADING_LOG]);
   INIT_INVENTORY_LOG(gs->logs[TRADING_LOG], "Merchant\'s wares");
@@ -23,12 +24,16 @@ int msg_trading_session(int global_x, int global_y,Game_State *gs){
       Entry  *current_entry = ((U_Hashtable * )gs->current_zone->tiles[global_y][global_x].foe)->entries[i];
       while(current_entry != NULL){
 	msg_print_item(current_entry->item_holder,gs->logs[TRADING_LOG],5,column_position);
+	item_list[column_position-2] = current_entry->item_holder;
         current_entry = current_entry->next_entry;
 	column_position++;
+	available_items++;
       }
     }
   }
   top_panel(gs->panels[TRADING_LOG]);
+  wmove(gs->logs[TRADING_LOG],curr_curs_pos,5);
+  curs_set(TRUE);
   UPDATE_PANEL_INFO();
   int ch;
   while (1){
@@ -41,64 +46,90 @@ int msg_trading_session(int global_x, int global_y,Game_State *gs){
       doupdate();
       return CONTINUE_TURN;
     }
+    else if (ch == KEY_UP && curr_curs_pos > 2){
+      curr_curs_pos--;
+      wmove(gs->logs[TRADING_LOG],curr_curs_pos,5);
+      update_panels();
+      doupdate();
+    }
+    else if (ch == KEY_DOWN && curr_curs_pos < DEFAULT_MAX_Y - 2 && (curr_curs_pos-2)+1 < available_items && item_list != NULL){
+      curr_curs_pos++;
+      wmove(gs->logs[TRADING_LOG],curr_curs_pos,5);
+      update_panels();
+      doupdate();
+    }
     else if (ch == 'y'){
       char amount_bfr[5];
       int bfr_index = 0;
-      MSG_CLEAR_SCREEN(gs->logs[NOTIFICATION_LOG]);
-      mvprintw(gs->logs[NOTIFICATION_LOG],5,15, "Enter amount you want to buy");
-      top_panel(gs->panels[NOTIFICATION_LOG]);
+      MSG_SETUP_NOTIFICATION_LOG(gs, NOTIFICATION_LOG, YES, "Enter the amount you want to buy");
+      int x_curs_pos = gs->notification_log_width_size/2;
+      wmove(gs->logs[NOTIFICATION_LOG],gs->notification_log_height_size/2,gs->notification_log_width_size/2);
       UPDATE_PANEL_INFO();
+      /*This is DEFINETLY breaking every software engineering standard for acceptable amount of else if statements, but I expect
+       that (hopefully) the amount of situations in which this will occur will be sufficiently rare to the point where deriving a more
+      elegant solution is not worth the effort or necessary*/
       while(1){
 	ch = getch();
-	if(bfr_index < 4 && ch != KEY_BACKSPACE){
-	  amount_bfr[bfr_index] = ch;
-	  bfr_index ++;
-	}
-	else if(ch == KEY_BACKSPACE && bfr_index != 0){
-	  amount_bfr[bfr_index] = "";
-	  bfr_index --;
-	}
-	else if(ch == 'q'){
-	  break;
-	}
-	else if(ch == 'y'){
-	  char *endptr;
-	  int amount = strtol(amount_bfr, &endptr, 10);
-	  if( *endptr == '\0' && amount > 0){
-	    int cost = amount * item_list[curr_curs_pos-2]->item->value;
-	    float additional_weight = amount * item_list[curr_curs_pos-2]->item->weight;
-	    if( cost <= (((Player_Info * )gs->player->additional_info)->inventory)->money && gs->player->current_carry + additional_weight <= gs->player->max_carry){
-
-	    }
-	    else if (cost > (((Player_Info * )gs->player->additional_info)->inventory)->money){
-	      MSG_CLEAR_SCREEN(gs->logs[NOTIFICATION_LOG]);
-	      mvprintw(gs->logs[NOTIFICATION_LOG],5,5, "You do not have suffcient money to buy that many");
+	    if(isdigit(ch) && bfr_index < 4){
+	      amount_bfr[bfr_index] = ch;
+	      wmove(gs->logs[NOTIFICATION_LOG],gs->notification_log_height_size/2,x_curs_pos-1);
+	      wclrtoeol(gs->logs[NOTIFICATION_LOG]);
+	      box(gs->logs[NOTIFICATION_LOG],0,0);
+	      mvwprintw(gs->logs[NOTIFICATION_LOG],gs->notification_log_height_size/2,x_curs_pos,"%s", amount_bfr);
+	      bfr_index++;
+	      wmove(gs->logs[NOTIFICATION_LOG],gs->notification_log_height_size/2,x_curs_pos+bfr_index);
+	      //x_curs_pos++;
 	      UPDATE_PANEL_INFO();
 	    }
-	    else{
-	      MSG_CLEAR_SCREEN(gs->logs[NOTIFICATION_LOG]);
-	      mvprintw(gs->logs[NOTIFICATION_LOG],5,5, "You cannot carry that much");
+	    else if( (ch == KEY_BACKSPACE || ch == KEY_DC || ch == 127) && bfr_index > 0){
+	      amount_bfr[bfr_index-1] = ' ';
+	      wmove(gs->logs[NOTIFICATION_LOG],gs->notification_log_height_size/2,x_curs_pos-1);
+	      wclrtoeol(gs->logs[NOTIFICATION_LOG]);
+	      mvwprintw(gs->logs[NOTIFICATION_LOG],gs->notification_log_height_size/2,x_curs_pos,"%s", amount_bfr);
+	      box(gs->logs[NOTIFICATION_LOG],0,0);
+	      bfr_index--;
+	      wmove(gs->logs[NOTIFICATION_LOG],gs->notification_log_height_size/2,x_curs_pos+(bfr_index));
 	      UPDATE_PANEL_INFO();
+	
+	      //x_curs_pos--;
 	    }
-	  }
-	  else if(amount < 0 ){
-	    MSG_CLEAR_SCREEN(gs->logs[NOTIFICATION_LOG]);
-	    mvprintw(gs->logs[NOTIFICATION_LOG],5,5, "Don't be silly, you cannot buy a negative amount of items");
-	    UPDATE_PANEL_INFO();
-	  }
-	  else{
-	    MSG_CLEAR_SCREEN(gs->logs[NOTIFICATION_LOG]);
-	    mvprintw(gs->logs[NOTIFICATION_LOG],5,5, "Please only provide integers when speciyfing the amount");
-	    UPDATE_PANEL_INFO();
-	  }
+	    else if (ch == 'q'){
+	      hide_panel(gs->panels[NOTIFICATION_LOG]);
+	      UPDATE_PANEL_INFO();
+	      break;	      
+	    }
+	    else if(ch ==  'y'){
+	      if(amount_bfr[0]=='0'){
+		mvwprintw(gs->logs[NOTIFICATION_LOG],(gs->notification_log_height_size/2)-1,gs->notification_log_width_size/3, "Invalid amount");
+		UPDATE_PANEL_INFO();
+	      }
+	      int amount = atoi(amount_bfr);
+	      if(item_list[curr_curs_pos-2]->item->value * amount >= (((Player_Info * )gs->player->additional_info)->inventory)->money ){
+		mvwprintw(gs->logs[NOTIFICATION_LOG],(gs->notification_log_height_size/2)-1,gs->notification_log_width_size/3, "Not enough money");
+	     UPDATE_PANEL_INFO();
+	     else if( gs->player->current_carry + (item_list[curr_curs_pos-2]->item->weight * amount) > gs->player->max_carry ){
+	       mvwprintw(gs->logs[NOTIFICATION_LOG],(gs->notification_log_height_size/2)-1,gs->notification_log_width_size/3, "You cannot carry that many");
+	     }
+	     else{
+	       MSG_ADD_PURCHASE_TO_EVENT_LOG(item_list[curr_curs_pos-2],gs);
+	       if(item_list[curr_curs_pos-2]->amount == 0 ){
+		 wclrtoeol(gs->logs[INVENTORY_LOG]);
+		 I_FREE_ITEM_HOLDER(item_list[curr_curs_pos-2]);
+		 available_items--;
+	       }
+	       else{
+       // printf("this bit of logic here");
+       wclrtoeol(gs->logs[INVENTORY_LOG]);
+	 box(gs->logs[INVENTORY_LOG],0,0);
+	 msg_print_item(item_list[curr_curs_pos-2],gs->logs[INVENTORY_LOG],5,curr_curs_pos);
+	 UPDATE_PANEL_INFO();
+     }
+	      }
+	    }
 	}
       }
     }
-    else if(ch == 's')  {
-      msg_display_inventory(gs,CONTEXT_SELLING, ((U_Hashtable * )gs->current_zone->tiles[global_y][global_x].foe));
-    }
   }
-}
  
 
 static inline void msg_pickup_item(Game_State *game_state, Item_Holder *item_holder){

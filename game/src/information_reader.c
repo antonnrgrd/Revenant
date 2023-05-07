@@ -652,3 +652,12 @@ void ir_add_damage_to_creature_to_log(Game_State *gs, Creature *c, Creature *tar
 Programmers sidenote: apparently, the order in which you define and or possibly inlcude header files is detrimental to the correctness of the program. It has been observed that including headers and defining functions in different orders has a major impact on whether or not the pointer returned is a valid pointer. e.g It is seen that if we define things in a certain order, it might compile and run fine, but upon return of the function, the pointer is no longer valid. Changing the order in which you define these functions tends to fix this issue and affect different parts of the program differently, so maybe swapping the order of the definitions might fix things.
 */
 
+void ir_add_item_purchase_to_log(Item_Holder *item){
+  chdir("/usr/lib/revenant_files/creature_files/");
+  if(item->item->kind == armor){
+
+  }
+  else if(item->item->kind == weapon){
+
+  }
+}

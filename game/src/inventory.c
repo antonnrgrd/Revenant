@@ -60,6 +60,13 @@ int inv_add_item(Item_Holder *item_h, U_Hashtable *inventory, Creature *player){
   }
 }
 
+void inv_sell_item(Item_Holder *item_h, U_Hashtable *merchant_inventory, Creature *player, int amount){
+  player->current_carry += item_h->item->weight * amount;
+  (((Player_Info * )player->additional_info)->inventory)->money -= item_h->item->value * amount;
+  merchant_inventory->money += item_h->item->value * amount;
+  Item_Weight item_removal = u_remove_item(item_h,amount,merchant_inventory);
+  u_add_item(item_removal.item_h, amount, ((Player_Info * )player->additional_info)->inventory);
+}
 /*
 void inv_remove_item(int argcount,char *name, int amount, U_Hashtable *inventory, Creature *player){
   Item_Weight removed_weight = u_remove_item(argcount,amount,inventory,name);

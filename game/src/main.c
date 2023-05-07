@@ -71,7 +71,8 @@ Item *weapon = i_make_mele_weapon(epic,bronze,one_hand,sword);
    Game_World *game_world = g_generate_game_world(1000,1000);
   Game_State *gs =  gs_create_game_state(game_world);   
   ((Player_Info *)gs->player->additional_info)->inventory = g_generate_merchant_inventory(3,3,gs->twister);  
-  noecho();  
+  noecho();
+  
   curs_set(FALSE);
    keypad(stdscr, TRUE);
     srand(time(NULL));

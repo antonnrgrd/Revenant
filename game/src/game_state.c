@@ -112,8 +112,12 @@ Game_State *gs_create_game_state(Game_World *game_world){
   state->logs[EVENT_LOG] = newwin(LOG_Y_SIZE,LOG_X_SIZE,(state->num_cols - 1) / 4 , (state->num_rows - 1) / 4 );
   state->logs[INVENTORY_LOG] = newwin(LOG_Y_SIZE,LOG_X_SIZE,(state->num_cols - 1) / 4 , (state->num_rows - 1) / 4);
   state->logs[TRADING_LOG] = newwin(LOG_Y_SIZE,LOG_X_SIZE,(state->num_cols - 1) / 4 , (state->num_rows - 1) / 4);
-  state->logs[NOTIFICATION_LOG] = newwin(10,20,5,15);
+  state->logs[NOTIFICATION_LOG] = newwin(LOG_Y_SIZE/4,LOG_X_SIZE,(state->num_cols - 1) / 2 , (state->num_rows - 1) / 4);
   
+  state->notification_log_height_size = LOG_Y_SIZE/4;
+
+  state->notification_log_width_size = LOG_X_SIZE;
+    
   MSG_ENABLE_SCROLLING(state->logs[TRADING_LOG]);
   
   state->panels[EVENT_LOG] = new_panel(state->logs[EVENT_LOG]);
