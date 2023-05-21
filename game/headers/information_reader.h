@@ -46,7 +46,7 @@ void ir_print_creature_damage();
 
 Item_Holder *ir_readin_consumable(char *consumable_file_path, int amount);
 Item_Holder *ir_readin_reagent(char *reagent_file_path, int amount);
-void ir_add_item_purchase_to_log(Item_Holder *item);
+void ir_add_item_purchase_to_log(Game_State *gs,Item_Holder *item, int amount);
 
 
 #endif

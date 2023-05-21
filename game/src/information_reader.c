@@ -652,12 +652,40 @@ void ir_add_damage_to_creature_to_log(Game_State *gs, Creature *c, Creature *tar
 Programmers sidenote: apparently, the order in which you define and or possibly inlcude header files is detrimental to the correctness of the program. It has been observed that including headers and defining functions in different orders has a major impact on whether or not the pointer returned is a valid pointer. e.g It is seen that if we define things in a certain order, it might compile and run fine, but upon return of the function, the pointer is no longer valid. Changing the order in which you define these functions tends to fix this issue and affect different parts of the program differently, so maybe swapping the order of the definitions might fix things.
 */
 
-void ir_add_item_purchase_to_log(Item_Holder *item){
-  chdir("/usr/lib/revenant_files/creature_files/");
-  if(item->item->kind == armor){
-
+void ir_add_item_purchase_to_log(Game_State *gs, Item_Holder *item, int amount){
+  char item_file_id[4];
+  if(item->item->kind == reagent){
+    chdir("/usr/lib/revenant_files/item_files/reagent_files");
   }
-  else if(item->item->kind == weapon){
-
+  else if(item->item->kind == consumable){
+    chdir("/usr/lib/revenant_files/item_files/consumable_files");
   }
-}
+  
+  if(item->item->kind == weapon){
+    sprintf(gs->current_event, "You buy %d %s%s%s%s",amount, quality_name_modifier[((struct Weapon *)item->item->item_specific_info)->quality], material_name_modifier[((struct Weapon *)item->item->item_specific_info)->material], handed_modifier[((struct Weapon *)item->item->item_specific_info)->variant],  mele_weapon_name_modifier[((struct Weapon *)item->item->item_specific_info)->kind]);
+  }
+  else if(item->item->kind == armor){
+    sprintf(gs->current_event, "You buy %d %s%s%s",amount, quality_name_modifier[((struct Armor *)item->item->item_specific_info)->quality], material_name_modifier[((struct Armor *)item->item->item_specific_info)->material], equipment_type_modifier[((struct Armor *)item->item->item_specific_info)->armor_type] );
+  }
+  else {
+    sprintf(item_file_id, item->item->id);
+    FILE *fp = fopen(item_file_id, "r");
+    char * line = NULL;
+    char *item_name;
+    size_t len = 0;
+    while((getline(&line, &len, fp)) != -1){
+      char *variable_pointer = strstr(line, "name");
+      if(variable_pointer != NULL){
+	item_name = strtok(strchr(line, '=')+1, "\n");
+	sprintf(gs->current_event, "You buy %d %s", amount, item_name);
+	break;
+      }
+    }
+  if(line){
+    free(line);
+  }
+  if(fp){
+    fclose(fp);
+  }
+    }
+  }

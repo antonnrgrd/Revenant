@@ -60,7 +60,7 @@ int inv_add_item(Item_Holder *item_h, U_Hashtable *inventory, Creature *player){
   }
 }
 
-void inv_sell_item(Item_Holder *item_h, U_Hashtable *merchant_inventory, Creature *player, int amount){
+void inv_exchange_item(Item_Holder *item_h, U_Hashtable *merchant_inventory, Creature *player, int amount){
   player->current_carry += item_h->item->weight * amount;
   (((Player_Info * )player->additional_info)->inventory)->money -= item_h->item->value * amount;
   merchant_inventory->money += item_h->item->value * amount;

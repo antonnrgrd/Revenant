@@ -25,6 +25,13 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "item.h"
 #include "generate.h"
 #include "move_handler.h"
+
+#define INITIATED_EXCHANGE 0
+#define NOT_INITIATED_EXCHANGE 1
+#define EXESSIVE_ADDITIONAL_WEIGHT 2
+#define INSUFFICIENT_CASH 3
+#define INVALID_VALUE 4
+
 //screen, y,x, "%s X %d", quality_name_modifier[((union Equipment)item_holder->item->item_specific_info).weapon->quality]
 
 
@@ -107,7 +114,7 @@ void msg_redraw_inventory_equip_context(Game_State *gs, Item_Holder **item_list,
 
 #define MSG_ADD_CREATURE_ATTACK_EVENT_TO_LOG(creature,target, gs)ir_add_damage_to_creature_to_log(gs,creature,target);  msg_update_event_log(gs);
 
-#define MSG_ADD_PURCHASE_TO_EVENT_LOG(item,gs) ir_add_item_purchase_to_log(item); msg_update_event_log(gs);
+#define MSG_ADD_PURCHASE_TO_EVENT_LOG(item,gs,amount) ir_add_item_purchase_to_log(gs,item,amount); msg_update_event_log(gs);
 void msg_add_attack_event_to_log(Item_Holder *item_holder);
 
 void msg_add_attack_player_event_to_log();
@@ -116,5 +123,7 @@ void msg_redraw_log(Game_State *gs);
 #define MSG_SETUP_NOTIFICATION_LOG(gs, log_index, interaction_enabled, msg)  MSG_CLEAR_SCREEN(gs->logs[log_index]); mvwprintw(gs->logs[log_index],1,gs->notification_log_width_size/4, msg); top_panel(gs->panels[log_index]); UPDATE_PANEL_INFO(); interaction_enabled == YES ? curs_set(TRUE) :curs_set(FALSE)
 
 #define MSG_PUT_DOWN_NOTIFICATION_LOG(gs, log_index) hide_panel(gs->panels[log_index]); UPDATE_PANEL_INFO();
+
+void msg_redraw_trading_session(Game_State *gs,Item_Holder **item_list,int num_items, int initiated_exchange , int event_flag, char amount_bfr[5]);
 #endif
 

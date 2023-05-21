@@ -117,6 +117,7 @@ Creature *c_random_player(int x, int y,Game_State *gs, Game_World *gw){
   player_info->inventory = inventory;
   c->additional_info = player_info;
   c->marked_for_deletion = NO;
+  (((Player_Info * )c->additional_info)->inventory)->money = 10000;
   return c;
 
 }
