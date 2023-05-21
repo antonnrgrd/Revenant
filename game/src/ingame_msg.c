@@ -835,8 +835,7 @@ void msg_redraw_trading_session(Game_State *gs,Item_Holder **item_list,int num_i
            gs->logs[NOTIFICATION_LOG] = newwin(LOG_Y_SIZE/4,LOG_X_SIZE,(gs->num_cols - 1) / 2 , (gs->num_rows - 1) / 4);
        gs->panels[NOTIFICATION_LOG] = new_panel(gs->logs[NOTIFICATION_LOG]);
     }
-  */
-    
+  */    
   wresize(gs->logs[TRADING_LOG],LOG_Y_SIZE,LOG_X_SIZE);
   REDRAW_MAP(gs,gs->player,gs->current_zone,gs->logs[MAIN_SCREEN], gs->player->position.global_x,gs->player->position.global_y,rows, cols);
   MSG_CLEAR_SCREEN(gs->logs[TRADING_LOG]);
