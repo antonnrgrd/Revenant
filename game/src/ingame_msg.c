@@ -819,23 +819,30 @@ void msg_redraw_trading_session(Game_State *gs,Item_Holder **item_list,int num_i
     gs->logs[TRADING_LOG] = newwin(LOG_Y_SIZE,LOG_X_SIZE,(gs->num_cols - 1) / 4 , (gs->num_rows - 1) / 4 );
     gs->panels[TRADING_LOG] = new_panel(gs->logs[TRADING_LOG]);
     box(gs->logs[TRADING_LOG],0,0);
+    gs->logs[NOTIFICATION_LOG] = newwin(LOG_Y_SIZE/4,LOG_X_SIZE,(gs->num_cols - 1) / 2 , (gs->num_rows - 1) / 4);
+     gs->panels[NOTIFICATION_LOG] = new_panel(gs->logs[NOTIFICATION_LOG]);
     INIT_EVENT_LOG(gs->logs[TRADING_LOG]);
   }
-  
-  /*
-  getmaxyx(stdscr, y,x);
-    if(x  < gs->num_rows / 2 || y < gs->num_cols / 2){
-      hide_panel(gs->panels[NOTIFICATION_LOG]);
-      while(x  < gs->num_rows / 2 || y < gs->num_cols / 2){
-	int ch = getch();
-	if(ch == KEY_RESIZE){
-	  getmaxyx(stdscr, y,x);
-	}
+  else if(x  < gs->num_rows / 2 || y < gs->num_cols / 2){
+     if (x < 10 || y < 10){
+    while(x < 10 || y < 10){
+      int ch = getch();
+      if(ch == KEY_RESIZE){
+      getmaxyx(stdscr, y,x);
+       }
       }
-           gs->logs[NOTIFICATION_LOG] = newwin(LOG_Y_SIZE/4,LOG_X_SIZE,(gs->num_cols - 1) / 2 , (gs->num_rows - 1) / 4);
+    gs->logs[NOTIFICATION_LOG] = newwin(LOG_Y_SIZE/4,LOG_X_SIZE,(gs->num_cols - 1) / 2 , (gs->num_rows - 1) / 4);
+     gs->panels[NOTIFICATION_LOG] = new_panel(gs->logs[NOTIFICATION_LOG]);
+     }
+  }
+  
+  
+  
+    if(x  < gs->num_rows / 2 || y < gs->num_cols / 2){
+       gs->logs[NOTIFICATION_LOG] = newwin(LOG_Y_SIZE/4,LOG_X_SIZE,(gs->num_cols - 1) / 2 , (gs->num_rows - 1) / 4);
        gs->panels[NOTIFICATION_LOG] = new_panel(gs->logs[NOTIFICATION_LOG]);
     }
-  */    
+    
   wresize(gs->logs[TRADING_LOG],LOG_Y_SIZE,LOG_X_SIZE);
   REDRAW_MAP(gs,gs->player,gs->current_zone,gs->logs[MAIN_SCREEN], gs->player->position.global_x,gs->player->position.global_y,rows, cols);
   MSG_CLEAR_SCREEN(gs->logs[TRADING_LOG]);
