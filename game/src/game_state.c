@@ -136,7 +136,6 @@ Game_State *gs_create_game_state(Game_World *game_world){
    
   update_panels();
   doupdate();
-  
   return state;
  
 }

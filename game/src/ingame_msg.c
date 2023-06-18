@@ -11,7 +11,6 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "ingame_msg.h"
 
 int msg_trading_session(int global_x, int global_y,Game_State *gs){
-  //  (((Player_Info * )gs->player->additional_info)->inventory)->money = 10000;
   int tmp_amount_holder;
   int curr_curs_pos = 2;
   int column_position = 2;
@@ -60,12 +59,12 @@ int msg_trading_session(int global_x, int global_y,Game_State *gs){
       doupdate();
     }
     else if(ch == KEY_RESIZE){
-      msg_redraw_trading_session(gs,item_list,available_items,NOT_INITIATED_EXCHANGE,-1,NULL);
+      msg_redraw_trading_session(gs,item_list,available_items,NOT_INITIATED_EXCHANGE,NULL);
     }
     else if (ch == 'y'){
       char amount_bfr[5];
       /*oddly enough, when i previously declared the stack-located buffer, it wasn't necessary to enure the string was "clean" by copying
-       whitespace to it, but after switching some code logic around, the buffer now contained garbage, resulting in weird issue when attempting to print it, so it is necessary to clear it first*/
+       whitespace to it, but after switching some code logic around, the buffer now contained garbage, resulting in weird issues when attempting to print it, so it is necessary to clear it first*/
       strcpy(amount_bfr, " ");
       int bfr_index = 0;
       MSG_SETUP_NOTIFICATION_LOG(gs, NOTIFICATION_LOG, YES, "Enter the amount you want to buy");
@@ -107,43 +106,74 @@ int msg_trading_session(int global_x, int global_y,Game_State *gs){
 	      break;	      
 	    }
 	    else if(ch == KEY_RESIZE){
-	      msg_redraw_trading_session(gs,item_list,available_items,INITIATED_EXCHANGE,-1,amount_bfr);
+	      msg_redraw_trading_session(gs,item_list,available_items,INITIATED_EXCHANGE,amount_bfr);
 	    }
 	    else if(ch ==  'y'){
 	     if(strcmp(amount_bfr, " ") == 0){
 	       mvwprintw(gs->logs[NOTIFICATION_LOG],(gs->notification_log_height_size/2)-1,gs->notification_log_width_size/3, "Please enter a number");
 	     UPDATE_PANEL_INFO();
+	     while(1){
 	     ch = getch();
+	     if(ch == KEY_RESIZE){
+	       msg_redraw_trading_session(gs,item_list,available_items,INVALID_VALUE,amount_bfr);
+	     }
+	     else{
 	     wmove(gs->logs[NOTIFICATION_LOG],(gs->notification_log_height_size/2)-1,gs->notification_log_width_size/3);
 	     wclrtoeol(gs->logs[NOTIFICATION_LOG]);
 	     wmove(gs->logs[NOTIFICATION_LOG],gs->notification_log_height_size/2,gs->notification_log_width_size/2);
 	     wclrtoeol(gs->logs[NOTIFICATION_LOG]);
 	     box(gs->logs[NOTIFICATION_LOG],0,0);
 	     strcpy(amount_bfr, " ");
+	     break;
+	       }
 	     UPDATE_PANEL_INFO();
-	     }
+	       }
+	     UPDATE_PANEL_INFO();
+	      }
 	    else  if(item_list[curr_curs_pos-2]->item->value * atoi(amount_bfr) >= (((Player_Info * )gs->player->additional_info)->inventory)->money ){
 		mvwprintw(gs->logs[NOTIFICATION_LOG],(gs->notification_log_height_size/2)-1,gs->notification_log_width_size/3, "Not enough money");
 	     UPDATE_PANEL_INFO();
-	     ch = getch();
+	     while(1){
+	     int chh = getch();
+	     if(chh == KEY_RESIZE ){
+	       msg_redraw_trading_session(gs,item_list,available_items,INSUFFICIENT_CASH,amount_bfr);
+	       mvwprintw(gs->logs[NOTIFICATION_LOG],(gs->notification_log_height_size/2)-1,gs->notification_log_width_size/3, "Not enough money");
+	       /* Logically it would be more sound to call this method inside the redraw_screen method, but this function is enough of an abomnation as it is, so another lazy solution won't hurt*/
+	       mvwprintw(gs->logs[NOTIFICATION_LOG],gs->notification_log_height_size/2,x_curs_pos,"%s", amount_bfr);
+	     }
+	     else{
 	     wmove(gs->logs[NOTIFICATION_LOG],(gs->notification_log_height_size/2)-1,gs->notification_log_width_size/3);
 	     wclrtoeol(gs->logs[NOTIFICATION_LOG]);
 	     wmove(gs->logs[NOTIFICATION_LOG],gs->notification_log_height_size/2,gs->notification_log_width_size/2);
 	     wclrtoeol(gs->logs[NOTIFICATION_LOG]);
 	     box(gs->logs[NOTIFICATION_LOG],0,0);
 	     strcpy(amount_bfr, " ");
+	     break;
+	     }
 	     UPDATE_PANEL_INFO();
+	    }
+	    UPDATE_PANEL_INFO();
 	      }
 	     else if( gs->player->current_carry + (item_list[curr_curs_pos-2]->item->weight * atoi(amount_bfr)) > gs->player->max_carry ){
 	       mvwprintw(gs->logs[NOTIFICATION_LOG],(gs->notification_log_height_size/2)-1,gs->notification_log_width_size/3, "You cannot carry that many");
 	     UPDATE_PANEL_INFO();
+	     while(1){
 	     ch = getch();
-	     wmove(gs->logs[NOTIFICATION_LOG],(gs->notification_log_height_size/2)-1,gs->notification_log_width_size/3);
+	     if(ch == KEY_RESIZE ){
+	       msg_redraw_trading_session(gs,item_list,available_items,EXESSIVE_ADDITIONAL_WEIGHT,amount_bfr);
+	       mvwprintw(gs->logs[NOTIFICATION_LOG],gs->notification_log_height_size/2,x_curs_pos,"%s", amount_bfr);
+	     }
+	     else{
+	       wmove(gs->logs[NOTIFICATION_LOG],(gs->notification_log_height_size/2)-1,gs->notification_log_width_size/3);
 	     wclrtoeol(gs->logs[NOTIFICATION_LOG]);
 	     wmove(gs->logs[NOTIFICATION_LOG],gs->notification_log_height_size/2,gs->notification_log_width_size/2);
 	     wclrtoeol(gs->logs[NOTIFICATION_LOG]);
 	     box(gs->logs[NOTIFICATION_LOG],0,0);
 	     strcpy(amount_bfr, " ");
+	     break;
+	     }
+	     UPDATE_PANEL_INFO();
+	     }
 	     UPDATE_PANEL_INFO();
 	     }
 	     else{
@@ -805,7 +835,7 @@ void msg_redraw_log(Game_State *gs){
   UPDATE_PANEL_INFO();    
 }
 
-void msg_redraw_trading_session(Game_State *gs,Item_Holder **item_list,int num_items, int initiated_exchange , int event_flag, char amount_bfr[5]){
+void msg_redraw_trading_session(Game_State *gs,Item_Holder **item_list,int num_items,int event_flag, char amount_bfr[5]){
   int x,y;
   int column_position = 2;
   getmaxyx(stdscr, y,x);
@@ -823,9 +853,8 @@ void msg_redraw_trading_session(Game_State *gs,Item_Holder **item_list,int num_i
      gs->panels[NOTIFICATION_LOG] = new_panel(gs->logs[NOTIFICATION_LOG]);
     INIT_EVENT_LOG(gs->logs[TRADING_LOG]);
   }
-  else if(x  < gs->num_rows / 2 || y < gs->num_cols / 2){
-     if (x < 10 || y < 10){
-    while(x < 10 || y < 10){
+  else if(x  < gs->num_rows / 4 || y < gs->num_cols / 2){
+    while(x < gs->num_rows / 4 || y < gs->num_cols / 2){
       int ch = getch();
       if(ch == KEY_RESIZE){
       getmaxyx(stdscr, y,x);
@@ -833,16 +862,11 @@ void msg_redraw_trading_session(Game_State *gs,Item_Holder **item_list,int num_i
       }
     gs->logs[NOTIFICATION_LOG] = newwin(LOG_Y_SIZE/4,LOG_X_SIZE,(gs->num_cols - 1) / 2 , (gs->num_rows - 1) / 4);
      gs->panels[NOTIFICATION_LOG] = new_panel(gs->logs[NOTIFICATION_LOG]);
-     }
   }
-  
-  
-  
-    if(x  < gs->num_rows / 2 || y < gs->num_cols / 2){
-       gs->logs[NOTIFICATION_LOG] = newwin(LOG_Y_SIZE/4,LOG_X_SIZE,(gs->num_cols - 1) / 2 , (gs->num_rows - 1) / 4);
-       gs->panels[NOTIFICATION_LOG] = new_panel(gs->logs[NOTIFICATION_LOG]);
-    }
+
     
+     
+     
   wresize(gs->logs[TRADING_LOG],LOG_Y_SIZE,LOG_X_SIZE);
   REDRAW_MAP(gs,gs->player,gs->current_zone,gs->logs[MAIN_SCREEN], gs->player->position.global_x,gs->player->position.global_y,rows, cols);
   MSG_CLEAR_SCREEN(gs->logs[TRADING_LOG]);
@@ -851,12 +875,35 @@ void msg_redraw_trading_session(Game_State *gs,Item_Holder **item_list,int num_i
     msg_print_item(item_list[i],gs->logs[TRADING_LOG],5,column_position);
     column_position++;
     }
-  if(initiated_exchange == INITIATED_EXCHANGE){
+  if(event_flag == INITIATED_EXCHANGE){
+    // printf(" you are here 1 ");
     wresize(gs->logs[NOTIFICATION_LOG],LOG_Y_SIZE/4,LOG_X_SIZE);
     MSG_SETUP_NOTIFICATION_LOG(gs, NOTIFICATION_LOG, YES, "Enter the amount you want to buy");
     wmove(gs->logs[NOTIFICATION_LOG],gs->notification_log_height_size/2,gs->notification_log_width_size/2);
-    mvwprintw(gs->logs[NOTIFICATION_LOG],gs->notification_log_height_size/2,gs->notification_log_width_size/2,"%d", atoi(amount_bfr));
+    if(strcmp(amount_bfr, " ") != 0){
+      mvwprintw(gs->logs[NOTIFICATION_LOG],gs->notification_log_height_size/2,gs->notification_log_width_size/2,"%d", atoi(amount_bfr));
+      
     }
+  }
+    else if(event_flag == INSUFFICIENT_CASH){
+      //    printf(" you are here 2 ");
+    wresize(gs->logs[NOTIFICATION_LOG],LOG_Y_SIZE/4,LOG_X_SIZE);
+    MSG_SETUP_NOTIFICATION_LOG(gs, NOTIFICATION_LOG, YES, "Enter the amount you want to buy");
+    wmove(gs->logs[NOTIFICATION_LOG],gs->notification_log_height_size/2,gs->notification_log_width_size/2);
+    //mvwprintw(gs->logs[NOTIFICATION_LOG],gs->notification_log_height_size/2,gs->notification_log_width_size/2,"%d", atoi(amount_bfr));
+    mvwprintw(gs->logs[NOTIFICATION_LOG],(gs->notification_log_height_size/2)-1,gs->notification_log_width_size/3, "Not enough money");  
+    }
+
+    if(event_flag == EXESSIVE_ADDITIONAL_WEIGHT){
+     mvwprintw(gs->logs[NOTIFICATION_LOG],(gs->notification_log_height_size/2)-1,gs->notification_log_width_size/3, "You cannot carry that many");
+   
+  }
+        if(event_flag == INVALID_VALUE){
+	  mvwprintw(gs->logs[NOTIFICATION_LOG],(gs->notification_log_height_size/2)-1,gs->notification_log_width_size/3, "Please enter a number");
+	}
+  UPDATE_PANEL_INFO();     
+ }
+  
     
-  UPDATE_PANEL_INFO();    
-}
+
+

@@ -124,6 +124,6 @@ void msg_redraw_log(Game_State *gs);
 
 #define MSG_PUT_DOWN_NOTIFICATION_LOG(gs, log_index) hide_panel(gs->panels[log_index]); UPDATE_PANEL_INFO();
 
-void msg_redraw_trading_session(Game_State *gs,Item_Holder **item_list,int num_items, int initiated_exchange , int event_flag, char amount_bfr[5]);
+void msg_redraw_trading_session(Game_State *gs,Item_Holder **item_list,int num_items, int event_flag, char amount_bfr[5]);
 #endif
 
