@@ -22,36 +22,16 @@ along with Foobar.  If not, see <https://www.gnu.org/licenses/>. */
 #include <inttypes.h>
 #include "strings.h"
 
+typedef struct Dialogue_Manager{
+  /*the id of the file we should look in*/
+  int dialogue_id;
+  int **dialogue_id_options;  
+};
+
+void dialogue_loop_dialogue(Dialogue_Manager *manager);
 
 
 
-typedef struct Dialogue{
-  uint8_t option_count; //how many neighbour options there are
-  uint8_t counter;//a helper variable so that we know which current point we assign dialogue to
-  char *option;
-  char *response;
-  int ending;
-  uint16_t id; //just an id that helps me identify
-  struct Dialogue **dialogue_options;
-}Dialogue;
-
-typedef struct Dialogue_Header{
-  int size;
-  int current_pointer;
-  char *greeting_dialogue;
-  Dialogue **chat;
-} Dialogue_Header;
-
-Dialogue_Header *d_init_dialogue_header(int ssize, char *greeting);
-void d_add_dialogue(Dialogue_Header *header, int parent, int child);
-char *d_create_text(char *arg);
-
-void d_assign_dialogue(Dialogue_Header *header, int offset,uint8_t options, char *option, char *response, int ending);
-
-void d_destroy_dialogue_sequence(Dialogue_Header *header);
-
-void d_dialogue_loop(Dialogue_Header *header);
-
-void d_display_dialogue(Dialogue *d);
 #endif
+
 
