@@ -25,6 +25,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "game_state_struct.h"
 #include "generic_macros.h"
 #include "information_reader.h"
+#include "dialogue.h"
 //#define MV_PRINT_DMG(creature) char *fpath = malloc(sizeof(char) * strlen() ) free(fpath);
 
 #define ADD_TO_PILE(global_x,global_y, item, game_world) Entry *new_entry = malloc(sizeof(Entry)); new_entry->item_holder = item; new_entry->next_entry = game_world->tiles[global_y][global_x].entry; game_world->tiles[global_y][global_x].entry = new_entry;
@@ -46,7 +47,7 @@ void gw_add_to_pile(Item_Holder *item, Entry *item_pile);
 
 int mv_check_move_handler(int global_x, int gloval_y, int local_x, int local_y, Creature *c,Game_State *game_state);
 
-extern int (*move_response_handler[5])(int global_x, int global_y, int local_x, int local_y,Creature *c,Game_State *game_state);
+extern int (*move_response_handler[6])(int global_x, int global_y, int local_x, int local_y,Creature *c,Game_State *game_state);
 
 
 int move_response_move_character(int global_x, int global_y, int local_x, int local_y,Creature *c,Game_State *game_state);
@@ -59,5 +60,6 @@ int move_response_attack_target(int global_x, int global_y,int local_x, int loca
 
 int move_response_initiate_trade(int global_x, int global_y,int local_x, int local_y, Creature *c,Game_State *game_state);
 
+int move_response_initiate_dialoge(int global_x, int global_y,int local_x, int local_y, Creature *c,Game_State *game_state);
 #endif
 

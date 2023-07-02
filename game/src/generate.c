@@ -122,3 +122,9 @@ Item_Holder *g_generate_item(Mersienne_Twister *twister){
     return item_holder;
   }
 }
+
+void g_generate_dialogue(int global_x, int global_y,int dialogue_folder_id, int initial_dialogue_id, Game_State *gs){
+  Dialogue_Manager *manager = dia_init_dialogue_manager(dialogue_folder_id, initial_dialogue_id);
+  gs->current_zone->tiles[global_y][global_x].content[0] = '!';
+  gs->current_zone->tiles[global_y][global_x].foe = manager;
+}

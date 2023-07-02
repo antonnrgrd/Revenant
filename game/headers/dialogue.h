@@ -21,16 +21,20 @@ along with Foobar.  If not, see <https://www.gnu.org/licenses/>. */
 #include <stdint.h>
 #include <inttypes.h>
 #include "strings.h"
-
-typedef struct Dialogue_Manager{
+#include "ingame_msg.h"
+#include "generic_macros.h"
+#include "game_state_struct.h"
+#include "screen_constants.h"
+typedef struct {
   /*the id of the file we should look in*/
-  int dialogue_id;
+  int dialogue_folder_id;
+  int initial_dialogue_id;
   int **dialogue_id_options;  
-};
+}Dialogue_Manager;
 
-void dialogue_loop_dialogue(Dialogue_Manager *manager);
+void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs);
 
-
+Dialogue_Manager *dia_init_dialogue_manager(int dialogue_folder_id, int initial_dialogue_id);
 
 #endif
 

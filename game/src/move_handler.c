@@ -28,7 +28,7 @@ int mv_check_move_handler(int global_x, int global_y, int local_x, int local_y, 
 }
 
 
-int (*move_response_handler[5])(int global_x, int global_y, int local_x, int local_y, Creature *c,Game_State *game_state) =  {move_response_move_character,move_response_halt_character,move_response_loot_item, move_response_attack_target , move_response_initiate_trade };
+int (*move_response_handler[6])(int global_x, int global_y, int local_x, int local_y, Creature *c,Game_State *game_state) =  {move_response_move_character,move_response_halt_character,move_response_loot_item, move_response_attack_target , move_response_initiate_trade,move_response_initiate_dialoge };
 
   int move_response_move_character(int global_x, int global_y, int local_x, int local_y, Creature *c,Game_State *game_state){
     mvwprintw(game_state->logs[MAIN_SCREEN],c->position.local_y,c->position.local_x, c->standing_on);
@@ -187,6 +187,11 @@ mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s%s%s%d%s", "Pickup ", i_derive_i
 
 int move_response_initiate_trade(int global_x, int global_y,int local_x, int local_y, Creature *c,Game_State *game_state){
   msg_trading_session(global_x,global_y,game_state);
+  return CONTINUE_TURN;
 }
 
 
+int move_response_initiate_dialoge(int global_x, int global_y,int local_x, int local_y, Creature *c,Game_State *game_state){
+  dia_loop_dialogue((Dialogue_Manager *)game_state->current_zone->tiles[global_y][global_x].foe, game_state);
+  return CONTINUE_TURN;
+}

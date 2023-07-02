@@ -34,38 +34,9 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "game_state_struct.h"
 #include "rng.h"
 #include "information_reader.h"
+#include "dialogue.h"
 int main(int argc, char *argv[]){
-  /*   
-Item *weapon = i_make_mele_weapon(epic,bronze,one_hand,sword);
- Item *weapon_2 = i_make_mele_weapon(epic,steel,one_hand,sword); 
- Item *armor = i_make_armor(poor,mithril,helmet);
- Item *armor_2 = i_make_armor(adequate,steel,boots);
- Item_Holder *i = malloc(sizeof(Item_Holder));
- i->item = weapon;
- i->amount = 1;
-  Item_Holder *j = malloc(sizeof(Item_Holder));
-  j->item = weapon_2;
- j->amount = 5;
- Item_Holder *k = malloc(sizeof(Item_Holder));
- Item_Holder *l = malloc(sizeof(Item_Holder));
- l->item = armor;
- l->amount = 1;
- k->amount=1;
- k->item = armor;
-  Item_Holder *m = malloc(sizeof(Item_Holder));
-  m->item = armor_2;
- m->amount=1;
- Item_Holder *reagent = ir_readin_reagent("/usr/lib/revenant_files/item_files/reagent_files/1", 2);
- Item_Holder *food = ir_readin_consumable("/usr/lib/revenant_files/item_files/consumable_files/0", 4); 
-  u_add_item(reagent,reagent->amount,((Player_Info * )gs->player->additional_info)->inventory);
-  u_add_item(food,food->amount,((Player_Info * )gs->player->additional_info)->inventory);
-
- u_add_item(j,j->amount,((Player_Info * )gs->player->additional_info)->inventory);
- u_add_item(i,i->amount,((Player_Info * )gs->player->additional_info)->inventory);
-  u_add_item(k,k->amount,((Player_Info *)gs->player->additional_info)->inventory);
-   u_add_item(l,l->amount,((Player_Info * )gs->player->additional_info)->inventory);
-   u_add_item(m,m->amount,((Player_Info * )gs->player->additional_info)->inventory);
-  */  
+  
   initscr();
  start_color();   
    Game_World *game_world = g_generate_game_world(1000,1000);

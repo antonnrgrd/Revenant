@@ -95,7 +95,7 @@ Game_State *gs_create_game_state(Game_World *game_world){
   state->player = c_random_player(0,5, state,game_world);
   state->current_zone = game_world;
   g_generate_trader(13,13, state->twister, state);
-
+  g_generate_dialogue(15,15, 0,0, state);
   
     Creature *opponent = ir_readin_creature("/usr/lib/revenant_files/creature_files/0",20,4,game_world,state->player);
     opponent->behavior = idle;
@@ -113,6 +113,7 @@ Game_State *gs_create_game_state(Game_World *game_world){
   state->logs[INVENTORY_LOG] = newwin(LOG_Y_SIZE,LOG_X_SIZE,(state->num_cols - 1) / 4 , (state->num_rows - 1) / 4);
   state->logs[TRADING_LOG] = newwin(LOG_Y_SIZE,LOG_X_SIZE,(state->num_cols - 1) / 4 , (state->num_rows - 1) / 4);
   state->logs[NOTIFICATION_LOG] = newwin(LOG_Y_SIZE/4,LOG_X_SIZE,(state->num_cols - 1) / 2 , (state->num_rows - 1) / 4);
+  state->logs[DIALOGUE_LOG]  = newwin(0,0,0,DEFAULT_MAX_INFOBAR_WIDTH);
   
   state->notification_log_height_size = LOG_Y_SIZE/4;
 
@@ -125,10 +126,11 @@ Game_State *gs_create_game_state(Game_World *game_world){
   state->panels[INVENTORY_LOG] = new_panel(state->logs[INVENTORY_LOG]);
   state->panels[TRADING_LOG] = new_panel(state->logs[TRADING_LOG]);
   state->panels[NOTIFICATION_LOG] = new_panel(state->logs[NOTIFICATION_LOG]);
-  
+  state->panels[DIALOGUE_LOG] = new_panel(state->logs[DIALOGUE_LOG]);
   box(state->logs[EVENT_LOG],0,0);
   box(state->logs[INVENTORY_LOG],0,0);
   box(state->logs[NOTIFICATION_LOG],0,0);
+  box(state->logs[DIALOGUE_LOG],0,0);
   INIT_EVENT_LOG(state->logs[EVENT_LOG]);
 
   state->notification_log_offset = 15;
