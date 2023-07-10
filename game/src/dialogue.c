@@ -34,26 +34,30 @@ void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs){
   int num_lines = 0;
   //while((getline(&line, &len, fp)) != -1 ){
   char c = fgetc(fp);
-  while(c != EOF && c != '�' && current_col < gs->num_cols -1){
+  while(c != EOF && current_col < gs->num_cols -1){
     int char_pos = 0;
     // while( line[char_pos] != '\0'  && */ current_col < gs->num_cols -1){
-	  int printed_chars = 0;
+	  int char_offset = 1;
 	  /*Printing the characters one by one is most likely infinitely more ineffecient that printing lines at a time
 	   but coming up with a more clever scheme that always prints a line that is at most as long as the screen width
 	   and formats everything neatly appears to be way more complex logic so doing this character by character will have to do*/
-	  while(printed_chars < (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2 && c != EOF ){
+	  while(char_offset < (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 1 && c != EOF ){
 	    if(c == LF){
-	      printed_chars = 0;
+	      /*No idea why we have to set the offset to 0 here to get it to format properly, presumably because the line feed behaves differently than a whitespace when it comes to how it affects formatting? In any case, we have to set the offset to 0 instead of 1 to get ti to print properlt*/
+	      char_offset = 0;
 	      current_col++;
 	    }
+	    else if(c == SPACE && (char_offset == (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -1 || char_offset == 1)){
+	      char_offset = 1;
+	    }
 	    else{
-	      mvwprintw(gs->logs[DIALOGUE_LOG], current_col,printed_chars+1, "%c", c /*line[char_pos] */);
+	      mvwprintw(gs->logs[DIALOGUE_LOG], current_col,char_offset, "%c", c);
 	    }
 	    c = fgetc(fp);
 	    //char_pos++;
-	    printed_chars++;
+	    char_offset++;
 	    }
-	  printed_chars = 0;
+	  char_offset = 1;
 	  current_col++;
 	  //}
     num_lines++;
@@ -69,7 +73,6 @@ void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs){
       }
     }
 }
-
 Dialogue_Manager *dia_init_dialogue_manager(int dialogue_folder_id, int initial_dialogue_id){
   Dialogue_Manager *manager = malloc(sizeof(Dialogue_Manager));
   manager->dialogue_folder_id;

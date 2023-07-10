@@ -19,4 +19,5 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define MAX(num_1, num_2) num_1 > num_2 ? num_1 : num_2
 #define MIN(num_1, num_2) num_1 < num_2 ? num_1 : num_2
 #define LF 10
+#define SPACE 32
 #endif
