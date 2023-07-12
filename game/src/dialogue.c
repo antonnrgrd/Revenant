@@ -49,13 +49,15 @@ void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs){
 	    }
 	    /*I actually don't know if the two cases for encountering whitespace could be merged somehow, but in any case, these two else if cases handle the logic when the first or the last character is a whitespace, in which case we skip printing it and optionally reset the character position*/
 	    else if(c == SPACE && char_offset == 1){
-	      /*Again, no idea whu i have to change */
+	      /*Again, no idea why i have to change offset to 0 instead of the usual 1 to get it to format properly, but that's how it is it is*/
 	      char_offset = 0;
 	    }
-	    else if(c == SPACE && char_offset == (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -1 ){
-	      /*We substract from the current number of printed characters, allowing the next non whitespace character to be printed there instead if the last character one the current line is a whitespace*/
+	    /*
+	    else if(c == SPACE && char_offset == (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -2 ){
+	      printf("true");
 	      char_offset--;
 	    }
+	    */
 	    else{
 	      mvwprintw(gs->logs[DIALOGUE_LOG], current_col,char_offset, "%c", c);
 	    }
@@ -69,6 +71,7 @@ void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs){
     num_lines++;
     //}
   }
+  mvwprintw(gs->logs[DIALOGUE_LOG], 0,17, "%s", "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
    UPDATE_PANEL_INFO();
     while(1){
       int ch = getch();
