@@ -43,12 +43,18 @@ void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs){
 	   and formats everything neatly appears to be way more complex logic so doing this character by character will have to do*/
 	  while(char_offset < (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 1 && c != EOF ){
 	    if(c == LF){
-	      /*No idea why we have to set the offset to 0 here to get it to format properly, presumably because the line feed behaves differently than a whitespace when it comes to how it affects formatting? In any case, we have to set the offset to 0 instead of 1 to get ti to print properlt*/
+	      /*No idea why we have to set the offset to 0 here to get it to format properly, presumably because the line feed behaves differently than a whitespace when it comes to how it affects formatting? In any case, we have to set the offset to 0 instead of 1 to get it to print properly and force it to move down the the next line (in ncurses logic)*/
 	      char_offset = 0;
 	      current_col++;
 	    }
-	    else if(c == SPACE && (char_offset == (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -1 || char_offset == 1)){
-	      char_offset = 1;
+	    /*I actually don't know if the two cases for encountering whitespace could be merged somehow, but in any case, these two else if cases handle the logic when the first or the last character is a whitespace, in which case we skip printing it and optionally reset the character position*/
+	    else if(c == SPACE && char_offset == 1){
+	      /*Again, no idea whu i have to change */
+	      char_offset = 0;
+	    }
+	    else if(c == SPACE && char_offset == (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -1 ){
+	      /*We substract from the current number of printed characters, allowing the next non whitespace character to be printed there instead if the last character one the current line is a whitespace*/
+	      char_offset--;
 	    }
 	    else{
 	      mvwprintw(gs->logs[DIALOGUE_LOG], current_col,char_offset, "%c", c);
