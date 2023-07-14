@@ -29,10 +29,9 @@ void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs){
   }
   char * line = NULL;
   size_t len = 0;
-  int current_col = 1;
+  int current_col = 2;
   top_panel(gs->panels[DIALOGUE_LOG]);
   int num_lines = 0;
-  //while((getline(&line, &len, fp)) != -1 ){
   char c = fgetc(fp);
   while(c != EOF && current_col < gs->num_cols -1){
     int char_pos = 0;
@@ -49,10 +48,11 @@ void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs){
 	    }
 	    /*I actually don't know if the two cases for encountering whitespace could be merged somehow, but in any case, these two else if cases handle the logic when the first or the last character is a whitespace, in which case we skip printing it and optionally reset the character position*/
 	    else if(c == SPACE && char_offset == 1){
-	      /*Again, no idea why i have to change offset to 0 instead of the usual 1 to get it to format properly, but that's how it is it is*/
+	      /*Again, no idea why i have to change offset to 0 instead of the usual 1 to get it to format properly, but that's how it is*/
 	      char_offset = 0;
 	    }
 	    /*
+	      I really don't think you can format the text properly when the last character is a whitespace, because no matter what, it is gonna look ugly. THis is because if you skip printing the newline, the alternatively it remove a whitespace and just print the next character which will look ugly. You can only skip the redundandt whitespace if it is the first character
 	    else if(c == SPACE && char_offset == (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -2 ){
 	      printf("true");
 	      char_offset--;
@@ -71,7 +71,6 @@ void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs){
     num_lines++;
     //}
   }
-  mvwprintw(gs->logs[DIALOGUE_LOG], 0,17, "%s", "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
    UPDATE_PANEL_INFO();
     while(1){
       int ch = getch();

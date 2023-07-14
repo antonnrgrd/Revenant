@@ -1,5 +1,4 @@
 /*This file is part of Revenant.
-
 Revenant is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
@@ -15,7 +14,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "game_state.h"
 #include "move_handler.h"
 #include "creature.h"
-
+#include "dialogue.h"
 void ll_iter_list_as_creature(Linked_List *list, Game_State *game_state){
   /*We have to keep track of where we are in the position of the linked ist
 because depending on where we are in the list, we have to perform different steps to remove the node */
@@ -113,7 +112,7 @@ Game_State *gs_create_game_state(Game_World *game_world){
   state->logs[INVENTORY_LOG] = newwin(LOG_Y_SIZE,LOG_X_SIZE,(state->num_cols - 1) / 4 , (state->num_rows - 1) / 4);
   state->logs[TRADING_LOG] = newwin(LOG_Y_SIZE,LOG_X_SIZE,(state->num_cols - 1) / 4 , (state->num_rows - 1) / 4);
   state->logs[NOTIFICATION_LOG] = newwin(LOG_Y_SIZE/4,LOG_X_SIZE,(state->num_cols - 1) / 2 , (state->num_rows - 1) / 4);
-  state->logs[DIALOGUE_LOG]  = newwin(0,0,0,DEFAULT_MAX_INFOBAR_WIDTH);
+  state->logs[DIALOGUE_LOG]  = newwin(0,state->num_rows - DEFAULT_MAX_INFOBAR_WIDTH ,0,DEFAULT_MAX_INFOBAR_WIDTH);
   
   state->notification_log_height_size = LOG_Y_SIZE/4;
 
@@ -130,7 +129,10 @@ Game_State *gs_create_game_state(Game_World *game_world){
   box(state->logs[EVENT_LOG],0,0);
   box(state->logs[INVENTORY_LOG],0,0);
   box(state->logs[NOTIFICATION_LOG],0,0);
-  box(state->logs[DIALOGUE_LOG],0,0);
+  //box(state->logs[DIALOGUE_LOG],0,0);
+  DIA_DRAW_DIALOGUE_BORDER(state->logs[DIALOGUE_LOG],state);
+  
+  
   INIT_EVENT_LOG(state->logs[EVENT_LOG]);
 
   state->notification_log_offset = 15;
