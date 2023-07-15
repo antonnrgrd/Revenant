@@ -33,7 +33,7 @@ typedef struct {
 }Dialogue_Manager;
 
 /*Normally, we'd be content using the box function to draw a border around the wndow, but we want an ultra specific bordering set, you we have to do it manually */
-#define DIA_DRAW_DIALOGUE_BORDER(dialogue_screen,gs) mvwhline(dialogue_screen, 0, 0, 0, gs->num_rows-3); mvwvline(dialogue_screen, 0, 0, 0, gs->num_cols); mvwaddch(dialogue_screen,0, 0, ACS_ULCORNER); mvwhline(dialogue_screen, 1, 1, 0, gs->num_rows-3); mvwvline(dialogue_screen, 0, gs->num_rows-2, 0, 1);
+#define DIA_DRAW_DIALOGUE_BORDER(dialogue_screen,gs) mvwhline(dialogue_screen, 0, 0, 0, (state->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -1); mvwhline(dialogue_screen, 1, 1, 0, (state->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -2 ); mvwvline(dialogue_screen, 0, 0, 0, gs->num_cols); mvwvline(dialogue_screen, 1, (state->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -1, 0, gs->num_cols);  mvwaddch(dialogue_screen,0, 0, ACS_ULCORNER); mvwaddch(dialogue_screen,0, (state->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -1, ACS_URCORNER);   
 
 void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs);
 
