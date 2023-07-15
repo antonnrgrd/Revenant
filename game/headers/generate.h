@@ -37,6 +37,6 @@ U_Hashtable *g_generate_merchant_inventory(int min_amount, int max_amount, Mersi
 
 void g_generate_trader(int global_x, int global_y ,Mersienne_Twister *twister, Game_State *gs);
 
-void g_generate_dialogue(int global_x, int global_y,int dialogue_folder_id, int initial_dialogue_id, Game_State *gs);
+void g_generate_dialogue(int global_x, int global_y,int dialogue_folder_id, int initial_dialogue_id,int npc_id, Game_State *gs);
 #endif
 

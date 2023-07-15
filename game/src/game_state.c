@@ -94,7 +94,7 @@ Game_State *gs_create_game_state(Game_World *game_world){
   state->player = c_random_player(0,5, state,game_world);
   state->current_zone = game_world;
   g_generate_trader(13,13, state->twister, state);
-  g_generate_dialogue(15,15, 0,0, state);
+  g_generate_dialogue(15,15, 0,0,0, state);
   
     Creature *opponent = ir_readin_creature("/usr/lib/revenant_files/creature_files/0",20,4,game_world,state->player);
     opponent->behavior = idle;

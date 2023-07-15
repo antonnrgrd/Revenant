@@ -26,18 +26,21 @@ along with Foobar.  If not, see <https://www.gnu.org/licenses/>. */
 #include "game_state_struct.h"
 #include "screen_constants.h"
 typedef struct {
-  /*the id of the file we should look in*/
+  /*the id of the folder we should look in for the dialogue files*/
   int dialogue_folder_id;
+  /*The id of the initial dialogue file the player should see upon engaging conversation*/
   int initial_dialogue_id;
+  /**/
+  int npc_id;
   int **dialogue_id_options;  
 }Dialogue_Manager;
 
 /*Normally, we'd be content using the box function to draw a border around the wndow, but we want an ultra specific bordering set, you we have to do it manually */
-#define DIA_DRAW_DIALOGUE_BORDER(dialogue_screen,gs) mvwhline(dialogue_screen, 0, 0, 0, (state->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -1); mvwhline(dialogue_screen, 1, 1, 0, (state->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -2 ); mvwvline(dialogue_screen, 0, 0, 0, gs->num_cols); mvwvline(dialogue_screen, 1, (state->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -1, 0, gs->num_cols);  mvwaddch(dialogue_screen,0, 0, ACS_ULCORNER); mvwaddch(dialogue_screen,0, (state->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -1, ACS_URCORNER);   
+#define DIA_DRAW_DIALOGUE_BORDER(dialogue_screen,gs) mvwhline(dialogue_screen, 0, 0, 0, (state->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -1); mvwhline(dialogue_screen, 2, 1, 0, (state->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -2 ); mvwvline(dialogue_screen, 0, 0, 0, gs->num_cols); mvwvline(dialogue_screen, 1, (state->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -1, 0, gs->num_cols);  mvwaddch(dialogue_screen,0, 0, ACS_ULCORNER); mvwaddch(dialogue_screen,0, (state->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -1, ACS_URCORNER);   
 
 void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs);
 
-Dialogue_Manager *dia_init_dialogue_manager(int dialogue_folder_id, int initial_dialogue_id);
+Dialogue_Manager *dia_init_dialogue_manager(int dialogue_folder_id, int initial_dialogue_id, int npc_id);
 
 #endif
 

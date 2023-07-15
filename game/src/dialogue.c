@@ -16,7 +16,19 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "dialogue.h"
 
 void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs){
-
+  mvwprintw(gs->logs[DIALOGUE_LOG], 1,(gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) / 3,"Talking to: ");
+  char npc_id[10];
+  chdir("/usr/lib/revenant_files/npc_name_files/");
+  sprintf(npc_id, "%d", manager->npc_id);
+  FILE *fp_2 = fopen(npc_id, "r");
+  char c_2 = fgetc(fp_2);
+  int curr_name_offset = (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) / 3 + 11;
+  while(c_2 != EOF){
+    mvwprintw(gs->logs[DIALOGUE_LOG], 1, curr_name_offset, "%c", c_2);
+  c_2 = fgetc(fp_2);
+  curr_name_offset++;
+  }
+  fclose(fp_2);
   chdir("/usr/lib/revenant_files/dialogue_files");
   char dialogue_folder[10];
   char dialogue_id[10];
@@ -29,10 +41,11 @@ void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs){
   }
   char * line = NULL;
   size_t len = 0;
-  int current_col = 2;
+  int current_col = 3;
   top_panel(gs->panels[DIALOGUE_LOG]);
   int num_lines = 0;
   char c = fgetc(fp);
+  int fbytes = 0;
   while(c != EOF && current_col < gs->num_cols -1){
     int char_pos = 0;
     // while( line[char_pos] != '\0'  && */ current_col < gs->num_cols -1){
@@ -81,7 +94,7 @@ void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs){
       }
     }
 }
-Dialogue_Manager *dia_init_dialogue_manager(int dialogue_folder_id, int initial_dialogue_id){
+Dialogue_Manager *dia_init_dialogue_manager(int dialogue_folder_id, int initial_dialogue_id, int npc_id){
   Dialogue_Manager *manager = malloc(sizeof(Dialogue_Manager));
   manager->dialogue_folder_id;
   manager->initial_dialogue_id;
