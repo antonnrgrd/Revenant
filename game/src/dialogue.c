@@ -45,8 +45,12 @@ void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs){
   top_panel(gs->panels[DIALOGUE_LOG]);
   int num_lines = 0;
   char c = fgetc(fp);
-  int fbytes = 0;
+  int fbytes = dia_compute_num_bytes(fp);
+  int processed_bytes;
+  int bye_offset;
+  int byte_offset_defined = NO;
   while(c != EOF && current_col < gs->num_cols -1){
+    fbytes++;
     int char_pos = 0;
     // while( line[char_pos] != '\0'  && */ current_col < gs->num_cols -1){
 	  int char_offset = 1;
@@ -54,10 +58,14 @@ void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs){
 	   but coming up with a more clever scheme that always prints a line that is at most as long as the screen width
 	   and formats everything neatly appears to be way more complex logic so doing this character by character will have to do*/
 	  while(char_offset < (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 1 && c != EOF ){
+	    byte_offset++;
 	    if(c == LF){
 	      /*No idea why we have to set the offset to 0 here to get it to format properly, presumably because the line feed behaves differently than a whitespace when it comes to how it affects formatting? In any case, we have to set the offset to 0 instead of 1 to get it to print properly and force it to move down the the next line (in ncurses logic)*/
 	      char_offset = 0;
 	      current_col++;
+	      if(){
+
+	      }
 	    }
 	    /*I actually don't know if the two cases for encountering whitespace could be merged somehow, but in any case, these two else if cases handle the logic when the first or the last character is a whitespace, in which case we skip printing it and optionally reset the character position*/
 	    else if(c == SPACE && char_offset == 1){
@@ -92,6 +100,9 @@ void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs){
 	UPDATE_PANEL_INFO();
 	return;
       }
+      else if(ch == KEY_DOWN){
+
+      }
     }
 }
 Dialogue_Manager *dia_init_dialogue_manager(int dialogue_folder_id, int initial_dialogue_id, int npc_id){
@@ -99,4 +110,54 @@ Dialogue_Manager *dia_init_dialogue_manager(int dialogue_folder_id, int initial_
   manager->dialogue_folder_id;
   manager->initial_dialogue_id;
  return manager;
+}
+
+void dia_reddraw_dialogue_scrolls(FILE *);
+
+int dia_compute_num_bytes(FILE *fp){
+  int found_bytes = 1;
+  char ch = fgetc(fp);
+  while(ch != EOF){
+    ch = fgetc(fp);
+    found_bytes++;
+  }
+  return found_bytes;
+}
+
+int dia_redraw_text_scroll(WINDOW *w,FILE *fp, int byte_offset){
+  werase(w);
+  fseek(fp, byte_offset, SEEK_SET);
+  char ch = fgetc(fp);
+  int current_col = 3;
+  int new_byte_offset =;
+  while(ch != EOF && current_col < gs->num_cols -1){
+    fbytes++;
+    int char_pos = 0;
+    // while( line[char_pos] != '\0'  && */ current_col < gs->num_cols -1){
+	  int char_offset = 1;
+	  /*Printing the characters one by one is most likely infinitely more ineffecient that printing lines at a time
+	   but coming up with a more clever scheme that always prints a line that is at most as long as the screen width
+	   and formats everything neatly appears to be way more complex logic so doing this character by character will have to do*/
+	  while(char_offset < (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 1 && c != EOF ){
+	    byte_offset++;
+	    if(c == LF){
+	   
+	      char_offset = 0;
+	      current_col++;
+	    }
+	   	    else if(c == SPACE && char_offset == 1){
+	     
+	      char_offset = 0;
+	    }
+	    else{
+	      mvwprintw(gs->logs[DIALOGUE_LOG], current_col,char_offset, "%c", c);
+	    }
+	    c = fgetc(fp);
+	    char_offset++;
+	    }
+	  char_offset = 1;
+	  current_col++;
+    num_lines++;
+  }
+  UPDATE_PANEL_INFO();
 }

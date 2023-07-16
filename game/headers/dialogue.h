@@ -40,7 +40,9 @@ typedef struct {
 
 void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs);
 
+int dia_compute_num_bytes(FILE *fp);
 Dialogue_Manager *dia_init_dialogue_manager(int dialogue_folder_id, int initial_dialogue_id, int npc_id);
 
+int dia_redraw_text_scroll(WINDOW *w,FILE *fp, int byte_offset);
 #endif
 
