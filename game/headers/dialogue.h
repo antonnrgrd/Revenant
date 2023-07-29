@@ -43,12 +43,12 @@ typedef struct {
 
 #define DIA_SET_OFFSET(offset, dia_manager) dia_manager->set_offset == NO ? dia_manager->next_char_offset = offset : ;
 
-#define DIA_SAFE_DECREMENT_NEXT(manager,gs) manager->next_char_offset - (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) <= 0 ? 0 : (manager->next_char_offset - (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2)
+#define DIA_SAFE_DECREMENT_NEXT(manager,gs) (manager->next_char_offset - (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2) <= 0 ? 0 : (manager->next_char_offset - (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2)
 
 #define DIA_SAFE_INCREMENT_NEXT(manager,gs,maximum_bytes) manager->next_char_offset + (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) >= maximum_bytes ? maximum_bytes - (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) : (manager->next_char_offset + (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2)
 
 
-#define DIA_SAFE_DECREMENT_PREV(manager,gs) manager->prev_char_offset - (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) <= 0 ? manager->prev_char_offset = 0 : (manager->prev_char_offset - (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2)
+#define DIA_SAFE_DECREMENT_PREV(manager,gs) (manager->prev_char_offset - (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2) <= 0 ? manager->prev_char_offset = 0 : (manager->prev_char_offset - (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2)
 
 #define DIA_SAFE_INCREMENT_PREV(manager,gs,maximum_bytes) manager->prev_char_offset + (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) >= maximum_bytes ? maximum_bytes - (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) : (manager->prev_char_offset + (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -2)
 
