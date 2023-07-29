@@ -32,17 +32,31 @@ typedef struct {
   int initial_dialogue_id;
   /**/
   int npc_id;
-  int **dialogue_id_options;  
+  int **dialogue_id_options;
+  int next_char_offset;
+  int prev_char_offset;
+  int set_offset;
 }Dialogue_Manager;
 
 /*Normally, we'd be content using the box function to draw a border around the wndow, but we want an ultra specific bordering set, you we have to do it manually */
-#define DIA_DRAW_DIALOGUE_BORDER(dialogue_screen,gs) mvwhline(dialogue_screen, 0, 0, 0, (state->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -1); mvwhline(dialogue_screen, 2, 1, 0, (state->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -2 ); mvwvline(dialogue_screen, 0, 0, 0, gs->num_cols); mvwvline(dialogue_screen, 1, (state->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -1, 0, gs->num_cols);  mvwaddch(dialogue_screen,0, 0, ACS_ULCORNER); mvwaddch(dialogue_screen,0, (state->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -1, ACS_URCORNER);   
+#define DIA_DRAW_DIALOGUE_BORDER(dialogue_screen,gs) mvwhline(dialogue_screen, 0, 0, 0, (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -1); mvwhline(dialogue_screen, 2, 1, 0, (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -2 ); mvwvline(dialogue_screen, 0, 0, 0, gs->num_cols); mvwvline(dialogue_screen, 1, (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -1, 0, gs->num_cols);  mvwaddch(dialogue_screen,0, 0, ACS_ULCORNER); mvwaddch(dialogue_screen,0, (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -1, ACS_URCORNER);
+
+#define DIA_SET_OFFSET(offset, dia_manager) dia_manager->set_offset == NO ? dia_manager->next_char_offset = offset : ;
+
+#define DIA_SAFE_DECREMENT_NEXT(manager,gs) manager->next_char_offset - (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) <= 0 ? 0 : (manager->next_char_offset - (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2)
+
+#define DIA_SAFE_INCREMENT_NEXT(manager,gs,maximum_bytes) manager->next_char_offset + (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) >= maximum_bytes ? maximum_bytes - (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) : (manager->next_char_offset + (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2)
+
+
+#define DIA_SAFE_DECREMENT_PREV(manager,gs) manager->prev_char_offset - (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) <= 0 ? manager->prev_char_offset = 0 : (manager->prev_char_offset - (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2)
+
+#define DIA_SAFE_INCREMENT_PREV(manager,gs,maximum_bytes) manager->prev_char_offset + (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) >= maximum_bytes ? maximum_bytes - (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) : (manager->prev_char_offset + (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -2)
 
 void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs);
 
 int dia_compute_num_bytes(FILE *fp);
 Dialogue_Manager *dia_init_dialogue_manager(int dialogue_folder_id, int initial_dialogue_id, int npc_id);
 
-int dia_redraw_text_scroll(WINDOW *w,FILE *fp, int byte_offset);
+int dia_redraw_text_scroll(Dialogue_Manager *manager, Game_State *gs, FILE *fp, int offset);
 #endif
 
