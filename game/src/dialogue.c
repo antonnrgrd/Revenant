@@ -144,10 +144,6 @@ void dia_reddraw_dialogue_scroll(Dialogue_Manager *manager, Game_State *gs, FILE
   fclose(fp_2);
   int current_col = 3;
   char c = fgetc(fp);
-  /*Provided it is a space/whitespace, skip*/
-  while(c == LF || c == SPACE ){
-    c = fgetc(fp);
-  }
   while(c != EOF && current_col < gs->num_cols -1){
     int char_offset = 1;
     while(char_offset < (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 1 && c != EOF ){
