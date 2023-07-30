@@ -12,10 +12,10 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
-
 #include "dialogue.h"
 void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs){
   manager->next_char_offset = (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2 ;
+  //printf(" Initial offset we are using  %d ",manager->next_char_offset);
   manager->prev_char_offset = 0;
   manager->set_offset = 0;
   mvwprintw(gs->logs[DIALOGUE_LOG], 1,(gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) / 3,"Talking to: ");
@@ -96,6 +96,7 @@ void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs){
 	return;
       }
       else if(ch == KEY_DOWN){
+	//printf(" offset wer are using  %d ",manager->next_char_offset);
 	dia_reddraw_dialogue_scroll(manager, gs, fp,manager->next_char_offset);
 	manager->next_char_offset = DIA_SAFE_INCREMENT_NEXT(manager,gs,num_bytes);
 	/*

@@ -11,6 +11,7 @@ GNU General Public License for more details.
           
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
+
 #include "dialogue.h"
 #include "u_hash.h"
 #include "creature.h"
@@ -35,8 +36,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "rng.h"
 #include "information_reader.h"
 #include "dialogue.h"
-int main(int argc, char *argv[]){
-  
+int main(int argc, char *argv[]){  
   initscr();
  start_color();   
    Game_World *game_world = g_generate_game_world(1000,1000);
