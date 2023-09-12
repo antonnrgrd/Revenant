@@ -59,5 +59,9 @@ int dia_compute_num_bytes(FILE *fp);
 Dialogue_Manager *dia_init_dialogue_manager(int dialogue_folder_id, int initial_dialogue_id, int npc_id);
 
 int dia_redraw_text_scroll(Dialogue_Manager *manager, Game_State *gs, FILE *fp, int offset);
+
+void dia_print_char_at_offset(FILE *fp, int offset);
+
+void dia_print_char_at_offset_times(FILE *fp, int times);
 #endif
 
