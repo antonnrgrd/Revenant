@@ -226,10 +226,3 @@ void dia_print_char_at_offset(FILE *fp, int offset){
   fseek(fp, 0, SEEK_SET);
 }
 
-void dia_print_char_at_offset_times(FILE *fp, int times, int offset){
-  int current_offset = offset
-  for(){
-
-
-  }
-}
