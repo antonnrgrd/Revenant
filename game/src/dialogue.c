@@ -63,18 +63,6 @@ void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs){
 
 	      //}
 	    }
-	    /*I actually don't know if the two cases for encountering whitespace could be merged somehow, but in any case, these two else if cases handle the logic when the first or the last character is a whitespace, in which case we skip printing it and optionally reset the character position*/
-	    else if(c == SPACE && char_offset == 1){
-	      /*Again, no idea why i have to change offset to 0 instead of the usual 1 to get it to format properly, but that's how it is*/
-	      char_offset = 0;
-	    }
-	    /*
-	      I really don't think you can format the text properly when the last character is a whitespace, because no matter what, it is gonna look ugly. THis is because if you skip printing the newline, the alternatively it remove a whitespace and just print the next character which will look ugly. You can only skip the redundandt whitespace if it is the first character
-	    else if(c == SPACE && char_offset == (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -2 ){
-	      printf("true");
-	      char_offset--;
-	    }
-	    */
 	    else{
 	      mvwprintw(gs->logs[DIALOGUE_LOG], current_col,char_offset, "%c", c);
 	    }
@@ -151,9 +139,6 @@ void dia_reddraw_dialogue_scroll(Dialogue_Manager *manager, Game_State *gs, FILE
       if(c == LF){
 	  char_offset = 0;
 	  current_col++;
-	}
-	else if(c == SPACE && char_offset == 1){
-	  char_offset = 0;
 	}
 	else{
 	  mvwprintw(gs->logs[DIALOGUE_LOG], current_col,char_offset, "%c", c);
