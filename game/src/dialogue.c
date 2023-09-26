@@ -59,9 +59,9 @@ void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs){
 	      /*No idea why we have to set the offset to 0 here to get it to format properly, presumably because the line feed behaves differently than a whitespace when it comes to how it affects formatting? In any case, we have to set the offset to 0 instead of 1 to get it to print properly and force it to move down the the next line (in ncurses logic)*/
 	      char_offset = 0;
 	      current_col++;
-	      //if(){
-
-	      //}
+	      /* 
+		 Another programmer's sidenote: I initially tried some scheme to trim redundant whitespace that occured in the beginning and                 end of lines. However, this caused issues when scrolling, where the scheme for finding the next offset behaved inconsistenly, namely we would have off by one character character issues, where we would jump to +1 position too high. In the end, i gave and let them be. Besides, less has the same issue, so why should i bother?
+	       */
 	    }
 	    else{
 	      mvwprintw(gs->logs[DIALOGUE_LOG], current_col,char_offset, "%c", c);
