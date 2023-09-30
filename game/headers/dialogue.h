@@ -63,5 +63,11 @@ int dia_redraw_text_scroll(Dialogue_Manager *manager, Game_State *gs, FILE *fp, 
 void dia_print_char_at_offset(FILE *fp, int offset);
 
 void dia_print_char_at_offset_times(FILE *fp, int times);
+
+void dia_safe_find_next_offset(Dialogue_Manager *manager, Game_State *gs, int maximum_bytes);
+
+int dia_reddraw_dialogue_scroll(Dialogue_Manager *manager, Game_State *gs, FILE *fp, int offset, int direction);
+
+dia_find_next_nonlf_char(FILE *fp,Dialogue_Manager *manager,char currchar, int start_offset, int current_offset);
 #endif
 

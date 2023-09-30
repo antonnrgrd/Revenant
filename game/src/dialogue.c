@@ -85,8 +85,10 @@ void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs){
       }
       else if(ch == KEY_DOWN){
 	//printf(" offset wer are using  %d ",manager->next_char_offset);
-	dia_reddraw_dialogue_scroll(manager, gs, fp,manager->next_char_offset);
+	int already_found_next_offset = dia_reddraw_dialogue_scroll(manager, gs, fp,manager->next_char_offset, KEY_DOWN);
+	if(already_found_next_offset == NO){
 	manager->next_char_offset = DIA_SAFE_INCREMENT_NEXT(manager,gs,num_bytes);
+	}
 	/*
 	  The previous and next fp offset are somewhat askew. It is not until
 	  we move beyond the first line that we need to keep track of what the previous line is.
@@ -98,7 +100,7 @@ void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs){
 	}
       }
       else if(ch == KEY_UP){
-	dia_reddraw_dialogue_scroll(manager, gs, fp,manager->prev_char_offset);
+	int already_found_next_offset = dia_reddraw_dialogue_scroll(manager, gs, fp,manager->prev_char_offset, KEY_UP);
 	manager->next_char_offset = DIA_SAFE_DECREMENT_NEXT(manager,gs);
 	manager->prev_char_offset = DIA_SAFE_DECREMENT_PREV(manager,gs);
 	if(manager->set_offset > 0){
@@ -114,7 +116,7 @@ Dialogue_Manager *dia_init_dialogue_manager(int dialogue_folder_id, int initial_
  return manager;
 }
 
-void dia_reddraw_dialogue_scroll(Dialogue_Manager *manager, Game_State *gs, FILE *fp, int offset){
+int dia_reddraw_dialogue_scroll(Dialogue_Manager *manager, Game_State *gs, FILE *fp, int offset, int direction){
   int curr_name_offset = (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) / 3 + 11;
   chdir("/usr/lib/revenant_files/npc_name_files/");
   char npc_id[10];
@@ -133,10 +135,19 @@ void dia_reddraw_dialogue_scroll(Dialogue_Manager *manager, Game_State *gs, FILE
   fclose(fp_2);
   int current_col = 3;
   char c = fgetc(fp);
+  int already_found_next_offset = NO;
+  int current_offset = offset;
   while(c != EOF && current_col < gs->num_cols -1){
     int char_offset = 1;
     while(char_offset < (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 1 && c != EOF ){
       if(c == LF){
+	/*
+	  God this is so fucking asinine. Usually, when scrolling through dialogue, the correct way to update the the next offset would be to       add the length of the dialogue screen to the offset to correctly start printing from the next line, but provided the current line you        are reading ends with a life feed, the correct way to get the next offset it is offset where you encountered the linefeef + one for some reason, getting the next offset the usual way does not work. God how fucking stupid that is.
+	*/
+	if(current_col == 3){
+	  already_found_next_offset = YES;
+	  manager->next_char_offset = current_offset + 1; 
+	}
 	  char_offset = 0;
 	  current_col++;
 	}
@@ -145,11 +156,13 @@ void dia_reddraw_dialogue_scroll(Dialogue_Manager *manager, Game_State *gs, FILE
 	}
       c = fgetc(fp);
       char_offset++;
+      current_offset++;
     }
     char_offset = 1;
     current_col++;
   }
   UPDATE_PANEL_INFO();
+  return already_found_next_offset;
 }
 
 int dia_compute_num_bytes(FILE *fp){
@@ -163,43 +176,7 @@ int dia_compute_num_bytes(FILE *fp){
   return found_bytes;
 }
 
-/*
-int dia_redraw_text_scroll(WINDOW *w,FILE *fp, int byte_offset){
-  werase(w);
-  fseek(fp, byte_offset, SEEK_SET);
-  char ch = fgetc(fp);
-  int current_col = 3;
-  int new_byte_offset =;
-  while(ch != EOF && current_col < gs->num_cols -1){
-    fbytes++;
-    int char_pos = 0;
-    // while( line[char_pos] != '\0'  &&  current_col < gs->num_cols -1){
-	  int char_offset = 1;
-	  have to do
-	  while(char_offset < (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 1 && c != EOF ){
-	    byte_offset++;
-	    if(c == LF){
-	   
-	      char_offset = 0;
-	      current_col++;
-	    }
-	   	    else if(c == SPACE && char_offset == 1){
-	     
-	      char_offset = 0;
-	    }
-	    else{
-	      mvwprintw(gs->logs[DIALOGUE_LOG], current_col,char_offset, "%c", c);
-	    }
-	    c = fgetc(fp);
-	    char_offset++;
-	    }
-	  char_offset = 1;
-	  current_col++;
-    num_lines++;
-  }
-  UPDATE_PANEL_INFO();
-}
-*/
+
 
 void dia_print_char_at_offset(FILE *fp, int offset){
   fseek(fp, 0, SEEK_SET);
@@ -211,3 +188,17 @@ void dia_print_char_at_offset(FILE *fp, int offset){
   fseek(fp, 0, SEEK_SET);
 }
 
+/*
+int dia_find_next_nonlf_char(FILE *fp,Dialogue_Manager *manager,char currchar, int start_offset, int current_offset){
+  char startoff_char = currchar;
+  int next_offset = current_offset;
+  fseek(fp, current_offset, SEEK_SET);
+  char c = fgetc(fp);
+  while(c == LF){
+    c = fgetc(fp);
+    next_offset++;
+  }
+  fseek(fp, start_offset, SEEK_SET);
+  return next_offset;
+}
+*/
