@@ -1,0 +1,12 @@
+species=0
+name=Short-faced bear
+representation=a
+id=0
+limb_count=7
+limbs=[[0,0,100,100],[1,0,100,100],[2,0,100,100],[2,0,100,100],[3,0,100,100],[3,0,100,100],[4,0,100,100]]
+weight=900
+height=3.4
+attributes=[12,12,12,12,12,12,12,12]
+max_health=30
+max_carry=100
+preferred_attack_type=1

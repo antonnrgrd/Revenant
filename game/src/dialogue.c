@@ -15,7 +15,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "dialogue.h"
 void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs){
   manager->next_char_offset = (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2 ;
-  //printf(" Initial offset we are using  %d ",manager->next_char_offset);
+  printf("%d", (manager->next_char_offset + (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2));
   manager->prev_char_offset = 0;
   manager->set_offset = 0;
   mvwprintw(gs->logs[DIALOGUE_LOG], 1,(gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) / 3,"Talking to: ");
@@ -101,13 +101,11 @@ void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs){
       }
       else if(ch == KEY_UP){
 	int already_found_next_offset = dia_reddraw_dialogue_scroll(manager, gs, fp,manager->prev_char_offset, KEY_UP);
-	if(already_found_next_offset == NO){
 	manager->next_char_offset = DIA_SAFE_DECREMENT_NEXT(manager,gs);
 	manager->prev_char_offset = DIA_SAFE_DECREMENT_PREV(manager,gs);
 	if(manager->set_offset > 0){
 	  manager->set_offset --;
 	 }
-	}
       }
     }
 }
@@ -125,6 +123,14 @@ int dia_reddraw_dialogue_scroll(Dialogue_Manager *manager, Game_State *gs, FILE 
   sprintf(npc_id, "%d", manager->npc_id);
   FILE *fp_2 = fopen(npc_id, "r");
   char c_2 = fgetc(fp_2);
+  int already_found_next_offset = NO;
+  fseek(fp, offset-2, SEEK_SET);
+  char c1 = fgetc(fp);
+  printf(" %d ",c1 );
+  if(c1 == LF  && direction == KEY_DOWN){
+    printf("true");
+    manager->prev_char_offset -=90;
+  }
   fseek(fp, offset, SEEK_SET);
   wclear(gs->logs[DIALOGUE_LOG]);
   DIA_DRAW_DIALOGUE_BORDER(gs->logs[DIALOGUE_LOG],gs);
@@ -137,7 +143,6 @@ int dia_reddraw_dialogue_scroll(Dialogue_Manager *manager, Game_State *gs, FILE 
   fclose(fp_2);
   int current_col = 3;
   char c = fgetc(fp);
-  int already_found_next_offset = NO;
   int current_offset = offset;
   while(c != EOF && current_col < gs->num_cols -1){
     int char_offset = 1;
