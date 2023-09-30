@@ -15,7 +15,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "dialogue.h"
 void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs){
   manager->next_char_offset = (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2 ;
-  printf("%d", (manager->next_char_offset + (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2));
+  //  printf("%d", (manager->next_char_offset + (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2));
   manager->prev_char_offset = 0;
   manager->set_offset = 0;
   mvwprintw(gs->logs[DIALOGUE_LOG], 1,(gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) / 3,"Talking to: ");
@@ -126,10 +126,24 @@ int dia_reddraw_dialogue_scroll(Dialogue_Manager *manager, Game_State *gs, FILE 
   int already_found_next_offset = NO;
   fseek(fp, offset-2, SEEK_SET);
   char c1 = fgetc(fp);
-  printf(" %d ",c1 );
   if(c1 == LF  && direction == KEY_DOWN){
-    printf("true");
-    manager->prev_char_offset -=90;
+    manager->prev_char_offset -= ((gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2);
+    int lookback = 2;
+    for(int i = lookback; i < 10; i ++){
+      fseek(fp, offset-i, SEEK_SET);
+      c1 = fgetc(fp);
+      printf("%c", c1);
+    }
+    /*
+    c1 = fgetc(fp);
+    while(c1 === LF){
+      lookback++;
+      fseek(fp, offset-lookback, SEEK_SET);
+      c1 = fgetc(fp);
+    }
+    printf("final lookback: %d", lookback);
+    manager->prev_char_offset -=lookback;
+    */
   }
   fseek(fp, offset, SEEK_SET);
   wclear(gs->logs[DIALOGUE_LOG]);
