@@ -101,10 +101,12 @@ void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs){
       }
       else if(ch == KEY_UP){
 	int already_found_next_offset = dia_reddraw_dialogue_scroll(manager, gs, fp,manager->prev_char_offset, KEY_UP);
+	if(already_found_next_offset == NO){
 	manager->next_char_offset = DIA_SAFE_DECREMENT_NEXT(manager,gs);
 	manager->prev_char_offset = DIA_SAFE_DECREMENT_PREV(manager,gs);
 	if(manager->set_offset > 0){
 	  manager->set_offset --;
+	 }
 	}
       }
     }
@@ -144,7 +146,7 @@ int dia_reddraw_dialogue_scroll(Dialogue_Manager *manager, Game_State *gs, FILE 
 	/*
 	  God this is so fucking asinine. Usually, when scrolling through dialogue, the correct way to update the the next offset would be to       add the length of the dialogue screen to the offset to correctly start printing from the next line, but provided the current line you        are reading ends with a life feed, the correct way to get the next offset it is offset where you encountered the linefeef + one for some reason, getting the next offset the usual way does not work. God how fucking stupid that is.
 	*/
-	if(current_col == 3){
+	if(current_col == 3 && direction == KEY_DOWN){
 	  already_found_next_offset = YES;
 	  manager->next_char_offset = current_offset + 1; 
 	}
