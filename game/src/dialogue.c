@@ -101,7 +101,10 @@ void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs){
       }
       else if(ch == KEY_UP){
 	int already_found_next_offset = dia_reddraw_dialogue_scroll(manager, gs, fp,manager->prev_char_offset, KEY_UP);
+	if(already_found_next_offset == NO){
 	manager->next_char_offset = DIA_SAFE_DECREMENT_NEXT(manager,gs);
+	
+	}
 	manager->prev_char_offset = DIA_SAFE_DECREMENT_PREV(manager,gs);
 	if(manager->set_offset > 0){
 	  manager->set_offset --;
@@ -128,6 +131,7 @@ int dia_reddraw_dialogue_scroll(Dialogue_Manager *manager, Game_State *gs, FILE 
   char c1 = fgetc(fp);
   if(c1 == LF  && direction == KEY_DOWN){
     manager->prev_char_offset -= ((gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2);
+    already_found_next_offset;
     int lookback = 2;
     for(int i = lookback; i < 10; i ++){
       fseek(fp, offset-i, SEEK_SET);
@@ -168,6 +172,11 @@ int dia_reddraw_dialogue_scroll(Dialogue_Manager *manager, Game_State *gs, FILE 
 	if(current_col == 3 && direction == KEY_DOWN){
 	  already_found_next_offset = YES;
 	  manager->next_char_offset = current_offset + 1; 
+	}
+	else if (current_col == 4 && direction == KEY_UP){
+	  already_found_next_offset = YES;
+	  manager->next_char_offset =  current_offset - char_offset +1 ;
+	  
 	}
 	  char_offset = 0;
 	  current_col++;
