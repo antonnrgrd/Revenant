@@ -35,6 +35,7 @@ typedef struct {
   int **dialogue_id_options;
   int next_char_offset;
   int prev_char_offset;
+  int old_offset;
   int set_offset;
 }Dialogue_Manager;
 

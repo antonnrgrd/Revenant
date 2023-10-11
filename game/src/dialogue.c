@@ -1,5 +1,5 @@
 /*This file is part of Revenant.
-
+65;6800;1c
 Revenant is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
@@ -129,25 +129,21 @@ int dia_reddraw_dialogue_scroll(Dialogue_Manager *manager, Game_State *gs, FILE 
   int already_found_next_offset = NO;
   fseek(fp, offset-2, SEEK_SET);
   char c1 = fgetc(fp);
+  /*Case when the line we start at is a newline i.e the first char is a LF and we are one the way down on the scroll*/
   if(c1 == LF  && direction == KEY_DOWN){
     manager->prev_char_offset -= ((gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2);
-    already_found_next_offset;
-    int lookback = 2;
-    for(int i = lookback; i < 10; i ++){
-      fseek(fp, offset-i, SEEK_SET);
-      c1 = fgetc(fp);
-      printf("%c", c1);
+  }
+
+  if (direction == KEY_DOWN){
+    fseek(fp, offset - (manager->prev_char_offset - (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -2) * 2, SEEK_SET);
+    
+    char lookback = fgetc(fp);
+    printf(" %c - %d ", lookback, lookback);
+    if(lookback == LF){
+          
+      // printf("true");
+      manager->prev_char_offset -= (gs->num_rows) ;
     }
-    /*
-    c1 = fgetc(fp);
-    while(c1 === LF){
-      lookback++;
-      fseek(fp, offset-lookback, SEEK_SET);
-      c1 = fgetc(fp);
-    }
-    printf("final lookback: %d", lookback);
-    manager->prev_char_offset -=lookback;
-    */
   }
   fseek(fp, offset, SEEK_SET);
   wclear(gs->logs[DIALOGUE_LOG]);
