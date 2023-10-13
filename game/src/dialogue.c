@@ -85,8 +85,8 @@ void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs){
       }
       else if(ch == KEY_DOWN){
 	//printf(" offset wer are using  %d ",manager->next_char_offset);
-	int already_found_next_offset = dia_reddraw_dialogue_scroll(manager, gs, fp,manager->next_char_offset, KEY_DOWN);
-	if(already_found_next_offset == NO){
+	Offset_Changes offset_changes = dia_reddraw_dialogue_scroll(manager, gs, fp,manager->next_char_offset, KEY_DOWN);
+	if(offset_changes.set_next_offset == NO){
 	manager->next_char_offset = DIA_SAFE_INCREMENT_NEXT(manager,gs,num_bytes);
 	}
 	/*
@@ -96,15 +96,14 @@ void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs){
 	*/
 	manager->set_offset++;
 	if(manager->set_offset >= 2){
+	  if(offset_changes.set_prev_offset == NO){
 	  manager->prev_char_offset = DIA_SAFE_INCREMENT_PREV(manager,gs,num_bytes);
+	  }
 	}
       }
       else if(ch == KEY_UP){
-	int already_found_next_offset = dia_reddraw_dialogue_scroll(manager, gs, fp,manager->prev_char_offset, KEY_UP);
-	if(already_found_next_offset == NO){
+        Offset_Changes offset_changes = dia_reddraw_dialogue_scroll(manager, gs, fp,manager->prev_char_offset, KEY_UP);
 	manager->next_char_offset = DIA_SAFE_DECREMENT_NEXT(manager,gs);
-	
-	}
 	manager->prev_char_offset = DIA_SAFE_DECREMENT_PREV(manager,gs);
 	if(manager->set_offset > 0){
 	  manager->set_offset --;
@@ -119,32 +118,34 @@ Dialogue_Manager *dia_init_dialogue_manager(int dialogue_folder_id, int initial_
  return manager;
 }
 
-int dia_reddraw_dialogue_scroll(Dialogue_Manager *manager, Game_State *gs, FILE *fp, int offset, int direction){
+Offset_Changes dia_reddraw_dialogue_scroll(Dialogue_Manager *manager, Game_State *gs, FILE *fp, int offset, int direction){
+  Offset_Changes offset_changes;
+  offset_changes.set_next_offset = NO;
+  offset_changes.set_prev_offset = NO;
   int curr_name_offset = (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) / 3 + 11;
   chdir("/usr/lib/revenant_files/npc_name_files/");
   char npc_id[10];
   sprintf(npc_id, "%d", manager->npc_id);
   FILE *fp_2 = fopen(npc_id, "r");
   char c_2 = fgetc(fp_2);
-  int already_found_next_offset = NO;
   fseek(fp, offset-2, SEEK_SET);
   char c1 = fgetc(fp);
   /*Case when the line we start at is a newline i.e the first char is a LF and we are one the way down on the scroll*/
   if(c1 == LF  && direction == KEY_DOWN){
     manager->prev_char_offset -= ((gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2);
+    offset_changes.set_prev_offset = YES;
   }
 
+  /*Case when the second previous line was a newline, when scrolling downwards*/
   if (direction == KEY_DOWN){
-    fseek(fp, offset - (manager->prev_char_offset - (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -2) * 2, SEEK_SET);
-    
-    char lookback = fgetc(fp);
-    printf(" %c - %d ", lookback, lookback);
-    if(lookback == LF){
-          
-      // printf("true");
-      manager->prev_char_offset -= (gs->num_rows) ;
+    fseek(fp, offset - ( (((gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2)) +1), SEEK_SET);
+    char myc = fgetc(fp);
+    if(myc == LF){
+      manager->prev_char_offset = offset -  ( (((gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2)) +1);
+      offset_changes.set_prev_offset = YES;
     }
   }
+  
   fseek(fp, offset, SEEK_SET);
   wclear(gs->logs[DIALOGUE_LOG]);
   DIA_DRAW_DIALOGUE_BORDER(gs->logs[DIALOGUE_LOG],gs);
@@ -166,12 +167,12 @@ int dia_reddraw_dialogue_scroll(Dialogue_Manager *manager, Game_State *gs, FILE 
 	  God this is so fucking asinine. Usually, when scrolling through dialogue, the correct way to update the the next offset would be to       add the length of the dialogue screen to the offset to correctly start printing from the next line, but provided the current line you        are reading ends with a life feed, the correct way to get the next offset it is offset where you encountered the linefeef + one for some reason, getting the next offset the usual way does not work. God how fucking stupid that is.
 	*/
 	if(current_col == 3 && direction == KEY_DOWN){
-	  already_found_next_offset = YES;
-	  manager->next_char_offset = current_offset + 1; 
+	  manager->next_char_offset = current_offset + 1;
+	  offset_changes.set_next_offset = YES;
 	}
 	else if (current_col == 4 && direction == KEY_UP){
-	  already_found_next_offset = YES;
 	  manager->next_char_offset =  current_offset - char_offset +1 ;
+	  offset_changes.set_next_offset = YES;
 	  
 	}
 	  char_offset = 0;
@@ -188,7 +189,7 @@ int dia_reddraw_dialogue_scroll(Dialogue_Manager *manager, Game_State *gs, FILE 
     current_col++;
   }
   UPDATE_PANEL_INFO();
-  return already_found_next_offset;
+  return offset_changes;
 }
 
 int dia_compute_num_bytes(FILE *fp){
