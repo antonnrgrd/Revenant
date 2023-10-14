@@ -141,7 +141,7 @@ Offset_Changes dia_reddraw_dialogue_scroll(Dialogue_Manager *manager, Game_State
     fseek(fp, offset - ( (((gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2)) +1), SEEK_SET);
     char myc = fgetc(fp);
     if(myc == LF){
-      manager->prev_char_offset = offset -  ( (((gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2)) +1);
+      manager->prev_char_offset = offset -  ( (((gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2)));
       offset_changes.set_prev_offset = YES;
     }
   }
