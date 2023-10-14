@@ -104,7 +104,9 @@ void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs){
       else if(ch == KEY_UP){
         Offset_Changes offset_changes = dia_reddraw_dialogue_scroll(manager, gs, fp,manager->prev_char_offset, KEY_UP);
 	manager->next_char_offset = DIA_SAFE_DECREMENT_NEXT(manager,gs);
+	if(offset_changes.set_prev_offset == NO){
 	manager->prev_char_offset = DIA_SAFE_DECREMENT_PREV(manager,gs);
+	}
 	if(manager->set_offset > 0){
 	  manager->set_offset --;
 	 }
@@ -130,9 +132,16 @@ Offset_Changes dia_reddraw_dialogue_scroll(Dialogue_Manager *manager, Game_State
   char c_2 = fgetc(fp_2);
   fseek(fp, offset-2, SEEK_SET);
   char c1 = fgetc(fp);
-  /*Case when the line we start at is a newline i.e the first char is a LF and we are one the way down on the scroll*/
+  /*Case when the line we start at is a newline i.e the first char is a LF and we are one the way down on the scroll
+    NOTE: might not be correct 
+*/
   if(c1 == LF  && direction == KEY_DOWN){
     manager->prev_char_offset -= ((gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2);
+    offset_changes.set_prev_offset = YES;
+  }
+  /*The opposite case i.e when the next line, when scrolling upwards, is a newline*/
+  else if(c1 == LF  && direction == KEY_UP){
+    manager->prev_char_offset = offset -2;
     offset_changes.set_prev_offset = YES;
   }
 
@@ -159,6 +168,10 @@ Offset_Changes dia_reddraw_dialogue_scroll(Dialogue_Manager *manager, Game_State
   int current_col = 3;
   char c = fgetc(fp);
   int current_offset = offset;
+  /*If we are scrolling upwards and first character is a LF, skip printing it as it causes inconsistent formatting of the text*/
+  if(c == LF && direction == KEY_UP){
+    c = fgetc(fp);
+  }
   while(c != EOF && current_col < gs->num_cols -1){
     int char_offset = 1;
     while(char_offset < (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 1 && c != EOF ){
