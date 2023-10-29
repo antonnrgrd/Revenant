@@ -23,7 +23,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "creature_macros.h"
 #include "rng.h"
 #include "screen_constants.h"
-
+#include "game_state_struct.h"
 #define COPY_LIMB(creature_limb, source_limb){\
   creature_limb.kind = source_limb.kind; \
   creature_limb.status = healthy; \
@@ -133,10 +133,10 @@ typedef struct Creature{
   float current_carry;
   // A generic placeholder for any kind of additional info that is highly dependent on the specific creature type
   void *additional_info;
-  char *representation;
+  char representation[2];
   Color *color;
   Position position;
-  char *standing_on;
+  char standing_on[2];
   int marked_for_deletion : 1 ;
   int target_is_within_bound:1;
   behavior behavior;
@@ -167,7 +167,7 @@ void c_initialize_humanoid_inf(Creature *c, int id);
 
 Color *c_copy_color(Color color);
 
-Creature *c_random_player(int y, int x ,Game_World *world, Mersienne_Twister *twister);
+Creature *c_random_player(int y, int x ,Game_State *gs, Game_World *gw);
 
 void c_compute_relative_coords(Creature *creature, Creature *player);
 

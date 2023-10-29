@@ -27,6 +27,7 @@ Item_Holder *ir_readin_reagent(char *reagent_file_path, int amount){
   
 Item_Holder *ir_readin_consumable(char *consumable_file_path, int amount){
   Item *i = malloc(sizeof(Item));
+  i->representation[0] = 'C';
   Consumable *consumable = malloc(sizeof(Consumable));
   consumable->id = ir_readin_int(consumable_file_path,"id");
   i->weight = ir_readin_float(consumable_file_path,"weight");
@@ -40,15 +41,16 @@ Item_Holder *ir_readin_consumable(char *consumable_file_path, int amount){
 
 
 Creature *ir_readin_creature(char *creature_file_path,unsigned x, unsigned y, Game_World *world, Creature *target){
-   
+  
   Creature *c = malloc(sizeof(Creature));
-
+  /*We initalize the*/
+  c->representation[0] = '0';
   c->position.global_x=x;
   c->position.global_y=y;
   c->curr_ap = 1;
   c->max_ap = 1;
   c_compute_relative_coords(c, target);
-  c->standing_on = malloc(sizeof(char));
+  //c->standing_on = malloc(sizeof(char));
   c->standing_on[0] = world->tiles[c->position.global_y][c->position.global_x].content[0];
   world->tiles[c->position.global_y][c->position.global_x].foe = c;
   c->has_moved_around_vertically = 0;
@@ -57,7 +59,7 @@ Creature *ir_readin_creature(char *creature_file_path,unsigned x, unsigned y, Ga
  
   /* Oh fuck this stupid src file and its buggy crap, see the comment below on readin_char and all the bullshit i went through to
 get it to work*/
-  c->representation = ir_readin_char_nonvoid(creature_file_path, "representation");
+  ir_readin_char(creature_file_path, "representation",c->representation);
   
    //strcpy(c->representation, representation);
    //free(representation);
@@ -198,7 +200,6 @@ void ir_readin_char(char *file_path, char *variable, char *bfr) {
     char *variable_pointer = strstr(line, variable);
     if (variable_pointer != NULL) {
       char *value_as_str = strtok(strchr(line, '=') + 1, "\n");
-      bfr = malloc(sizeof(char) * strlen(value_as_str) + 1);
       strcpy(bfr, value_as_str);
       break;
     }
@@ -529,7 +530,7 @@ Removing this bit of logic will definetly result in a hard to debug segfualt. Th
    
 }
 //game_state->logs[MAIN_SCREEN]
-void ir_print_damage_to_creature(Game_State *gs, Creature *c, Creature *target){
+void ir_add_damage_to_creature_to_log(Game_State *gs, Creature *c, Creature *target){
   char *creature_name;
   if(c->id == target->id && c->species == target->species ){
   char *file_path = NULL;
@@ -563,6 +564,7 @@ void ir_print_damage_to_creature(Game_State *gs, Creature *c, Creature *target){
     char *variable_pointer = strstr(line, "name");
     if(variable_pointer != NULL){
       creature_name = strtok(strchr(line, '=')+1, "\n");
+       sprintf(gs->current_event, " %s damages you for 10 damage ",creature_name);
        break;
       }
     }
@@ -573,7 +575,7 @@ void ir_print_damage_to_creature(Game_State *gs, Creature *c, Creature *target){
     fclose(fp);
   }
   free(file_path);
-  mvwprintw(gs->logs[MAIN_SCREEN], DEFAULT_MAX_Y,0, "%s damages you for 10 damage", creature_name);
+
    } else if(c->species == player_character){
    char *file_path = NULL;
   file_path = malloc(sizeof(char) * strlen(IR_COMMON_CREATURE_FILEPATH) + 5);
@@ -586,7 +588,7 @@ void ir_print_damage_to_creature(Game_State *gs, Creature *c, Creature *target){
     if(variable_pointer != NULL){
       creature_name = strtok(strchr(line, '=')+1, "\n");
       target->curr_health -= 10;
-       mvwprintw(gs->logs[MAIN_SCREEN], DEFAULT_MAX_Y,0, "You damage %s for 10 damage", creature_name);
+      sprintf(gs->current_event, "You damage %s for 10 damage ",creature_name);
        break;
       }
     }
@@ -630,6 +632,8 @@ void ir_print_damage_to_creature(Game_State *gs, Creature *c, Creature *target){
     char *variable_pointer = strstr(line, "name");
     if(variable_pointer != NULL){
       target_name = strtok(strchr(line, '=')+1, "\n");
+      /*NOTE: might be buggy, as seen how strings behave with the information reader program */
+       sprintf(gs->current_event, "%s damages %s for 10 damage",creature_name, target_name);
        break;
       }
     }
@@ -640,7 +644,7 @@ void ir_print_damage_to_creature(Game_State *gs, Creature *c, Creature *target){
     fclose(fp_2);
   }
   free(file_path_2);
-  mvwprintw(gs->logs[MAIN_SCREEN], DEFAULT_MAX_Y,0, "%s damages %s for 10 damage", creature_name, target_name);  
+
   }
 }
 
@@ -648,3 +652,40 @@ void ir_print_damage_to_creature(Game_State *gs, Creature *c, Creature *target){
 Programmers sidenote: apparently, the order in which you define and or possibly inlcude header files is detrimental to the correctness of the program. It has been observed that including headers and defining functions in different orders has a major impact on whether or not the pointer returned is a valid pointer. e.g It is seen that if we define things in a certain order, it might compile and run fine, but upon return of the function, the pointer is no longer valid. Changing the order in which you define these functions tends to fix this issue and affect different parts of the program differently, so maybe swapping the order of the definitions might fix things.
 */
 
+void ir_add_item_purchase_to_log(Game_State *gs, Item_Holder *item, int amount){
+  char item_file_id[4];
+  if(item->item->kind == reagent){
+    chdir("/usr/lib/revenant_files/item_files/reagent_files");
+  }
+  else if(item->item->kind == consumable){
+    chdir("/usr/lib/revenant_files/item_files/consumable_files");
+  }
+  
+  if(item->item->kind == weapon){
+    sprintf(gs->current_event, "You buy %d %s%s%s%s",amount, quality_name_modifier[((struct Weapon *)item->item->item_specific_info)->quality], material_name_modifier[((struct Weapon *)item->item->item_specific_info)->material], handed_modifier[((struct Weapon *)item->item->item_specific_info)->variant],  mele_weapon_name_modifier[((struct Weapon *)item->item->item_specific_info)->kind]);
+  }
+  else if(item->item->kind == armor){
+    sprintf(gs->current_event, "You buy %d %s%s%s",amount, quality_name_modifier[((struct Armor *)item->item->item_specific_info)->quality], material_name_modifier[((struct Armor *)item->item->item_specific_info)->material], equipment_type_modifier[((struct Armor *)item->item->item_specific_info)->armor_type] );
+  }
+  else {
+    sprintf(item_file_id, item->item->id);
+    FILE *fp = fopen(item_file_id, "r");
+    char * line = NULL;
+    char *item_name;
+    size_t len = 0;
+    while((getline(&line, &len, fp)) != -1){
+      char *variable_pointer = strstr(line, "name");
+      if(variable_pointer != NULL){
+	item_name = strtok(strchr(line, '=')+1, "\n");
+	sprintf(gs->current_event, "You buy %d %s", amount, item_name);
+	break;
+      }
+    }
+  if(line){
+    free(line);
+  }
+  if(fp){
+    fclose(fp);
+  }
+    }
+  }

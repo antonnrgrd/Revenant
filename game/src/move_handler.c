@@ -22,12 +22,13 @@ int mv_check_move_handler(int global_x, int global_y, int local_x, int local_y, 
     return (*move_response_handler[response])(global_x,global_y,local_x,local_y,c,game_state);
   }
   else{
+    
     return CONTINUE_TURN;
   }
 }
 
 
-int (*move_response_handler[5])(int global_x, int global_y, int local_x, int local_y, Creature *c,Game_State *game_state) =  {move_response_move_character,move_response_halt_character,move_response_loot_item, move_response_attack_target , move_response_initiate_trade };
+int (*move_response_handler[6])(int global_x, int global_y, int local_x, int local_y, Creature *c,Game_State *game_state) =  {move_response_move_character,move_response_halt_character,move_response_loot_item, move_response_attack_target , move_response_initiate_trade,move_response_initiate_dialoge };
 
   int move_response_move_character(int global_x, int global_y, int local_x, int local_y, Creature *c,Game_State *game_state){
     mvwprintw(game_state->logs[MAIN_SCREEN],c->position.local_y,c->position.local_x, c->standing_on);
@@ -35,30 +36,28 @@ int (*move_response_handler[5])(int global_x, int global_y, int local_x, int loc
     c->position.global_x = global_x;
     c->position.global_y = global_y;
     if(local_y  <  0){
-      c->position.local_y = DEFAULT_MAX_Y - 1;
-      REDRAW_MAP(c,game_state->current_zone,game_state->logs[MAIN_SCREEN], c->position.global_x,c->position.global_y,x_max, y_max);
+      c->position.local_y = game_state->num_cols - 1;
+      REDRAW_MAP(game_state,c,game_state->current_zone,game_state->logs[MAIN_SCREEN], c->position.global_x,c->position.global_y,x_max, y_max);
     }
 
-    else if(local_y  >  DEFAULT_MAX_Y - 1){
+    else if(local_y  >  game_state->num_cols - 1){
       c->position.local_y = 0;
-      REDRAW_MAP(c,game_state->current_zone,game_state->logs[MAIN_SCREEN], c->position.global_x,c->position.global_y,x_max, y_max);
+      REDRAW_MAP(game_state,c,game_state->current_zone,game_state->logs[MAIN_SCREEN], c->position.global_x,c->position.global_y,x_max, y_max);
       
     }
 
-    else if(local_x  <  DEFAULT_MAX_INFOBAR_WIDTH){
-      c->position.local_x = DEFAULT_MAX_X - 1;
-      REDRAW_MAP(c,game_state->current_zone,game_state->logs[MAIN_SCREEN], c->position.global_x,c->position.global_y,x_max, y_max);
+    else if(local_x  <  DEFAULT_MAX_INFOBAR_WIDTH - 1){
+      c->position.local_x = game_state->num_rows - 1; //DEFAULT_MAX_X - 1;
+      REDRAW_MAP(game_state,c,game_state->current_zone,game_state->logs[MAIN_SCREEN], c->position.global_x,c->position.global_y,x_max, y_max);
     }
 
-    else if(local_x  >  DEFAULT_MAX_X - 1){
-      c->position.local_x = DEFAULT_MAX_INFOBAR_WIDTH;
-      REDRAW_MAP(c,game_state->current_zone,game_state->logs[MAIN_SCREEN], c->position.global_x,c->position.global_y,x_max, y_max);
+    else if(local_x  >  game_state->num_rows - 1){
+      c->position.local_x = DEFAULT_MAX_INFOBAR_WIDTH - 1 ;
+      REDRAW_MAP(game_state,c,game_state->current_zone,game_state->logs[MAIN_SCREEN], c->position.global_x,c->position.global_y,x_max, y_max);
     }
-    else{
-      
-  
+    else{        
       c->standing_on[0] = game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
-      game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
+      game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation;
       mvwprintw(game_state->logs[MAIN_SCREEN],local_y,local_x,c->representation);
       c->position.local_x = local_x;
       c->position.local_y = local_y;
@@ -88,12 +87,11 @@ int move_response_halt_character(int global_x, int global_y,int local_x, int loc
 int move_response_attack_target(int global_x, int global_y,int local_x, int local_y, Creature *c,Game_State *game_state){
   if  (1){
     CLEAR_MSG_LINE();
-      ir_print_damage_to_creature(game_state, game_state->player, ((Creature *)game_state->current_zone->tiles[global_y][global_x].foe));
-    msg_update_event_log(game_state);
+    MSG_ADD_ATTACK_OPPONENT_EVENT_TO_LOG(((Creature *)game_state->current_zone->tiles[global_y][global_x].foe),  game_state);
       move(c->position.local_y,c->position.local_x);
      
     if (((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->curr_health <= 0){
-      mvwprintw(game_state->logs[MAIN_SCREEN],game_state,((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->position.local_y,((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->position.local_x,((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->standing_on);
+      mvwprintw(game_state->logs[MAIN_SCREEN],game_state,((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->position.local_y,((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->position.local_x,((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->standing_on[0]);
            game_state->current_zone->tiles[global_y][global_x].content[0] = ((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->standing_on[0];
 	   // c_cleanup_creature(c,game_state->current_zone);
       
@@ -189,6 +187,11 @@ mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s%s%s%d%s", "Pickup ", i_derive_i
 
 int move_response_initiate_trade(int global_x, int global_y,int local_x, int local_y, Creature *c,Game_State *game_state){
   msg_trading_session(global_x,global_y,game_state);
+  return CONTINUE_TURN;
 }
 
 
+int move_response_initiate_dialoge(int global_x, int global_y,int local_x, int local_y, Creature *c,Game_State *game_state){
+  dia_loop_dialogue((Dialogue_Manager *)game_state->current_zone->tiles[global_y][global_x].foe, game_state);
+  return CONTINUE_TURN;
+}

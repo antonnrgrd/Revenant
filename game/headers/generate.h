@@ -25,7 +25,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "gameinfo.h"
 #include "rng.h"
 #include "item.h"
-
+#include "dialogue.h"
 #define PLACE_MERCHANT(game_state,merchant, global_x,global_y)(game_state)
 extern const char *alphabet;
 
@@ -36,5 +36,7 @@ Item_Holder *g_generate_item(Mersienne_Twister *twister);
 U_Hashtable *g_generate_merchant_inventory(int min_amount, int max_amount, Mersienne_Twister *twister);
 
 void g_generate_trader(int global_x, int global_y ,Mersienne_Twister *twister, Game_State *gs);
+
+void g_generate_dialogue(int global_x, int global_y,int dialogue_folder_id, int initial_dialogue_id,int npc_id, Game_State *gs);
 #endif
 

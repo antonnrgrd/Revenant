@@ -15,6 +15,7 @@ int msg_trading_session(int global_x, int global_y,Game_State *gs){
   int curr_curs_pos = 2;
   int column_position = 2;
   int current_printed_item = 0;
+  int available_items = 0;
   Item_Holder **item_list = malloc(sizeof(Item_Holder* ) * ((U_Hashtable * )gs->current_zone->tiles[global_y][global_x].foe)->item_count);
   MSG_CLEAR_SCREEN(gs->logs[TRADING_LOG]);
   INIT_INVENTORY_LOG(gs->logs[TRADING_LOG], "Merchant\'s wares");
@@ -23,12 +24,16 @@ int msg_trading_session(int global_x, int global_y,Game_State *gs){
       Entry  *current_entry = ((U_Hashtable * )gs->current_zone->tiles[global_y][global_x].foe)->entries[i];
       while(current_entry != NULL){
 	msg_print_item(current_entry->item_holder,gs->logs[TRADING_LOG],5,column_position);
+	item_list[column_position-2] = current_entry->item_holder;
         current_entry = current_entry->next_entry;
 	column_position++;
+	available_items++;
       }
     }
   }
   top_panel(gs->panels[TRADING_LOG]);
+  wmove(gs->logs[TRADING_LOG],curr_curs_pos,5);
+  curs_set(TRUE);
   UPDATE_PANEL_INFO();
   int ch;
   while (1){
@@ -41,66 +46,159 @@ int msg_trading_session(int global_x, int global_y,Game_State *gs){
       doupdate();
       return CONTINUE_TURN;
     }
+    else if (ch == KEY_UP && curr_curs_pos > 2){
+      curr_curs_pos--;
+      wmove(gs->logs[TRADING_LOG],curr_curs_pos,5);
+      update_panels();
+      doupdate();
+    }
+    else if (ch == KEY_DOWN && curr_curs_pos < DEFAULT_MAX_Y - 2 && (curr_curs_pos-2)+1 < available_items && item_list != NULL){
+      curr_curs_pos++;
+      wmove(gs->logs[TRADING_LOG],curr_curs_pos,5);
+      update_panels();
+      doupdate();
+    }
+    else if(ch == KEY_RESIZE){
+      msg_redraw_trading_session(gs,item_list,available_items,NOT_INITIATED_EXCHANGE,NULL);
+    }
     else if (ch == 'y'){
       char amount_bfr[5];
+      /*oddly enough, when i previously declared the stack-located buffer, it wasn't necessary to enure the string was "clean" by copying
+       whitespace to it, but after switching some code logic around, the buffer now contained garbage, resulting in weird issues when attempting to print it, so it is necessary to clear it first*/
+      strcpy(amount_bfr, " ");
       int bfr_index = 0;
-      MSG_CLEAR_SCREEN(gs->logs[NOTIFICATION_LOG]);
-      mvprintw(gs->logs[NOTIFICATION_LOG],5,15, "Enter amount you want to buy");
-      top_panel(gs->panels[NOTIFICATION_LOG]);
+      MSG_SETUP_NOTIFICATION_LOG(gs, NOTIFICATION_LOG, YES, "Enter the amount you want to buy");
+      int x_curs_pos = gs->notification_log_width_size/2;
+      wmove(gs->logs[NOTIFICATION_LOG],gs->notification_log_height_size/2,gs->notification_log_width_size/2);
       UPDATE_PANEL_INFO();
+      /*This is DEFINETLY breaking every software engineering standard for acceptable amount of else if statements, but I expect
+       that (hopefully) the amount of situations in which this will occur will be sufficiently rare to the point where deriving a more
+      elegant solution is not worth the effort or necessary*/
       while(1){
 	ch = getch();
-	if(bfr_index < 4 && ch != KEY_BACKSPACE){
-	  amount_bfr[bfr_index] = ch;
-	  bfr_index ++;
-	}
-	else if(ch == KEY_BACKSPACE && bfr_index != 0){
-	  amount_bfr[bfr_index] = "";
-	  bfr_index --;
-	}
-	else if(ch == 'q'){
-	  break;
-	}
-	else if(ch == 'y'){
-	  char *endptr;
-	  int amount = strtol(amount_bfr, &endptr, 10);
-	  if( *endptr == '\0' && amount > 0){
-	    int cost = amount * item_list[curr_curs_pos-2]->item->value;
-	    float additional_weight = amount * item_list[curr_curs_pos-2]->item->weight;
-	    if( cost <= (((Player_Info * )gs->player->additional_info)->inventory)->money && gs->player->current_carry + additional_weight <= gs->player->max_carry){
-
-	    }
-	    else if (cost > (((Player_Info * )gs->player->additional_info)->inventory)->money){
-	      MSG_CLEAR_SCREEN(gs->logs[NOTIFICATION_LOG]);
-	      mvprintw(gs->logs[NOTIFICATION_LOG],5,5, "You do not have suffcient money to buy that many");
+	/*We disallow the value to be 0 if it the first i.e 0-index, because a number beginning with 0 is not a valid number, nor is it sensical to allow the player to purchase 0 items*/
+	if(isdigit(ch) && bfr_index < 4 && !( ch == '0' && bfr_index == 0) ){
+	      amount_bfr[bfr_index] = ch;
+	      wmove(gs->logs[NOTIFICATION_LOG],gs->notification_log_height_size/2,x_curs_pos-1);
+	      wclrtoeol(gs->logs[NOTIFICATION_LOG]);
+	      box(gs->logs[NOTIFICATION_LOG],0,0);
+	      mvwprintw(gs->logs[NOTIFICATION_LOG],gs->notification_log_height_size/2,x_curs_pos,"%d", atoi(amount_bfr));
+	      bfr_index++;
+	      wmove(gs->logs[NOTIFICATION_LOG],gs->notification_log_height_size/2,x_curs_pos+bfr_index);
+	      //x_curs_pos++;
 	      UPDATE_PANEL_INFO();
 	    }
-	    else{
-	      MSG_CLEAR_SCREEN(gs->logs[NOTIFICATION_LOG]);
-	      mvprintw(gs->logs[NOTIFICATION_LOG],5,5, "You cannot carry that much");
+	    else if( (ch == KEY_BACKSPACE || ch == KEY_DC || ch == 127) && bfr_index > 0){
+	      amount_bfr[bfr_index-1] = ' ';
+	      wmove(gs->logs[NOTIFICATION_LOG],gs->notification_log_height_size/2,x_curs_pos-1);
+	      wclrtoeol(gs->logs[NOTIFICATION_LOG]);
+	      mvwprintw(gs->logs[NOTIFICATION_LOG],gs->notification_log_height_size/2,x_curs_pos,"%s", amount_bfr);
+	      box(gs->logs[NOTIFICATION_LOG],0,0);
+	      bfr_index--;
+	      wmove(gs->logs[NOTIFICATION_LOG],gs->notification_log_height_size/2,x_curs_pos+(bfr_index));
 	      UPDATE_PANEL_INFO();
+	
+	      //x_curs_pos--;
 	    }
-	  }
-	  else if(amount < 0 ){
-	    MSG_CLEAR_SCREEN(gs->logs[NOTIFICATION_LOG]);
-	    mvprintw(gs->logs[NOTIFICATION_LOG],5,5, "Don't be silly, you cannot buy a negative amount of items");
+	    else if (ch == 'q'){
+	      hide_panel(gs->panels[NOTIFICATION_LOG]);
+	      UPDATE_PANEL_INFO();
+	      break;	      
+	    }
+	    else if(ch == KEY_RESIZE){
+	      msg_redraw_trading_session(gs,item_list,available_items,INITIATED_EXCHANGE,amount_bfr);
+	    }
+	    else if(ch ==  'y'){
+	     if(strcmp(amount_bfr, " ") == 0){
+	       mvwprintw(gs->logs[NOTIFICATION_LOG],(gs->notification_log_height_size/2)-1,gs->notification_log_width_size/3, "Please enter a number");
+	     UPDATE_PANEL_INFO();
+	     while(1){
+	     ch = getch();
+	     if(ch == KEY_RESIZE){
+	       msg_redraw_trading_session(gs,item_list,available_items,INVALID_VALUE,amount_bfr);
+	     }
+	     else{
+	     wmove(gs->logs[NOTIFICATION_LOG],(gs->notification_log_height_size/2)-1,gs->notification_log_width_size/3);
+	     wclrtoeol(gs->logs[NOTIFICATION_LOG]);
+	     wmove(gs->logs[NOTIFICATION_LOG],gs->notification_log_height_size/2,gs->notification_log_width_size/2);
+	     wclrtoeol(gs->logs[NOTIFICATION_LOG]);
+	     box(gs->logs[NOTIFICATION_LOG],0,0);
+	     strcpy(amount_bfr, " ");
+	     break;
+	       }
+	     UPDATE_PANEL_INFO();
+	       }
+	     UPDATE_PANEL_INFO();
+	      }
+	    else  if(item_list[curr_curs_pos-2]->item->value * atoi(amount_bfr) >= (((Player_Info * )gs->player->additional_info)->inventory)->money ){
+		mvwprintw(gs->logs[NOTIFICATION_LOG],(gs->notification_log_height_size/2)-1,gs->notification_log_width_size/3, "Not enough money");
+	     UPDATE_PANEL_INFO();
+	     while(1){
+	     int chh = getch();
+	     if(chh == KEY_RESIZE ){
+	       msg_redraw_trading_session(gs,item_list,available_items,INSUFFICIENT_CASH,amount_bfr);
+	       mvwprintw(gs->logs[NOTIFICATION_LOG],(gs->notification_log_height_size/2)-1,gs->notification_log_width_size/3, "Not enough money");
+	       /* Logically it would be more sound to call this method inside the redraw_screen method, but this function is enough of an abomnation as it is, so another lazy solution won't hurt*/
+	       mvwprintw(gs->logs[NOTIFICATION_LOG],gs->notification_log_height_size/2,x_curs_pos,"%s", amount_bfr);
+	     }
+	     else{
+	     wmove(gs->logs[NOTIFICATION_LOG],(gs->notification_log_height_size/2)-1,gs->notification_log_width_size/3);
+	     wclrtoeol(gs->logs[NOTIFICATION_LOG]);
+	     wmove(gs->logs[NOTIFICATION_LOG],gs->notification_log_height_size/2,gs->notification_log_width_size/2);
+	     wclrtoeol(gs->logs[NOTIFICATION_LOG]);
+	     box(gs->logs[NOTIFICATION_LOG],0,0);
+	     strcpy(amount_bfr, " ");
+	     break;
+	     }
+	     UPDATE_PANEL_INFO();
+	    }
 	    UPDATE_PANEL_INFO();
-	  }
-	  else{
-	    MSG_CLEAR_SCREEN(gs->logs[NOTIFICATION_LOG]);
-	    mvprintw(gs->logs[NOTIFICATION_LOG],5,5, "Please only provide integers when speciyfing the amount");
-	    UPDATE_PANEL_INFO();
-	  }
+	      }
+	     else if( gs->player->current_carry + (item_list[curr_curs_pos-2]->item->weight * atoi(amount_bfr)) > gs->player->max_carry ){
+	       mvwprintw(gs->logs[NOTIFICATION_LOG],(gs->notification_log_height_size/2)-1,gs->notification_log_width_size/3, "You cannot carry that many");
+	     UPDATE_PANEL_INFO();
+	     while(1){
+	     ch = getch();
+	     if(ch == KEY_RESIZE ){
+	       msg_redraw_trading_session(gs,item_list,available_items,EXESSIVE_ADDITIONAL_WEIGHT,amount_bfr);
+	       mvwprintw(gs->logs[NOTIFICATION_LOG],gs->notification_log_height_size/2,x_curs_pos,"%s", amount_bfr);
+	     }
+	     else{
+	       wmove(gs->logs[NOTIFICATION_LOG],(gs->notification_log_height_size/2)-1,gs->notification_log_width_size/3);
+	     wclrtoeol(gs->logs[NOTIFICATION_LOG]);
+	     wmove(gs->logs[NOTIFICATION_LOG],gs->notification_log_height_size/2,gs->notification_log_width_size/2);
+	     wclrtoeol(gs->logs[NOTIFICATION_LOG]);
+	     box(gs->logs[NOTIFICATION_LOG],0,0);
+	     strcpy(amount_bfr, " ");
+	     break;
+	     }
+	     UPDATE_PANEL_INFO();
+	     }
+	     UPDATE_PANEL_INFO();
+	     }
+	     else{
+	         inv_exchange_item(item_list[curr_curs_pos-2], (U_Hashtable * )gs->current_zone->tiles[global_y][global_x].foe,gs->player, atoi(amount_bfr));
+		MSG_ADD_PURCHASE_TO_EVENT_LOG(item_list[curr_curs_pos-2],gs,atoi(amount_bfr) );
+	       if(item_list[curr_curs_pos-2]->amount == 0 ){
+		 wclrtoeol(gs->logs[INVENTORY_LOG]);
+		 I_FREE_ITEM_HOLDER(item_list[curr_curs_pos-2]);
+		 available_items--;
+	       }
+	       else{
+       // printf("this bit of logic here");
+       wclrtoeol(gs->logs[INVENTORY_LOG]);
+	 box(gs->logs[INVENTORY_LOG],0,0);
+	 msg_print_item(item_list[curr_curs_pos-2],gs->logs[INVENTORY_LOG],5,curr_curs_pos);
+	 UPDATE_PANEL_INFO();
+     }
+	      }
+	     bfr_index = 0;
+	    }
 	}
       }
     }
-    else if(ch == 's')  {
-      msg_display_inventory(gs,CONTEXT_SELLING, ((U_Hashtable * )gs->current_zone->tiles[global_y][global_x].foe));
-    }
   }
-}
  
-
 
 static inline void msg_pickup_item(Game_State *game_state, Item_Holder *item_holder){
   if(item_holder->item->kind == weapon){
@@ -191,22 +289,24 @@ do with just redrawing the box around the log*/
       doupdate();
       return CONTINUE_TURN;
     }
+    else if(ch == KEY_RESIZE){
+      msg_redraw_log(gs);
+    }
   }
 }
                
 int msg_find_log_position(Game_State *gs){
-  char *line_contents = malloc(MAX_MSG_LENGTH * sizeof(char));
-  for(int i = 3; i< 13; i++){
+  
+  for(int i = 0; i< NUM_EVENTS; i++){
     //The position at which we check the screen contents could potentially fail
     //Due to the fact that the last position of the message log hhas 2 digits (see the update event log function for more info)
-      mvwinnstr(gs->logs[EVENT_LOG], i,12,line_contents,MAX_MSG_LENGTH-1);
-      if(s_only_whitespace(line_contents) == 1){
-	free(line_contents);
+    
+      if(s_only_whitespace(gs->ingame_log[i]) == 1){
 	return i;
       }
   }
-  free(line_contents);
   return -1;
+  
 }
   
 int msg_find_item_position(WINDOW *log, int max_y,Item_Holder *item, Item_Holder **item_list){
@@ -224,49 +324,51 @@ int msg_find_item_position(WINDOW *log, int max_y,Item_Holder *item, Item_Holder
     }
    }  
   }
-  //We return max_y+1 since we add the item to the end of the list. However
-  //when we add the item, we increase the number of items in the list, so we have have to add a +1
-  //By how we malloc for the item_list, we SHOULD be guaranteed that there are enough free pointers to do this 
   //printf("ITEM NOT ALREADY IN LIST");
-  return max_y+1;
+  //printf(" free position: %d",max_y);
+  return max_y;
 }
 
 void msg_update_event_log(Game_State *gs){
-  char *msg_bfr = malloc(MAX_MSG_LENGTH * sizeof(char));
-  mvwinnstr(gs->logs[MAIN_SCREEN], DEFAULT_MAX_Y,0,msg_bfr,MAX_MSG_LENGTH-1);
   int free_log_position = msg_find_log_position(gs);
   if(free_log_position != -1){
-    if(free_log_position < 12){
-      UPDATE_ADD_TO_LOG(gs,position,msg_bfr,12);
+    if(free_log_position < 9){
+      /* We add plus two because the log begins at the cell-wise index of two*/
+      UPDATE_ADD_TO_LOG(gs,free_log_position+2,12);
     }
     else{
       //We change the offset where print is, if the found y position is 13 because the offset position is 2 digits and so we counter that by increasing the offset
-      UPDATE_ADD_TO_LOG(gs,position,msg_bfr,14);
+      UPDATE_ADD_TO_LOG(gs,free_log_position+2,14);
     }
   }
   else{
-    UPDATE_PUSH_ADD_TO_LOG(gs,msg_bfr);
+    UPDATE_PUSH_ADD_TO_LOG(gs);
    }
+  wmove(gs->logs[MAIN_SCREEN],gs->num_cols-1, 0);
+  wclrtoeol(gs->logs[MAIN_SCREEN]);
+  mvwprintw(gs->logs[MAIN_SCREEN],gs->num_cols-1,0, gs->current_event);
+  UPDATE_PANEL_INFO();
 }
  
 int msg_display_inventory(Game_State *gs,int context, U_Hashtable *merchant){
   int tmp_amount_holder;
   int curr_curs_pos = 2;
   int current_printed_item = 0;
+  int num_encountered_items = 0;
   MSG_CLEAR_SCREEN(gs->logs[INVENTORY_LOG]);
   INIT_INVENTORY_LOG(gs->logs[INVENTORY_LOG], "Items in inventory");
   Item_Holder **item_list = NULL;
-  if(context == CONTEXT_SELLING){
-    item_list = malloc(sizeof(Item_Holder* ) * (((Player_Info * )gs->player->additional_info)->inventory)->item_count);
-  }
+  item_list = malloc(sizeof(Item_Holder* ) * (((Player_Info * )gs->player->additional_info)->inventory)->item_count);
   int column_position = 2;
   for(int i = 0; i < (((Player_Info * )gs->player->additional_info)->inventory)->size; i++ ){
     if((((Player_Info * )gs->player->additional_info)->inventory)->entries[i] != NULL){
       Entry  *current_entry = (((Player_Info * )gs->player->additional_info)->inventory)->entries[i];
       while(current_entry != NULL){
 	msg_print_item(current_entry->item_holder,gs->logs[INVENTORY_LOG],5,column_position);
+	item_list[column_position-2] = current_entry->item_holder;
         current_entry = current_entry->next_entry;
 	column_position++;
+	num_encountered_items++;
       }
     }
   }  
@@ -298,6 +400,12 @@ int msg_display_inventory(Game_State *gs,int context, U_Hashtable *merchant){
       update_panels();
       doupdate();
     }
+    else if(ch == KEY_RESIZE){
+      msg_redraw_inventory(gs, item_list, context, num_encountered_items);
+    }
+    else if(ch == 'R'){
+      msg_redraw_inventory(gs, item_list, context, num_encountered_items);
+    }
   }
 } 
  
@@ -308,27 +416,31 @@ int msg_display_inventory_equip_context(Game_State *gs){
   INIT_INVENTORY_LOG(gs->logs[INVENTORY_LOG], "Available equipment");
   int curr_curs_pos = 2;
   int column_position = 2;
-  int current_printed_item = 0;
+  int current_printed_items = 0;
   Item_Holder **item_list = NULL;
+  /*We malloc an itemlist of size item_count to account for the maximal possible items we need to hold and set them to null
+   to account for the fact that potentially not all items in the inventory are equipment*/
   if((((Player_Info * )gs->player->additional_info)->inventory)->item_count > 0){
     item_list = malloc(sizeof(Item_Holder* ) * (((Player_Info * )gs->player->additional_info)->inventory)->item_count);
+  }
+  for(int i = 0; i < (((Player_Info * )gs->player->additional_info)->inventory)->item_count; i++){
+    item_list[i] = NULL;
   }
   for(int i = 0; i < (((Player_Info * )gs->player->additional_info)->inventory)->size; i++ ){
     if((((Player_Info * )gs->player->additional_info)->inventory)->entries[i] != NULL){
       Entry  *current_entry = (((Player_Info * )gs->player->additional_info)->inventory)->entries[i];
       while(current_entry != NULL){
 	if(current_entry->item_holder->item->kind == weapon || current_entry->item_holder->item->kind == armor ){
-	item_list[current_printed_item] =  current_entry->item_holder;  
+	item_list[column_position-2] =  current_entry->item_holder;  
 	msg_print_item(current_entry->item_holder,gs->logs[INVENTORY_LOG],5,column_position);
 	column_position++;
-	current_printed_item++;
+	current_printed_items++;
 	available_equipment++;
        }
 	current_entry = current_entry->next_entry;
       }
     }
   }
-  
   wmove(gs->logs[INVENTORY_LOG],curr_curs_pos,5);
   curs_set(TRUE);
   top_panel(gs->panels[INVENTORY_LOG]);
@@ -351,36 +463,49 @@ int msg_display_inventory_equip_context(Game_State *gs){
       update_panels();
       doupdate();
     }       
-    else if (ch == KEY_DOWN && curr_curs_pos < DEFAULT_MAX_Y - 2 && item_list[(curr_curs_pos-2)+1] != NULL && item_list != NULL){
+    else if (ch == KEY_DOWN && curr_curs_pos < DEFAULT_MAX_Y - 2 && (curr_curs_pos-2)+1 < available_equipment && item_list != NULL){
       curr_curs_pos++;
       wmove(gs->logs[INVENTORY_LOG],curr_curs_pos,5);
       update_panels();
       doupdate();
     }
+    //    if( (ch == 'y' && ( item_list != NULL && item_list[curr_curs_pos-2]== NULL))){
+    //    printf("this should not be allowed to happen!");
+    //  }
     //probably faulty with how we assign item holder pointers to the item list
     else if (ch == 'y' && ( item_list != NULL && item_list[curr_curs_pos-2]!= NULL)){
-     mvwprintw(gs->logs[MAIN_SCREEN],DEFAULT_MAX_Y,0, "%s", "You equip ");
+      //printf(" quality: %d ",((struct Weapon *)item_list[curr_curs_pos-2]->item->item_specific_info)->quality );
+      MSG_ADD_EQUIP_EVENT_TO_LOG(item_list[curr_curs_pos-2], gs);
+      //mvwprintw(gs->logs[MAIN_SCREEN],gs->num_cols-1,0, "%s", "You equip ");
      /*We temporarily set the amount of the item we equip to be one since
       item printer prints the amount of the item, unless the amount we have is 1
      and we do not want the amount printed, just the item's name*/
      tmp_amount_holder = item_list[curr_curs_pos-2]->amount;
      item_list[curr_curs_pos-2]->amount = 1;
-     msg_print_item(item_list[curr_curs_pos-2],gs->logs[MAIN_SCREEN],11,DEFAULT_MAX_Y);
+     //msg_print_item(item_list[curr_curs_pos-2],gs->logs[MAIN_SCREEN],11,gs->num_cols-1);
      item_list[curr_curs_pos-2]->amount = tmp_amount_holder;     
-          msg_update_event_log(gs);
       UPDATE_PANEL_INFO();
       //we subtract 2 from curr_curs_pos to "map" from current cursor position to the actual postion of the item
       //in the item list. This is because the item list starts at index 0, whereas the cursor position starts at 2
      Item_Holder *previously_equipped = inv_equip_item(item_list[curr_curs_pos-2], ((U_Hashtable * )gs->player->additional_info), gs->player);
-      if(item_list[curr_curs_pos-2]->amount == 1){
+
+      /*If the item list is null, it means we equipped the only occurence of that item in the inventory*/
+     if(item_list[curr_curs_pos-2]->amount == 0 ){
        	wclrtoeol(gs->logs[INVENTORY_LOG]);
-	item_list[curr_curs_pos-2]=NULL;
+	/*We deliberately defer freeing the item holder up until this point because when freeing the item holder and setting it to null
+	  afterwards in the function call to remove it from the inventory, the check to assert if it was null at this point in the code would fail for some reason. We are therefore forced to free the item holder here*/
+	I_FREE_ITEM_HOLDER(item_list[curr_curs_pos-2]);
       	MSG_COMPRESS_ITEM_LIST(item_list,curr_curs_pos-2,available_equipment,gs->logs[INVENTORY_LOG]);
-	available_equipment--;
+	available_equipment--; 
+	//if(item_list[curr_curs_pos-2] == NULL){
+	// printf( "still null ");
+	//}
 	//	any_null(item_list);     
            }
+      
              
      else{
+       // printf("this bit of logic here");
        wclrtoeol(gs->logs[INVENTORY_LOG]);
 	 box(gs->logs[INVENTORY_LOG],0,0);
 	 msg_print_item(item_list[curr_curs_pos-2],gs->logs[INVENTORY_LOG],5,curr_curs_pos);
@@ -390,17 +515,47 @@ int msg_display_inventory_equip_context(Game_State *gs){
      if(previously_equipped != NULL){
        int list_pos = msg_find_item_position(gs->logs[INVENTORY_LOG],available_equipment,previously_equipped,item_list);
        if(list_pos != ALREADY_LISTED){
+	 //	 printf( "NOT LISTED found free postition in: %d", list_pos);
        item_list[list_pos] = previously_equipped;
-       msg_print_item(item_list[list_pos],gs->logs[INVENTORY_LOG],5,list_pos+1);
+       msg_print_item(item_list[list_pos],gs->logs[INVENTORY_LOG],5,list_pos+2);
        available_equipment++;
        UPDATE_PANEL_INFO();
        }
-       else{ 
+       else{
+	 
 	 free(previously_equipped);
 	 MSG_REDRAW_INVENTORY(item_list,available_equipment,gs->logs[INVENTORY_LOG]);
 	 UPDATE_PANEL_INFO();
        }
-     }  
+     }
+
+     /*
+     for(int i = 0; i < (((Player_Info * )gs->player->additional_info)->inventory)->item_count; i++ ){
+      if(item_list[i] == NULL){
+	printf(" %d null ", i);
+      }
+      else{
+		printf(" %d NOT null ", i);
+      }
+    
+     }
+     */
+     
+    /*Provided that the item at the cursor is null af compressing the item list and that the current cursor position mapped to the available equipment +1 exceeds the avilalbe equipment (we are at the end of the equipment list), we have to move upwards to the next available piece of equipment. The exception being that (curr_curs_pos-2)-1 > -1 (we are are the only/last item in the item list)   */
+     if( (item_list[(curr_curs_pos-2)] == NULL &&  (curr_curs_pos -1 ) +1 > available_equipment)  && (curr_curs_pos-2)-1 > -1){
+	  //printf("null,just as expected");
+	  
+	  curr_curs_pos--;
+	  wmove(gs->logs[INVENTORY_LOG],curr_curs_pos,5);
+
+	}
+	else{
+	  wmove(gs->logs[INVENTORY_LOG],curr_curs_pos,5);
+	}
+	UPDATE_PANEL_INFO();
+    }
+    else if(ch == KEY_RESIZE){
+      msg_redraw_inventory_equip_context(gs, item_list, available_equipment,curr_curs_pos);
     }
   }
 }
@@ -440,8 +595,7 @@ int msg_display_equipped_equipment(Game_State *gs){
   item_holder->item = ((Player_Info * )gs->player->additional_info)->equipment_list[back_slot];
   msg_print_item(item_holder,gs->logs[INVENTORY_LOG],40,3);  
   top_panel(gs->panels[INVENTORY_LOG]);
-  update_panels(); 
-  doupdate();
+  UPDATE_PANEL_INFO();
   free(item_holder);
   int ch;
   while (1){
@@ -451,7 +605,305 @@ int msg_display_equipped_equipment(Game_State *gs){
       update_panels();
       doupdate();
       return CONTINUE_TURN;
+      
     }
+    else if(ch == KEY_RESIZE){
+      msg_redraw_equipped_equipment(gs);
+      }
   }
 }
+
+void msg_redraw_inventory(Game_State *gs, Item_Holder **item_list, int context, int num_items){
+  int x,y;
+  getmaxyx(stdscr, y,x);
+  if (x < 10 || y < 10){
+    while(x < 10 || y < 10){
+      int ch = getch();
+      if(ch == KEY_RESIZE){
+      getmaxyx(stdscr, y,x);
+       }
+      }
+    gs->logs[INVENTORY_LOG] = newwin(LOG_Y_SIZE,LOG_X_SIZE,(gs->num_cols - 1) / 4 , (gs->num_rows - 1) / 4);
+    gs->panels[INVENTORY_LOG] = new_panel(gs->logs[INVENTORY_LOG]);
+      MSG_CLEAR_SCREEN(gs->logs[INVENTORY_LOG]);
+      top_panel(gs->panels[INVENTORY_LOG]);
+       REDRAW_MAP(gs,gs->player,gs->current_zone,gs->logs[MAIN_SCREEN], gs->player->position.global_x,gs->player->position.global_y,rows, cols);
+      if(context == CONTEXT_INSPECTING){
+    INIT_INVENTORY_LOG(gs->logs[INVENTORY_LOG], "Items in inventory");
+  }
+  else{
+    INIT_INVENTORY_LOG(gs->logs[INVENTORY_LOG], "Merchant\'s wares");
+  }
+  int row_position = 2;
+  for(int i = 0; i < num_items; i++){
+  msg_print_item(item_list[i],gs->logs[INVENTORY_LOG],5,row_position);
+  row_position++;
+  } 
+      UPDATE_PANEL_INFO();
+    
+  }
+  else{
+  //For some reason, you explicitly have to reisze the size of the window to the original
+  //upon detecting a resize, otherwise it will upon being resized grow to beyond its original size, taking up
+  //the entire screen
+  wresize(gs->logs[INVENTORY_LOG],LOG_Y_SIZE,LOG_X_SIZE);
+  MSG_CLEAR_SCREEN(gs->logs[INVENTORY_LOG]);
+  REDRAW_MAP(gs,gs->player,gs->current_zone,gs->logs[MAIN_SCREEN], gs->player->position.global_x,gs->player->position.global_y,rows, cols);
+  if(context == CONTEXT_INSPECTING){
+    INIT_INVENTORY_LOG(gs->logs[INVENTORY_LOG], "Items in inventory");
+  }
+  else{
+    INIT_INVENTORY_LOG(gs->logs[INVENTORY_LOG], "Merchant\'s wares");
+  }
+  int row_position = 2;
+  for(int i = 0; i < num_items; i++){
+  msg_print_item(item_list[i],gs->logs[INVENTORY_LOG],5,row_position);
+  row_position++;
+  }
+  UPDATE_PANEL_INFO();
+  }
+
+}
+
+void msg_redraw_equipped_equipment(Game_State *gs){
+  //Programmers note: i suspect that if stdscr gets small enough, the current open window get automatically free'd
+  //this is because the screen itself becomes transparent, making the background/main screen visisble and attempting to free the window in such a
+  //situation leads to a double free error, implying it has already been deleted.
+  int x,y;
+  getmaxyx(stdscr, y,x);
+  if (x < 10 || y < 10){
+    while(x < 10 || y < 10){
+      int ch = getch();
+      if(ch == KEY_RESIZE){
+      getmaxyx(stdscr, y,x);
+       }
+      }
+    gs->logs[INVENTORY_LOG] = newwin(LOG_Y_SIZE,LOG_X_SIZE,(gs->num_cols - 1) / 4 , (gs->num_rows - 1) / 4);
+    gs->panels[INVENTORY_LOG] = new_panel(gs->logs[INVENTORY_LOG]);
+      MSG_CLEAR_SCREEN(gs->logs[INVENTORY_LOG]);
+      top_panel(gs->panels[INVENTORY_LOG]);
+       REDRAW_MAP(gs,gs->player,gs->current_zone,gs->logs[MAIN_SCREEN], gs->player->position.global_x,gs->player->position.global_y,rows, cols);
+  Item_Holder *item_holder = malloc(sizeof(Item_Holder));
+  item_holder->amount = 1;
+  mvwprintw(gs->logs[INVENTORY_LOG],1,25, "Items equipped");
+  mvwprintw(gs->logs[INVENTORY_LOG],4,25, "Head slot:");
+  item_holder->item = ((Player_Info * )gs->player->additional_info)->equipment_list[head_slot];
+  msg_print_item(item_holder,gs->logs[INVENTORY_LOG],25,5);  
+  mvwprintw(gs->logs[INVENTORY_LOG],6,25, "Neck slot:");
+  item_holder->item = ((Player_Info * )gs->player->additional_info)->equipment_list[neck_slot];
+  msg_print_item(item_holder,gs->logs[INVENTORY_LOG],25,7);  
+  mvwprintw(gs->logs[INVENTORY_LOG],8,25, "Torso slot:");
+  item_holder->item = ((Player_Info * )gs->player->additional_info)->equipment_list[torso_slot];
+  msg_print_item(item_holder,gs->logs[INVENTORY_LOG],25,9);  
+  mvwprintw(gs->logs[INVENTORY_LOG],12,5, "Finger slot:");
+  item_holder->item = ((Player_Info * )gs->player->additional_info)->equipment_list[finger_slot];
+  msg_print_item(item_holder,gs->logs[INVENTORY_LOG],5,13);  
+  mvwprintw(gs->logs[INVENTORY_LOG],15,25, "Legs slot:");
+  item_holder->item = ((Player_Info * )gs->player->additional_info)->equipment_list[legs_slot];
+  msg_print_item(item_holder,gs->logs[INVENTORY_LOG],25,16);  
+  mvwprintw(gs->logs[INVENTORY_LOG],18,25, "Feet slot:");
+  item_holder->item = ((Player_Info * )gs->player->additional_info)->equipment_list[feet_slot];
+  msg_print_item(item_holder,gs->logs[INVENTORY_LOG],25,19);  
+  mvwprintw(gs->logs[INVENTORY_LOG],10,3, "Mainhand slot:");
+  item_holder->item = ((Player_Info * )gs->player->additional_info)->equipment_list[mainhand_slot];
+  msg_print_item(item_holder,gs->logs[INVENTORY_LOG],3,11);  
+  mvwprintw(gs->logs[INVENTORY_LOG],10,38, "Offhand slot:");
+  item_holder->item = ((Player_Info * )gs->player->additional_info)->equipment_list[offhand_slot];
+  msg_print_item(item_holder,gs->logs[INVENTORY_LOG],38,11);  
+  mvwprintw(gs->logs[INVENTORY_LOG],2,40, "Back slot:");
+  item_holder->item = ((Player_Info * )gs->player->additional_info)->equipment_list[back_slot];
+  msg_print_item(item_holder,gs->logs[INVENTORY_LOG],40,3);  
+  top_panel(gs->panels[INVENTORY_LOG]);
+  UPDATE_PANEL_INFO();
+  free(item_holder);
+    
+  }
+  else{
+  //For some reason, you explicitly have to reisze the size of the window to the original
+  //upon detecting a resize, otherwise it will upon being resized grow to beyond its original size, taking up
+  //the entire screen
+  wresize(gs->logs[INVENTORY_LOG],LOG_Y_SIZE,LOG_X_SIZE);
+  MSG_CLEAR_SCREEN(gs->logs[INVENTORY_LOG]);
+  REDRAW_MAP(gs,gs->player,gs->current_zone,gs->logs[MAIN_SCREEN], gs->player->position.global_x,gs->player->position.global_y,rows, cols);
+  Item_Holder *item_holder = malloc(sizeof(Item_Holder));
+  item_holder->amount = 1;
+  mvwprintw(gs->logs[INVENTORY_LOG],1,25, "Items equipped");
+  mvwprintw(gs->logs[INVENTORY_LOG],4,25, "Head slot:");
+  item_holder->item = ((Player_Info * )gs->player->additional_info)->equipment_list[head_slot];
+  msg_print_item(item_holder,gs->logs[INVENTORY_LOG],25,5);  
+  mvwprintw(gs->logs[INVENTORY_LOG],6,25, "Neck slot:");
+  item_holder->item = ((Player_Info * )gs->player->additional_info)->equipment_list[neck_slot];
+  msg_print_item(item_holder,gs->logs[INVENTORY_LOG],25,7);  
+  mvwprintw(gs->logs[INVENTORY_LOG],8,25, "Torso slot:");
+  item_holder->item = ((Player_Info * )gs->player->additional_info)->equipment_list[torso_slot];
+  msg_print_item(item_holder,gs->logs[INVENTORY_LOG],25,9);  
+  mvwprintw(gs->logs[INVENTORY_LOG],12,5, "Finger slot:");
+  item_holder->item = ((Player_Info * )gs->player->additional_info)->equipment_list[finger_slot];
+  msg_print_item(item_holder,gs->logs[INVENTORY_LOG],5,13);  
+  mvwprintw(gs->logs[INVENTORY_LOG],15,25, "Legs slot:");
+  item_holder->item = ((Player_Info * )gs->player->additional_info)->equipment_list[legs_slot];
+  msg_print_item(item_holder,gs->logs[INVENTORY_LOG],25,16);  
+  mvwprintw(gs->logs[INVENTORY_LOG],18,25, "Feet slot:");
+  item_holder->item = ((Player_Info * )gs->player->additional_info)->equipment_list[feet_slot];
+  msg_print_item(item_holder,gs->logs[INVENTORY_LOG],25,19);  
+  mvwprintw(gs->logs[INVENTORY_LOG],10,3, "Mainhand slot:");
+  item_holder->item = ((Player_Info * )gs->player->additional_info)->equipment_list[mainhand_slot];
+  msg_print_item(item_holder,gs->logs[INVENTORY_LOG],3,11);  
+  mvwprintw(gs->logs[INVENTORY_LOG],10,38, "Offhand slot:");
+  item_holder->item = ((Player_Info * )gs->player->additional_info)->equipment_list[offhand_slot];
+  msg_print_item(item_holder,gs->logs[INVENTORY_LOG],38,11);  
+  mvwprintw(gs->logs[INVENTORY_LOG],2,40, "Back slot:");
+  item_holder->item = ((Player_Info * )gs->player->additional_info)->equipment_list[back_slot];
+  msg_print_item(item_holder,gs->logs[INVENTORY_LOG],40,3);  
+  top_panel(gs->panels[INVENTORY_LOG]);
+  UPDATE_PANEL_INFO();
+  free(item_holder);
+  }
+}
+
+
+void msg_redraw_inventory_equip_context(Game_State *gs, Item_Holder **item_list, int num_items, int curs_pos){
+  int row_position = 2;  
+  int x,y;
+  getmaxyx(stdscr, y,x);
+  if (x < 10 || y < 10){
+    while(x < 10 || y < 10){
+      int ch = getch();
+      if(ch == KEY_RESIZE){
+      getmaxyx(stdscr, y,x);
+       }
+      }
+    gs->logs[INVENTORY_LOG] = newwin(LOG_Y_SIZE,LOG_X_SIZE,(gs->num_cols - 1) / 4 , (gs->num_rows - 1) / 4);
+    gs->panels[INVENTORY_LOG] = new_panel(gs->logs[INVENTORY_LOG]);
+    INIT_INVENTORY_LOG(gs->logs[INVENTORY_LOG], "Available equipment");
+      MSG_CLEAR_SCREEN(gs->logs[INVENTORY_LOG]);
+      top_panel(gs->panels[INVENTORY_LOG]);
+       REDRAW_MAP(gs,gs->player,gs->current_zone,gs->logs[MAIN_SCREEN], gs->player->position.global_x,gs->player->position.global_y,rows, cols);
+  for(int i = 0; i < num_items; i++){
+    msg_print_item(item_list[i],gs->logs[INVENTORY_LOG],5,row_position);
+    row_position++;
+  top_panel(gs->panels[INVENTORY_LOG]);
+  wmove(gs->logs[INVENTORY_LOG],curs_pos,5);
+  UPDATE_PANEL_INFO();    
+   }
+  }
+  else{
+  //For some reason, you explicitly have to reisze the size of the window to the original
+  //upon detecting a resize, otherwise it will upon being resized grow to beyond its original size, taking up
+  //the entire screen
+  wresize(gs->logs[INVENTORY_LOG],LOG_Y_SIZE,LOG_X_SIZE);
+  MSG_CLEAR_SCREEN(gs->logs[INVENTORY_LOG]);
+  INIT_INVENTORY_LOG(gs->logs[INVENTORY_LOG], "Available equipment");
+  REDRAW_MAP(gs,gs->player,gs->current_zone,gs->logs[MAIN_SCREEN], gs->player->position.global_x,gs->player->position.global_y,rows, cols);
+  for(int i = 0; i < num_items; i++){
+    msg_print_item(item_list[i],gs->logs[INVENTORY_LOG],5,row_position);
+    row_position++;
+   }
+  }
+   wmove(gs->logs[INVENTORY_LOG],curs_pos,5);
+   UPDATE_PANEL_INFO();    
+}
+
+void msg_redraw_log(Game_State *gs){
+    int x,y;
+  getmaxyx(stdscr, y,x);
+  if (x < 10 || y < 10){
+    while(x < 10 || y < 10){
+      int ch = getch();
+      if(ch == KEY_RESIZE){
+      getmaxyx(stdscr, y,x);
+       }
+      }
+    gs->logs[EVENT_LOG] = newwin(LOG_Y_SIZE,LOG_X_SIZE,(gs->num_cols - 1) / 4 , (gs->num_rows - 1) / 4 );
+    gs->panels[EVENT_LOG] = new_panel(gs->logs[EVENT_LOG]);
+    box(gs->logs[EVENT_LOG],0,0);
+    INIT_EVENT_LOG(gs->logs[EVENT_LOG]);
+    REDRAW_MAP(gs,gs->player,gs->current_zone,gs->logs[MAIN_SCREEN], gs->player->position.global_x,gs->player->position.global_y,rows, cols);
+    for(int i = 0; i < NUM_EVENTS -1 ; i++){
+      mvwprintw(gs->logs[EVENT_LOG], i+3, 12, gs->ingame_log[i]);
+    }
+  }
+  else{
+    INIT_EVENT_LOG(gs->logs[EVENT_LOG]);
+    wresize(gs->logs[EVENT_LOG],LOG_Y_SIZE,LOG_X_SIZE);
+    box(gs->logs[EVENT_LOG],0,0);
+    REDRAW_MAP(gs,gs->player,gs->current_zone,gs->logs[MAIN_SCREEN], gs->player->position.global_x,gs->player->position.global_y,rows, cols);
+    for(int i = 0; i < NUM_EVENTS -1 ; i++){
+      mvwprintw(gs->logs[EVENT_LOG], i+3, 12, gs->ingame_log[i]);
+    }
+  }
+  UPDATE_PANEL_INFO();    
+}
+
+void msg_redraw_trading_session(Game_State *gs,Item_Holder **item_list,int num_items,int event_flag, char amount_bfr[5]){
+  int x,y;
+  int column_position = 2;
+  getmaxyx(stdscr, y,x);
+  if (x < 10 || y < 10){
+    while(x < 10 || y < 10){
+      int ch = getch();
+      if(ch == KEY_RESIZE){
+      getmaxyx(stdscr, y,x);
+       }
+      }
+    gs->logs[TRADING_LOG] = newwin(LOG_Y_SIZE,LOG_X_SIZE,(gs->num_cols - 1) / 4 , (gs->num_rows - 1) / 4 );
+    gs->panels[TRADING_LOG] = new_panel(gs->logs[TRADING_LOG]);
+    box(gs->logs[TRADING_LOG],0,0);
+    gs->logs[NOTIFICATION_LOG] = newwin(LOG_Y_SIZE/4,LOG_X_SIZE,(gs->num_cols - 1) / 2 , (gs->num_rows - 1) / 4);
+     gs->panels[NOTIFICATION_LOG] = new_panel(gs->logs[NOTIFICATION_LOG]);
+    INIT_EVENT_LOG(gs->logs[TRADING_LOG]);
+  }
+  else if(x  < gs->num_rows / 4 || y < gs->num_cols / 2){
+    while(x < gs->num_rows / 4 || y < gs->num_cols / 2){
+      int ch = getch();
+      if(ch == KEY_RESIZE){
+      getmaxyx(stdscr, y,x);
+       }
+      }
+    gs->logs[NOTIFICATION_LOG] = newwin(LOG_Y_SIZE/4,LOG_X_SIZE,(gs->num_cols - 1) / 2 , (gs->num_rows - 1) / 4);
+     gs->panels[NOTIFICATION_LOG] = new_panel(gs->logs[NOTIFICATION_LOG]);
+  }
+
+    
+     
+     
+  wresize(gs->logs[TRADING_LOG],LOG_Y_SIZE,LOG_X_SIZE);
+  REDRAW_MAP(gs,gs->player,gs->current_zone,gs->logs[MAIN_SCREEN], gs->player->position.global_x,gs->player->position.global_y,rows, cols);
+  MSG_CLEAR_SCREEN(gs->logs[TRADING_LOG]);
+  INIT_INVENTORY_LOG(gs->logs[TRADING_LOG], "Merchant\'s wares");
+  for(int i = 0; i < num_items; i++){
+    msg_print_item(item_list[i],gs->logs[TRADING_LOG],5,column_position);
+    column_position++;
+    }
+  if(event_flag == INITIATED_EXCHANGE){
+    // printf(" you are here 1 ");
+    wresize(gs->logs[NOTIFICATION_LOG],LOG_Y_SIZE/4,LOG_X_SIZE);
+    MSG_SETUP_NOTIFICATION_LOG(gs, NOTIFICATION_LOG, YES, "Enter the amount you want to buy");
+    wmove(gs->logs[NOTIFICATION_LOG],gs->notification_log_height_size/2,gs->notification_log_width_size/2);
+    if(strcmp(amount_bfr, " ") != 0){
+      mvwprintw(gs->logs[NOTIFICATION_LOG],gs->notification_log_height_size/2,gs->notification_log_width_size/2,"%d", atoi(amount_bfr));
+      
+    }
+  }
+    else if(event_flag == INSUFFICIENT_CASH){
+      //    printf(" you are here 2 ");
+    wresize(gs->logs[NOTIFICATION_LOG],LOG_Y_SIZE/4,LOG_X_SIZE);
+    MSG_SETUP_NOTIFICATION_LOG(gs, NOTIFICATION_LOG, YES, "Enter the amount you want to buy");
+    wmove(gs->logs[NOTIFICATION_LOG],gs->notification_log_height_size/2,gs->notification_log_width_size/2);
+    //mvwprintw(gs->logs[NOTIFICATION_LOG],gs->notification_log_height_size/2,gs->notification_log_width_size/2,"%d", atoi(amount_bfr));
+    mvwprintw(gs->logs[NOTIFICATION_LOG],(gs->notification_log_height_size/2)-1,gs->notification_log_width_size/3, "Not enough money");  
+    }
+
+    if(event_flag == EXESSIVE_ADDITIONAL_WEIGHT){
+     mvwprintw(gs->logs[NOTIFICATION_LOG],(gs->notification_log_height_size/2)-1,gs->notification_log_width_size/3, "You cannot carry that many");
+   
+  }
+        if(event_flag == INVALID_VALUE){
+	  mvwprintw(gs->logs[NOTIFICATION_LOG],(gs->notification_log_height_size/2)-1,gs->notification_log_width_size/3, "Please enter a number");
+	}
+  UPDATE_PANEL_INFO();     
+ }
+  
+    
+
 

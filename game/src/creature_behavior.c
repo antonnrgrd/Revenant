@@ -31,8 +31,8 @@ as the check here has already decided that the distance in at least one directio
     Limb attacking_limb = c->limbs[GEN_VALUE_RANGE(0,c->limb_count-1, game_state->twister)];
     CLEAR_MSG_LINE();
     //    mvwprintw(game_state->logs[MAIN_SCREEN],DEFAULT_MAX_Y,0, "%s%s%d%s", c_retrieve_creature_name(c) , " hits you for ", 10, " damage");
-    ir_print_damage_to_creature(game_state,c,c->target);
-    msg_update_event_log(game_state);
+    MSG_ADD_CREATURE_ATTACK_EVENT_TO_LOG(c,c->target,game_state);
+    
     if(c->target->curr_health <= 0){
     ST_SET_FLAG_BIT(c->target, DEAD);
     CLEAR_MSG_LINE();
@@ -70,7 +70,7 @@ void cb_roam(Creature *c,Game_State *game_state){
 	 mvwprintw(game_state->logs[MAIN_SCREEN], c->position.local_y,c->position.local_x,c->representation);
     }
        c->standing_on[0] = game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
-       game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
+       game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation;
        game_state->current_zone->tiles[c->position.global_y-1][c->position.global_x].foe = NULL;
        game_state->current_zone->tiles[c->position.global_y][c->position.global_x].foe = c;
      }
@@ -79,15 +79,15 @@ void cb_roam(Creature *c,Game_State *game_state){
    if(direction == DOWN){
      if( c->position.global_y-1 > -1 && numerical_responses[game_state->current_zone->tiles[c->position.global_y-1][c->position.global_x].content[0]] != 1){
        game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->standing_on[0];
-       mvwprintw(game_state->logs[MAIN_SCREEN], c->position.local_y,c->position.local_x,c->standing_on);
+       mvwprintw(game_state->logs[MAIN_SCREEN], c->position.local_y,c->position.local_x,c->standing_on[0]);
        c->position.global_y--;
        c->position.local_y--;
        if(abs(c->position.global_x - c->target->position.global_x) <= DEFAULT_MAX_Y -1){
-	  mvwprintw(game_state->logs[MAIN_SCREEN], c->position.local_y,c->position.local_x,c->standing_on);	  
+	  mvwprintw(game_state->logs[MAIN_SCREEN], c->position.local_y,c->position.local_x,c->standing_on[0]);	  
 	  mvwprintw(game_state->logs[MAIN_SCREEN], c->position.local_y,c->position.local_x,c->representation);
     }
        c->standing_on[0] = game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
-       game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
+       game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation;
        game_state->current_zone->tiles[c->position.global_y+1][c->position.global_x].foe = NULL;
        game_state->current_zone->tiles[c->position.global_y][c->position.global_x].foe = c;
      }
@@ -107,7 +107,7 @@ void cb_roam(Creature *c,Game_State *game_state){
 	  mvwprintw(game_state->logs[MAIN_SCREEN], c->position.local_y,c->position.local_x,c->representation);
     }
        c->standing_on[0] = game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
-       game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
+       game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation;
        game_state->current_zone->tiles[c->position.global_y][c->position.global_x+1].foe = NULL;
        game_state->current_zone->tiles[c->position.global_y][c->position.global_x].foe = c;
      }
@@ -127,7 +127,7 @@ void cb_roam(Creature *c,Game_State *game_state){
 	 mvwprintw(game_state->logs[MAIN_SCREEN], c->position.local_y,c->position.local_x,c->representation);
        }
        c->standing_on[0] = game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
-       game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
+       game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation;
        game_state->current_zone->tiles[c->position.global_y][c->position.global_x-1].foe = NULL;
        game_state->current_zone->tiles[c->position.global_y][c->position.global_x].foe = c;
      }
@@ -210,7 +210,7 @@ void cb_flee_target(Creature *c,Game_State *game_state){
   
  CHECK_WITHIN_BOUNDS:  
   c->standing_on[0] = game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
-  game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
+  game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation;
   game_state->current_zone->tiles[c->position.global_y][c->position.global_x].foe = c;
   //Finally, if the creature is now within the view distance of the player, draw it 
   
@@ -240,7 +240,7 @@ void cb_pursue_target_inb(Creature *c,Game_State *game_state){
     mvwprintw(game_state->logs[MAIN_SCREEN], c->position.local_y,c->position.local_x,c->standing_on);
     c->position.global_y +=1;
     c->standing_on[0] = game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
-    game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
+    game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation;
     game_state->current_zone->tiles[c->position.global_y-1][c->position.global_x].foe = NULL;
     game_state->current_zone->tiles[c->position.global_y][c->position.global_x].foe = c;
     if(c->position.local_y+1 >  DEFAULT_MAX_Y - 1){
@@ -267,7 +267,7 @@ void cb_pursue_target_inb(Creature *c,Game_State *game_state){
       mvwprintw(game_state->logs[MAIN_SCREEN], c->position.local_y,c->position.local_x,c->standing_on);
       c->position.global_y -=1;
       c->standing_on[0] = game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
-      game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
+      game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation;
       game_state->current_zone->tiles[c->position.global_y+1][c->position.global_x].foe = NULL;
       game_state->current_zone->tiles[c->position.global_y][c->position.global_x].foe = c;
     if(c->position.local_y-1 <  1){
@@ -296,7 +296,7 @@ void cb_pursue_target_inb(Creature *c,Game_State *game_state){
        mvwprintw(game_state->logs[MAIN_SCREEN], c->position.local_y,c->position.local_x,c->standing_on);
 	c->position.global_x +=1;
 	c->standing_on[0] = game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
-	game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
+	game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation;
 	game_state->current_zone->tiles[c->position.global_y][c->position.global_x-1].foe = NULL;
 	game_state->current_zone->tiles[c->position.global_y][c->position.global_x].foe = c;
     if(c->position.local_x+1 >  DEFAULT_MAX_X - 1){
@@ -323,7 +323,7 @@ void cb_pursue_target_inb(Creature *c,Game_State *game_state){
     mvwprintw(game_state->logs[MAIN_SCREEN], c->position.local_y,c->position.local_x,c->standing_on);
     c->position.global_x -=1;
     c->standing_on[0] = game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
-    game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
+    game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation;
     game_state->current_zone->tiles[c->position.global_y][c->position.global_x+1].foe = NULL;
     game_state->current_zone->tiles[c->position.global_y][c->position.global_x].foe = c;
     if(c->position.local_x - 1 < 0  ){
@@ -354,7 +354,7 @@ void cb_pursue_target_inb(Creature *c,Game_State *game_state){
 	  //mvwprintw(game_state->logs[MAIN_SCREEN], c->position.local_y+j, c->position.local_x-1, "X");
 	  c->position.global_y++;
 	  c->standing_on[0] = game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
-	  game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
+	  game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation;
 	  game_state->current_zone->tiles[c->position.global_y-1][c->position.global_x].foe = NULL;
 	  game_state->current_zone->tiles[c->position.global_y][c->position.global_x].foe = c;
 	  if(c->position.local_y+1 > DEFAULT_MAX_Y - 1  ){
@@ -391,7 +391,7 @@ void cb_pursue_target_inb(Creature *c,Game_State *game_state){
 	  mvwprintw(game_state->logs[MAIN_SCREEN], c->position.local_y,c->position.local_x,c->standing_on);
 	  c->position.global_y--;
 	  c->standing_on[0] = game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
-	  game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
+	  game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation;
 	  game_state->current_zone->tiles[c->position.global_y+1][c->position.global_x].foe = NULL;
 	  game_state->current_zone->tiles[c->position.global_y][c->position.global_x].foe = c;
 	  if(c->position.local_y-1 < 1  ){
@@ -431,7 +431,7 @@ void cb_pursue_target_inb(Creature *c,Game_State *game_state){
 	  
 	  c->position.global_y++;
 	  c->standing_on[0] = game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
-	  game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
+	  game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation;
 	  game_state->current_zone->tiles[c->position.global_y-1][c->position.global_x].foe = NULL;
 	  game_state->current_zone->tiles[c->position.global_y][c->position.global_x].foe = c;
 	  if(c->position.local_y+1 > DEFAULT_MAX_Y - 1  ){
@@ -467,7 +467,7 @@ void cb_pursue_target_inb(Creature *c,Game_State *game_state){
 	  mvwprintw(game_state->logs[MAIN_SCREEN], c->position.local_y,c->position.local_x,c->standing_on);
 	  c->position.global_y--;
 	  c->standing_on[0] = game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
-	  game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
+	  game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation;
 	  game_state->current_zone->tiles[c->position.global_y+1][c->position.global_x].foe = NULL;
 	  game_state->current_zone->tiles[c->position.global_y][c->position.global_x].foe = c;
 	  if(c->position.local_y-1 < 0  ){
@@ -505,7 +505,7 @@ void cb_pursue_target_inb(Creature *c,Game_State *game_state){
 	  mvwprintw(game_state->logs[MAIN_SCREEN], c->position.local_y,c->position.local_x,c->standing_on);
 	  c->position.global_x--;
 	  c->standing_on[0] = game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
-	  game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
+	  game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation;
 	  game_state->current_zone->tiles[c->position.global_y][c->position.global_x+1].foe = NULL;
 	  game_state->current_zone->tiles[c->position.global_y][c->position.global_x].foe = c;
 	  if(c->position.local_x-1 < DEFAULT_MAX_INFOBAR_WIDTH  ){
@@ -540,7 +540,7 @@ void cb_pursue_target_inb(Creature *c,Game_State *game_state){
 	  mvwprintw(game_state->logs[MAIN_SCREEN], c->position.local_y,c->position.local_x,c->standing_on);
 	  c->position.global_x++;
 	  c->standing_on[0] = game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
-	  game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
+	  game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation;
 	  game_state->current_zone->tiles[c->position.global_y][c->position.global_x-1].foe = NULL;
 	  game_state->current_zone->tiles[c->position.global_y][c->position.global_x].foe = c;
 	  if(c->position.local_x+1 > DEFAULT_MAX_X -1  ){
@@ -575,7 +575,7 @@ void cb_pursue_target_inb(Creature *c,Game_State *game_state){
 	  mvwprintw(game_state->logs[MAIN_SCREEN], c->position.local_y,c->position.local_x,c->standing_on);
 	  c->position.global_x--;
 	  c->standing_on[0] = game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
-	  game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
+	  game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation;
 	  game_state->current_zone->tiles[c->position.global_y][c->position.global_x+1].foe = NULL;
 	  game_state->current_zone->tiles[c->position.global_y][c->position.global_x].foe = c;
 	  if(c->position.local_x-1 < DEFAULT_MAX_INFOBAR_WIDTH  ){
@@ -606,7 +606,7 @@ void cb_pursue_target_inb(Creature *c,Game_State *game_state){
 	  mvwprintw(game_state->logs[MAIN_SCREEN], c->position.local_y,c->position.local_x,c->standing_on);
 	  c->position.global_x++;
 	  c->standing_on[0] = game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0];
-	  game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation[0];
+	  game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->representation;
 	  game_state->current_zone->tiles[c->position.global_y][c->position.global_x-1].foe = NULL;
 	  game_state->current_zone->tiles[c->position.global_y][c->position.global_x].foe = c;
 	  if(c->position.local_x+1 > DEFAULT_MAX_X -1  ){

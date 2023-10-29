@@ -18,18 +18,22 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include <stdlib.h>
 
 Item_Holder *inv_equip_item(Item_Holder *target_item_holder,Player_Info *player_info, Creature *player){
-  Item_Weight item_removal = u_remove_item(target_item_holder,1,player_info->inventory, NO);
-  Item *tmp;
-  if(target_item_holder->item->kind == weapon){
-    tmp = player_info->equipment_list[((struct Weapon *)target_item_holder->item->item_specific_info)->slot];  
-    player_info->equipment_list[((struct Weapon *)target_item_holder->item->item_specific_info)->slot] = target_item_holder->item;
+  Item_Weight item_removal = u_remove_item(target_item_holder,1,player_info->inventory);
+  if(item_removal.item_h == NULL){
+    return;
+  }
+  Item *retrieved_item = item_removal.item_h->item;
+  
+  Item *tmp = NULL;
+  if(retrieved_item->kind == weapon){
+    tmp = player_info->equipment_list[((struct Weapon *)retrieved_item->item_specific_info)->slot];  
+    player_info->equipment_list[((struct Weapon *)retrieved_item->item_specific_info)->slot] = retrieved_item;
 
   }
-  if(target_item_holder->item->kind == armor){
-    tmp = player_info->equipment_list[((struct Armor *)target_item_holder->item->item_specific_info)->slot];
-    player_info->equipment_list[((struct Armor *)target_item_holder->item->item_specific_info)->slot] = target_item_holder->item;
+  if(retrieved_item->kind == armor){
+    tmp = player_info->equipment_list[((struct Armor *)retrieved_item->item_specific_info)->slot];
+    player_info->equipment_list[((struct Armor *)retrieved_item->item_specific_info)->slot] = retrieved_item;
   }
-
   if(tmp != NULL){
     Item_Holder *added_item = malloc(sizeof(Item_Holder));
     added_item->item = tmp;
@@ -56,6 +60,13 @@ int inv_add_item(Item_Holder *item_h, U_Hashtable *inventory, Creature *player){
   }
 }
 
+void inv_exchange_item(Item_Holder *item_h, U_Hashtable *merchant_inventory, Creature *player, int amount){
+  player->current_carry += item_h->item->weight * amount;
+  (((Player_Info * )player->additional_info)->inventory)->money -= item_h->item->value * amount;
+  merchant_inventory->money += item_h->item->value * amount;
+  Item_Weight item_removal = u_remove_item(item_h,amount,merchant_inventory);
+  u_add_item(item_removal.item_h, amount, ((Player_Info * )player->additional_info)->inventory);
+}
 /*
 void inv_remove_item(int argcount,char *name, int amount, U_Hashtable *inventory, Creature *player){
   Item_Weight removed_weight = u_remove_item(argcount,amount,inventory,name);

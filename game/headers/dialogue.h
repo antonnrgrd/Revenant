@@ -21,37 +21,59 @@ along with Foobar.  If not, see <https://www.gnu.org/licenses/>. */
 #include <stdint.h>
 #include <inttypes.h>
 #include "strings.h"
+#include "ingame_msg.h"
+#include "generic_macros.h"
+#include "game_state_struct.h"
+#include "screen_constants.h"
+typedef struct {
+  /*the id of the folder we should look in for the dialogue files*/
+  int dialogue_folder_id;
+  /*The id of the initial dialogue file the player should see upon engaging conversation*/
+  int initial_dialogue_id;
+  /**/
+  int npc_id;
+  int **dialogue_id_options;
+  int next_char_offset;
+  int prev_char_offset;
+  int saved_prev_offsets[2];
+  int set_offset;
+}Dialogue_Manager;
+
+typedef struct{
+  short set_next_offset;
+  short set_prev_offset;
+}Offset_Changes;
+
+/*Normally, we'd be content using the box function to draw a border around the wndow, but we want an ultra specific bordering set, you we have to do it manually */
+#define DIA_DRAW_DIALOGUE_BORDER(dialogue_screen,gs) mvwhline(dialogue_screen, 0, 0, 0, (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -1); mvwhline(dialogue_screen, 2, 1, 0, (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -2 ); mvwvline(dialogue_screen, 0, 0, 0, gs->num_cols); mvwvline(dialogue_screen, 1, (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -1, 0, gs->num_cols);  mvwaddch(dialogue_screen,0, 0, ACS_ULCORNER); mvwaddch(dialogue_screen,0, (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -1, ACS_URCORNER);
+
+#define DIA_SET_OFFSET(offset, dia_manager) dia_manager->set_offset == NO ? dia_manager->next_char_offset = offset : ;
+
+/*No fucking idea why, but the decrement substracts an offset of 4 too many, so we offset this by adding 4. No idea if this is by how macro evaluted the expression or what. I fucking hate this so much*/
+#define DIA_SAFE_DECREMENT_NEXT(manager,gs) (manager->next_char_offset - (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2) <= 0 ? (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2  : (manager->next_char_offset - (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2) + 4
+
+#define DIA_SAFE_INCREMENT_NEXT(manager,gs,maximum_bytes) manager->next_char_offset + (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) >= maximum_bytes ? maximum_bytes - (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) : (manager->next_char_offset + (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2)
 
 
+#define DIA_SAFE_DECREMENT_PREV(manager,gs) (manager->prev_char_offset - (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2) <= 0 ? manager->prev_char_offset = 0 : (manager->prev_char_offset - (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2) + 4
 
+#define DIA_SAFE_INCREMENT_PREV(manager,gs,maximum_bytes) manager->prev_char_offset + (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) >= maximum_bytes ? maximum_bytes - (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) : (manager->prev_char_offset + (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -2)
 
-typedef struct Dialogue{
-  uint8_t option_count; //how many neighbour options there are
-  uint8_t counter;//a helper variable so that we know which current point we assign dialogue to
-  char *option;
-  char *response;
-  int ending;
-  uint16_t id; //just an id that helps me identify
-  struct Dialogue **dialogue_options;
-}Dialogue;
+void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs);
 
-typedef struct Dialogue_Header{
-  int size;
-  int current_pointer;
-  char *greeting_dialogue;
-  Dialogue **chat;
-} Dialogue_Header;
+int dia_compute_num_bytes(FILE *fp);
+Dialogue_Manager *dia_init_dialogue_manager(int dialogue_folder_id, int initial_dialogue_id, int npc_id, Game_State *gs);
 
-Dialogue_Header *d_init_dialogue_header(int ssize, char *greeting);
-void d_add_dialogue(Dialogue_Header *header, int parent, int child);
-char *d_create_text(char *arg);
+int dia_redraw_text_scroll(Dialogue_Manager *manager, Game_State *gs, FILE *fp, int offset);
 
-void d_assign_dialogue(Dialogue_Header *header, int offset,uint8_t options, char *option, char *response, int ending);
+void dia_print_char_at_offset(FILE *fp, int offset);
 
-void d_destroy_dialogue_sequence(Dialogue_Header *header);
+void dia_print_char_at_offset_times(FILE *fp, int times);
 
-void d_dialogue_loop(Dialogue_Header *header);
+void dia_safe_find_next_offset(Dialogue_Manager *manager, Game_State *gs, int maximum_bytes);
 
-void d_display_dialogue(Dialogue *d);
+Offset_Changes dia_reddraw_dialogue_scroll(Dialogue_Manager *manager, Game_State *gs, FILE *fp, int offset, int direction);
+
+dia_find_next_nonlf_char(FILE *fp,Dialogue_Manager *manager,char currchar, int start_offset, int current_offset);
 #endif
 

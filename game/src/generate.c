@@ -68,6 +68,7 @@ U_Hashtable *g_generate_merchant_inventory(int min_amount, int max_amount, Mersi
   int num_items_to_be_generated = GEN_VALUE_RANGE(min_amount, max_amount+1, twister);
   int current_generated = 0;
   U_Hashtable *merchant = u_initialize_hashtable(10, twister);
+  merchant->money = 1000;
   while (current_generated < num_items_to_be_generated){
     Item_Holder *item = g_generate_item(twister);
     u_add_item(item, item->amount, merchant);
@@ -114,9 +115,16 @@ Item_Holder *g_generate_item(Mersienne_Twister *twister){
     int variant = GEN_VALUE_RANGE(0, 1+1, twister);
     int quality = D8_0(twister);
     int kind = D2_0(twister);
-    Item *weapon = i_make_mele_weapon(quality, valid_materials[GEN_VALUE_RANGE(0,4,twister)], variant,kind);
-    item_holder->item = weapon;
-    item_holder->amount = D3(twister);
+    Item *w = i_make_mele_weapon(quality, valid_materials[GEN_VALUE_RANGE(0,4,twister)], variant,kind);
+    item_holder->item = w;
+    item_holder->item->kind = weapon;
+    item_holder->amount = 1;//D3(twister);
     return item_holder;
   }
+}
+
+void g_generate_dialogue(int global_x, int global_y,int dialogue_folder_id, int initial_dialogue_id,int npc_id, Game_State *gs){
+  Dialogue_Manager *manager = dia_init_dialogue_manager(dialogue_folder_id, initial_dialogue_id, npc_id,gs);
+  gs->current_zone->tiles[global_y][global_x].content[0] = '!';
+  gs->current_zone->tiles[global_y][global_x].foe = manager;
 }
