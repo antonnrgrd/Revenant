@@ -138,10 +138,10 @@ Offset_Changes dia_reddraw_dialogue_scroll(Dialogue_Manager *manager, Game_State
   fseek(fp, offset-2, SEEK_SET);
   char c1 = fgetc(fp);
   /*Case when the line we start at is a newline i.e the first char is a LF and we are one the way down on the scroll
-    NOTE: might not be correct 
 */
   if(c1 == LF  && direction == KEY_DOWN){
-    manager->prev_char_offset -= ((gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2);
+    //printf("case 1");
+    manager->prev_char_offset = offset-2;//;-= ((gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2);
     offset_changes.set_prev_offset = YES;
   }
   /*The opposite case i.e when the next line, when scrolling upwards, is a newline*/
