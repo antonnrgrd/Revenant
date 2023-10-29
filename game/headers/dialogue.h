@@ -35,7 +35,7 @@ typedef struct {
   int **dialogue_id_options;
   int next_char_offset;
   int prev_char_offset;
-  int old_offset;
+  int saved_prev_offsets[2];
   int set_offset;
 }Dialogue_Manager;
 
@@ -62,7 +62,7 @@ typedef struct{
 void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs);
 
 int dia_compute_num_bytes(FILE *fp);
-Dialogue_Manager *dia_init_dialogue_manager(int dialogue_folder_id, int initial_dialogue_id, int npc_id);
+Dialogue_Manager *dia_init_dialogue_manager(int dialogue_folder_id, int initial_dialogue_id, int npc_id, Game_State *gs);
 
 int dia_redraw_text_scroll(Dialogue_Manager *manager, Game_State *gs, FILE *fp, int offset);
 

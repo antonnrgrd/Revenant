@@ -1,5 +1,5 @@
 /*This file is part of Revenant.
-65;6800;1c
+65;6800;1c65;6800;1c
 Revenant is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
@@ -111,12 +111,17 @@ void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs){
 	  manager->set_offset --;
 	 }
       }
+      //printf(" %d ", manager->prev_char_offset % ((gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2 ) );
+      // printf();
+      
     }
 }
-Dialogue_Manager *dia_init_dialogue_manager(int dialogue_folder_id, int initial_dialogue_id, int npc_id){
+Dialogue_Manager *dia_init_dialogue_manager(int dialogue_folder_id, int initial_dialogue_id, int npc_id, Game_State *gs){
   Dialogue_Manager *manager = malloc(sizeof(Dialogue_Manager));
   manager->dialogue_folder_id;
   manager->initial_dialogue_id;
+  manager->saved_prev_offsets[0] = -1;
+  manager->saved_prev_offsets[1] = -1;
  return manager;
 }
 
@@ -168,8 +173,18 @@ Offset_Changes dia_reddraw_dialogue_scroll(Dialogue_Manager *manager, Game_State
   int current_col = 3;
   char c = fgetc(fp);
   int current_offset = offset;
-  /*If we are scrolling upwards and first character is a LF, skip printing it as it causes inconsistent formatting of the text*/
+  
   if(c == LF && direction == KEY_UP){
+    if(manager->saved_prev_offsets[1] != -1){
+      manager->prev_char_offset = manager->saved_prev_offsets[1];
+      manager->saved_prev_offsets[1] = -1;
+    }
+    else if(manager->saved_prev_offsets[0] != -1){
+      manager->prev_char_offset = manager->saved_prev_offsets[0];
+      manager->saved_prev_offsets[0] = -1;
+    }
+    offset_changes.set_prev_offset = YES;
+    /*If we are scrolling upwards and first character is a LF, skip printing it as it causes inconsistent formatting of the text*/
     c = fgetc(fp);
   }
   while(c != EOF && current_col < gs->num_cols -1){
@@ -180,6 +195,19 @@ Offset_Changes dia_reddraw_dialogue_scroll(Dialogue_Manager *manager, Game_State
 	  God this is so fucking asinine. Usually, when scrolling through dialogue, the correct way to update the the next offset would be to       add the length of the dialogue screen to the offset to correctly start printing from the next line, but provided the current line you        are reading ends with a life feed, the correct way to get the next offset it is offset where you encountered the linefeef + one for some reason, getting the next offset the usual way does not work. God how fucking stupid that is.
 	*/
 	if(current_col == 3 && direction == KEY_DOWN){
+	  if(char_offset > 1){
+	    /* If latest lookback slot is available, put it there*/
+	    if(manager->saved_prev_offsets[1] == -1){
+	      manager->saved_prev_offsets[1] = offset;
+	    }
+	    /*
+	      Otherwise, shift lookbacks backwards
+	    */
+	    else{
+	      manager->saved_prev_offsets[0] = manager->saved_prev_offsets[1];
+	      manager->saved_prev_offsets[1] = offset;
+	    }
+	  }
 	  manager->next_char_offset = current_offset + 1;
 	  offset_changes.set_next_offset = YES;
 	}
