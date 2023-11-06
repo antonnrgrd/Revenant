@@ -212,7 +212,7 @@ Offset_Changes dia_reddraw_dialogue_scroll(Dialogue_Manager *manager, Game_State
 	  offset_changes.set_next_offset = YES;
 	}
 	else if (current_col == 4 && direction == KEY_UP){
-	  manager->next_char_offset =  current_offset - char_offset +1 ;
+	  manager->next_char_offset = (manager->next_char_offset + (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2) - char_offset;
 	  offset_changes.set_next_offset = YES;
 	  
 	}
