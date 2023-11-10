@@ -1,5 +1,5 @@
 /*This file is part of Revenant.
-65;6800;1c65;6800;1c
+65;6800;1c65;6800;1c65;6800;1c
 Revenant is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
@@ -41,40 +41,13 @@ void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs){
   if(fp == NULL){
     return;
   }
-  int current_col = 3;
+  char *line;
   top_panel(gs->panels[DIALOGUE_LOG]);
-  int num_lines = 0;
-  char c = fgetc(fp);
-  int processed_bytes;
-  int byte_offset;
-  int num_bytes = dia_compute_num_bytes(fp);
-  while( c != EOF && current_col < gs->num_cols -1){
-	  int char_offset = 1;
-	  /*Printing the characters one by one is most likely infinitely more ineffecient that printing lines at a time
-	   but coming up with a more clever scheme that always prints a line that is at most as long as the screen width
-	   and formats everything neatly appears to be way more complex logic so doing this character by character will have to do*/
-	  while(char_offset < (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 1 && c != EOF ){
-	    //	    byte_offset++;
-	    if(c == LF){
-	      /*No idea why we have to set the offset to 0 here to get it to format properly, presumably because the line feed behaves differently than a whitespace when it comes to how it affects formatting? In any case, we have to set the offset to 0 instead of 1 to get it to print properly and force it to move down the the next line (in ncurses logic)*/
-	      char_offset = 0;
-	      current_col++;
-	      /* 
-		 Another programmer's sidenote: I initially tried some scheme to trim redundant whitespace that occured in the beginning and                 end of lines. However, this caused issues when scrolling, where the scheme for finding the next offset behaved inconsistenly, namely we would have off by one character character issues, where we would jump to +1 position too high. In the end, i gave and let them be. Besides, less has the same issue, so why should i bother?
-	       */
-	    }
-	    else{
-	      mvwprintw(gs->logs[DIALOGUE_LOG], current_col,char_offset, "%c", c);
-	    }
-	    c = fgetc(fp);
-	    char_offset++;
-	    byte_offset++;
-	    }
-	  char_offset = 1;
-	  current_col++;
-
-    num_lines++;
-  }
+  int read;
+  while (read; != -1) {
+    read = getline(&line, &len, fp);
+        printf("%s", line);
+    }
    UPDATE_PANEL_INFO();
     while(1){
       int ch = getch();
