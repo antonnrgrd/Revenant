@@ -120,8 +120,9 @@ Dialogue_Manager *dia_init_dialogue_manager(int dialogue_folder_id, int initial_
   Dialogue_Manager *manager = malloc(sizeof(Dialogue_Manager));
   manager->dialogue_folder_id;
   manager->initial_dialogue_id;
-  manager->saved_prev_offsets[0] = -1;
-  manager->saved_prev_offsets[1] = -1;
+  manager->saved_prev_offsets = NULL;
+  manager->current_saved_offset_index = -1;
+  manager->encountered_double_lf = 0;
  return manager;
 }
 
@@ -143,13 +144,13 @@ Offset_Changes dia_reddraw_dialogue_scroll(Dialogue_Manager *manager, Game_State
     //printf("case 1");
     manager->prev_char_offset = offset-2;//;-= ((gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2);
     offset_changes.set_prev_offset = YES;
-    printf("case 1");
+    //printf("case 1");
   }
   /*The opposite case i.e when the next line, when scrolling upwards, is a newline*/
   else if(c1 == LF  && direction == KEY_UP){
     manager->prev_char_offset = offset -2;
     offset_changes.set_prev_offset = YES;
-    printf("case 2");
+    //printf("case 2");
   }
 
   /*Case when the second previous line was a newline, when scrolling downwards*/
@@ -159,7 +160,7 @@ Offset_Changes dia_reddraw_dialogue_scroll(Dialogue_Manager *manager, Game_State
     if(myc == LF){
       manager->prev_char_offset = offset -  ( (((gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2)));
       offset_changes.set_prev_offset = YES;
-      printf("case 3");
+      //printf("case 3");
     }
   }
   
@@ -178,15 +179,11 @@ Offset_Changes dia_reddraw_dialogue_scroll(Dialogue_Manager *manager, Game_State
   int current_offset = offset;
   
   if(c == LF && direction == KEY_UP){
-    printf("case 4");
-    if(manager->saved_prev_offsets[1] != -1){
-      manager->prev_char_offset = manager->saved_prev_offsets[1];
-      manager->saved_prev_offsets[1] = -1;
-    }
-    else if(manager->saved_prev_offsets[0] != -1){
-      manager->prev_char_offset = manager->saved_prev_offsets[0];
-      manager->saved_prev_offsets[0] = -1;
-    }
+    // printf("case 4");
+    manager->prev_char_offset = manager->saved_prev_offsets[manager->current_saved_offset_index];
+      if(manager->current_saved_offset_index > -1){
+	manager->current_saved_offset_index --;
+      }
     offset_changes.set_prev_offset = YES;
     /*If we are scrolling upwards and first character is a LF, skip printing it as it causes inconsistent formatting of the text*/
     c = fgetc(fp);
@@ -199,25 +196,20 @@ Offset_Changes dia_reddraw_dialogue_scroll(Dialogue_Manager *manager, Game_State
 	  God this is so fucking asinine. Usually, when scrolling through dialogue, the correct way to update the the next offset would be to       add the length of the dialogue screen to the offset to correctly start printing from the next line, but provided the current line you        are reading ends with a life feed, the correct way to get the next offset it is offset where you encountered the linefeef + one for some reason, getting the next offset the usual way does not work. God how fucking stupid that is.
 	*/
 	if(current_col == 3 && direction == KEY_DOWN){
-	  printf("case 5");
+	  //printf("case 5");
 	  if(char_offset > 1){
-	    /* If latest lookback slot is available, put it there*/
-	    if(manager->saved_prev_offsets[1] == -1){
-	      manager->saved_prev_offsets[1] = offset;
+	    if(dia_offset_in_list(offset, manager) == NO){
+	      manager->encountered_double_lf++;
+	      manager->saved_prev_offsets = realloc(manager->saved_prev_offsets,sizeof(int) * manager->encountered_double_lf);
+	      manager->saved_prev_offsets[manager->encountered_double_lf-1] = offset;
 	    }
-	    /*
-	      Otherwise, shift lookbacks backwards
-	    */
-	    else{
-	      manager->saved_prev_offsets[0] = manager->saved_prev_offsets[1];
-	      manager->saved_prev_offsets[1] = offset;
-	    }
+	    manager->current_saved_offset_index++;
 	  }
 	  manager->next_char_offset = current_offset + 1;
 	  offset_changes.set_next_offset = YES;
 	}
 	else if (current_col == 4 && direction == KEY_UP){
-	  printf("case 7");
+	  //printf("case 7");
 	  manager->next_char_offset = (manager->next_char_offset + (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2) - char_offset;
 	  offset_changes.set_next_offset = YES;
 	  
@@ -262,17 +254,16 @@ void dia_print_char_at_offset(FILE *fp, int offset){
   fseek(fp, 0, SEEK_SET);
 }
 
-/*
-int dia_find_next_nonlf_char(FILE *fp,Dialogue_Manager *manager,char currchar, int start_offset, int current_offset){
-  char startoff_char = currchar;
-  int next_offset = current_offset;
-  fseek(fp, current_offset, SEEK_SET);
-  char c = fgetc(fp);
-  while(c == LF){
-    c = fgetc(fp);
-    next_offset++;
+int dia_offset_in_list(int offset, Dialogue_Manager *manager){
+  if(manager->saved_prev_offsets == NULL){
+    return NO;
   }
-  fseek(fp, start_offset, SEEK_SET);
-  return next_offset;
+  else{
+    for(int i = 0; i < manager->encountered_double_lf; i++){
+      if(manager->saved_prev_offsets[i] == offset){
+	return YES;
+      }
+   }
+    return NO;
+  }
 }
-*/

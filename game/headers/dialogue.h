@@ -35,7 +35,9 @@ typedef struct {
   int **dialogue_id_options;
   int next_char_offset;
   int prev_char_offset;
-  int saved_prev_offsets[2];
+  int *saved_prev_offsets;
+  int current_saved_offset_index;
+  int encountered_double_lf;
   int set_offset;
 }Dialogue_Manager;
 
@@ -75,5 +77,7 @@ void dia_safe_find_next_offset(Dialogue_Manager *manager, Game_State *gs, int ma
 Offset_Changes dia_reddraw_dialogue_scroll(Dialogue_Manager *manager, Game_State *gs, FILE *fp, int offset, int direction);
 
 dia_find_next_nonlf_char(FILE *fp,Dialogue_Manager *manager,char currchar, int start_offset, int current_offset);
+
+int dia_offset_in_list(int offset, Dialogue_Manager *manager);
 #endif
 
