@@ -141,9 +141,10 @@ Offset_Changes dia_reddraw_dialogue_scroll(Dialogue_Manager *manager, Game_State
   /*Case when the line we start at is a newline i.e the first char is a LF and we are one the way down on the scroll
 */
   if(c1 == LF  && direction == KEY_DOWN){
-    //printf("case 1");
     manager->prev_char_offset = offset-2;//;-= ((gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2);
     offset_changes.set_prev_offset = YES;
+    manager->current_saved_offset_index++;
+    //printf(" After incrementing, index is %d ",manager->current_saved_offset_index);
     //printf("case 1");
   }
   /*The opposite case i.e when the next line, when scrolling upwards, is a newline*/
@@ -179,10 +180,12 @@ Offset_Changes dia_reddraw_dialogue_scroll(Dialogue_Manager *manager, Game_State
   int current_offset = offset;
   
   if(c == LF && direction == KEY_UP){
-    // printf("case 4");
+    //printf(" Using %d as index",manager->current_saved_offset_index);
+      //printf(" prev_offset: %d - manager->saved_prev_offsets[manager->current_saved_offset_index-1]: %d ",manager->prev_char_offset,manager->saved_prev_offsets[manager->current_saved_offset_index-1]);
     manager->prev_char_offset = manager->saved_prev_offsets[manager->current_saved_offset_index];
       if(manager->current_saved_offset_index > -1){
 	manager->current_saved_offset_index --;
+	//printf(" After decrementing, index is %d ",manager->current_saved_offset_index);
       }
     offset_changes.set_prev_offset = YES;
     /*If we are scrolling upwards and first character is a LF, skip printing it as it causes inconsistent formatting of the text*/
@@ -203,7 +206,8 @@ Offset_Changes dia_reddraw_dialogue_scroll(Dialogue_Manager *manager, Game_State
 	      manager->saved_prev_offsets = realloc(manager->saved_prev_offsets,sizeof(int) * manager->encountered_double_lf);
 	      manager->saved_prev_offsets[manager->encountered_double_lf-1] = offset;
 	    }
-	    manager->current_saved_offset_index++;
+	    //manager->current_saved_offset_index++;
+	    //printf(" offset is now: %d ",manager->current_saved_offset_index);
 	  }
 	  manager->next_char_offset = current_offset + 1;
 	  offset_changes.set_next_offset = YES;
