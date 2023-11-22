@@ -39,6 +39,7 @@ typedef struct {
   int current_saved_offset_index;
   int encountered_double_lf;
   int set_offset;
+  int reached_eof : 2;
 }Dialogue_Manager;
 
 typedef struct{

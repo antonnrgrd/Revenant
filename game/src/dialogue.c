@@ -102,6 +102,7 @@ void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs){
 	}
       }
       else if(ch == KEY_UP){
+	manager->reached_eof = NO;
         Offset_Changes offset_changes = dia_reddraw_dialogue_scroll(manager, gs, fp,manager->prev_char_offset, KEY_UP);
 	manager->next_char_offset = DIA_SAFE_DECREMENT_NEXT(manager,gs);
 	if(offset_changes.set_prev_offset == NO){
@@ -123,6 +124,7 @@ Dialogue_Manager *dia_init_dialogue_manager(int dialogue_folder_id, int initial_
   manager->saved_prev_offsets = NULL;
   manager->current_saved_offset_index = -1;
   manager->encountered_double_lf = 0;
+  manager->reached_eof = NO;
  return manager;
 }
 
@@ -143,7 +145,10 @@ Offset_Changes dia_reddraw_dialogue_scroll(Dialogue_Manager *manager, Game_State
   if(c1 == LF  && direction == KEY_DOWN){
     manager->prev_char_offset = offset-2;//;-= ((gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2);
     offset_changes.set_prev_offset = YES;
+    /*We have to check if we have already reached EOF when scanning for chars because this logic cannot keep track of the fact that we have not moved to the next line from the last line scroll i.e we are at the the same line as the last time we moved down, with the first char being a LF. Otherwise, we will continuously increment the saved offset index beyond the actual indexes.*/
+    if(manager->reached_eof == NO){
     manager->current_saved_offset_index++;
+    }
     //printf(" After incrementing, index is %d ",manager->current_saved_offset_index);
     //printf("case 1");
   }
@@ -225,6 +230,10 @@ Offset_Changes dia_reddraw_dialogue_scroll(Dialogue_Manager *manager, Game_State
 	  mvwprintw(gs->logs[DIALOGUE_LOG], current_col,char_offset, "%c", c);
 	}
       c = fgetc(fp);
+      if(c == EOF){
+	offset_changes.set_next_offset = YES;
+	manager->reached_eof = YES;
+      }
       char_offset++;
       current_offset++;
     }
