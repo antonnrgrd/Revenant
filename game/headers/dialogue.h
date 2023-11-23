@@ -39,7 +39,8 @@ typedef struct {
   int current_saved_offset_index;
   int encountered_double_lf;
   int set_offset;
-  int reached_eof : 2;
+  /*Note: if using single bit, bit-packed values, you need to use an unsigned int. If you use a regular signed int, you need at least two bits worth, in order to be able to differentiate between positive and negative numbers, otherwise, you get unusual behavior */
+  unsigned int reached_eof : 1;
 }Dialogue_Manager;
 
 typedef struct{
