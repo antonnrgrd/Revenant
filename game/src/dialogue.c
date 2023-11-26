@@ -185,8 +185,7 @@ Offset_Changes dia_reddraw_dialogue_scroll(Dialogue_Manager *manager, Game_State
   int current_offset = offset;
   
   if(c == LF && direction == KEY_UP){
-    //printf(" Using %d as index",manager->current_saved_offset_index);
-      //printf(" prev_offset: %d - manager->saved_prev_offsets[manager->current_saved_offset_index-1]: %d ",manager->prev_char_offset,manager->saved_prev_offsets[manager->current_saved_offset_index-1]);
+    /*Future note to self. For some reason, there are a few cases wheere the next_char_offset is computed incorrectly, when hitting this case. To say that i have spendt a LOT of time trying to fix this issue is an understatement. I have therefore decided to let it be for now, since it seems so rare that this happens.*/
     manager->prev_char_offset = manager->saved_prev_offsets[manager->current_saved_offset_index];
       if(manager->current_saved_offset_index > -1){
 	manager->current_saved_offset_index --;
