@@ -15,7 +15,6 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "dialogue.h"
 void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs){
   manager->next_char_offset = (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2 ;
-  //  printf("%d", (manager->next_char_offset + (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2));
   manager->prev_char_offset = 0;
   manager->set_offset = 0;
   mvwprintw(gs->logs[DIALOGUE_LOG], 1,(gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) / 3,"Talking to: ");
@@ -48,7 +47,7 @@ void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs){
   int processed_bytes;
   int byte_offset;
   int num_bytes = dia_compute_num_bytes(fp);
-  while( c != EOF && current_col < gs->num_cols -1){
+  while(c != EOF && current_col < gs->num_cols -1){
 	  int char_offset = 1;
 	  /*Printing the characters one by one is most likely infinitely more ineffecient that printing lines at a time
 	   but coming up with a more clever scheme that always prints a line that is at most as long as the screen width
@@ -67,6 +66,14 @@ void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs){
 	      mvwprintw(gs->logs[DIALOGUE_LOG], current_col,char_offset, "%c", c);
 	    }
 	    c = fgetc(fp);
+	    /*If we on the first "page" encounter EOF, reset next char offset to 0 since scrolling in this case is pointless
+	     We also set single_page_file to yes to adress the edge case when we don't have to update the previous char offsrt*/
+	    if(c == EOF){
+	      printf("FOUND EOF on first attempt");
+	      manager->next_char_offset = 0;
+	      manager->reached_eof = YES;
+	      manager->single_page_file = YES;
+	    }
 	    char_offset++;
 	    byte_offset++;
 	    }
@@ -83,7 +90,7 @@ void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs){
 	UPDATE_PANEL_INFO();
 	return;
       }
-      else if(ch == KEY_DOWN){
+      else if(ch == KEY_DOWN && manager->single_page_file == NO){
 	//printf(" offset wer are using  %d ",manager->next_char_offset);
 	Offset_Changes offset_changes = dia_reddraw_dialogue_scroll(manager, gs, fp,manager->next_char_offset, KEY_DOWN);
 	if(offset_changes.set_next_offset == NO){
@@ -96,12 +103,12 @@ void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs){
 	*/
 	manager->set_offset++;
 	if(manager->set_offset >= 2){
-	  if(offset_changes.set_prev_offset == NO){
+	  if(offset_changes.set_prev_offset == NO && manager->single_page_file == NO){
 	  manager->prev_char_offset = DIA_SAFE_INCREMENT_PREV(manager,gs,num_bytes);
 	  }
 	}
       }
-      else if(ch == KEY_UP){
+      else if(ch == KEY_UP && manager->single_page_file == NO){
 	manager->reached_eof = NO;
         Offset_Changes offset_changes = dia_reddraw_dialogue_scroll(manager, gs, fp,manager->prev_char_offset, KEY_UP);
 	manager->next_char_offset = DIA_SAFE_DECREMENT_NEXT(manager,gs);
@@ -125,6 +132,7 @@ Dialogue_Manager *dia_init_dialogue_manager(int dialogue_folder_id, int initial_
   manager->current_saved_offset_index = -1;
   manager->encountered_double_lf = 0;
   manager->reached_eof = NO;
+  manager->single_page_file = NO;
  return manager;
 }
 
@@ -185,7 +193,7 @@ Offset_Changes dia_reddraw_dialogue_scroll(Dialogue_Manager *manager, Game_State
   int current_offset = offset;
   
   if(c == LF && direction == KEY_UP){
-    /*Future note to self. For some reason, there are a few cases wheere the next_char_offset is computed incorrectly, when hitting this case. To say that i have spendt a LOT of time trying to fix this issue is an understatement. I have therefore decided to let it be for now, since it seems so rare that this happens.*/
+    /*Future note to self. For some reason, there are a few cases where the next_char_offset is computed incorrectly, when moving to the prev_char_ofset found in this manner, when scrolling immediately down afterwards. To say that i have spendt a LOT of time trying to fix this issue is an understatement. I have therefore decided to let it be for now, since it seems so rare that this happens. A hacky solution might be to compute next_char_offset from here using the prev offset as a base?*/
     manager->prev_char_offset = manager->saved_prev_offsets[manager->current_saved_offset_index];
       if(manager->current_saved_offset_index > -1){
 	manager->current_saved_offset_index --;
@@ -230,6 +238,7 @@ Offset_Changes dia_reddraw_dialogue_scroll(Dialogue_Manager *manager, Game_State
 	}
       c = fgetc(fp);
       if(c == EOF){
+	manager->next_char_offset = offset;
 	offset_changes.set_next_offset = YES;
 	manager->reached_eof = YES;
       }

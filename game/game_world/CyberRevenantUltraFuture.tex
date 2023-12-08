@@ -2,6 +2,8 @@
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{listings}
+\usepackage{hyperref}
+\usepackage{graphicx}
 \title{Sections and Chapters}
 \author{Anton Nørgaard}
 \date{ \today}
@@ -13,7 +15,73 @@
 \tableofcontents
 
 \section{Introduction}
-   
+\chapter{Prerequisites for compiling and running the game}   
+This chapter details all the necessary requirements for setting up, preparing and running the game. 
+
+It wort noting that the game can \textbf{only} run on Linux operating systems as it uses certain C-libraries that only work in Unix-like operating systems.
+
+Furthermore, at the risk of sounding arrogant and snarky, this guide assumes you are quite competent with programming, Linux and computers in general. 
+\section*{Getting the correct compiler}
+The game was and should be compiled using GCC. To my recollection, it uses GCC-specific, non c-standard features, so it is unlikely it will work otherwise.
+
+All of this of course, assumes you have sufficient privileges to install software on the desired host.
+\subsection*{Installing GCC via Ubuntu}
+Firstly, run
+\begin{lstlisting}
+sudo apt update
+\end{lstlisting}
+To update the packages list. Next, run
+
+\begin{lstlisting}
+sudo apt install build-essential
+\end{lstlisting}
+This actually installs a group of different tools, most of which you will need anyway to compile the project, like make as well.
+
+To verify GCC has been installed, run
+
+\begin{lstlisting}
+gcc --version
+\end{lstlisting}
+
+This should print out the version of GCC in use.
+\section*{Additional required software}
+\subsection*{Installing ncurses}
+The code uses the ncurses library to draw all the characters on the screen. It is therefore necessary in order to compile the code.
+\subsubsection*{Installing ncurses on systems with apt}
+You need to install two packages
+\begin{enumerate}
+\item  libncurses5-dev (developer’s libraries for ncurses)
+\item  libncursesw5-dev (developer’s libraries for ncursesw)
+\end{enumerate}
+To install both, run
+\begin{lstlisting}
+sudo apt-get install libncurses5-dev libncursesw5-dev
+\end{lstlisting}
+\subsection*{Installing SQLite}
+Revenant also uses SQLite to manage game state. Furthermore, it needs several other components for allowing compilation itself. There are actually several valid approaches for integrating, compiling and  running SQLite, but this particular setup is based on what at the time seemed the best.
+
+\subsubsection*{Getting the SQLite code}
+To get the SQLite source code, go to \url{https://www.sqlite.org/download.html} and download whatever is specified to be "C source code as an amalgamation, version xx.yy.zz.", like in the picture below
+
+\includegraphics[width=\textwidth]{sqlite.png}
+Alternatively, assuming you have wget and you know the version number(in the case 3.44.2), you could also run
+\begin{lstlisting}
+wget https://www.sqlite.org/2023/sqlite-amalgamation-3440200.zip
+\end{lstlisting}
+
+Then unzip the downloaded file.
+\subsubsection*{Compiling the CLI interface}
+The game uses the command-line interface to generate the game world and the like. To enable the command line, go into the directory
+\begin{lstlisting}
+gcc shell.c sqlite3.c -lpthread -ldl -lm -o sqlite3
+\end{lstlisting}
+This 
+\section*{Getting,compiling and generating the actual game}
+Now that everything has been set up, the time has come to actually get, compile and generate the game world. To do this, simply go in to the revenant/misc folder and run the following shell script
+\begin{lstlisting}
+./setup_gamle_world.sh
+\end{lstlisting}
+and then promptly sit back and relax. Chances are, this is going to take a while
 \chapter{Source code documentation}
 \section{Management of game state and status}
 \subsection{Keeping track of the creatures and the player}
