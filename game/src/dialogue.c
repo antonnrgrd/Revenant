@@ -69,7 +69,6 @@ void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs){
 	    /*If we on the first "page" encounter EOF, reset next char offset to 0 since scrolling in this case is pointless
 	     We also set single_page_file to yes to adress the edge case when we don't have to update the previous char offsrt*/
 	    if(c == EOF){
-	      printf("FOUND EOF on first attempt");
 	      manager->next_char_offset = 0;
 	      manager->reached_eof = YES;
 	      manager->single_page_file = YES;
