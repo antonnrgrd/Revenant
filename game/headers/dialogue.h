@@ -28,10 +28,10 @@ along with Foobar.  If not, see <https://www.gnu.org/licenses/>. */
 #define QUIT_DIALOGUE_SCREEN 0
 #define CONTINUE_DIALOGUE_SCREEN 1
 #define DIA_EXIT_DIALOGUE_MANAGER(manager){\
-  FREE_NULL(manager->dialogue_options); \
-  FREE_NULL(manager->saved_prev_offsets); \
   manager->next_char_offset = 0; \
   manager->prev_char_offset = 0; \
+  manager->set_offset = NO;	 \
+  manager->reached_eof = NO;	 \
 }
 
 
