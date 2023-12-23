@@ -13,7 +13,8 @@ Selected_Dialogue_Info dbr_get_dialogue_response(Game_State *gs,Dialogue_Manager
   Selected_Dialogue_Info selected_dialogue_info;
   sqlite3_stmt* stmt;
   char *err_msg = 0;
-  sprintf(gs->game_bfr,"SELECT next_dialogue_id, choice_consequence FROM dialogue_option_reponses \n\
+  sprintf(gs->game_bfr,"SELECT next_dialogue_id int, choice_consequence \n\
+ FROM dialogue_option_reponses \n					\
          WHERE npc_id = ? AND current_dialogue_id = ? AND selected_dialogue_id = ?;");
   int result_statement = sqlite3_prepare_v2(gs->db,gs->game_bfr, NBYTES, &stmnt, NULL);
   int sqlite3_bind_int(stmt, 1, manager->npc_id);
@@ -32,7 +33,6 @@ Selected_Dialogue_Info dbr_get_dialogue_response(Game_State *gs,Dialogue_Manager
     exit(1);
   }
   selected_dialogue_info.next_dialogue_id = sqlite3_column_int(stmt, 1);
-  selected_dialogue_info.consequence = sqlite3_column_int(stmt, 2);
   sqlite3_finalize(stmt);
   return selected_dialogue_info;
 }

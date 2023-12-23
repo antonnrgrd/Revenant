@@ -287,3 +287,9 @@ int dia_offset_in_list(int offset, Dialogue_Manager *manager){
     return NO;
   }
 }
+
+int (*dia_selected_dialogue_response_handler[2])(Dialogue_Manager *manager) {dia_selected_dialogue_advance_dialogue,dia_selected_dialogue_quit};
+
+dia_selected_dialogue_quit(Dialogue_Manager *manager){
+
+}

@@ -19,7 +19,9 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "linked_list.h"
 #include "screen_constants.h"
 #include "rng.h"
-
+#include <sqlite3.h>
+#define DB_LOCATION "/usr/lib/revenant_files/db_folder/revenant_database.db"
+#define BFR_LENGTH 1024
 #define NUM_EVENTS 10
 #define MAX_MSG_LENGTH 100
 // To avoid using magic numbers, we opt to use macros that represent the indices of the of the panels, e.g index 1 is designated to be the
@@ -69,6 +71,11 @@ typedef struct Game_State{
   PANEL *panels[8];
   WINDOW *logs[8];
   Mersienne_Twister *twister;
+  /*I am uncertain whether it is best policy to maintain an open db
+   connection for the duration of the game session or open, then close it for SQL operations, but for a start, I will start out with having a persistently open connection */
+  sqlite3 *db;
+  /*As development went on, it started to become increasingly difficult to account for the numerous variable-length buffers needed. To solve this, it was decided to simply just have a buffer that is guaranteed to have sufficient space for any  */
+  char *game_bfr;
 }Game_State;
 
 

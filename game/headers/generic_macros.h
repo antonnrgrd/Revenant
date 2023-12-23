@@ -15,7 +15,10 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define NO 1
 #define END_TURN 0
 #define CONTINUE_TURN 1
-#define FREE_NULL(ptr) free(ptr); (ptr) = NULL
+#define FREE_NULL(ptr){\
+    free(ptr);					\
+    (ptr) = NULL;				\
+}
 #define MAX(num_1, num_2) num_1 > num_2 ? num_1 : num_2
 #define MIN(num_1, num_2) num_1 < num_2 ? num_1 : num_2
 #define LF 10

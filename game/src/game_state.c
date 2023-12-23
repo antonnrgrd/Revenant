@@ -79,10 +79,10 @@ void gs_print_foes(Game_State *game_state){
 
 Game_State *gs_create_game_state(Game_World *game_world){
 
-
-  
-  
+  sqlite3 *db_connection;
   Game_State *state = malloc(sizeof(Game_State));
+  sqlite3_open(DB_LOCATION,&db_connection);
+   state->db = db_connection;
   state->ingame_log = malloc(sizeof(char *) * NUM_EVENTS);
   for(int i = 0; i < NUM_EVENTS; i++){
     state->ingame_log[i] = malloc(sizeof(char) * MAX_MSG_LENGTH);

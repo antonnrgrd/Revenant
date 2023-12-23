@@ -25,6 +25,30 @@ along with Foobar.  If not, see <https://www.gnu.org/licenses/>. */
 #include "generic_macros.h"
 #include "game_state_struct.h"
 #include "screen_constants.h"
+#define QUIT_DIALOGUE_SCREEN 0
+#define CONTINUE_DIALOGUE_SCREEN 1
+#define DIA_EXIT_DIALOGUE_MANAGER(manager){\
+  FREE_NULL(manager->dialogue_options); \
+  FREE_NULL(manager->saved_prev_offsets); \
+  manager->next_char_offset = 0; \
+  manager->prev_char_offset = 0; \
+}
+
+
+#define DIA_RESET_DIALOGUE_MANAGER_INFO(manager){\
+    FREE_NULL(manager->dialogue_options);	 \
+    FREE_NULL(manager->saved_prev_offsets);	 \
+    manager->next_char_offset = 0;		 \
+    manager->prev_char_offset = 0;		 \
+    manager->num_dialogue_options = 0;		 \
+    manager->current_dialogue_id 0;		 \
+    manager->current_saved_offset_index = 0;	 \
+    manager->encountered_double_lf = NO;	 \
+    manager->set_offset = NO;			 \
+    manager->reached_eof = NO;			 \
+    manager->single_page_file = NO;		 \
+}
+
 typedef struct {
   /*the id of the folder we should look in for the dialogue files*/
   int dialogue_folder_id;
@@ -32,7 +56,9 @@ typedef struct {
   int initial_dialogue_id;
   /**/
   int npc_id;
-  int **dialogue_id_options;
+  int *dialogue_options;
+  int num_dialogue_options;
+  int current_dialogue_id;
   int next_char_offset;
   int prev_char_offset;
   int *saved_prev_offsets;
@@ -83,5 +109,12 @@ Offset_Changes dia_reddraw_dialogue_scroll(Dialogue_Manager *manager, Game_State
 dia_find_next_nonlf_char(FILE *fp,Dialogue_Manager *manager,char currchar, int start_offset, int current_offset);
 
 int dia_offset_in_list(int offset, Dialogue_Manager *manager);
+
+#define DIA_CLEANUP_MANAGER(manager){
+
+}
+extern int (*dia_selected_dialogue_response_handler[2])(Dialogue_Manager *manager);
+int dia_selected_dialogue_quit(Dialogue_Manager *manager);
+int dia_selected_dialogue_advance_dialogue(Dialogue_Manager *manager);
 #endif
 
