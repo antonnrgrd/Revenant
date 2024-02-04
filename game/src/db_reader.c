@@ -13,12 +13,12 @@ Selected_Dialogue_Info dbr_get_dialogue_response(Game_State *gs,Dialogue_Manager
   Selected_Dialogue_Info selected_dialogue_info;
   sqlite3_stmt* stmt;
   char *err_msg = 0;
-  sprintf(gs->game_bfr,"SELECT next_dialogue_id, choice_consequence FROM dialogue_option_reponses \n\
+  strcpy(gs->bfr,"SELECT next_dialogue_id, choice_consequence FROM dialogue_option_reponses \n\
          WHERE npc_id = ? AND current_dialogue_id = ? AND selected_dialogue_id = ?;");
-  int result_statement = sqlite3_prepare_v2(gs->db,gs->game_bfr, NBYTES, &stmnt, NULL);
-  int sqlite3_bind_int(stmt, 1, manager->npc_id);
-  int sqlite3_bind_int(stmt, 2, manager->current_dialogue_id);
-  int sqlite3_bind_int(stmt, 3, selected_choice);
+  int result_statement = sqlite3_prepare_v2(gs->db,gs->bfr, NBYTES, &stmt, NULL);
+  sqlite3_bind_int(stmt, 1, manager->npc_id);
+  sqlite3_bind_int(stmt, 2, manager->current_dialogue_id);
+  sqlite3_bind_int(stmt, 3, selected_choice);
 
   int result = sqlite3_step(stmt);
   if(result != SQLITE_ROW){
@@ -26,8 +26,8 @@ Selected_Dialogue_Info dbr_get_dialogue_response(Game_State *gs,Dialogue_Manager
     struct tm * timeinfo;
     time ( &rawtime );
     timeinfo = localtime ( &rawtime );
-    sprintf("%s - when running dbr_get_dialogue_response. Expected %d, got %d " asctime (timeinfo), SQLITE_ROW, result );
-    err_append_err(gs->game_bfr);
+    sprintf("%s - when running dbr_get_dialogue_response. Expected %d, got %d ", asctime (timeinfo), SQLITE_ROW, result );
+    err_append_err(gs->bfr);
     sqlite3_finalize(stmt);
     exit(1);
   }

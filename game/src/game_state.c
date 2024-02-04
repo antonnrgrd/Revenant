@@ -87,7 +87,9 @@ Game_State *gs_create_game_state(Game_World *game_world){
   for(int i = 0; i < NUM_EVENTS; i++){
     state->ingame_log[i] = malloc(sizeof(char) * MAX_MSG_LENGTH);
   }
-  state->current_event = malloc(sizeof(char) * MAX_MSG_LENGTH);
+  /*We make the logs and game buffer of differing sizes due to the fact that while the logs have a definite
+upper bound length of 100 char, the contents of the game buffer might exceed that because it is also used for things like storing the SQL statements and so forth.*/
+  state->bfr = malloc(sizeof(char) * BFR_LENGTH);
   getmaxyx(stdscr,state->found_rows, state->found_cols);
   getmaxyx(stdscr,state->num_cols, state->num_rows);
   state->twister = rng_generate_twister();

@@ -57,10 +57,10 @@ int msg_find_item_position(WINDOW *log, int max_y,Item_Holder *item, Item_Holder
 
 
 
-#define UPDATE_ADD_TO_LOG(game_state,position,offset) strcpy(gs->ingame_log[position-2],gs->current_event); mvwprintw(game_state->logs[EVENT_LOG],position+1,offset, gs->current_event); 
+#define UPDATE_ADD_TO_LOG(game_state,position,offset) strcpy(gs->ingame_log[position-2],gs->bfr); mvwprintw(game_state->logs[EVENT_LOG],position+1,offset, gs->bfr); 
 
 
-#define UPDATE_PUSH_ADD_TO_LOG(game_state) wmove(game_state->logs[EVENT_LOG],12,14); wclrtoeol(game_state->logs[EVENT_LOG]);  strcpy(game_state->ingame_log[9], game_state->ingame_log[8]); mvwprintw(game_state->logs[EVENT_LOG],12,14, game_state->ingame_log[9]); for(int i = 8; i > 0; i--){ wmove(game_state->logs[EVENT_LOG],i+3,12); wclrtoeol(game_state->logs[EVENT_LOG]); strcpy(game_state->ingame_log[i], game_state->ingame_log[i-1]); mvwprintw(game_state->logs[EVENT_LOG],i+3,12, game_state->ingame_log[i]); } wmove(game_state->logs[EVENT_LOG],3,12); wclrtoeol(game_state->logs[EVENT_LOG]); strcpy(game_state->ingame_log[0], game_state->current_event); mvwprintw(game_state->logs[EVENT_LOG],3,12, game_state->ingame_log[0]);
+#define UPDATE_PUSH_ADD_TO_LOG(game_state) wmove(game_state->logs[EVENT_LOG],12,14); wclrtoeol(game_state->logs[EVENT_LOG]);  strcpy(game_state->ingame_log[9], game_state->ingame_log[8]); mvwprintw(game_state->logs[EVENT_LOG],12,14, game_state->ingame_log[9]); for(int i = 8; i > 0; i--){ wmove(game_state->logs[EVENT_LOG],i+3,12); wclrtoeol(game_state->logs[EVENT_LOG]); strcpy(game_state->ingame_log[i], game_state->ingame_log[i-1]); mvwprintw(game_state->logs[EVENT_LOG],i+3,12, game_state->ingame_log[i]); } wmove(game_state->logs[EVENT_LOG],3,12); wclrtoeol(game_state->logs[EVENT_LOG]); strcpy(game_state->ingame_log[0], game_state->bfr); mvwprintw(game_state->logs[EVENT_LOG],3,12, game_state->ingame_log[0]);
 
 #define MSG_PRINT_DAMAGE_CREATURE(screen,creature_id,damage) char *file_path_bfr = malloc(sizeof(char) * strlen("/usr/lib/revenant_files/creature_files/") +5); sprintf(file_path_bfr,"/usr/lib/revenant_files/creature_files/%d",creature_id); char *name;  ir_readin_char(file_path_bfr, "name",name); mvwprintw(game_state->logs[MAIN_SCREEN],DEFAULT_MAX_Y,0, "%s%s%s%d%s", "You damage ", name , " for ", 10, " damage"); free(file_path_bfr); free(name);
 
@@ -108,7 +108,7 @@ void msg_redraw_inventory(Game_State *gs, Item_Holder **item_list, int context, 
 void msg_redraw_equipped_equipment(Game_State *gs);
 void msg_redraw_inventory_equip_context(Game_State *gs, Item_Holder **item_list, int num_items, int curs_pos);
 
-#define MSG_ADD_EQUIP_EVENT_TO_LOG(item_holder, gs) item_holder->item->kind == armor ? sprintf(gs->current_event, "You equip %s %s %s",quality_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->quality], material_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->material], equipment_type_modifier[((struct Armor *)item_holder->item->item_specific_info)->armor_type]), msg_update_event_log(gs) : sprintf(gs->current_event, "You equip %s%s%s%s",quality_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->quality], handed_modifier[((struct Weapon *)item_holder->item->item_specific_info)->variant] ,material_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->material] , mele_weapon_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->kind]), msg_update_event_log(gs)
+#define MSG_ADD_EQUIP_EVENT_TO_LOG(item_holder, gs) item_holder->item->kind == armor ? sprintf(gs->bfr, "You equip %s %s %s",quality_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->quality], material_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->material], equipment_type_modifier[((struct Armor *)item_holder->item->item_specific_info)->armor_type]), msg_update_event_log(gs) : sprintf(gs->bfr, "You equip %s%s%s%s",quality_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->quality], handed_modifier[((struct Weapon *)item_holder->item->item_specific_info)->variant] ,material_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->material] , mele_weapon_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->kind]), msg_update_event_log(gs)
 
 #define MSG_ADD_ATTACK_OPPONENT_EVENT_TO_LOG(creature, gs)ir_add_damage_to_creature_to_log(gs, gs->player, creature);  msg_update_event_log(gs);
 
@@ -125,5 +125,7 @@ void msg_redraw_log(Game_State *gs);
 #define MSG_PUT_DOWN_NOTIFICATION_LOG(gs, log_index) hide_panel(gs->panels[log_index]); UPDATE_PANEL_INFO();
 
 void msg_redraw_trading_session(Game_State *gs,Item_Holder **item_list,int num_items, int event_flag, char amount_bfr[5]);
+/*Assumes that current_event has already been added to Game_State's current event field. For various adhoc messages were we cannot justify a seperate method for formatting and generating the message*/
+#define MSG_ADD_GENERIC_EVENT_LOG(gs) msg_update_event_log(gs);
 #endif
 

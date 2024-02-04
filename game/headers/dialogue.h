@@ -25,8 +25,10 @@ along with Foobar.  If not, see <https://www.gnu.org/licenses/>. */
 #include "generic_macros.h"
 #include "game_state_struct.h"
 #include "screen_constants.h"
-#define QUIT_DIALOGUE_SCREEN 0
-#define CONTINUE_DIALOGUE_SCREEN 1
+#define END_DIALOGUE 0
+#define CONTINUE_DIALOGUE 1
+#define NO_NEXT_DIALOGUE 0
+/*For exiting the dialogue, returning control to the game world*/
 #define DIA_EXIT_DIALOGUE_MANAGER(manager){\
   manager->next_char_offset = 0; \
   manager->prev_char_offset = 0; \
@@ -34,21 +36,24 @@ along with Foobar.  If not, see <https://www.gnu.org/licenses/>. */
   manager->reached_eof = NO;	 \
 }
 
-
+/*For continuing to the next dialogue screen, ensuring we start with a clean plate*/
 #define DIA_RESET_DIALOGUE_MANAGER_INFO(manager){\
     FREE_NULL(manager->dialogue_options);	 \
     FREE_NULL(manager->saved_prev_offsets);	 \
     manager->next_char_offset = 0;		 \
     manager->prev_char_offset = 0;		 \
     manager->num_dialogue_options = 0;		 \
-    manager->current_dialogue_id 0;		 \
+    manager->current_dialogue_id = 0;		 \
     manager->current_saved_offset_index = 0;	 \
     manager->encountered_double_lf = NO;	 \
     manager->set_offset = NO;			 \
     manager->reached_eof = NO;			 \
     manager->single_page_file = NO;		 \
 }
-
+typedef struct{
+  int next_dialogue_id;
+  int dialogue_selection_effect;
+}Selected_Dialogue_Info;
 typedef struct {
   /*the id of the folder we should look in for the dialogue files*/
   int dialogue_folder_id;
@@ -110,11 +115,9 @@ dia_find_next_nonlf_char(FILE *fp,Dialogue_Manager *manager,char currchar, int s
 
 int dia_offset_in_list(int offset, Dialogue_Manager *manager);
 
-#define DIA_CLEANUP_MANAGER(manager){
-
-}
 extern int (*dia_selected_dialogue_response_handler[2])(Dialogue_Manager *manager);
 int dia_selected_dialogue_quit(Dialogue_Manager *manager);
 int dia_selected_dialogue_advance_dialogue(Dialogue_Manager *manager);
+void dia_extract_next_dialogue_window_info(Selected_Dialogue_Info selected_dialogue_info);
 #endif
 

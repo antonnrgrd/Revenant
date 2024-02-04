@@ -564,7 +564,7 @@ void ir_add_damage_to_creature_to_log(Game_State *gs, Creature *c, Creature *tar
     char *variable_pointer = strstr(line, "name");
     if(variable_pointer != NULL){
       creature_name = strtok(strchr(line, '=')+1, "\n");
-       sprintf(gs->current_event, " %s damages you for 10 damage ",creature_name);
+       sprintf(gs->bfr, " %s damages you for 10 damage ",creature_name);
        break;
       }
     }
@@ -588,7 +588,7 @@ void ir_add_damage_to_creature_to_log(Game_State *gs, Creature *c, Creature *tar
     if(variable_pointer != NULL){
       creature_name = strtok(strchr(line, '=')+1, "\n");
       target->curr_health -= 10;
-      sprintf(gs->current_event, "You damage %s for 10 damage ",creature_name);
+      sprintf(gs->bfr, "You damage %s for 10 damage ",creature_name);
        break;
       }
     }
@@ -633,7 +633,7 @@ void ir_add_damage_to_creature_to_log(Game_State *gs, Creature *c, Creature *tar
     if(variable_pointer != NULL){
       target_name = strtok(strchr(line, '=')+1, "\n");
       /*NOTE: might be buggy, as seen how strings behave with the information reader program */
-       sprintf(gs->current_event, "%s damages %s for 10 damage",creature_name, target_name);
+       sprintf(gs->bfr, "%s damages %s for 10 damage",creature_name, target_name);
        break;
       }
     }
@@ -662,10 +662,10 @@ void ir_add_item_purchase_to_log(Game_State *gs, Item_Holder *item, int amount){
   }
   
   if(item->item->kind == weapon){
-    sprintf(gs->current_event, "You buy %d %s%s%s%s",amount, quality_name_modifier[((struct Weapon *)item->item->item_specific_info)->quality], material_name_modifier[((struct Weapon *)item->item->item_specific_info)->material], handed_modifier[((struct Weapon *)item->item->item_specific_info)->variant],  mele_weapon_name_modifier[((struct Weapon *)item->item->item_specific_info)->kind]);
+    sprintf(gs->bfr, "You buy %d %s%s%s%s",amount, quality_name_modifier[((struct Weapon *)item->item->item_specific_info)->quality], material_name_modifier[((struct Weapon *)item->item->item_specific_info)->material], handed_modifier[((struct Weapon *)item->item->item_specific_info)->variant],  mele_weapon_name_modifier[((struct Weapon *)item->item->item_specific_info)->kind]);
   }
   else if(item->item->kind == armor){
-    sprintf(gs->current_event, "You buy %d %s%s%s",amount, quality_name_modifier[((struct Armor *)item->item->item_specific_info)->quality], material_name_modifier[((struct Armor *)item->item->item_specific_info)->material], equipment_type_modifier[((struct Armor *)item->item->item_specific_info)->armor_type] );
+    sprintf(gs->bfr, "You buy %d %s%s%s",amount, quality_name_modifier[((struct Armor *)item->item->item_specific_info)->quality], material_name_modifier[((struct Armor *)item->item->item_specific_info)->material], equipment_type_modifier[((struct Armor *)item->item->item_specific_info)->armor_type] );
   }
   else {
     sprintf(item_file_id, item->item->id);
@@ -677,7 +677,7 @@ void ir_add_item_purchase_to_log(Game_State *gs, Item_Holder *item, int amount){
       char *variable_pointer = strstr(line, "name");
       if(variable_pointer != NULL){
 	item_name = strtok(strchr(line, '=')+1, "\n");
-	sprintf(gs->current_event, "You buy %d %s", amount, item_name);
+	sprintf(gs->bfr, "You buy %d %s", amount, item_name);
 	break;
       }
     }

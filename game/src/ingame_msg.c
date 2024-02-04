@@ -346,7 +346,7 @@ void msg_update_event_log(Game_State *gs){
    }
   wmove(gs->logs[MAIN_SCREEN],gs->num_cols-1, 0);
   wclrtoeol(gs->logs[MAIN_SCREEN]);
-  mvwprintw(gs->logs[MAIN_SCREEN],gs->num_cols-1,0, gs->current_event);
+  mvwprintw(gs->logs[MAIN_SCREEN],gs->num_cols-1,0, gs->bfr);
   UPDATE_PANEL_INFO();
 }
  

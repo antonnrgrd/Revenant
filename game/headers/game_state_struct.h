@@ -55,7 +55,8 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define LOG_Height 15
 //The main struct that will encapsulate all information about the game currently present 
 typedef struct Game_State{
-  char *current_event;
+    /*As development went on, it started to become increasingly difficult to account for the numerous variable-length buffers needed. To solve this, it was decided to simply just have a buffer that is guaranteed to have sufficient space for any possible message */
+  char *bfr;
   char **ingame_log;
   char action_context;
   int notification_log_offset;
@@ -74,8 +75,6 @@ typedef struct Game_State{
   /*I am uncertain whether it is best policy to maintain an open db
    connection for the duration of the game session or open, then close it for SQL operations, but for a start, I will start out with having a persistently open connection */
   sqlite3 *db;
-  /*As development went on, it started to become increasingly difficult to account for the numerous variable-length buffers needed. To solve this, it was decided to simply just have a buffer that is guaranteed to have sufficient space for any  */
-  char *game_bfr;
 }Game_State;
 
 

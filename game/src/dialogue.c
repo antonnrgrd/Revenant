@@ -118,9 +118,18 @@ void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs){
 	  manager->set_offset --;
 	 }
       }
-      //printf(" %d ", manager->prev_char_offset % ((gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2 ) );
-      // printf();
-      
+      else if(isdigit(ch) == 0){
+	if(ch - '0' < manager->num_dialogue_options){
+	  Selected_Dialogue_Info selected_dialogue_info= dbr_get_dialogue_response(gs,manager,ch - '0');
+	  if(Selected_Dialogue_Info.reaction == CONTINUE_DIALOGE){
+	    DIA_RESET_DIALOGUE_MANAGER_INFO(manager);
+	    dia_extract_next_dialogue_window_info(selected_dialogue_info);
+	  }
+	  else{
+	    DIA_EXIT_DIALOGUE_MANAGER(manager);
+	  }
+	}
+      }
     }
 }
 Dialogue_Manager *dia_init_dialogue_manager(int dialogue_folder_id, int initial_dialogue_id, int npc_id, Game_State *gs){
@@ -288,8 +297,12 @@ int dia_offset_in_list(int offset, Dialogue_Manager *manager){
   }
 }
 
-int (*dia_selected_dialogue_response_handler[2])(Dialogue_Manager *manager) {dia_selected_dialogue_advance_dialogue,dia_selected_dialogue_quit};
+int (*dia_selected_dialogue_response_handler[2])(Dialogue_Manager *manager) = {dia_selected_dialogue_advance_dialogue,dia_selected_dialogue_quit};
 
-dia_selected_dialogue_quit(Dialogue_Manager *manager){
+int dia_selected_dialogue_quit(Dialogue_Manager *manager){
 
+}
+
+int dia_selected_dialogue_advance_dialogue(Dialogue_Manager *manager){
+  DIA_RESET_DIALOGUE_MANAGER_INFO(manager);
 }

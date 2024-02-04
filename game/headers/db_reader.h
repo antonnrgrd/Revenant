@@ -11,12 +11,16 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #ifndef DB_READER
 #define DB_READER
 #include <sqlite3.h>
+#include "game_state_struct.h"
+#include "dialogue.h"
 /*Sqlite 3 needs the number of bytes that the sql statement is. If it is negative, it will simply read the passed sql statement until it 
 encounters a 0 terminator. We use this macro by defualt to instruct it to do so*/
 #define NBYTES -1
-Selected_Dialogue_Info dbr_get_dialogue_response(Game_State *gs,Dialogue_Manager *manager, int selected_choice);
 typedef struct{
   int next_dialogue_id;
   int consequence;
+  int reaction;
 }Selected_Dialogue_Info;
+
+Selected_Dialogue_Info dbr_get_dialogue_response(Game_State *gs,Dialogue_Manager *manager, int selected_choice);
 #endif

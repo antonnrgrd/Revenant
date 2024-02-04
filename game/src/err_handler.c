@@ -12,11 +12,10 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include <stdio.h>
 #include <time.h>
 
-char *err_get_timestamp()
 void err_append_err(char *err){
   FILE *err_log = fopen("/usr/lib/revenant_files/misc_files/err.log", "a");
   while(fgets(err, sizeof(err), err_log)) {
-        fprintf(err_log, "%s", buffer);
+        fprintf(err_log, "%s", err);
     }
   fclose(err_log);
 }
