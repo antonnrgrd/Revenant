@@ -120,8 +120,8 @@ void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs){
       }
       else if(isdigit(ch) == 0){
 	if(ch - '0' < manager->num_dialogue_options){
-	  Selected_Dialogue_Info selected_dialogue_info= dbr_get_dialogue_response(gs,manager,ch - '0');
-	  if(Selected_Dialogue_Info.reaction == CONTINUE_DIALOGE){
+	  Selected_Dialogue_Info selected_dialogue_info = dbr_get_dialogue_response(gs,manager,ch - '0');
+	  if(Selected_Dialogue_Info.selected_dialogue_consequence == CONTINUE_DIALOGUE){
 	    DIA_RESET_DIALOGUE_MANAGER_INFO(manager);
 	    dia_extract_next_dialogue_window_info(selected_dialogue_info);
 	  }

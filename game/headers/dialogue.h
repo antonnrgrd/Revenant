@@ -27,7 +27,13 @@ along with Foobar.  If not, see <https://www.gnu.org/licenses/>. */
 #include "screen_constants.h"
 #define END_DIALOGUE 0
 #define CONTINUE_DIALOGUE 1
-#define NO_NEXT_DIALOGUE 0
+#define NO_NEXT_DIALOGUE_ID -1
+#define NO_SKILLCHECK -1
+#define NO_SKILL_ID -1
+#define NULL_AMOUNT_DIALOGUE_OPTIONS -1
+
+
+//
 /*For exiting the dialogue, returning control to the game world*/
 #define DIA_EXIT_DIALOGUE_MANAGER(manager){\
   manager->next_char_offset = 0; \
@@ -38,7 +44,6 @@ along with Foobar.  If not, see <https://www.gnu.org/licenses/>. */
 
 /*For continuing to the next dialogue screen, ensuring we start with a clean plate*/
 #define DIA_RESET_DIALOGUE_MANAGER_INFO(manager){\
-    FREE_NULL(manager->dialogue_options);	 \
     FREE_NULL(manager->saved_prev_offsets);	 \
     manager->next_char_offset = 0;		 \
     manager->prev_char_offset = 0;		 \
@@ -52,8 +57,11 @@ along with Foobar.  If not, see <https://www.gnu.org/licenses/>. */
 }
 typedef struct{
   int next_dialogue_id;
-  int dialogue_selection_effect;
+  int selected_dialogue_consequence;
+  int next_dialogue_screen_num_options;
 }Selected_Dialogue_Info;
+
+
 typedef struct {
   /*the id of the folder we should look in for the dialogue files*/
   int dialogue_folder_id;
@@ -61,7 +69,6 @@ typedef struct {
   int initial_dialogue_id;
   /**/
   int npc_id;
-  int *dialogue_options;
   int num_dialogue_options;
   int current_dialogue_id;
   int next_char_offset;

@@ -21,5 +21,10 @@ COPY PASTE ALL BELOW THE BAR TO SET UP YOUR EMACS ENVIRONMENT
 (show-paren-mode 1)
 (setq show-pare-delay 0)
 
+;;; Disables the creation of backup files.
+;;; As much as this leaves me vulnerable to crashes it just seems evey other approach is a recipe for headaches
+(setq make-backup-files nil)
+
+
 
 

@@ -4,6 +4,8 @@
 \usepackage{listings}
 \usepackage{hyperref}
 \usepackage{graphicx}
+%Very imporant, to allow using < and > in text mode
+\usepackage[T1]{fontenc}
 \title{Sections and Chapters}
 \author{Anton Nørgaard}
 \date{ \today}
@@ -83,6 +85,11 @@ Now that everything has been set up, the time has come to actually get, compile 
 \end{lstlisting}
 and then promptly sit back and relax. Chances are, this is going to take a while
 \chapter{Source code documentation}
+The purpose of this chapter is two-fold
+\begin{enumerate}
+\item It intends to explain to the player the logic behind how certain things work, for educational purposes.
+\item The chapter will also serve as a personal specification / written in stone manual for how certain things are done, to ensure things are done consistently.
+\end{enumerate}
 \section{Management of game state and status}
 \subsection{Keeping track of the creatures and the player}
 
@@ -128,8 +135,9 @@ The way it works (informally) is as follows. Assume that
 
 
 
-\section{Controls}
-\subsection{Keyboard Layout}
+\section*{Controls}
+\subsection*{Keyboard Layout}
+This table details all the keyboard bindings for the game. Keyboard bindings with an asterisk indicate that
 \begin{table}[h!]
 \centering
 \begin{tabular}{|c| c| c |c|} 
@@ -158,7 +166,7 @@ The way it works (informally) is as follows. Assume that
 
 
 
-\subsection{Character meanings on map}
+\subsection*{Character meanings on map}
 \begin{table}[h!]
 
 \begin{tabular}{|p{0.2\linewidth}|p{0.2\linewidth}| p{0.2\linewidth}|p{0.2\linewidth}|p{0.2\linewidth}|} 
@@ -183,7 +191,45 @@ The way it works (informally) is as follows. Assume that
 \caption{Meaning of characters on screen.}
 \label{table:1}
 \end{table}
+\section*{Interacting with the world}
+\subsection*{Dialogue}
+\subsubsection*{Dialogue screen and interaction, dialogue-wise}
+As unintuitive as it is, dialogue options are \textbf{0-indexed}. This is because it gives a maximum of 10 possible options (0-9), without needing logic for a buffer and instead just accept a single character as player input. As of time of this writing, it is hoped it is never required to have more than 10 options, because it means, as said, we can skimp on buffer logic.
 
+\section*{Managing, reading, writing and manipulation of the game state}
+\subsection*{The database}
+\subsubsection*{Naming standards}
+\paragraph*{Naming standard for variables}
+\subparagraph*{Naming of Macros}
+Since many values, especially in the context of dialogues are integer id based, and the sqlite interface uses indexes to refer to the values in the columns of the database, the game makes extensive use of macros, to make it clear what it is we are referring to and to reduce the likelihood of errors when index accessing \newline
+
+Variables that refer to values stored in the columns have two naming formats. This is due to an inconsistency of the sqlite approach for how variables are numbered. When binding variables for queries, the leftmost variable has and index of \textbf{1}, but when retrieving values from a query, the leftmost value has an index of \textbf{0}
+
+Variables that refer column values in the context of a SELECT, UPDATE, DELETE, etc., have the name format of 
+
+\begin{center}
+<table name>\_<column name>INDEX\_QUERY
+\end{center}
+
+And variables that refer to extracting column values, from a row as a result of a SELECT have the name format of
+
+\begin{center}
+<table name>\_<column name>INDEX\_QRESULT
+\end{center}
+\subsubsection*{Placement and order of declaration}
+\paragraph*{Declaration order for database components}
+To ensure readability and ease of information finding, any and all declaration of database objects are made in the misc/ game folder, using shell scripts.
+
+The database objects are to be declared in this order
+\begin{enumerate}
+\item The table itself
+\item Any triggers, indexes, constraints, etc.
+\item The values in the table
+\end{enumerate}
+
+Each new declaration is to be separated using a dividing line, made from ###########
+
+At convenience and as needed, each declaration can have elaborating comments
 \chapter*{The world of Revenant}
 
 \section*{Places of Revenant}

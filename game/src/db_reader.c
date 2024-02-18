@@ -9,6 +9,10 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "db_reader.h"
+/*
+Programmers note here, when binding variables, to SQL statements, The leftmost SQL parameter has an index of 1 whereas 
+when running a query,  the leftmost column of the result set has the index 0
+*/
 Selected_Dialogue_Info dbr_get_dialogue_response(Game_State *gs,Dialogue_Manager *manager, int selected_choice){
   Selected_Dialogue_Info selected_dialogue_info;
   sqlite3_stmt* stmt;
@@ -16,9 +20,9 @@ Selected_Dialogue_Info dbr_get_dialogue_response(Game_State *gs,Dialogue_Manager
   strcpy(gs->bfr,"SELECT next_dialogue_id, choice_consequence FROM dialogue_option_reponses \n\
          WHERE npc_id = ? AND current_dialogue_id = ? AND selected_dialogue_id = ?;");
   int result_statement = sqlite3_prepare_v2(gs->db,gs->bfr, NBYTES, &stmt, NULL);
-  sqlite3_bind_int(stmt, 1, manager->npc_id);
-  sqlite3_bind_int(stmt, 2, manager->current_dialogue_id);
-  sqlite3_bind_int(stmt, 3, selected_choice);
+  sqlite3_bind_int(stmt, DIALOGUE_OPTION_RESPONSES_NPC_ID_INDEX_QUERY, manager->npc_id);
+  sqlite3_bind_int(stmt, DIALOGUE_OPTION_RESPONSES_CURENT_DIALOGUE_ID_INDEX_QUERY, manager->current_dialogue_id);
+  sqlite3_bind_int(stmt, DIALOGUE_OPTION_RESPONSES_SELECTED_DIALOGUE_ID_INDEX_QUERY, selected_choice);
 
   int result = sqlite3_step(stmt);
   if(result != SQLITE_ROW){
@@ -31,8 +35,14 @@ Selected_Dialogue_Info dbr_get_dialogue_response(Game_State *gs,Dialogue_Manager
     sqlite3_finalize(stmt);
     exit(1);
   }
-  selected_dialogue_info.next_dialogue_id = sqlite3_column_int(stmt, 1);
-  selected_dialogue_info.consequence = sqlite3_column_int(stmt, 2);
+  selected_dialogue_info.next_dialogue_id = sqlite3_column_int(stmt, NEXT_DIALOGUE_ID_INDEX_QRESULT);
+  selected_dialogue_info.selected_dialogue_consequence = sqlite3_column_int(stmt, SELECTED_DIALOGUE_CONSEQUENCE_INDEX_QRESULT);
+  selected_dialogue_info.next_dialogue_screen_num_options = sqlite3_column_int(stmt, NEXT_DIALOGUE_SCREEN_NUM_OPTIONS_INDEX_QRESULT);
   sqlite3_finalize(stmt);
   return selected_dialogue_info;
 }
+
+Dialogue_Manager *dbr_readin_dialogue_manager(int np_id){
+  Dialogue_Manager *manager = malloc(sizeof(Dialogue_Manager));
+}
+
