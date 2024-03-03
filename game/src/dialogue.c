@@ -120,10 +120,10 @@ void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs){
       }
       else if(isdigit(ch) == 0){
 	if(ch - '0' < manager->num_dialogue_options){
-	  Selected_Dialogue_Info selected_dialogue_info = dbr_get_dialogue_response(gs,manager,ch - '0');
+	  Selected_Dialogue_Qresult selected_dialogue_qresult = dbr_get_dialogue_response(gs,manager,ch - '0');
 	  if(Selected_Dialogue_Info.selected_dialogue_consequence == CONTINUE_DIALOGUE){
 	    DIA_RESET_DIALOGUE_MANAGER_INFO(manager);
-	    dia_extract_next_dialogue_window_info(selected_dialogue_info);
+	    dia_extract_next_dialogue_window_info(gs,selected_dialogue_info,fp);
 	  }
 	  else{
 	    DIA_EXIT_DIALOGUE_MANAGER(manager);
@@ -305,4 +305,11 @@ int dia_selected_dialogue_quit(Dialogue_Manager *manager){
 
 int dia_selected_dialogue_advance_dialogue(Dialogue_Manager *manager){
   DIA_RESET_DIALOGUE_MANAGER_INFO(manager);
+}
+
+FILE *dia_extract_next_dialogue_window_info(Game_State *gs, Selected_Dialogue_Qresult selected_dialogue_qresult, FILE *current_dialogue){
+  fclose(current_dialogue);
+  sprintf(gs->bfr, "%d", selected_dialogue_info.next_dialogue_id);
+  FILE *new_dialogue_file = fopen(gs->bfr, "r");
+  return new_dialogue_file;
 }

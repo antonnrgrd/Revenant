@@ -25,6 +25,7 @@ along with Foobar.  If not, see <https://www.gnu.org/licenses/>. */
 #include "generic_macros.h"
 #include "game_state_struct.h"
 #include "screen_constants.h"
+#include "db_reader.h"
 #define END_DIALOGUE 0
 #define CONTINUE_DIALOGUE 1
 #define NO_NEXT_DIALOGUE_ID -1
@@ -55,12 +56,6 @@ along with Foobar.  If not, see <https://www.gnu.org/licenses/>. */
     manager->reached_eof = NO;			 \
     manager->single_page_file = NO;		 \
 }
-typedef struct{
-  int next_dialogue_id;
-  int selected_dialogue_consequence;
-  int next_dialogue_screen_num_options;
-}Selected_Dialogue_Info;
-
 
 typedef struct {
   /*the id of the folder we should look in for the dialogue files*/
@@ -125,6 +120,6 @@ int dia_offset_in_list(int offset, Dialogue_Manager *manager);
 extern int (*dia_selected_dialogue_response_handler[2])(Dialogue_Manager *manager);
 int dia_selected_dialogue_quit(Dialogue_Manager *manager);
 int dia_selected_dialogue_advance_dialogue(Dialogue_Manager *manager);
-void dia_extract_next_dialogue_window_info(Selected_Dialogue_Info selected_dialogue_info);
+FILE *dia_extract_next_dialogue_window_info(Game_State *gs, Selected_Dialogue_Qresult selected_dialogue_info, FILE *current_dialogue);
 #endif
 

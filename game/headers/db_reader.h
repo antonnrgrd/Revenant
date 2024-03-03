@@ -12,7 +12,6 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define DB_READER
 #include <sqlite3.h>
 #include "game_state_struct.h"
-#include "dialogue.h"
 /*Sqlite 3 needs the number of bytes that the sql statement is. If it is negative, it will simply read the passed sql statement until it 
 encounters a 0 terminator. We use this macro by defualt to instruct it to do so*/
 #define NBYTES -1
@@ -33,6 +32,12 @@ If it has the name format *_QUERY, it is intended to be used in a query (1-index
 /*npc id's*/
 #define GENERIC_ISSLOG_MALE_NPC 0
 
-Selected_Dialogue_Info dbr_get_dialogue_response(Game_State *gs,Dialogue_Manager *manager, int selected_choice);
+typedef struct{
+  int next_dialogue_id;
+  int selected_dialogue_consequence;
+  int next_dialogue_screen_num_options;
+}Selected_Dialogue_Qresult;
+
+Selected_Dialogue_Qresult dbr_get_dialogue_response(Game_State *gs,Dialogue_Manager *manager, int selected_choice);
 Dialogue_Manager *dbr_readin_dialogue_manager(int np_id);
 #endif

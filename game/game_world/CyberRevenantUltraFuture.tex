@@ -4,6 +4,9 @@
 \usepackage{listings}
 \usepackage{hyperref}
 \usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, bending, positioning}
+\usetikzlibrary{shapes.geometric, arrows}
 %Very imporant, to allow using < and > in text mode
 \usepackage[T1]{fontenc}
 \title{Sections and Chapters}
@@ -11,6 +14,9 @@
 \date{ \today}
   
 \begin{document}
+\tikzset{
+    arrow/.style={thick,->,>=stealth}
+}
   
 \maketitle
   
@@ -90,13 +96,119 @@ The purpose of this chapter is two-fold
 \item It intends to explain to the player the logic behind how certain things work, for educational purposes.
 \item The chapter will also serve as a personal specification / written in stone manual for how certain things are done, to ensure things are done consistently.
 \end{enumerate}
-\section{Management of game state and status}
-\subsection{Keeping track of the creatures and the player}
+\section*{Setup of header files and forward declaration and the db\_reader }
+A recurring issue in the code base as coding continued and complexity increased, was the often almost spontaneous discovery of \underline{circular dependencies} - declarations (header files) that would depend on each other:
 
-\subsection{Checking for active effects of player}
-\subsection{Creatures}
-In the following chapers, we will use several variables to compute various information regarding creatures in-game, their status and the way
-that they interact with the environment and the player. For that purpose, we will use the following defintions, some are explicitly computed/stored in-game, others are just definitions and are not explicitly declared in-game. The definitions we will use are
+\begin{center}
+\begin{tikzpicture}[
+every node/.append style = {inner sep=1.5pt}, 
+node distance = 12mm and 9mm,
+ punkt/.style = {circle, draw, very thick},
+   pil/.style = {line width=1mm, red, -{Stealth[length=4mm,bend]},
+                 shorten >=1pt, shorten <=2pt, bend left=#1},
+ pil/.default = 30
+                    ]
+%nodes
+%\node (reward)                                  {$R_t$} ;
+\node (state)   [right]               {Depends on} ;
+\node (env)     [punkt,
+                 below right=of state]          {Header};
+\node (action)  [above right=of env]            {Depends on} ;
+%
+\node (agent)   [punkt, 
+                 above=of state.north -| env]   {Header};
+% edges
+\draw[pil]  (agent)     edge    (action)
+            (action)    edge    (env)
+            (env)       edge    (state)
+%            (env)       edge[pil=40]    (reward)
+            (state)     edge    (agent);
+%            (reward)    edge[pil=40]    (agent);
+\end{tikzpicture}
+\end{center}
+The solution to this issue was to hyper split the header files in the following manner, containing the following information
+
+\begin{itemize}
+\item Struct header files. These would include \textbf{only} struct declarations and constants.
+\item "User" header files. These files would in turn define functions and other actual code functionality. Said files would in one way or another make use of the struct header files, hence the classification as users
+\end{itemize}
+
+The idea behind this principle is that it would address the primary issue that caused said circular dependencies - namely that functionality in file A would rely on some  functionality in file B that would do some sort of manipulation of structs for file A, that are defined in file A, hence causing said circular dependency:
+
+\begin{center}
+\begin{tikzpicture}[
+every node/.append style = {inner sep=1.5pt}, 
+node distance = 12mm and 9mm,
+ punkt/.style = {circle, draw, very thick},
+   pil/.style = {line width=1mm, red, -{Stealth[length=4mm,bend]},
+                 shorten >=1pt, shorten <=2pt, bend left=#1},
+ pil/.default = 30
+                    ]
+%nodes
+%\node (reward)                                  {$R_t$} ;
+\node (state)   [right]               {Relies on functionality in ;
+\node (env)     [punkt,
+                 below right=of state]          {File A};
+\node (action)  [above right=of env]            {Depends on} ;
+%
+\node (agent)   [punkt, 
+                 above=of state.north -| env]   {Header};
+% edges
+\draw[pil]  (agent)     edge    (action)
+            (action)    edge    (env)
+            (env)       edge    (state)
+%            (env)       edge[pil=40]    (reward)
+            (state)     edge    (agent);
+%            (reward)    edge[pil=40]    (agent);
+\end{tikzpicture}
+\end{center}
+
+With the new setup (having separate header files for structs and functionality that relies and manipulates structs), this will no longer happen. This is because with the new setup, the "inheritance", going back to the example with the A and B files, will work as follows
+\begin{center}
+\begin{tikzpicture}[node distance=2.75cm]
+%nodes
+\node (b_struct) at (4,2)    [draw, circle]   {Struct file B} ;
+\node (a_struct)    [draw, circle, below of=b_struct]              {Struct file A} ;
+\node (b_user)     [draw, circle, below of=a_struct] {User file B};
+\node (a_user)        [draw, circle, below of=b_user]       {User file A};
+%edges
+\draw [arrow] (b_struct) -- (a_struct);
+\draw [arrow] (a_struct) -- (b_user);
+\draw [arrow] (b_user) -- (a_user);
+\end{tikzpicture}
+\end{center}
+
+By separating the definitions of structs and the logic that uses the structs, we have managed to "break" the circular definitions. It is admittedly unknown whether this will cause further headaches down the line, but it succeeds in solving the original issue, which makes it an acceptable solution for now. 
+
+Which brings us to 
+\begin{center}
+\begin{tikzpicture}[grow'=up]
+\node {db\_reader.h}
+  child { node {struct header file 1} }
+  child { node {struct header file 2} }
+  child { node {$\hdots$} }
+  child { node {struct header file n-1} }
+  child { node {struct header file n} }
+;
+\end{tikzpicture}
+\end{center}
+
+\section*{Naming conventions for the header files}
+\subsection*{Naming conventions for the files themselves}
+As specified in "Setup of header files and forward declaration and the db\_reader ", there are header files that define only structs and constants and user files, that in some way or another uses said structs. They shall have the name the following name formats
+\begin{itemize}
+\item Header files that use structs can have whatever name they so desire, as long as they are explanatory
+\item Header files, that only define the structs, must end with the \_struct.h, to indicate that it only defines structs and other constants
+\end{itemize}
+\subsection*{Naming for functions and macros in the files}
+Any and all functions/macros, that are defined in the same header file, must begin with the same prefix, e.g if a header file defines 10 functions and the chosen prefix is say, abc, each and every function must begin with abc\_, the prefix should ideally be a descriptive acronym om the intended functionality of the header file.
+\section*{Management of game state and status}
+\subsection*{Keeping track of the creatures and the player}
+
+\subsection*{Checking for active effects of player}
+\subsection*{Creatures}
+In the following chapters, we will use several variables to compute various information regarding creatures in-game, their status and the way
+that they interact with the environment and the player. For that purpose, we will use the following definitions, some are explicitly computed/stored in-game, others are just definitions and are not explicitly declared in-game. The definitions we will use are
 \begin{itemize}
 \item $min\_local$ the smallest local coordinate value possible 
 \item $max\_local$ the biggest local coordinate value possible 
@@ -201,7 +313,7 @@ As unintuitive as it is, dialogue options are \textbf{0-indexed}. This is becaus
 \subsubsection*{Naming standards}
 \paragraph*{Naming standard for variables}
 \subparagraph*{Naming of Macros}
-Since many values, especially in the context of dialogues are integer id based, and the sqlite interface uses indexes to refer to the values in the columns of the database, the game makes extensive use of macros, to make it clear what it is we are referring to and to reduce the likelihood of errors when index accessing \newline
+Since many values, especially in the context of dialogues are integer id based, and the sqlite interface uses indexes to refer to the values in the columns of the database, the game makes extensive use of macros, to make it clear what it is we are referring to and to reduce the likelihood of errors when index accessing .\newline
 
 Variables that refer to values stored in the columns have two naming formats. This is due to an inconsistency of the sqlite approach for how variables are numbered. When binding variables for queries, the leftmost variable has and index of \textbf{1}, but when retrieving values from a query, the leftmost value has an index of \textbf{0}
 
@@ -216,6 +328,9 @@ And variables that refer to extracting column values, from a row as a result of 
 \begin{center}
 <table name>\_<column name>INDEX\_QRESULT
 \end{center}
+
+\subparagraph*{Naming conventions for the db\_reader.c \& db\_reader.h files}
+All structs, that represent or or more value(s) derived from a query, shall be named *\_Qresult, to indicate it is the result of a query
 \subsubsection*{Placement and order of declaration}
 \paragraph*{Declaration order for database components}
 To ensure readability and ease of information finding, any and all declaration of database objects are made in the misc/ game folder, using shell scripts.
@@ -227,9 +342,11 @@ The database objects are to be declared in this order
 \item The values in the table
 \end{enumerate}
 
-Each new declaration is to be separated using a dividing line, made from ###########
+Each new declaration is to be separated using a dividing line, made from \#\#\#\#\#\#\#\#\#\#\#
 
 At convenience and as needed, each declaration can have elaborating comments
+\paragraph*{Declaration order for the db\_reader.c \& db\_reader.h}
+By design, the db\_reader functionality will \textit{not} include header information from other revenant components. Instead, any components the need information read in from the DB will include db\_reader in its header files. By doing so, it reduces db\_reader's dependency on the fields contained in the structs of the components that use db\_reader, allowing it to be agnostic wrt. the type and amount of information returned from the queries. 
 \chapter*{The world of Revenant}
 
 \section*{Places of Revenant}

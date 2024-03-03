@@ -13,7 +13,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 Programmers note here, when binding variables, to SQL statements, The leftmost SQL parameter has an index of 1 whereas 
 when running a query,  the leftmost column of the result set has the index 0
 */
-Selected_Dialogue_Info dbr_get_dialogue_response(Game_State *gs,Dialogue_Manager *manager, int selected_choice){
+Selected_Dialogue_Qresult dbr_get_dialogue_response(Game_State *gs,Dialogue_Manager *manager, int selected_choice){
   Selected_Dialogue_Info selected_dialogue_info;
   sqlite3_stmt* stmt;
   char *err_msg = 0;
