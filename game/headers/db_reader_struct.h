@@ -8,11 +8,10 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
-#ifndef DB_READER
-#define DB_READER
-#include <sqlite3.h>
-#include "game_state_struct.h"
-#include "dialogue.h"
+#ifndef DB_READER_STRUCT
+#define DB_READER_STRUCT
+
+#include "dialogue_struct.h"
 /*Sqlite 3 needs the number of bytes that the sql statement is. If it is negative, it will simply read the passed sql statement until it 
 encounters a 0 terminator. We use this macro by defualt to instruct it to do so*/
 #define NBYTES -1
@@ -26,13 +25,16 @@ If it has the name format *_QUERY, it is intended to be used in a query (1-index
 #define DIALOGUE_OPTION_RESPONSES_CURENT_DIALOGUE_ID_INDEX_QUERY 2
 #define DIALOGUE_OPTION_RESPONSES_SELECTED_DIALOGUE_ID_INDEX_QUERY 3
 
-#define DIALOGUE_OPTION_RESPONSES_NEXT_DIALOGUE_ID_INDEX_QRESULT 3
-#define DIALOGUE_OPTION_RESPONSES_SELECTED_DIALOGUE_CONSEQUENCE_INDEX_QRESULT 4
-#define DIALOGUE_OPTION_RESPONSES_NEXT_DIALOGUE_SCREEN_NUM_OPTIONS_INDEX_QRESULT 5
+#define NEXT_DIALOGUE_ID_INDEX_QRESULT 3
+#define SELECTED_DIALOGUE_CONSEQUENCE_INDEX_QRESULT 4
+#define NEXT_DIALOGUE_SCREEN_NUM_OPTIONS_INDEX_QRESULT 5
 
 /*npc id's*/
 #define GENERIC_ISSLOG_MALE_NPC 0
 
-Selected_Dialogue_Info dbr_get_dialogue_response(Game_State *gs,Dialogue_Manager *manager, int selected_choice);
-Dialogue_Manager *dbr_readin_dialogue_manager(int np_id);
+typedef struct{
+  int next_dialogue_id;
+  int selected_dialogue_consequence;
+  int next_dialogue_screen_num_options;
+}Dbr_Selected_Dialogue_Qresult;
 #endif

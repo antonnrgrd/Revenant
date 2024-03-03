@@ -1,4 +1,4 @@
 \contentsline {section}{\numberline {0.1}Introduction}{1}{section.0.1}%
 \contentsline {chapter}{\numberline {1}Prerequisites for compiling and running the game}{2}{chapter.1}%
 \contentsline {chapter}{\numberline {2}Source code documentation}{5}{chapter.2}%
-\contentsline {subsubsection}{Spawning creatures}{8}{section*.17}%
+\contentsline {subsubsection}{Spawning creatures}{9}{section*.19}%

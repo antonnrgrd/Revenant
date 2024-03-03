@@ -13,7 +13,7 @@ You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "dialogue.h"
-void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs){
+void dia_loop_dialogue(Dia_Dialogue_Manager *manager, Game_State *gs){
   manager->next_char_offset = (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2 ;
   manager->prev_char_offset = 0;
   manager->set_offset = 0;
@@ -91,7 +91,7 @@ void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs){
       }
       else if(ch == KEY_DOWN && manager->single_page_file == NO){
 	//printf(" offset wer are using  %d ",manager->next_char_offset);
-	Offset_Changes offset_changes = dia_reddraw_dialogue_scroll(manager, gs, fp,manager->next_char_offset, KEY_DOWN);
+	Dia_Offset_Changes offset_changes = dia_reddraw_dialogue_scroll(manager, gs, fp,manager->next_char_offset, KEY_DOWN);
 	if(offset_changes.set_next_offset == NO){
 	manager->next_char_offset = DIA_SAFE_INCREMENT_NEXT(manager,gs,num_bytes);
 	}
@@ -109,7 +109,7 @@ void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs){
       }
       else if(ch == KEY_UP && manager->single_page_file == NO){
 	manager->reached_eof = NO;
-        Offset_Changes offset_changes = dia_reddraw_dialogue_scroll(manager, gs, fp,manager->prev_char_offset, KEY_UP);
+        Dia_Offset_Changes offset_changes = dia_reddraw_dialogue_scroll(manager, gs, fp,manager->prev_char_offset, KEY_UP);
 	manager->next_char_offset = DIA_SAFE_DECREMENT_NEXT(manager,gs);
 	if(offset_changes.set_prev_offset == NO){
 	manager->prev_char_offset = DIA_SAFE_DECREMENT_PREV(manager,gs);
@@ -132,8 +132,8 @@ void dia_loop_dialogue(Dialogue_Manager *manager, Game_State *gs){
       }
     }
 }
-Dialogue_Manager *dia_init_dialogue_manager(int dialogue_folder_id, int initial_dialogue_id, int npc_id, Game_State *gs){
-  Dialogue_Manager *manager = malloc(sizeof(Dialogue_Manager));
+Dia_Dialogue_Manager *dia_init_dialogue_manager(int dialogue_folder_id, int initial_dialogue_id, int npc_id, Game_State *gs){
+  Dia_Dialogue_Manager *manager = malloc(sizeof(Dia_Dialogue_Manager));
   manager->dialogue_folder_id;
   manager->initial_dialogue_id;
   manager->saved_prev_offsets = NULL;
@@ -144,8 +144,8 @@ Dialogue_Manager *dia_init_dialogue_manager(int dialogue_folder_id, int initial_
  return manager;
 }
 
-Offset_Changes dia_reddraw_dialogue_scroll(Dialogue_Manager *manager, Game_State *gs, FILE *fp, int offset, int direction){
-  Offset_Changes offset_changes;
+Dia_Offset_Changes dia_reddraw_dialogue_scroll(Dia_Dialogue_Manager *manager, Game_State *gs, FILE *fp, int offset, int direction){
+  Dia_Offset_Changes offset_changes;
   offset_changes.set_next_offset = NO;
   offset_changes.set_prev_offset = NO;
   int curr_name_offset = (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) / 3 + 11;
@@ -283,7 +283,7 @@ void dia_print_char_at_offset(FILE *fp, int offset){
   fseek(fp, 0, SEEK_SET);
 }
 
-int dia_offset_in_list(int offset, Dialogue_Manager *manager){
+int dia_offset_in_list(int offset, Dia_Dialogue_Manager *manager){
   if(manager->saved_prev_offsets == NULL){
     return NO;
   }
@@ -297,17 +297,17 @@ int dia_offset_in_list(int offset, Dialogue_Manager *manager){
   }
 }
 
-int (*dia_selected_dialogue_response_handler[2])(Dialogue_Manager *manager) = {dia_selected_dialogue_advance_dialogue,dia_selected_dialogue_quit};
+int (*dia_selected_dialogue_response_handler[2])(Dia_Dialogue_Manager *manager) = {dia_selected_dialogue_advance_dialogue,dia_selected_dialogue_quit};
 
-int dia_selected_dialogue_quit(Dialogue_Manager *manager){
+int dia_selected_dialogue_quit(Dia_Dialogue_Manager *manager){
 
 }
 
-int dia_selected_dialogue_advance_dialogue(Dialogue_Manager *manager){
+int dia_selected_dialogue_advance_dialogue(Dia_Dialogue_Manager *manager){
   DIA_RESET_DIALOGUE_MANAGER_INFO(manager);
 }
 
-FILE *dia_extract_next_dialogue_window_info(Game_State *gs, Selected_Dialogue_Qresult selected_dialogue_qresult, FILE *current_dialogue){
+FILE *dia_extract_next_dialogue_window_info(Game_State *gs, Dbr_Selected_Dialogue_Qresult selected_dialogue_qresult, FILE *current_dialogue){
   fclose(current_dialogue);
   sprintf(gs->bfr, "%d", selected_dialogue_info.next_dialogue_id);
   FILE *new_dialogue_file = fopen(gs->bfr, "r");

@@ -25,7 +25,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "game_state_struct.h"
 #include "generic_macros.h"
 #include "information_reader.h"
-#include "dialogue.h"
+#include "dialogue_struct.h"
 //#define MV_PRINT_DMG(creature) char *fpath = malloc(sizeof(char) * strlen() ) free(fpath);
 
 #define ADD_TO_PILE(global_x,global_y, item, game_world) Entry *new_entry = malloc(sizeof(Entry)); new_entry->item_holder = item; new_entry->next_entry = game_world->tiles[global_y][global_x].entry; game_world->tiles[global_y][global_x].entry = new_entry;

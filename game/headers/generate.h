@@ -25,7 +25,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "gameinfo.h"
 #include "rng.h"
 #include "item.h"
-#include "dialogue.h"
+#include "dialogue_struct.h"
 #define PLACE_MERCHANT(game_state,merchant, global_x,global_y)(game_state)
 extern const char *alphabet;
 

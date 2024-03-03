@@ -144,11 +144,9 @@ node distance = 12mm and 9mm,
                  shorten >=1pt, shorten <=2pt, bend left=#1},
  pil/.default = 30
                     ]
-%nodes
-%\node (reward)                                  {$R_t$} ;
-\node (state)   [right]               {Relies on functionality in ;
+\node (state)   [right]               {Relies on functionality in };
 \node (env)     [punkt,
-                 below right=of state]          {File A};
+                below right=of state]          {File A};
 \node (action)  [above right=of env]            {Depends on} ;
 %
 \node (agent)   [punkt, 
@@ -157,9 +155,7 @@ node distance = 12mm and 9mm,
 \draw[pil]  (agent)     edge    (action)
             (action)    edge    (env)
             (env)       edge    (state)
-%            (env)       edge[pil=40]    (reward)
             (state)     edge    (agent);
-%            (reward)    edge[pil=40]    (agent);
 \end{tikzpicture}
 \end{center}
 
@@ -201,7 +197,7 @@ As specified in "Setup of header files and forward declaration and the db\_reade
 \item Header files, that only define the structs, must end with the \_struct.h, to indicate that it only defines structs and other constants
 \end{itemize}
 \subsection*{Naming for functions and macros in the files}
-Any and all functions/macros, that are defined in the same header file, must begin with the same prefix, e.g if a header file defines 10 functions and the chosen prefix is say, abc, each and every function must begin with abc\_, the prefix should ideally be a descriptive acronym om the intended functionality of the header file.
+Any and all functions/macros/structs, that are defined in the same header file, must begin with the same prefix, e.g if a header file defines 10 functions and the chosen prefix is say, abc, each and every function must begin with abc\_, the prefix should ideally be a descriptive acronym om the intended functionality of the header file. Mixed upper and lower case are permitted and it it is not required to be consistent, whether the prefix is in uppercase or lower case.
 \section*{Management of game state and status}
 \subsection*{Keeping track of the creatures and the player}
 
@@ -320,15 +316,22 @@ Variables that refer to values stored in the columns have two naming formats. Th
 Variables that refer column values in the context of a SELECT, UPDATE, DELETE, etc., have the name format of 
 
 \begin{center}
-<table name>\_<column name>INDEX\_QUERY
+dbr\_<table name>\_<column name>INDEX\_QUERY
 \end{center}
 
 And variables that refer to extracting column values, from a row as a result of a SELECT have the name format of
 
 \begin{center}
-<table name>\_<column name>INDEX\_QRESULT
+dbr\_<table name>\_<column name>INDEX\_QRESULT
 \end{center}
 
+Variables that indicate id's of ingame objects (creatures,npc's, items, etc) are to be named as 
+
+\begin{center}
+dbr\_<table name>\_<OBJECT NAME>\_ID
+\end{center}
+
+NOTE! Per standard defined in "Naming for functions and macros in the files", variables must also be prefixed with dbr\_
 \subparagraph*{Naming conventions for the db\_reader.c \& db\_reader.h files}
 All structs, that represent or or more value(s) derived from a query, shall be named *\_Qresult, to indicate it is the result of a query
 \subsubsection*{Placement and order of declaration}
