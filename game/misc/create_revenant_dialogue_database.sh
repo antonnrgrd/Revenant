@@ -32,10 +32,10 @@ create table dialogue_option_responses(npc_id int, current_dialogue_id int, sele
 
 
 ##Generic isslog male dialogue, has 6 dialogue files 
-insert into table dialogue_option_responses values($GENERIC_ISSLOG_MALE_NPC,0,0,1,$CONTINUE_DIALOGUE,4);
-insert into table dialogue_option_responses values($GENERIC_ISSLOG_MALE_NPC,0,1,5,$CONTINUE_DIALOGUE,1);
-insert into table dialogue_option_responses values($GENERIC_ISSLOG_MALE_NPC,0,1,$NO_NEXT_DIALOGUE_ID,$END_DIALOGUE,$NULL_AMOUNT_DIALOGUE_OPTIONS);
+insert into table dia_dialogue_option_responses values($GENERIC_ISSLOG_MALE_NPC,0,0,1,$CONTINUE_DIALOGUE,4);
+insert into table dia_dialogue_option_responses values($GENERIC_ISSLOG_MALE_NPC,0,1,5,$CONTINUE_DIALOGUE,1);
+insert into table dia_dialogue_option_responses values($GENERIC_ISSLOG_MALE_NPC,0,1,$NO_NEXT_DIALOGUE_ID,$END_DIALOGUE,$NULL_AMOUNT_DIALOGUE_OPTIONS);
 insert into table dialogue_option_responses values($GENERIC_ISSLOG_MALE_NPC,0,3,6,1);
 
 #############################################################################################################################################
-create table dialogue_skillcheck_requirement(npc_id int, current_dialogue_id int, selected_dialogue_id int, skllcheck_id int, skillcheck_requirement int);
+create table dia_dialogue_skillcheck_requirement(npc_id int, current_dialogue_id int, selected_dialogue_id int, skllcheck_id int, skillcheck_requirement int);

@@ -13,16 +13,16 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 Programmers note here, when binding variables, to SQL statements, The leftmost SQL parameter has an index of 1 whereas 
 when running a query,  the leftmost column of the result set has the index 0
 */
-Dbr_Selected_Dialogue_Qresult dbr_get_dialogue_response(Game_State *gs,Dialogue_Manager *manager, int selected_choice){
-  Dbr_Selected_Dialogue_Info selected_dialogue_info;
+Dbr_Selected_Dialogue_Qresult dbr_get_dialogue_response(Game_State *gs,Dia_Dialogue_Manager *manager, int selected_choice){
+  Dbr_Selected_Dialogue_Qresult selected_dialogue_info;
   sqlite3_stmt* stmt;
   char *err_msg = 0;
   strcpy(gs->bfr,"SELECT next_dialogue_id, choice_consequence FROM dialogue_option_reponses \n\
          WHERE npc_id = ? AND current_dialogue_id = ? AND selected_dialogue_id = ?;");
   int result_statement = sqlite3_prepare_v2(gs->db,gs->bfr, NBYTES, &stmt, NULL);
-  sqlite3_bind_int(stmt, DIALOGUE_OPTION_RESPONSES_NPC_ID_INDEX_QUERY, manager->npc_id);
-  sqlite3_bind_int(stmt, DIALOGUE_OPTION_RESPONSES_CURENT_DIALOGUE_ID_INDEX_QUERY, manager->current_dialogue_id);
-  sqlite3_bind_int(stmt, DIALOGUE_OPTION_RESPONSES_SELECTED_DIALOGUE_ID_INDEX_QUERY, selected_choice);
+  sqlite3_bind_int(stmt, DBR_DIALOGUE_OPTION_RESPONSES_NPC_ID_INDEX_QUERY, manager->npc_id);
+  sqlite3_bind_int(stmt, DBR_DIALOGUE_OPTION_RESPONSES_CURENT_DIALOGUE_ID_INDEX_QUERY, manager->current_dialogue_id);
+  sqlite3_bind_int(stmt, DBR_DIALOGUE_OPTION_RESPONSES_SELECTED_DIALOGUE_ID_INDEX_QUERY, selected_choice);
 
   int result = sqlite3_step(stmt);
   if(result != SQLITE_ROW){
@@ -35,9 +35,9 @@ Dbr_Selected_Dialogue_Qresult dbr_get_dialogue_response(Game_State *gs,Dialogue_
     sqlite3_finalize(stmt);
     exit(1);
   }
-  selected_dialogue_info.next_dialogue_id = sqlite3_column_int(stmt, NEXT_DIALOGUE_ID_INDEX_QRESULT);
-  selected_dialogue_info.selected_dialogue_consequence = sqlite3_column_int(stmt, SELECTED_DIALOGUE_CONSEQUENCE_INDEX_QRESULT);
-  selected_dialogue_info.next_dialogue_screen_num_options = sqlite3_column_int(stmt, NEXT_DIALOGUE_SCREEN_NUM_OPTIONS_INDEX_QRESULT);
+  selected_dialogue_info.next_dialogue_id = sqlite3_column_int(stmt, DBR_NEXT_DIALOGUE_ID_INDEX_QRESULT);
+  selected_dialogue_info.selected_dialogue_consequence = sqlite3_column_int(stmt, DBR_SELECTED_DIALOGUE_CONSEQUENCE_INDEX_QRESULT);
+  selected_dialogue_info.next_dialogue_screen_num_options = sqlite3_column_int(stmt, DBR_NEXT_DIALOGUE_SCREEN_NUM_OPTIONS_INDEX_QRESULT);
   sqlite3_finalize(stmt);
   return selected_dialogue_info;
 }

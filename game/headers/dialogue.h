@@ -26,8 +26,8 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "game_state_struct.h"
 #include "screen_constants.h"
 #include "db_reader.h"
+#include "dialogue_struct.h"
 
-//
 /*For exiting the dialogue, returning control to the game world*/
 #define DIA_EXIT_DIALOGUE_MANAGER(manager){\
   manager->next_char_offset = 0; \
@@ -55,7 +55,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 
 /*Normally, we'd be content using the box function to draw a border around the wndow, but we want an ultra specific bordering set, you we have to do it manually */
-#define DIA_DRAW_DIALOGUE_BORDER(dia_dialogue_screen,gs) mvwhline(dialogue_screen, 0, 0, 0, (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -1); mvwhline(dialogue_screen, 2, 1, 0, (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -2 ); mvwvline(dialogue_screen, 0, 0, 0, gs->num_cols); mvwvline(dialogue_screen, 1, (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -1, 0, gs->num_cols);  mvwaddch(dialogue_screen,0, 0, ACS_ULCORNER); mvwaddch(dialogue_screen,0, (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -1, ACS_URCORNER);
+#define DIA_DRAW_DIALOGUE_BORDER(dia_dialogue_screen,gs) mvwhline(dialogue_screen, 0, 0, 0, (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -1); mvwhline(dia_dialogue_screen, 2, 1, 0, (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -2 ); mvwvline(dialogue_screen, 0, 0, 0, gs->num_cols); mvwvline(dialogue_screen, 1, (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -1, 0, gs->num_cols);  mvwaddch(dialogue_screen,0, 0, ACS_ULCORNER); mvwaddch(dialogue_screen,0, (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -1, ACS_URCORNER);
 
 #define DIA_SET_OFFSET(offset, dia_dia_manager) dia_manager->set_offset == NO ? dia_manager->next_char_offset = offset : ;
 
