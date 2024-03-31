@@ -8,7 +8,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
-#include "db_reader.h"
+#include "dbr_db_reader.h"
 /*
 Programmers note here, when binding variables, to SQL statements, The leftmost SQL parameter has an index of 1 whereas 
 when running a query,  the leftmost column of the result set has the index 0

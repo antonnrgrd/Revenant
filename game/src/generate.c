@@ -19,7 +19,7 @@ int gen_int(int min,int max){
   return rand() % (max - min + 1) + min;
 }
 
-void g_tileset(Mersienne_Twister *twister){
+void g_tileset(Rng_Mersienne_Twister *twister){
   int max_y = 0;
   int max_x = 0;
   char *ascii = malloc(sizeof(char));
@@ -64,13 +64,13 @@ Game_World *g_generate_game_world(int width, int height){
 
 extern const char *alphabet = "#          ";
 
-U_Hashtable *g_generate_merchant_inventory(int min_amount, int max_amount, Mersienne_Twister *twister) {
+U_Hashtable *g_generate_merchant_inventory(int min_amount, int max_amount, Rng_Mersienne_Twister *twister) {
   int num_items_to_be_generated = GEN_VALUE_RANGE(min_amount, max_amount+1, twister);
   int current_generated = 0;
   U_Hashtable *merchant = u_initialize_hashtable(10, twister);
   merchant->money = 1000;
   while (current_generated < num_items_to_be_generated){
-    Item_Holder *item = g_generate_item(twister);
+    I_Item_Holder *item = g_generate_item(twister);
     u_add_item(item, item->amount, merchant);
     current_generated++;
   }
@@ -83,39 +83,39 @@ void g_generate_trader(int global_x, int global_y ,Mersienne_Twister *twister, G
   gs->current_zone->tiles[global_y][global_x].foe = merchant;  
 }
 
-Item_Holder *g_generate_item(Mersienne_Twister *twister){
+I_Item_Holder *g_generate_item(Mersienne_Twister *twister){
   int item_type = GEN_VALUE_RANGE(4,5,twister); //D4(twister);
   char *fpath = NULL;
   if(item_type == GENERATE_CONSUMABLE){
     fpath = malloc(sizeof(char) * (strlen("/usr/lib/revenant_files/item_files/consumable_files/")) + 10);
     sprintf(fpath,"/usr/lib/revenant_files/item_files/consumable_files/%d",GEN_VALUE_RANGE(0, NUM_DEFINED_CONSUMABLES,twister));
-    Item_Holder *consumable = ir_readin_consumable(fpath,D_GENERIC(5,15,twister));
+    I_Item_Holder *consumable = ir_readin_consumable(fpath,D_GENERIC(5,15,twister));
     free(fpath);
     return consumable;
   }
   else if(item_type == GENERATE_REAGENT){
     fpath = malloc(sizeof(char) * (strlen("/usr/lib/revenant_files/item_files/reagent_files/")) + 10);
     sprintf(fpath,"/usr/lib/revenant_files/item_files/reagent_files/%d",GEN_VALUE_RANGE(0,NUM_DEFINED_REAGENTS,twister));
-    Item *reagent = ir_readin_reagent(fpath,D_GENERIC(5,15,twister));
+    I_Item *reagent = ir_readin_reagent(fpath,D_GENERIC(5,15,twister));
     free(fpath);
     return reagent;
   }
   else if(item_type == GENERATE_ARMOR){
-    Item_Holder *item_holder = malloc(sizeof(Item_Holder));
+    I_Item_Holder *item_holder = malloc(sizeof(I_Item_Holder));
     int valid_materials[] = {12,13,14,15,16};
     int quality = D8_0(twister);
-    Item *armor = i_make_armor(quality,valid_materials[GEN_VALUE_RANGE(0,4,twister)],GEN_VALUE_RANGE(0,NUM_DEFINED_EQUIPMENT_TYPES,twister));
+    I_Item *armor = i_make_armor(quality,valid_materials[GEN_VALUE_RANGE(0,4,twister)],GEN_VALUE_RANGE(0,NUM_DEFINED_EQUIPMENT_TYPES,twister));
     item_holder->item = armor;
     item_holder->amount = D3(twister);
     return item_holder;
   }
   else if(item_type == GENERATE_WEAPON){
-    Item_Holder *item_holder = malloc(sizeof(Item_Holder));
+    I_Item_Holder *item_holder = malloc(sizeof(I_Item_Holder));
     int valid_materials[] = {12,13,14,15,16};
     int variant = GEN_VALUE_RANGE(0, 1+1, twister);
     int quality = D8_0(twister);
     int kind = D2_0(twister);
-    Item *w = i_make_mele_weapon(quality, valid_materials[GEN_VALUE_RANGE(0,4,twister)], variant,kind);
+    I_Item *w = i_make_mele_weapon(quality, valid_materials[GEN_VALUE_RANGE(0,4,twister)], variant,kind);
     item_holder->item = w;
     item_holder->item->kind = weapon;
     item_holder->amount = 1;//D3(twister);

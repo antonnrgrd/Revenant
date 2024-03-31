@@ -8,8 +8,8 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
-#ifndef RNG
-#define RNG
+#ifndef RNG_STRUCT
+#define RNG_STRUCT
 #include <stdlib.h>
 #include <time.h>
 #define NUM_DEFINED_REAGENTS 2
@@ -30,32 +30,12 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define CC 0xEFC60000
 #define L 18
 #define F 1812433253
-/* Imitates die rolls, using the mersenne twister under the hood*. Arguement for upper value range is given as  limit+1 since the function for ensuring the value is in the given range
-is [min,max( and therefore use max+1 to ensure that we could also potentially generate the max value */
-#define GEN_VALUE_RANGE(lower,upper,twister)(rng_extract_number(twister) % (upper-lower) + lower)
-#define D4(twister)GEN_VALUE_RANGE(1,4+1,twister)
-#define D3(twister)GEN_VALUE_RANGE(1,3+1,twister)
-#define D2(twister)GEN_VALUE_RANGE(1,2+1,twister)
-#define D2_0(twister)GEN_VALUE_RANGE(0,1+1,twister)
-#define D20(twister)GEN_VALUE_RANGE(1,20+1,twister)
-#define D100(twister)GEN_VALUE_RANGE(1,100+1,twister)
-#define D10(twister)GEN_VALUE_RANGE(1,10+1,twister)
-#define D6(twister)GEN_VALUE_RANGE(1,6+1,twister)
-#define D8(twister)GEN_VALUE_RANGE(1,8+1,twister)
-#define D8_0(twister)GEN_VALUE_RANGE(0,8+1,twister)
-#define D_GENERIC(lower,upper,twister)GEN_VALUE_RANGE(lower, upper+1,twister)
+
 typedef struct{
   int *mt;
   int index;
   int lower_mask;
   int upper_mask;
-}Mersienne_Twister;
+}Rng_Mersienne_Twister;
 
-void rng_seed_mt(int seed, Mersienne_Twister *twister);
-
-int rng_extract_number(Mersienne_Twister *twister);
-
-void rng_twist(Mersienne_Twister *twister);
-
-Mersienne_Twister *rng_generate_twister();
 #endif

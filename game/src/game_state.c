@@ -12,10 +12,10 @@ You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
  
 #include "game_state.h"
-#include "move_handler.h"
-#include "creature.h"
-#include "dialogue.h"
-void ll_iter_list_as_creature(Linked_List *list, Game_State *game_state){
+#include "mv_move_handler.h"
+#include "c_creature.h"
+#include "dia_dialogue.h"
+void gs_iter_list_as_creature(Ll_Linked_List *list, Game_State *game_state){
   /*We have to keep track of where we are in the position of the linked ist
 because depending on where we are in the list, we have to perform different steps to remove the node */
   int i = 0;
@@ -24,9 +24,9 @@ because depending on where we are in the list, we have to perform different step
   // printf("%d", ((struct Creature *)current_node->value)->marked_for_deletion);
   while(current_node != NULL) {
     //If a creature has been marked for deletion, it is dead and should therefore be firstly removed from the lsit of creature's that gets to act because it is dead and secondly, the creature itself is freed. We do not free the intercal contained structures of the creatures itself because they are already free'd whenever it is detected that a creature has died.
-    if(((struct Creature *)current_node->value)->marked_for_deletion == YES){
+    if(((struct C_Creature *)current_node->value)->marked_for_deletion == YES){
       if(i == 0){
-	  Node *to_be_freed = current_node;
+	  Ll_Node *to_be_freed = current_node;
 	  list->initial_node = current_node->next;
 	  previous = current_node->next;
 	  current_node = current_node->next;
@@ -46,7 +46,7 @@ because depending on where we are in the list, we have to perform different step
 	current_node = NULL;
       }
       else{
-	Node *to_be_freed = current_node;
+	Ll_Node *to_be_freed = current_node;
 	previous->next = current_node->next;
 	current_node = current_node->next;
 	free(to_be_freed);
@@ -55,10 +55,10 @@ because depending on where we are in the list, we have to perform different step
       i++;
     }  
     else{
-      while(((struct Creature *)current_node->value)->curr_ap > 0 ){
-	cb_act( (struct Creature *)current_node->value, game_state);
+      while(((struct C_Creature *)current_node->value)->curr_ap > 0 ){
+	cb_act( (struct C_Creature *)current_node->value, game_state);
       }
-      ((struct Creature *)current_node->value)->curr_ap = ((struct Creature *)current_node->value)->max_ap;
+      ((struct C_Creature *)current_node->value)->curr_ap = ((struct C_Creature *)current_node->value)->max_ap;
       i++;
             
      previous = current_node;
@@ -98,9 +98,9 @@ upper bound length of 100 char, the contents of the game buffer might exceed tha
   g_generate_trader(13,13, state->twister, state);
   g_generate_dialogue(15,15, 0,0,0, state);
   
-    Creature *opponent = ir_readin_creature("/usr/lib/revenant_files/creature_files/0",20,4,game_world,state->player);
+    C_Creature *opponent = ir_readin_creature("/usr/lib/revenant_files/creature_files/0",20,4,game_world,state->player);
     opponent->behavior = idle;
-  Linked_List *ll = ll_initialize_linked_list();
+  Ll_Linked_List *ll = ll_initialize_linked_list();
    ll_prepend_node_creature(ll,opponent);
 
   

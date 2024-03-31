@@ -1,4 +1,4 @@
-#include "creature_behavior.h"
+#include "cb_creature_behavior.h"
 #include "status.h"
 
 void cb_pursue_target(Creature *c,Game_State *game_state){

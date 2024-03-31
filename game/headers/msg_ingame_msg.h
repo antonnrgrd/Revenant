@@ -22,7 +22,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "u_hash.h"
 #include "game_state.h"
 #include "information_reader.h"
-#include "item.h"
+#include "i_item.h"
 #include "generate.h"
 #include "move_handler.h"
 

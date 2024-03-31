@@ -10,21 +10,16 @@ You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 
-#ifndef LINKED_LIST
-#define LINKED_LIST
+#ifndef LINKED_LIST_STRUCT
+#define LINKED_LIST_STRUCT
 #include <stdlib.h>
-typedef struct Node{
-  struct Node *next;
+typedef struct{
+  struct Ll_Node *next;
   void *value;
-}Node;
+}Ll_Node;
 
-typedef struct Linked_List{
-  Node *initial_node;
-}Linked_List;
-
-#define APPEND_NODE_CREATURE(list, c) Node *node = malloc(sizeof(Node)); node->value = c; ( list->initial_node == NULL) ? (list->initial_node = node),(list->last_node = node) : (list->last_node->next = node), (list->last_node = node)
-
-Linked_List *ll_initialize_linked_list();
-
+typedef struct{
+  Ll_Node *initial_node;
+}Ll_Linked_List;
 #endif
 

@@ -1,19 +1,19 @@
-/*This file is part of Revenant.
-Revenant is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-Revenant  is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-You should have received a copy of the GNU General Public License
-along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
-#include "information_reader.h"
+/*This file is part of Revenant.  Revenant is free software: you can
+redistribute it and/or modify it under the terms of the GNU General
+Public License as published by the Free Software Foundation, either
+version 3 of the License, or (at your option) any later version.
+Revenant is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License for more details.  You should have received a
+copy of the GNU General Public License along with Revenant.  If not,
+see <https://www.gnu.org/licenses/>. */
+#include "ir_information_reader.h"
 
-Item_Holder *ir_readin_reagent(char *reagent_file_path, int amount){
-  Item *i = malloc(sizeof(Item));
-  Reagent *reagent = malloc(sizeof(Reagent));
-  Item_Holder *item_holder = malloc(sizeof(Item_Holder));
+I_Item_Holder *ir_readin_reagent(char *reagent_file_path, int amount){
+  I_Item *i = malloc(sizeof(I_Item));
+  I_Reagent *reagent = malloc(sizeof(I_Reagent));
+  I_Item_Holder *item_holder = malloc(sizeof(I_Item_Holder));
   i->item_specific_info = reagent;
   item_holder->item = i;
   item_holder->amount = amount;
@@ -25,24 +25,24 @@ Item_Holder *ir_readin_reagent(char *reagent_file_path, int amount){
   return item_holder;
 }
   
-Item_Holder *ir_readin_consumable(char *consumable_file_path, int amount){
-  Item *i = malloc(sizeof(Item));
+I_Item_Holder *ir_readin_consumable(char *consumable_file_path, int amount){
+  I_Item *i = malloc(sizeof(I_Item));
   i->representation[0] = 'C';
-  Consumable *consumable = malloc(sizeof(Consumable));
+  I_Consumable *consumable = malloc(sizeof(I_Consumable));
   consumable->id = ir_readin_int(consumable_file_path,"id");
   i->weight = ir_readin_float(consumable_file_path,"weight");
   i->item_specific_info = consumable;
   i->id = consumable->id;
-  Item_Holder *item_holder = malloc(sizeof(Item_Holder));
+  I_Item_Holder *item_holder = malloc(sizeof(I_Item_Holder));
   item_holder->amount = amount;
   item_holder->item = i;
   return item_holder;
 }
 
 
-Creature *ir_readin_creature(char *creature_file_path,unsigned x, unsigned y, Game_World *world, Creature *target){
+C_Creature *ir_readin_creature(char *creature_file_path,unsigned x, unsigned y, Game_World *world, C_Creature *target){
   
-  Creature *c = malloc(sizeof(Creature));
+  C_Creature *c = malloc(sizeof(C_Creature));
   /*We initalize the*/
   c->representation[0] = '0';
   c->position.global_x=x;
@@ -88,7 +88,7 @@ e*/
   return c;
 }
 
-void ir_readin_struct_attributes(char *file_path, char *variable, Attributes attributes){
+void ir_readin_struct_attributes(char *file_path, char *variable, C_Attributes attributes){
    FILE *fp = fopen(file_path, "r");
   char * line = NULL;
   size_t len = 0;
@@ -108,18 +108,18 @@ void ir_readin_struct_attributes(char *file_path, char *variable, Attributes att
     fclose(fp);
   }
 }
-Limb *ir_readin_struct_limb(char *file_path, char *variable){
+C_Limb *ir_readin_struct_limb(char *file_path, char *variable){
   FILE *fp = fopen(file_path, "r");
   char * line = NULL;
   size_t len = 0;
-  Limb *creature_limbs;
+  C_Limb *creature_limbs;
   while((getline(&line, &len, fp)) != -1){
     char *variable_pointer = strstr(line, variable);
     if(variable_pointer != NULL){
       char *value_as_str = strtok(strchr(line, '=')+1, "\n");
       //We subtract 1 because the first bracket denotes the beginning of the list of limbs
       int limb_count  = s_char_count(value_as_str, '[') -1 ;
-      creature_limbs = malloc(sizeof(Limb) * limb_count);
+      creature_limbs = malloc(sizeof(C_Limb) * limb_count);
       ir_readin_struct_limb_values(creature_limbs,value_as_str, limb_count);
        break;
       }
@@ -258,12 +258,12 @@ void ir_readin_data(char *file_path, char *variable, Return_Type expected_type, 
       case struct_limb:
 	//We subtract 1 because the first bracket denotes the beginning of the list of limbs
 	int limb_count  = s_char_count(value_as_str, '[') -1 ;
-	Limb *creature_limbs = malloc(sizeof(Limb) * limb_count);
+	C_Limb *creature_limbs = malloc(sizeof(C_Limb) * limb_count);
 	//	ir_readin_struct_limb(creature_limbs,value_as_str, limb_count);
 	value = creature_limbs;
         break;
       case struct_attributes:
-	Attributes attributes;
+	I_Attributes attributes;
 	//	ir_readin_struct_attributes(attributes,value_as_str);
 	value = &attributes;
 	break;
@@ -277,7 +277,7 @@ void ir_readin_data(char *file_path, char *variable, Return_Type expected_type, 
   }
 }
   
-void ir_readin_struct_limb_values(Limb *limbs,char *limb_as_string, int limb_count){
+void ir_readin_struct_limb_values(C_Limb *limbs,char *limb_as_string, int limb_count){
   /*We add +2 to the result of the strchr function because we then skip over the first
  [ character in the string, allowing us to more easily extract the value(s) in the list*/
   char *processed_limbs = strchr(limb_as_string, '[')+2;
@@ -309,7 +309,7 @@ void ir_readin_struct_limb_values(Limb *limbs,char *limb_as_string, int limb_cou
   free(tmp_bfr);
 }
 
-void ir_readin_struct_attributes_values(Attributes attributes,char *attributes_as_string){
+void ir_readin_struct_attributes_values(I_Attributes attributes,char *attributes_as_string){
    /*We add +2 to the result of the strchr function because we then skip over the first
  [ character in the string, allowing us to more easily extract the value(s) in the list*/
     char *attributes_sequence = strchr(attributes_as_string, '[')+2;
@@ -411,7 +411,7 @@ int ir_readin_int(char *file_path, char *variable){
 /*
 Okay so this is not a comment as much it is a more of a venting personal rant for myself. Originally the desired functionality for the information_reader source file was to provide functionality for reading in hard-coded values stored in files. This worked for evey single data type EXCEPT for char pointers. no matter the approach, it would also culminate in some sort of low-level error. Both approaches of returning a malloc'd char pointer or pass by reference approach where you assign the result to a char point argument failed. Interestingly enough, going through gdb revealed that in the function call of ir_readin_char, the desired return value was as expected. but the INSTANT the function call retuned, it was no longer valid. Either it was garbage or an unaccessible pointer. After countless approaches, it was given up on and instead, since the values ARE valid in the function call, any work with the strings will be done inside the function calls below. Besides my instances were i would use ir_readin_char, the char in question is single use, before calling a free, so the functions save me from havign to make a a malloc, only to immediately free it afterwards. Funnily enough, ir_readin_char works for assigning the character representation for ir_readin_creature, but nowwhere else. Rant over
 */
-void ir_print_string(char *file_path, char *variable, WINDOW *screen, int x, int y, int printing_specification, Item_Holder *item_holder){
+void ir_print_string(char *file_path, char *variable, WINDOW *screen, int x, int y, int printing_specification, I_Item_Holder *item_holder){
     FILE *fp;
     char *line = NULL;
     size_t len = 0;
@@ -530,7 +530,7 @@ Removing this bit of logic will definetly result in a hard to debug segfualt. Th
    
 }
 //game_state->logs[MAIN_SCREEN]
-void ir_add_damage_to_creature_to_log(Game_State *gs, Creature *c, Creature *target){
+void ir_add_damage_to_creature_to_log(Game_State *gs, C_Creature *c, C_Creature *target){
   char *creature_name;
   if(c->id == target->id && c->species == target->species ){
   char *file_path = NULL;
@@ -652,7 +652,7 @@ void ir_add_damage_to_creature_to_log(Game_State *gs, Creature *c, Creature *tar
 Programmers sidenote: apparently, the order in which you define and or possibly inlcude header files is detrimental to the correctness of the program. It has been observed that including headers and defining functions in different orders has a major impact on whether or not the pointer returned is a valid pointer. e.g It is seen that if we define things in a certain order, it might compile and run fine, but upon return of the function, the pointer is no longer valid. Changing the order in which you define these functions tends to fix this issue and affect different parts of the program differently, so maybe swapping the order of the definitions might fix things.
 */
 
-void ir_add_item_purchase_to_log(Game_State *gs, Item_Holder *item, int amount){
+void ir_add_item_purchase_to_log(Game_State *gs, I_Item_Holder *item, int amount){
   char item_file_id[4];
   if(item->item->kind == reagent){
     chdir("/usr/lib/revenant_files/item_files/reagent_files");
@@ -662,10 +662,10 @@ void ir_add_item_purchase_to_log(Game_State *gs, Item_Holder *item, int amount){
   }
   
   if(item->item->kind == weapon){
-    sprintf(gs->bfr, "You buy %d %s%s%s%s",amount, quality_name_modifier[((struct Weapon *)item->item->item_specific_info)->quality], material_name_modifier[((struct Weapon *)item->item->item_specific_info)->material], handed_modifier[((struct Weapon *)item->item->item_specific_info)->variant],  mele_weapon_name_modifier[((struct Weapon *)item->item->item_specific_info)->kind]);
+    sprintf(gs->bfr, "You buy %d %s%s%s%s",amount, quality_name_modifier[((struct I_Weapon *)item->item->item_specific_info)->quality], material_name_modifier[((struct I_Weapon *)item->item->item_specific_info)->material], handed_modifier[((struct I_Weapon *)item->item->item_specific_info)->variant],  mele_weapon_name_modifier[((struct I_Weapon *)item->item->item_specific_info)->kind]);
   }
   else if(item->item->kind == armor){
-    sprintf(gs->bfr, "You buy %d %s%s%s",amount, quality_name_modifier[((struct Armor *)item->item->item_specific_info)->quality], material_name_modifier[((struct Armor *)item->item->item_specific_info)->material], equipment_type_modifier[((struct Armor *)item->item->item_specific_info)->armor_type] );
+    sprintf(gs->bfr, "You buy %d %s%s%s",amount, quality_name_modifier[((struct I_Armor *)item->item->item_specific_info)->quality], material_name_modifier[((struct I_Armor *)item->item->item_specific_info)->material], equipment_type_modifier[((struct I_Armor *)item->item->item_specific_info)->armor_type] );
   }
   else {
     sprintf(item_file_id, item->item->id);

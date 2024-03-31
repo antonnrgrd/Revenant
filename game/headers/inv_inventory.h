@@ -19,12 +19,12 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define BUY 0
 #define SELL 1 
 #include "u_hash.h"
-#include "creature.h"
+#include "c_creature_struct.h"
 
 
-Item_Holder *inv_equip_item(Item_Holder *target_item_holder,Player_Info *player_info, Creature *player);
-void inv_remove_item(int argcount,char *name, int amount, U_Hashtable *inventory, Creature *player);
-int inv_add_item(Item_Holder *item_h, U_Hashtable *inventory, Creature *player);
-void inv_exchange_item(Item_Holder *item_h, U_Hashtable *merchant_inventory, Creature *player, int num);
+I_Item_Holder *inv_equip_item(I_Item_Holder *target_item_holder,C_Player_Info *player_info, C_Creature *player);
+void inv_remove_item(int argcount,char *name, int amount, U_Hashtable *inventory, C_Creature *player);
+int inv_add_item(I_Item_Holder *item_h, U_Hashtable *inventory, C_Creature *player);
+void inv_exchange_item(I_Item_Holder *item_h, U_Hashtable *merchant_inventory, C_Creature *player, int num);
 #endif
 

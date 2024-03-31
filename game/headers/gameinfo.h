@@ -16,7 +16,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #ifndef PLACEHOLDER
 #define PLACEHOLDER
 #include "u_hash.h"
-#include "linked_list.h"
+#include "ll_linked_list.h"
 
 typedef struct Position{
   // Each creature will have two coordinate types, local and global. Global indicates where they are globally on the map, local
@@ -29,7 +29,7 @@ typedef struct Position{
 
 typedef struct Tile{
   char *content;
-  Entry *entry;
+  U_Entry *entry;
   //Instead of specifying that the tile can contain a creature struct, we use a void pointer instead because otherwise I would have to
   // re-structure the organization of the header files due to how certain structs are defined in certain header files 
   void *foe;

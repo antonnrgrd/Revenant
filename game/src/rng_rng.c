@@ -8,8 +8,8 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
-#include "rng.h"
-void rng_seed_mt(int seed, Mersienne_Twister *twister){
+#include "rng_rng.h"
+void rng_seed_mt(int seed, Rng_Mersienne_Twister *twister){
   twister->index = NN;
   twister->mt[0] = seed;
   for(int i = 1; i < NN; i++ ){
@@ -17,7 +17,7 @@ void rng_seed_mt(int seed, Mersienne_Twister *twister){
   }
 }
 
-int rng_extract_number(Mersienne_Twister *twister){
+int rng_extract_number(Rng_Mersienne_Twister *twister){
   if(twister->index > NN){
   rng_twist(twister);
   }
@@ -30,7 +30,7 @@ int rng_extract_number(Mersienne_Twister *twister){
   return (int) ( ((unsigned int) (y)) & ~(0xFFFFFFFF << W) ) ;
 }
 
-void rng_twist(Mersienne_Twister *twister){
+void rng_twist(Rng_Mersienne_Twister *twister){
   for (int i = 0; i < NN; i++){
     int x = (twister->mt[i] & twister->upper_mask) + (twister->mt[i+1 % NN] & twister->lower_mask) ;
     int xA = x >> 1;
@@ -42,8 +42,8 @@ void rng_twist(Mersienne_Twister *twister){
   twister->index = 0;
 }
 
-Mersienne_Twister *rng_generate_twister(){
-  Mersienne_Twister *twister = malloc(sizeof(Mersienne_Twister));
+Rng_Mersienne_Twister *rng_generate_twister(){
+  Rng_Mersienne_Twister *twister = malloc(sizeof(Rng_Mersienne_Twister));
   twister->mt =  malloc(NN * sizeof(int));
   twister->index = NN+1;
   twister->lower_mask = (1 << R) - 1;

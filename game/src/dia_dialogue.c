@@ -12,7 +12,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
-#include "dialogue.h"
+#include "dia_dialogue.h"
 void dia_loop_dialogue(Dia_Dialogue_Manager *manager, Game_State *gs){
   manager->next_char_offset = (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2 ;
   manager->prev_char_offset = 0;

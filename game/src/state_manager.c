@@ -65,7 +65,7 @@ void game_loop(Game_State *game_state){
       break;
      }
     }
-    ll_iter_list_as_creature(game_state->active_creatures,game_state);
+    gs_iter_list_as_creature(game_state->active_creatures,game_state);
     game_state->player->curr_ap = game_state->player->max_ap;
     player_turn = CONTINUE_TURN;
   }

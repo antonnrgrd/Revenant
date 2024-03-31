@@ -16,9 +16,9 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include <panel.h>
 #include "gameinfo.h"
-#include "linked_list.h"
+#include "ll_linked_list_struct.h"
 #include "screen_constants.h"
-#include "rng.h"
+#include "rng_rng.h"
 #include <sqlite3.h>
 #define DB_LOCATION "/usr/lib/revenant_files/db_folder/revenant_database.db"
 #define BFR_LENGTH 1024
@@ -66,12 +66,12 @@ typedef struct Game_State{
   int found_cols;
   int notification_log_height_size;
   int notification_log_width_size;
-  struct Creature *player;
+  struct C_Creature *player;
   Game_World *current_zone;
-  Linked_List *active_creatures;
+  Ll_Linked_List *active_creatures;
   PANEL *panels[8];
   WINDOW *logs[8];
-  Mersienne_Twister *twister;
+  Rng_Mersienne_Twister *twister;
   /*I am uncertain whether it is best policy to maintain an open db
    connection for the duration of the game session or open, then close it for SQL operations, but for a start, I will start out with having a persistently open connection */
   sqlite3 *db;

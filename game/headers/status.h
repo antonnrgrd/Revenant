@@ -12,7 +12,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define STATUS
 #include "bit_macros.h"
 #include "game_state_struct.h"
-#include "creature.h"
+#include "c_creature_Struct.h"
 #define DEAD 0
 #define PARALYZED 1
 #define POISONED  2
@@ -22,8 +22,8 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define ST_STATUS_OK(creature)({int ok = 0; for(int i = 0; i < 10; i++){ nth_status_bit =  (creature->status_flags >> i) & 1; ok | nth_status_bit; } ok;})
 #define ST_CHECK_FLAG_SET(creature, position)creature->status_flags & (1<<(position))
 #define ST_SET_FLAG_BIT(creature, position)creature->status_flags << (position - 1)
-void st_status_handler_player(Creature *c);
-void st_apply_statuses(Creature *c);
-void st_handle_status_dead(Creature *c,Game_State *game_state);
+void st_status_handler_player(C_Creature *c);
+void st_apply_statuses(C_Creature *c);
+void st_handle_status_dead(C_Creature *c,Game_State *game_state);
 #endif
 

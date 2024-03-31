@@ -20,12 +20,12 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define GENERATE_ARMOR 3
 #define GENERATE_WEAPON 4
 
-#include "information_reader.h"
+#include "ir_information_reader.h"
 #include <ncurses.h>
 #include "gameinfo.h"
-#include "rng.h"
-#include "item.h"
-#include "dialogue_struct.h"
+#include "rng_rng.h"
+#include "i_item_struct.h"
+#include "dia_dialogue_struct.h"
 #define PLACE_MERCHANT(game_state,merchant, global_x,global_y)(game_state)
 extern const char *alphabet;
 

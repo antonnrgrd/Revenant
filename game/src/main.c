@@ -12,16 +12,16 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
-#include "dialogue.h"
+
 #include "u_hash.h"
-#include "creature.h"
+#include "c_creature.h"
 #include "u_hash.h"
 #include <stdlib.h>
 #include <stdint.h>
 #include <ncurses.h>
 #include <curses.h>
-#include "inventory.h" 
-#include "item.h"
+#include "inv_inventory.h" 
+#include "i_item.h"
 #include "strings.h"
 #include "gameinfo.h"
 #include "modifier.h"
@@ -29,13 +29,13 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "game_state.h"
 #include "gameinfo.h"
 #include <time.h>
-#include "creature_behavior.h"
+#include "cb_creature_behavior.h"
 #include "state_manager.h"
-#include "ingame_msg.h"
+#include "msg_ingame_msg.h"
 #include "game_state_struct.h"
-#include "rng.h"
-#include "information_reader.h"
-#include "dialogue.h"
+#include "rng_rng.h"
+#include "ir_information_reader.h"
+#include "dia_dialogue.h"
 int main(int argc, char *argv[]){
   
   initscr();

@@ -11,12 +11,12 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
-#include "item.h"
+#include "i_item.h"
 #include "modifier.h"
 #include <math.h>
  
-Armor *i_gen_armor(Quality_Level q, Material material,Equipment_Kind armor_type){
-  Armor *arm = malloc(sizeof(Armor));
+I_Armor *i_gen_armor(I_Quality_Level q, I_Material material,I_Equipment_Kind armor_type){
+  I_Armor *arm = malloc(sizeof(I_Armor));
   arm->quality =q;
   arm->material = material;
   arm->armor_type = armor_type;
@@ -33,8 +33,8 @@ Armor *i_gen_armor(Quality_Level q, Material material,Equipment_Kind armor_type)
   return arm;
 }
 
-Weapon *i_gen_weapon(Quality_Level q,Variant variant,Material material,Weapon_Group group,Weapon_Kind k){
-  Weapon *weapon = malloc(sizeof(Weapon));
+I_Weapon *i_gen_weapon(I_Quality_Level q,I_Variant variant,I_Material material,I_Weapon_Group group,I_Weapon_Kind k){
+  I_Weapon *weapon = malloc(sizeof(I_Weapon));
   weapon->quality = q;
   weapon->variant = variant;
   weapon->material = material;
@@ -46,7 +46,7 @@ Weapon *i_gen_weapon(Quality_Level q,Variant variant,Material material,Weapon_Gr
 }
 
 
-extern inline void i_derive_item_name(Item *i,char *bfr){
+extern inline void i_derive_item_name(I_Item *i,char *bfr){
   char *fpath = NULL;
   switch(i->kind){
   case reagent:
@@ -65,19 +65,19 @@ extern inline void i_derive_item_name(Item *i,char *bfr){
   free(fpath);
 }
 
-char *i_variant_name(Variant v){
+char *i_variant_name(I_Variant v){
   return s_create_text_const(handed_modifier[v]);
 }
 
-char *i_material_name(Material material){
+char *i_material_name(I_Material material){
   return s_create_text_const(material_name_modifier[material]);
 }
 
-char *i_quality_name(Quality_Level q){
+char *i_quality_name(I_Quality_Level q){
   return s_create_text_const(quality_name_modifier[q]);
 }
 
-char *i_mele_weapon_name(Quality_Level q, Material material, Variant v, Weapon_Kind kind){
+char *i_mele_weapon_name(I_Quality_Level q, I_Material material, I_Variant v, I_Weapon_Kind kind){
   char *qual =s_create_text_const(quality_name_modifier[q]);
   char *mat = s_create_text_const(material_name_modifier[material]);
   char *variant = s_create_text_const(handed_modifier[v]);
@@ -90,8 +90,8 @@ char *i_mele_weapon_name(Quality_Level q, Material material, Variant v, Weapon_K
   return name;
 }
 
-Item *i_make_armor(Quality_Level q, Material material,Equipment_Kind armor_type){
-  Item *i = malloc(sizeof(Item));
+I_Item *i_make_armor(I_Quality_Level q, I_Material material,I_Equipment_Kind armor_type){
+  I_Item *i = malloc(sizeof(I_Item));
   /*
   Material_Modifier m = material_modifiers[material];
   Variant_Modifier v = itemslot_modifiers[w];
@@ -109,15 +109,15 @@ Item *i_make_armor(Quality_Level q, Material material,Equipment_Kind armor_type)
   
   return i; //needs to assert more attributes
 }
-Item *i_make_mele_weapon(Quality_Level q, Material material, Variant v, Weapon_Kind weapon_kind){
+I_Item *i_make_mele_weapon(I_Quality_Level q, I_Material material, I_Variant v, I_Weapon_Kind weapon_kind){
 
-  Item *i = malloc(sizeof(Item));
+  I_Item *i = malloc(sizeof(I_Item));
   
-  Weapon *w = i_gen_weapon(q,v,material,mele,weapon_kind);
+  I_Weapon *w = i_gen_weapon(q,v,material,mele,weapon_kind);
   i->item_specific_info = w;
   i->kind = weapon;
-  Material_Modifier m = material_modifiers[material];
-  Variant_Modifier va = variant_modifiers[v];
+  I_Material_Modifier m = material_modifiers[material];
+  I_Variant_Modifier va = variant_modifiers[v];
     
   
   w->dmg = (uint64_t)ceil(m.dmg_modifier * va.stats_modifier);
@@ -134,21 +134,21 @@ Item *i_make_mele_weapon(Quality_Level q, Material material, Variant v, Weapon_K
 
 
 
-void i_free_interactable(Item_Holder *item){
+void i_free_interactable(I_Item_Holder *item){
   ;
 }
-void i_free_valuable(Item_Holder *item){
+void i_free_valuable(I_Item_Holder *item){
   ;
 }
-void i_free_reagent(Item_Holder *item){
-  free((Reagent *)item->item->item_specific_info);
+void i_free_reagent(I_Item_Holder *item){
+  free((I_Reagent *)item->item->item_specific_info);
 }
-void i_free_consumable(Item_Holder *item){
-  free((Consumable *)item->item->item_specific_info);
+void i_free_consumable(I_Item_Holder *item){
+  free((I_Consumable *)item->item->item_specific_info);
 }
 
-void i_free_armor(Item_Holder *item){
-  free((Armor *)item->item->item_specific_info);
+void i_free_armor(I_Item_Holder *item){
+  free((I_Armor *)item->item->item_specific_info);
 }
 
 
@@ -177,24 +177,24 @@ void i_free_armor(Item_Holder *item){
   */
 
 
-void i_swap_pointers(Item_Holder *i,Item_Holder *j){
-  Item_Holder *k;
+void i_swap_pointers(I_Item_Holder *i,I_Item_Holder *j){
+  I_Item_Holder *k;
   k = i;
   i = j;
   j = k;
 }
 
-Item_Holder *i_make_item_holder(Item *item, unsigned amount){
-  Item_Holder *item_holder = malloc(sizeof(Item_Holder));
+I_Item_Holder *i_make_item_holder(I_Item *item, unsigned amount){
+  I_Item_Holder *item_holder = malloc(sizeof(I_Item_Holder));
   item_holder->item = item;
   item_holder->amount = amount;
   
 }
 
 
-void i_print_equippable_name(Item *i, WINDOW *inv_screen,int x, int y){
+void i_print_equippable_name(I_Item *i, WINDOW *inv_screen,int x, int y){
   if(i->kind==weapon ){
-  mvwprintw("%s",inv_screen,y,x,i, variant_modifiers[((Weapon *)i)->variant]);
+  mvwprintw("%s",inv_screen,y,x,i, variant_modifiers[((I_Weapon *)i)->variant]);
   }
 
   else{
@@ -204,9 +204,9 @@ void i_print_equippable_name(Item *i, WINDOW *inv_screen,int x, int y){
 }
 
 
-char *i_derive_item_name_equipment(Item *i){
+char *i_derive_item_name_equipment(I_Item *i){
   if(i->kind == weapon){
-    Weapon *w = (Weapon *)i->item_specific_info;
+    I_Weapon *w = (I_Weapon *)i->item_specific_info;
     char *weapon_name = quality_name_modifier[w->quality];
     strcat(weapon_name, material_name_modifier[w->material]);
     strcat(weapon_name, handed_modifier[w->variant]);
@@ -218,7 +218,7 @@ char *i_derive_item_name_equipment(Item *i){
   }
 }
 
-char *i_get_name(Item *i){
+char *i_get_name(I_Item *i){
   /*
   char *name = NULL;
   char *bfr = NULL;
@@ -249,37 +249,37 @@ char *i_get_name(Item *i){
 }
 
 
-void i_copy_reagent(Item_Holder *source_item,Item_Holder *target_item){
-  source_item->item->item_specific_info = malloc(sizeof(Reagent));
-  ((Reagent *)source_item->item->item_specific_info)->reagent_kind = ((Reagent *)target_item->item->item_specific_info)->reagent_kind;
-  ((Reagent *)source_item->item->item_specific_info)->id = ((Reagent *)target_item->item->item_specific_info)->id;
+void i_copy_reagent(I_Item_Holder *source_item,I_Item_Holder *target_item){
+  source_item->item->item_specific_info = malloc(sizeof(I_Reagent));
+  ((I_Reagent *)source_item->item->item_specific_info)->reagent_kind = ((I_Reagent *)target_item->item->item_specific_info)->reagent_kind;
+  ((I_Reagent *)source_item->item->item_specific_info)->id = ((I_Reagent *)target_item->item->item_specific_info)->id;
 }
 
-void i_copy_consumable(Item_Holder *source_item,Item_Holder *target_item){
-  source_item->item->item_specific_info = malloc(sizeof(Consumable));
-  ((Consumable *)source_item->item->item_specific_info)->id = ((Consumable *)target_item->item->item_specific_info)->id;
-  ((Consumable *)source_item->item->item_specific_info)->hp_change = ((Consumable *)target_item->item->item_specific_info)->hp_change;
+void i_copy_consumable(I_Item_Holder *source_item,I_Item_Holder *target_item){
+  source_item->item->item_specific_info = malloc(sizeof(I_Consumable));
+  ((I_Consumable *)source_item->item->item_specific_info)->id = ((I_Consumable *)target_item->item->item_specific_info)->id;
+  ((I_Consumable *)source_item->item->item_specific_info)->hp_change = ((I_Consumable *)target_item->item->item_specific_info)->hp_change;
 }
 
-void i_copy_armor(Item_Holder *source_item,Item_Holder *target_item){
-  source_item->item->item_specific_info = malloc(sizeof(Armor));
-  ((Armor *)source_item->item->item_specific_info)->quality = ((Armor *)target_item->item->item_specific_info)->quality;
-  ((Armor *)source_item->item->item_specific_info)->armor = ((Armor *)target_item->item->item_specific_info)->armor;
-  ((Armor *)source_item->item->item_specific_info)->slot = ((Armor *)target_item->item->item_specific_info)->slot;
-  ((Armor *)source_item->item->item_specific_info)->material = ((Armor *)target_item->item->item_specific_info)->material;
-  ((Armor *)source_item->item->item_specific_info)->skill = ((Armor *)target_item->item->item_specific_info)->skill;
-  ((Armor *)source_item->item->item_specific_info)->armor = ((Armor *)target_item->item->item_specific_info)->armor;
-  ((Armor *)source_item->item->item_specific_info)->weight_classification = ((Armor *)target_item->item->item_specific_info)->weight_classification;
+void i_copy_armor(I_Item_Holder *source_item,I_Item_Holder *target_item){
+  source_item->item->item_specific_info = malloc(sizeof(I_Armor));
+  ((I_Armor *)source_item->item->item_specific_info)->quality = ((I_Armor *)target_item->item->item_specific_info)->quality;
+  ((I_Armor *)source_item->item->item_specific_info)->armor = ((I_Armor *)target_item->item->item_specific_info)->armor;
+  ((I_Armor *)source_item->item->item_specific_info)->slot = ((I_Armor *)target_item->item->item_specific_info)->slot;
+  ((I_Armor *)source_item->item->item_specific_info)->material = ((I_Armor *)target_item->item->item_specific_info)->material;
+  ((I_Armor *)source_item->item->item_specific_info)->skill = ((I_Armor *)target_item->item->item_specific_info)->skill;
+  ((I_Armor *)source_item->item->item_specific_info)->armor = ((I_Armor *)target_item->item->item_specific_info)->armor;
+  ((I_Armor *)source_item->item->item_specific_info)->weight_classification = ((I_Armor *)target_item->item->item_specific_info)->weight_classification;
 }
 
-void i_copy_weapon(Item_Holder *source_item,Item_Holder *target_item){
-  source_item->item->item_specific_info = malloc(sizeof(Weapon));
-  ((Weapon *)source_item->item->item_specific_info)->quality = ((Weapon *)target_item->item->item_specific_info)->quality;
-  ((Weapon *)source_item->item->item_specific_info)->material = ((Weapon *)target_item->item->item_specific_info)->material;
-  ((Weapon *)source_item->item->item_specific_info)->variant = ((Weapon *)target_item->item->item_specific_info)->variant;
-  ((Weapon *)source_item->item->item_specific_info)->kind = ((Weapon *)target_item->item->item_specific_info)->kind;
-  ((Weapon *)source_item->item->item_specific_info)->slot = ((Weapon *)target_item->item->item_specific_info)->slot;
-  ((Weapon *)source_item->item->item_specific_info)->group = ((Weapon *)target_item->item->item_specific_info)->group;
+void i_copy_weapon(I_Item_Holder *source_item,I_Item_Holder *target_item){
+  source_item->item->item_specific_info = malloc(sizeof(I_Weapon));
+  ((I_Weapon *)source_item->item->item_specific_info)->quality = ((I_Weapon *)target_item->item->item_specific_info)->quality;
+  ((I_Weapon *)source_item->item->item_specific_info)->material = ((I_Weapon *)target_item->item->item_specific_info)->material;
+  ((I_Weapon *)source_item->item->item_specific_info)->variant = ((I_Weapon *)target_item->item->item_specific_info)->variant;
+  ((I_Weapon *)source_item->item->item_specific_info)->kind = ((I_Weapon *)target_item->item->item_specific_info)->kind;
+  ((I_Weapon *)source_item->item->item_specific_info)->slot = ((I_Weapon *)target_item->item->item_specific_info)->slot;
+  ((I_Weapon *)source_item->item->item_specific_info)->group = ((I_Weapon *)target_item->item->item_specific_info)->group;
 }
 
 /*
@@ -314,10 +314,10 @@ void i_copy_weapon(Item *source_item,Item_Holder *target_item){
 }
 */
 
-extern void (*i_free_item_handler[4])(Item_Holder *item) = {i_free_reagent,i_free_consumable , i_free_weapon,i_free_armor};
+extern void (*i_free_item_handler[4])(I_Item_Holder *item) = {i_free_reagent,i_free_consumable , i_free_weapon,i_free_armor};
 
-extern void (*i_item_holder_copy_handler[4])(Item_Holder *source_item,Item_Holder *target_item) = {i_copy_reagent, i_copy_consumable, i_copy_weapon,i_copy_armor};
+extern void (*i_item_holder_copy_handler[4])(I_Item_Holder *source_item,I_Item_Holder *target_item) = {i_copy_reagent, i_copy_consumable, i_copy_weapon,i_copy_armor};
 
-void i_free_weapon(Item_Holder *item){
-  free((Weapon *)item->item->item_specific_info);
+void i_free_weapon(I_Item_Holder *item){
+  free((I_Weapon *)item->item->item_specific_info);
 }

@@ -14,12 +14,12 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 #ifndef GAME_STATE
 #define GAME_STATE
-#include "move_handler.h"
-#include "linked_list.h"
-#include "creature_behavior.h"
+#include "mv_move_handler.h"
+#include "ll_linked_list.h"
+#include "cb_creature_behavior.h"
 #include "game_state_struct.h"
 #include "generic_macros.h"
-#include "information_reader.h"
+#include "ir_information_reader.h"
 #define INIT_GAME_STATE(game_state)
 #define GS_PLACE_MERCHANT(hashtable)
 #define UPDATE_STATE(game_state) ll_iter_list_as_creature(game_state->player,game_state->current_zone,game_state->active_creatures);
@@ -30,11 +30,11 @@ for the Game_world field for the Game_State. I suspect this is because how the v
 Game_State *gs_create_game_state(Game_World *game_world);
 
 
-void ll_iter_list_as_creature(Linked_List *list, Game_State *ggame_state);
+void gs_iter_list_as_creature(Ll_Linked_List *list, Game_State *game_state);
 
 void gs_print_foes(Game_State *game_state);
 
-void gs_recompute_creature_local_coords(Linked_List *list);
+void gs_recompute_creature_local_coords(Ll_Linked_List *list);
 
 void gs_update_screen_resize(Game_State *gs);
 #endif

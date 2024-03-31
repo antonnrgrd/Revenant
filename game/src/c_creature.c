@@ -13,9 +13,8 @@ You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 
-#include "creature.h"
-#include "item.h"
-#include "move_handler.h"
+#include "c_creature.h"
+#include "mv_move_handler.h"
  
 void c_free_creature(Creature *c){
   free(c->representation);

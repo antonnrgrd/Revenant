@@ -10,17 +10,17 @@ You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 
-#include "linked_list.h"
-#include "creature.h"
-void ll_prepend_node_creature(Linked_List *ll, Creature *c){
-  Node *node = malloc(sizeof(node));
+#include "ll_linked_list.h"
+#include "c_creature.h"
+void ll_prepend_node_creature(Ll_Linked_List *ll, C_Creature *c){
+  Ll_Node *node = malloc(sizeof(Ll_Node));
   node->next = NULL;
   node->value = c;
   if(ll->initial_node == NULL){
     ll->initial_node = node;
   }
   else{
-    Node *current = ll->initial_node;
+    Ll_Node *current = ll->initial_node;
     int i = 0;
     while(current->next != NULL){
       current = current->next;
@@ -30,8 +30,8 @@ void ll_prepend_node_creature(Linked_List *ll, Creature *c){
   }
 }
 
-Linked_List *ll_initialize_linked_list(){
-  Linked_List *ll = malloc(sizeof(Linked_List));
+Ll_Linked_List *ll_initialize_linked_list(){
+  Ll_Linked_List *ll = malloc(sizeof(Ll_Linked_List));
   ll->initial_node = NULL;
   return ll;
 }

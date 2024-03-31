@@ -12,30 +12,30 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
-#include "inventory.h"
-#include "creature.h"
+#include "inv_inventory.h"
+#include "c_creature.h"
 #include "u_hash.h"
 #include <stdlib.h>
 
-Item_Holder *inv_equip_item(Item_Holder *target_item_holder,Player_Info *player_info, Creature *player){
-  Item_Weight item_removal = u_remove_item(target_item_holder,1,player_info->inventory);
+I_Item_Holder *inv_equip_item(I_Item_Holder *target_item_holder,C_Player_Info *player_info, C_Creature *player){
+  U_Item_Weight item_removal = u_remove_item(target_item_holder,1,player_info->inventory);
   if(item_removal.item_h == NULL){
     return;
   }
-  Item *retrieved_item = item_removal.item_h->item;
+  I_Item *retrieved_item = item_removal.item_h->item;
   
-  Item *tmp = NULL;
+  I_Item *tmp = NULL;
   if(retrieved_item->kind == weapon){
-    tmp = player_info->equipment_list[((struct Weapon *)retrieved_item->item_specific_info)->slot];  
-    player_info->equipment_list[((struct Weapon *)retrieved_item->item_specific_info)->slot] = retrieved_item;
+    tmp = player_info->equipment_list[((struct I_Weapon *)retrieved_item->item_specific_info)->slot];  
+    player_info->equipment_list[((struct I_Weapon *)retrieved_item->item_specific_info)->slot] = retrieved_item;
 
   }
   if(retrieved_item->kind == armor){
-    tmp = player_info->equipment_list[((struct Armor *)retrieved_item->item_specific_info)->slot];
-    player_info->equipment_list[((struct Armor *)retrieved_item->item_specific_info)->slot] = retrieved_item;
+    tmp = player_info->equipment_list[((struct I_Armor *)retrieved_item->item_specific_info)->slot];
+    player_info->equipment_list[((struct I_Armor *)retrieved_item->item_specific_info)->slot] = retrieved_item;
   }
   if(tmp != NULL){
-    Item_Holder *added_item = malloc(sizeof(Item_Holder));
+    I_Item_Holder *added_item = malloc(sizeof(I_Item_Holder));
     added_item->item = tmp;
     added_item->amount=1;
     inv_add_item(added_item,player_info->inventory,player);
@@ -46,7 +46,7 @@ Item_Holder *inv_equip_item(Item_Holder *target_item_holder,Player_Info *player_
 
 
 
-int inv_add_item(Item_Holder *item_h, U_Hashtable *inventory, Creature *player){
+int inv_add_item(I_Item_Holder *item_h, U_Hashtable *inventory, C_Creature *player){
   
   if((player->current_carry + (item_h->amount * item_h->item->weight)) > player->max_carry ){
     return WEIGHT_LIMIT_EXCEEDED;
@@ -60,12 +60,12 @@ int inv_add_item(Item_Holder *item_h, U_Hashtable *inventory, Creature *player){
   }
 }
 
-void inv_exchange_item(Item_Holder *item_h, U_Hashtable *merchant_inventory, Creature *player, int amount){
+void inv_exchange_item(I_Item_Holder *item_h, U_Hashtable *merchant_inventory, C_Creature *player, int amount){
   player->current_carry += item_h->item->weight * amount;
-  (((Player_Info * )player->additional_info)->inventory)->money -= item_h->item->value * amount;
+  (((C_Player_Info * )player->additional_info)->inventory)->money -= item_h->item->value * amount;
   merchant_inventory->money += item_h->item->value * amount;
-  Item_Weight item_removal = u_remove_item(item_h,amount,merchant_inventory);
-  u_add_item(item_removal.item_h, amount, ((Player_Info * )player->additional_info)->inventory);
+  U_Item_Weight item_removal = u_remove_item(item_h,amount,merchant_inventory);
+  u_add_item(item_removal.item_h, amount, ((C_Player_Info * )player->additional_info)->inventory);
 }
 /*
 void inv_remove_item(int argcount,char *name, int amount, U_Hashtable *inventory, Creature *player){

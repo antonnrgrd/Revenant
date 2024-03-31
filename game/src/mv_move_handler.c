@@ -13,7 +13,7 @@ You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 
-#include "move_handler.h"
+#include "mv_move_handler.h"
 
 int mv_check_move_handler(int global_x, int global_y, int local_x, int local_y, Creature *c,Game_State *game_state){
   // Before we check the response value from the character, we first need to be assert that position we are trying to make the move to is within bounds of the current zone's dimensionality to avoid invalid index lookups in the game world's tiles (whether negative or too large index values)

@@ -8,10 +8,10 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
-#ifndef TRIGGERS
-#define TRIGGERS
-#include "game_state_struct.h"
-#include "c_creature_struct.h"
-void tr_set_creature_location(Game_State *game_state, C_Creature *c);
+#ifndef LINKED_LIST
+#define LINKED_LIST
+#include "ll_linked_list_struct.h"
+#define LL_APPEND_NODE_CREATURE(list, c) Ll_Node *node = malloc(sizeof(Ll_Node)); node->value = c; ( list->initial_node == NULL) ? (list->initial_node = node),(list->last_node = node) : (list->last_node->next = node), (list->last_node = node)
 
+Ll_Linked_List *ll_initialize_linked_list();
 #endif
