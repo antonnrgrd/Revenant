@@ -13,8 +13,10 @@ You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 
-#include "u_hash.h"
+
+#include "cb_creature_behavior.h"
 #include "c_creature.h"
+/*
 #include "u_hash.h"
 #include <stdlib.h>
 #include <stdint.h>
@@ -24,25 +26,26 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "i_item.h"
 #include "strings.h"
 #include "gameinfo.h"
-#include "modifier.h"
+#include "m_modifier.h"
 #include "generate.h"
 #include "game_state.h"
 #include "gameinfo.h"
 #include <time.h>
-#include "cb_creature_behavior.h"
+#include "u_hash.h"
 #include "state_manager.h"
 #include "msg_ingame_msg.h"
 #include "game_state_struct.h"
 #include "rng_rng.h"
 #include "ir_information_reader.h"
 #include "dia_dialogue.h"
+*/
 int main(int argc, char *argv[]){
-  
+  /*
   initscr();
  start_color();   
    Game_World *game_world = g_generate_game_world(1000,1000);
   Game_State *gs =  gs_create_game_state(game_world);
-  ((Player_Info *)gs->player->additional_info)->inventory = g_generate_merchant_inventory(3,3,gs->twister);
+  ((C_Player_Info *)gs->player->additional_info)->inventory = g_generate_merchant_inventory(3,3,gs->twister);
   noecho();
   curs_set(FALSE);
    keypad(stdscr, TRUE);
@@ -50,6 +53,7 @@ int main(int argc, char *argv[]){
   raw();  
   game_loop(gs);
   endwin();  
+  */
 }
   
  

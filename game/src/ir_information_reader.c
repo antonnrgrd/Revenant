@@ -263,7 +263,7 @@ void ir_readin_data(char *file_path, char *variable, Return_Type expected_type, 
 	value = creature_limbs;
         break;
       case struct_attributes:
-	I_Attributes attributes;
+	C_Attributes attributes;
 	//	ir_readin_struct_attributes(attributes,value_as_str);
 	value = &attributes;
 	break;
@@ -309,7 +309,7 @@ void ir_readin_struct_limb_values(C_Limb *limbs,char *limb_as_string, int limb_c
   free(tmp_bfr);
 }
 
-void ir_readin_struct_attributes_values(I_Attributes attributes,char *attributes_as_string){
+void ir_readin_struct_attributes_values(C_Attributes attributes,char *attributes_as_string){
    /*We add +2 to the result of the strchr function because we then skip over the first
  [ character in the string, allowing us to more easily extract the value(s) in the list*/
     char *attributes_sequence = strchr(attributes_as_string, '[')+2;
@@ -662,10 +662,10 @@ void ir_add_item_purchase_to_log(Game_State *gs, I_Item_Holder *item, int amount
   }
   
   if(item->item->kind == weapon){
-    sprintf(gs->bfr, "You buy %d %s%s%s%s",amount, quality_name_modifier[((struct I_Weapon *)item->item->item_specific_info)->quality], material_name_modifier[((struct I_Weapon *)item->item->item_specific_info)->material], handed_modifier[((struct I_Weapon *)item->item->item_specific_info)->variant],  mele_weapon_name_modifier[((struct I_Weapon *)item->item->item_specific_info)->kind]);
+    sprintf(gs->bfr, "You buy %d %s%s%s%s",amount, m_quality_name_modifier[(( I_Weapon *)item->item->item_specific_info)->quality], m_material_name_modifier[(( I_Weapon *)item->item->item_specific_info)->material], m_handed_modifier[(( I_Weapon *)item->item->item_specific_info)->variant],  m_mele_weapon_name_modifier[(( I_Weapon *)item->item->item_specific_info)->kind]);
   }
   else if(item->item->kind == armor){
-    sprintf(gs->bfr, "You buy %d %s%s%s",amount, quality_name_modifier[((struct I_Armor *)item->item->item_specific_info)->quality], material_name_modifier[((struct I_Armor *)item->item->item_specific_info)->material], equipment_type_modifier[((struct I_Armor *)item->item->item_specific_info)->armor_type] );
+    sprintf(gs->bfr, "You buy %d %s%s%s",amount, m_quality_name_modifier[(( I_Armor *)item->item->item_specific_info)->quality], m_material_name_modifier[(( I_Armor *)item->item->item_specific_info)->material], m_equipment_type_modifier[(( I_Armor *)item->item->item_specific_info)->armor_type] );
   }
   else {
     sprintf(item_file_id, item->item->id);

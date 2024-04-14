@@ -20,7 +20,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define SELL 1 
 #include "u_hash.h"
 #include "c_creature_struct.h"
-
+#include "i_item_struct.h"
 
 I_Item_Holder *inv_equip_item(I_Item_Holder *target_item_holder,C_Player_Info *player_info, C_Creature *player);
 void inv_remove_item(int argcount,char *name, int amount, U_Hashtable *inventory, C_Creature *player);

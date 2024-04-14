@@ -18,7 +18,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include <stdlib.h>
 #include "strings.h"
-#include "modifier.h"
+#include "m_modifier.h"
 #include <inttypes.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -46,7 +46,7 @@ typedef struct{
   int id;
   int hp_change;
 }I_Consumable;
-typedef struct Armor{
+typedef struct I_Armor{
   I_Quality_Level quality;
   uint64_t armor;
   I_Worn_In slot; //in which item slot will the item be worn in
@@ -56,7 +56,7 @@ typedef struct Armor{
   I_Equipment_Classification weight_classification;
 }I_Armor;
 
-typedef struct Weapon{
+typedef struct I_Weapon{
   I_Quality_Level quality;
   I_Variant variant;
   I_Material material;
@@ -72,7 +72,7 @@ typedef union Equipment{
 }I_Equipment; 
 
 
-typedef struct Item{
+typedef struct I_Item{
   int id;
   void *item_specific_info;
   char representation[2];
@@ -84,7 +84,7 @@ typedef struct Item{
   uint8_t quest_id;   //which quest it belongs to.
 }I_Item;
 
-typedef struct Item_Holder{ //a struct for an item and how many of that item currently is in the inventory
+typedef struct I_Item_Holder{ //a struct for an item and how many of that item currently is in the inventory
   I_Item *item;
   int amount;
 }I_Item_Holder;

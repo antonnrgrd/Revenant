@@ -12,7 +12,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define STATUS
 #include "bit_macros.h"
 #include "game_state_struct.h"
-#include "c_creature_Struct.h"
+#include "c_creature_struct.h"
 #define DEAD 0
 #define PARALYZED 1
 #define POISONED  2

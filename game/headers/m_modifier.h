@@ -16,38 +16,38 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #ifndef MODIFIER
 #define MODIFIER
 #include <float.h>
-typedef struct Material_Modifiers{
+typedef struct{
   float base_weight_modifier;
   float value_modifier;
   float armor_modifier;
   float dmg_modifier;
-}Material_Modifier;
+}M_Material_Modifier;
 
 typedef struct Variant_Modifiers{
   float weight_modifier;
   float value_modifier;
   float stats_modifier;
-}Variant_Modifier;
+}M_Variant_Modifier;
 
-extern const Material_Modifier material_modifiers[];
+extern const M_Material_Modifier m_material_modifiers[];
 
-extern  Variant_Modifier variant_modifiers[];
+extern  M_Variant_Modifier m_variant_modifiers[];
 
-extern Variant_Modifier itemslot_modifiers[];
+extern M_Variant_Modifier itemslot_modifiers[];
 
-extern const char* handed_modifier[];
+extern const char* m_handed_modifier[];
 
 
-extern const char* material_name_modifier[];
+extern const char* m_material_name_modifier[];
 
-extern const char *quality_name_modifier[];
+extern const char *m_quality_name_modifier[];
 
-extern const char *armorslot_name_modifier[];
+extern const char *m_armorslot_name_modifier[];
 
-extern const char *mele_weapon_name_modifier[];
+extern const char *m_mele_weapon_name_modifier[];
 
-extern const char *weapon_representations[];
+extern const char *m_weapon_representations[];
 
-extern const char *equipment_type_modifier[];
+extern const char *m_equipment_type_modifier[];
 #endif
 

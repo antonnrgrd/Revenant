@@ -13,18 +13,17 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
  
 #include "game_state.h"
 #include "mv_move_handler.h"
-#include "c_creature.h"
 #include "dia_dialogue.h"
 void gs_iter_list_as_creature(Ll_Linked_List *list, Game_State *game_state){
   /*We have to keep track of where we are in the position of the linked ist
 because depending on where we are in the list, we have to perform different steps to remove the node */
   int i = 0;
-  Node *current_node = list->initial_node;
-  Node *previous = current_node;
+  Ll_Node *current_node = list->initial_node;
+  Ll_Node *previous = current_node;
   // printf("%d", ((struct Creature *)current_node->value)->marked_for_deletion);
   while(current_node != NULL) {
     //If a creature has been marked for deletion, it is dead and should therefore be firstly removed from the lsit of creature's that gets to act because it is dead and secondly, the creature itself is freed. We do not free the intercal contained structures of the creatures itself because they are already free'd whenever it is detected that a creature has died.
-    if(((struct C_Creature *)current_node->value)->marked_for_deletion == YES){
+    if(((C_Creature *)current_node->value)->marked_for_deletion == YES){
       if(i == 0){
 	  Ll_Node *to_be_freed = current_node;
 	  list->initial_node = current_node->next;
@@ -55,10 +54,10 @@ because depending on where we are in the list, we have to perform different step
       i++;
     }  
     else{
-      while(((struct C_Creature *)current_node->value)->curr_ap > 0 ){
-	cb_act( (struct C_Creature *)current_node->value, game_state);
+      while(((C_Creature *)current_node->value)->curr_ap > 0 ){
+	cb_act( (C_Creature *)current_node->value, game_state);
       }
-      ((struct C_Creature *)current_node->value)->curr_ap = ((struct C_Creature *)current_node->value)->max_ap;
+      ((C_Creature *)current_node->value)->curr_ap = ((C_Creature *)current_node->value)->max_ap;
       i++;
             
      previous = current_node;
@@ -68,10 +67,10 @@ because depending on where we are in the list, we have to perform different step
 }
 
 void gs_print_foes(Game_State *game_state){
-  Node *current_node = game_state->active_creatures->initial_node;
+  Ll_Node *current_node = game_state->active_creatures->initial_node;
   // TBD:consider only creatures within range of the player 
   while(current_node != NULL) {
-    mvwprintw(game_state->logs[MAIN_SCREEN], ((struct Creature *)current_node->value)->position.local_y,((struct Creature *)current_node->value)->position.local_x,((struct Creature *)current_node->value)->representation);
+    mvwprintw(game_state->logs[MAIN_SCREEN], ((C_Creature *)current_node->value)->position.local_y,((C_Creature *)current_node->value)->position.local_x,((C_Creature *)current_node->value)->representation);
     current_node = current_node->next;
   }
 }
@@ -147,11 +146,11 @@ upper bound length of 100 char, the contents of the game buffer might exceed tha
 }
 
  
-void gs_recompute_creature_local_coords(Linked_List *list){
-   Node *current_node = list->initial_node;
+void gs_recompute_creature_local_coords(Ll_Linked_List *list){
+   Ll_Node *current_node = list->initial_node;
   // TBD:consider only creatures within range of the player 
   while(current_node != NULL) {
-    c_compute_relative_coords((struct Creature *)current_node->value, ((struct Creature *)current_node->value)->target);
+    c_compute_relative_coords((C_Creature *)current_node->value, ((C_Creature *)current_node->value)->target);
     current_node = current_node->next;
   }
 }

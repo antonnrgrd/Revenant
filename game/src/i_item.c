@@ -12,7 +12,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "i_item.h"
-#include "modifier.h"
+#include "m_modifier.h"
 #include <math.h>
  
 I_Armor *i_gen_armor(I_Quality_Level q, I_Material material,I_Equipment_Kind armor_type){
@@ -66,22 +66,22 @@ extern inline void i_derive_item_name(I_Item *i,char *bfr){
 }
 
 char *i_variant_name(I_Variant v){
-  return s_create_text_const(handed_modifier[v]);
+  return s_create_text_const(m_handed_modifier[v]);
 }
 
 char *i_material_name(I_Material material){
-  return s_create_text_const(material_name_modifier[material]);
+  return s_create_text_const(m_material_name_modifier[material]);
 }
 
 char *i_quality_name(I_Quality_Level q){
-  return s_create_text_const(quality_name_modifier[q]);
+  return s_create_text_const(m_quality_name_modifier[q]);
 }
 
 char *i_mele_weapon_name(I_Quality_Level q, I_Material material, I_Variant v, I_Weapon_Kind kind){
-  char *qual =s_create_text_const(quality_name_modifier[q]);
-  char *mat = s_create_text_const(material_name_modifier[material]);
-  char *variant = s_create_text_const(handed_modifier[v]);
-  char *kin = s_create_text_const(mele_weapon_name_modifier[kind]);
+  char *qual =s_create_text_const(m_quality_name_modifier[q]);
+  char *mat = s_create_text_const(m_material_name_modifier[material]);
+  char *variant = s_create_text_const(m_handed_modifier[v]);
+  char *kin = s_create_text_const(m_mele_weapon_name_modifier[kind]);
   char *qq = s_create_text(" quality ");
   char *temp = s_merge_text(qual,qq);
   char *temp1 = s_merge_text(temp,mat);
@@ -116,8 +116,8 @@ I_Item *i_make_mele_weapon(I_Quality_Level q, I_Material material, I_Variant v, 
   I_Weapon *w = i_gen_weapon(q,v,material,mele,weapon_kind);
   i->item_specific_info = w;
   i->kind = weapon;
-  I_Material_Modifier m = material_modifiers[material];
-  I_Variant_Modifier va = variant_modifiers[v];
+  M_Material_Modifier m = m_material_modifiers[material];
+  M_Variant_Modifier va = m_variant_modifiers[v];
     
   
   w->dmg = (uint64_t)ceil(m.dmg_modifier * va.stats_modifier);
@@ -125,7 +125,7 @@ I_Item *i_make_mele_weapon(I_Quality_Level q, I_Material material, I_Variant v, 
   
   i->value = (uint32_t)ceil(m.value_modifier * va.value_modifier);
   i->item_specific_info = w;
-  strcpy(i->representation, weapon_representations[1]);
+  strcpy(i->representation, m_weapon_representations[1]);
  
   return i;
 }
@@ -194,7 +194,7 @@ I_Item_Holder *i_make_item_holder(I_Item *item, unsigned amount){
 
 void i_print_equippable_name(I_Item *i, WINDOW *inv_screen,int x, int y){
   if(i->kind==weapon ){
-  mvwprintw("%s",inv_screen,y,x,i, variant_modifiers[((I_Weapon *)i)->variant]);
+  mvwprintw("%s",inv_screen,y,x,i, m_variant_modifiers[((I_Weapon *)i)->variant]);
   }
 
   else{
@@ -207,10 +207,10 @@ void i_print_equippable_name(I_Item *i, WINDOW *inv_screen,int x, int y){
 char *i_derive_item_name_equipment(I_Item *i){
   if(i->kind == weapon){
     I_Weapon *w = (I_Weapon *)i->item_specific_info;
-    char *weapon_name = quality_name_modifier[w->quality];
-    strcat(weapon_name, material_name_modifier[w->material]);
-    strcat(weapon_name, handed_modifier[w->variant]);
-    strcat(weapon_name,mele_weapon_name_modifier[w->kind]);
+    char *weapon_name = m_quality_name_modifier[w->quality];
+    strcat(weapon_name, m_material_name_modifier[w->material]);
+    strcat(weapon_name, m_handed_modifier[w->variant]);
+    strcat(weapon_name,m_mele_weapon_name_modifier[w->kind]);
     return weapon_name;
   }
   else{

@@ -1,4 +1,3 @@
-
 #ifndef CREATURE_BEHAVIOR
 #define CREATURE_BEHAVIOR
 #include "c_creature_struct.h"

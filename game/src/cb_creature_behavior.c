@@ -1,7 +1,7 @@
 #include "cb_creature_behavior.h"
 #include "status.h"
 
-void cb_pursue_target(Creature *c,Game_State *game_state){
+void cb_pursue_target(C_Creature *c,Game_State *game_state){
   /*Future note to self: we make the same check for the in-bound variant of the pursue method for every possible direction, perhaps there is some potential for simplyfying the logic
 as the check here has already decided that the distance in at least one direction is greater than 1, i.e it is possible to make a move that brings the creature closer to its target*/
   if((abs(c->position.global_y - c->target->position.global_y)) > 1 || (abs(c->position.global_x - c->target->position.global_x)) > 1){
@@ -25,10 +25,10 @@ as the check here has already decided that the distance in at least one directio
 }
   
 
-  void cb_attack_target(Creature *c,Game_State *game_state){
+  void cb_attack_target(C_Creature *c,Game_State *game_state){
   if(abs(c->position.global_y - c->target->position.global_y ) <= 1 && abs(c->position.global_x - c->target->position.global_x ) <= 1){
     //we subtract 1 from limb count since an array of n limbs has a max index of n-1
-    Limb attacking_limb = c->limbs[GEN_VALUE_RANGE(0,c->limb_count-1, game_state->twister)];
+    C_Limb attacking_limb = c->limbs[GEN_VALUE_RANGE(0,c->limb_count-1, game_state->twister)];
     CLEAR_MSG_LINE();
     //    mvwprintw(game_state->logs[MAIN_SCREEN],DEFAULT_MAX_Y,0, "%s%s%d%s", c_retrieve_creature_name(c) , " hits you for ", 10, " damage");
     MSG_ADD_CREATURE_ATTACK_EVENT_TO_LOG(c,c->target,game_state);
@@ -52,12 +52,12 @@ as the check here has already decided that the distance in at least one directio
   
 }
 
-void cb_idle(Creature *c,Game_State *game_state){
+void cb_idle(C_Creature *c,Game_State *game_state){
   ;
 }
 
 //Note to self, if i ever in the future have an error with the creatures, it's because i'm a fool and didn't realize you specify coordinates y,x, not x,y and managed to change this in a couple of places. I went through the code and changed it back to the correct order, but i might have missed a few places. subnote: simplify statemens by grouping them toegther in a macro at some point 
-void cb_roam(Creature *c,Game_State *game_state){
+void cb_roam(C_Creature *c,Game_State *game_state){
   int direction =  (rand() % (5 -  0 + 1) + 1);
   // Important: we evaluate if the change in position exceeds the boundary of the game map, THEN check if the tile we try to move to is validto avoid the possibility of accessing an offset outside of the malloc'ed area to avoid segmentation faults. THis is due to logical AND short circuiting (if the first statement is false, don't evluate the second) 
    if(direction == UP){
@@ -136,13 +136,13 @@ void cb_roam(Creature *c,Game_State *game_state){
 
 
 
-void cb_flee_target(Creature *c,Game_State *game_state){
+void cb_flee_target(C_Creature *c,Game_State *game_state){
   ;
 }
 
 //Function to have a creature pursue a target when it is out of the player's view boundary. We don't make the usual check to see if it is a passable tile the creature is trying to step on. We choose not to, because otherwise, we would end up having to do arbitrarily complex checks to move around objects, detcet if the creature is stuck and if it is stuck, get unstuck, etc. concrete cases will be written in the manual at some point
 
-  void cb_pursure_target_oob(Creature *c,Game_State *game_state){
+  void cb_pursure_target_oob(C_Creature *c,Game_State *game_state){
   // In order to pursue a target, we effectively try out all moves the creature can take to move closer to the current target. Provided the
   // distance becomes smaller and it is a valid tile to step on, make a move 
   
@@ -223,7 +223,7 @@ void cb_flee_target(Creature *c,Game_State *game_state){
 //Make additional check if a creature is standing on the on i.e it has an opponent struct in its foe pointer
 
       //mimmic pursuing behavior when the creature is within the players POW. Now, we HAVE to check if the tile it moves to is valid, because here the creature will be visible to the player 
-void cb_pursue_target_inb(Creature *c,Game_State *game_state){
+void cb_pursue_target_inb(C_Creature *c,Game_State *game_state){
   int direction;
   
   // We check both that we get closer to the target AND that the distance is greater than 1, because a distance of only one implies we are standing right next to the target
@@ -632,9 +632,9 @@ void cb_pursue_target_inb(Creature *c,Game_State *game_state){
 }
 
 
-void cb_act(Creature *c,Game_State *game_state){
+void cb_act(C_Creature *c,Game_State *game_state){
     c->curr_ap--; 
     (*creature_behavior_handler[c->behavior])(c,game_state);
 }
 
-void (*creature_behavior_handler[4])(Creature *c,Game_State *game_state) = {cb_idle, cb_roam,cb_pursue_target, cb_attack_target};
+void (*creature_behavior_handler[4])(C_Creature *c,Game_State *game_state) = {cb_idle, cb_roam,cb_pursue_target, cb_attack_target};

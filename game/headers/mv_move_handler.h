@@ -28,7 +28,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "dia_dialogue_struct.h"
 //#define MV_PRINT_DMG(creature) char *fpath = malloc(sizeof(char) * strlen() ) free(fpath);
 
-#define ADD_TO_PILE(global_x,global_y, item, game_world) Entry *new_entry = malloc(sizeof(Entry)); new_entry->item_holder = item; new_entry->next_entry = game_world->tiles[global_y][global_x].entry; game_world->tiles[global_y][global_x].entry = new_entry;
+#define ADD_TO_PILE(global_x,global_y, item, game_world) U_Entry *new_entry = malloc(sizeof(U_Entry)); new_entry->item_holder = item; new_entry->next_entry = game_world->tiles[global_y][global_x].entry; game_world->tiles[global_y][global_x].entry = new_entry;
 #define SPAWN_AT(creature,world, x,y)  mvprintw(c->position.local_y,c->position.local_x, c->representation);  move(c->position.local_y,c->position.local_x);  c->position.local_x = x; c->position.local_y = y; c->position.global_x = 42; c->position.global_y = y; 
 
 #define LOOP_HEIGHT(screen_height, height, x,y, max_x, max_y) for(int i = 0; i < screen_height -1 && i+y < height;  i++)

@@ -26,13 +26,13 @@ I_Item_Holder *inv_equip_item(I_Item_Holder *target_item_holder,C_Player_Info *p
   
   I_Item *tmp = NULL;
   if(retrieved_item->kind == weapon){
-    tmp = player_info->equipment_list[((struct I_Weapon *)retrieved_item->item_specific_info)->slot];  
-    player_info->equipment_list[((struct I_Weapon *)retrieved_item->item_specific_info)->slot] = retrieved_item;
+    tmp = player_info->equipment_list[(( I_Weapon *)retrieved_item->item_specific_info)->slot];  
+    player_info->equipment_list[(( I_Weapon *)retrieved_item->item_specific_info)->slot] = retrieved_item;
 
   }
   if(retrieved_item->kind == armor){
-    tmp = player_info->equipment_list[((struct I_Armor *)retrieved_item->item_specific_info)->slot];
-    player_info->equipment_list[((struct I_Armor *)retrieved_item->item_specific_info)->slot] = retrieved_item;
+    tmp = player_info->equipment_list[(( I_Armor *)retrieved_item->item_specific_info)->slot];
+    player_info->equipment_list[(( I_Armor *)retrieved_item->item_specific_info)->slot] = retrieved_item;
   }
   if(tmp != NULL){
     I_Item_Holder *added_item = malloc(sizeof(I_Item_Holder));

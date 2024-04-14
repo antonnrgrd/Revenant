@@ -21,10 +21,11 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "generic_macros.h"
 #include "u_hash.h"
 #include "game_state.h"
-#include "information_reader.h"
+#include "ir_information_reader.h"
 #include "i_item.h"
 #include "generate.h"
-#include "move_handler.h"
+#include "mv_move_handler.h"
+#include "c_creature.h"
 
 #define INITIATED_EXCHANGE 0
 #define NOT_INITIATED_EXCHANGE 1
@@ -35,8 +36,8 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 //screen, y,x, "%s X %d", quality_name_modifier[((union Equipment)item_holder->item->item_specific_info).weapon->quality]
 
 
-extern inline void msg_print_item(Item_Holder *item_holder, WINDOW *screen, int x, int y);
-static inline void msg_pickup_item(Game_State *game_state, Item_Holder *item_holder);
+extern inline void msg_print_item(I_Item_Holder *item_holder, WINDOW *screen, int x, int y);
+static inline void msg_pickup_item(Game_State *game_state, I_Item_Holder *item_holder);
 // In order to make changes to a panel visible, we firstly need to call update panel to make the changes to the panels visible, then make doupdate to make said changes ivisible to the physical screen. To avoid having to call these methods all the time, we wrap them inside a macro
 #define UPDATE_PANEL_INFO() update_panels(); doupdate();
 
@@ -53,7 +54,7 @@ int msg_show_log(Game_State *gs, int panel_index);
 
 int msg_find_log_position(Game_State *gs);
 
-int msg_find_item_position(WINDOW *log, int max_y,Item_Holder *item, Item_Holder **item_list);
+int msg_find_item_position(WINDOW *log, int max_y,I_Item_Holder *item, I_Item_Holder **item_list);
 
 
 
@@ -96,26 +97,26 @@ int msg_display_equipped_equipment(Game_State *gs);
 #define MSG_ENABLE_SCROLLING(window) scrollok(window, TRUE); idlok(window, TRUE);
 
 #define MSG_ITEM_PICKUP_NONEQUIPPABLE(game_state, item_holder) char *name /* = i_derive_item_name(item_holder->item); mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s%s%s%d%s", "Pickup ", name , " amount: ", item_holder->amount, " ? [y/n/a/d]"); free(name);
-									     #define MSG_ITEM_PICKUP_WEAPON(game_state, item_holder) mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s%s%s%s%s%s%d%s", "Pickup ",quality_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->quality], material_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->material],handed_modifier[((struct Weapon *)item_holder->item->item_specific_info)->variant],mele_weapon_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->kind] , " amount: ", item_holder->amount, " ? [y/n/a/d]")*/
+									     #define MSG_ITEM_PICKUP_WEAPON(game_state, item_holder) mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s%s%s%s%s%s%d%s", "Pickup ",quality_name_modifier[((struct I_Weapon *)item_holder->item->item_specific_info)->quality], material_name_modifier[((struct I_Weapon *)item_holder->item->item_specific_info)->material],handed_modifier[((struct I_Weapon *)item_holder->item->item_specific_info)->variant],mele_weapon_name_modifier[((struct I_Weapon *)item_holder->item->item_specific_info)->kind] , " amount: ", item_holder->amount, " ? [y/n/a/d]")*/
 
-#define MSG_ITEM_PICKUP_ARMOR(game_state, item_holder)mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s%s%s%s%s%d%s", "Pickup ",quality_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->quality], material_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->material],equipment_kind_modifier[((struct Armor *)item_holder->item->item_specific_info)->armor_type], " amount: ", item_holder->amount, " ? [y/n/a/d]")
+#define MSG_ITEM_PICKUP_ARMOR(game_state, item_holder)mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s%s%s%s%s%d%s", "Pickup ",quality_name_modifier[((struct I_Armor *)item_holder->item->item_specific_info)->quality], material_name_modifier[((struct I_Armor *)item_holder->item->item_specific_info)->material],equipment_kind_modifier[((struct I_Armor *)item_holder->item->item_specific_info)->armor_type], " amount: ", item_holder->amount, " ? [y/n/a/d]")
 
 #define MSG_ITEM_PICKUP_EQUIPPABLE(game_state, item_holder) item_holder->item->kind == weapon ? MSG_ITEM_PICKUP_WEAPON(game_state, item_holder):MSG_ITEM_PICKUP_ARMOR(game_state, item_holder)
 #define MSG_ITEM_PICKUP(game_state, item_holder) /* item_holder->item->kind == weapon || item_holder->item->kind == armor ? MSG_ITEM_PICKUP_EQUIPPABLE(game_state,item_holder): */ MSG_ITEM_PICKUP_NONEQUIPPABLE(game_state,item_holder)
 int msg_trading_session(int global_x, int global_y,Game_State *gs);
 
-void msg_redraw_inventory(Game_State *gs, Item_Holder **item_list, int context, int num_items);
+void msg_redraw_inventory(Game_State *gs, I_Item_Holder **item_list, int context, int num_items);
 void msg_redraw_equipped_equipment(Game_State *gs);
-void msg_redraw_inventory_equip_context(Game_State *gs, Item_Holder **item_list, int num_items, int curs_pos);
+void msg_redraw_inventory_equip_context(Game_State *gs, I_Item_Holder **item_list, int num_items, int curs_pos);
 
-#define MSG_ADD_EQUIP_EVENT_TO_LOG(item_holder, gs) item_holder->item->kind == armor ? sprintf(gs->bfr, "You equip %s %s %s",quality_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->quality], material_name_modifier[((struct Armor *)item_holder->item->item_specific_info)->material], equipment_type_modifier[((struct Armor *)item_holder->item->item_specific_info)->armor_type]), msg_update_event_log(gs) : sprintf(gs->bfr, "You equip %s%s%s%s",quality_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->quality], handed_modifier[((struct Weapon *)item_holder->item->item_specific_info)->variant] ,material_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->material] , mele_weapon_name_modifier[((struct Weapon *)item_holder->item->item_specific_info)->kind]), msg_update_event_log(gs)
+#define MSG_ADD_EQUIP_EVENT_TO_LOG(item_holder, gs) item_holder->item->kind == armor ? sprintf(gs->bfr, "You equip %s %s %s",m_quality_name_modifier[((struct I_Armor *)item_holder->item->item_specific_info)->quality], m_material_name_modifier[((struct I_Armor *)item_holder->item->item_specific_info)->material], m_equipment_type_modifier[((struct I_Armor *)item_holder->item->item_specific_info)->armor_type]), msg_update_event_log(gs) : sprintf(gs->bfr, "You equip %s%s%s%s",m_quality_name_modifier[((struct I_Weapon *)item_holder->item->item_specific_info)->quality], m_handed_modifier[((struct I_Weapon *)item_holder->item->item_specific_info)->variant] ,m_material_name_modifier[((struct I_Weapon *)item_holder->item->item_specific_info)->material] , m_mele_weapon_name_modifier[((struct I_Weapon *)item_holder->item->item_specific_info)->kind]), msg_update_event_log(gs)
 
 #define MSG_ADD_ATTACK_OPPONENT_EVENT_TO_LOG(creature, gs)ir_add_damage_to_creature_to_log(gs, gs->player, creature);  msg_update_event_log(gs);
 
 #define MSG_ADD_CREATURE_ATTACK_EVENT_TO_LOG(creature,target, gs)ir_add_damage_to_creature_to_log(gs,creature,target);  msg_update_event_log(gs);
 
 #define MSG_ADD_PURCHASE_TO_EVENT_LOG(item,gs,amount) ir_add_item_purchase_to_log(gs,item,amount); msg_update_event_log(gs);
-void msg_add_attack_event_to_log(Item_Holder *item_holder);
+void msg_add_attack_event_to_log(I_Item_Holder *item_holder);
 
 void msg_add_attack_player_event_to_log();
 
@@ -124,7 +125,7 @@ void msg_redraw_log(Game_State *gs);
 
 #define MSG_PUT_DOWN_NOTIFICATION_LOG(gs, log_index) hide_panel(gs->panels[log_index]); UPDATE_PANEL_INFO();
 
-void msg_redraw_trading_session(Game_State *gs,Item_Holder **item_list,int num_items, int event_flag, char amount_bfr[5]);
+void msg_redraw_trading_session(Game_State *gs,I_Item_Holder **item_list,int num_items, int event_flag, char amount_bfr[5]);
 /*Assumes that current_event has already been added to Game_State's current event field. For various adhoc messages were we cannot justify a seperate method for formatting and generating the message*/
 #define MSG_ADD_GENERIC_EVENT_LOG(gs) msg_update_event_log(gs);
 #endif

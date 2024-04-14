@@ -37,7 +37,7 @@ typedef struct{
   int deleted;
 }U_Item_Weight;
 
-typedef struct{
+typedef struct U_Entry{
   I_Item_Holder *item_holder;
   struct U_Entry *next_entry;
 }U_Entry;

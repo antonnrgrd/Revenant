@@ -130,7 +130,7 @@ int msg_trading_session(int global_x, int global_y,Game_State *gs){
 	       }
 	     UPDATE_PANEL_INFO();
 	      }
-	    else  if(item_list[curr_curs_pos-2]->item->value * atoi(amount_bfr) >= (((I_Player_Info * )gs->player->additional_info)->inventory)->money ){
+	    else  if(item_list[curr_curs_pos-2]->item->value * atoi(amount_bfr) >= (((C_Player_Info * )gs->player->additional_info)->inventory)->money ){
 		mvwprintw(gs->logs[NOTIFICATION_LOG],(gs->notification_log_height_size/2)-1,gs->notification_log_width_size/3, "Not enough money");
 	     UPDATE_PANEL_INFO();
 	     while(1){
@@ -203,19 +203,19 @@ int msg_trading_session(int global_x, int global_y,Game_State *gs){
 static inline void msg_pickup_item(Game_State *game_state, I_Item_Holder *item_holder){
   if(item_holder->item->kind == weapon){
     if(item_holder->amount != 1){
-      mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s%s%s%s%s%s%d%s", "Pickup ",quality_name_modifier[((struct I_Weapon *)item_holder->item->item_specific_info)->quality], material_name_modifier[((struct I_Weapon *)item_holder->item->item_specific_info)->material],handed_modifier[((struct I_Weapon *)item_holder->item->item_specific_info)->variant],mele_weapon_name_modifier[((struct I_Weapon *)item_holder->item->item_specific_info)->kind] , " amount: ", item_holder->amount, " ? [y/n/a/d]");
+      mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s%s%s%s%s%s%d%s", "Pickup ",m_quality_name_modifier[((struct I_Weapon *)item_holder->item->item_specific_info)->quality], m_material_name_modifier[((struct I_Weapon *)item_holder->item->item_specific_info)->material],m_handed_modifier[((struct I_Weapon *)item_holder->item->item_specific_info)->variant],m_mele_weapon_name_modifier[((struct I_Weapon *)item_holder->item->item_specific_info)->kind] , " amount: ", item_holder->amount, " ? [y/n/a/d]");
   }
     else{
-      mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s%s%s%s%s%s", "Pickup ",quality_name_modifier[((struct I_Weapon *)item_holder->item->item_specific_info)->quality], material_name_modifier[((struct I_Weapon *)item_holder->item->item_specific_info)->material],handed_modifier[((struct I_Weapon *)item_holder->item->item_specific_info)->variant],mele_weapon_name_modifier[((struct I_Weapon *)item_holder->item->item_specific_info)->kind] , " ? [y/n/a/d]");
+      mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s%s%s%s%s%s", "Pickup ",m_quality_name_modifier[((struct I_Weapon *)item_holder->item->item_specific_info)->quality], m_material_name_modifier[((struct I_Weapon *)item_holder->item->item_specific_info)->material],m_handed_modifier[((struct I_Weapon *)item_holder->item->item_specific_info)->variant],m_mele_weapon_name_modifier[((struct I_Weapon *)item_holder->item->item_specific_info)->kind] , " ? [y/n/a/d]");
     }
   }
 
   else if(item_holder->item->kind == armor){
     if(item_holder->amount != 1){
-      mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s%s%s%s%s%d%s", "Pickup ",quality_name_modifier[((struct I_Armor *)item_holder->item->item_specific_info)->quality], material_name_modifier[((struct I_Armor *)item_holder->item->item_specific_info)->material],equipment_type_modifier[((struct Armor *)item_holder->item->item_specific_info)->armor_type], " amount: ", item_holder->amount, " ? [y/n/a/d]");
+      mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s%s%s%s%s%d%s", "Pickup ",m_quality_name_modifier[((struct I_Armor *)item_holder->item->item_specific_info)->quality], m_material_name_modifier[((struct I_Armor *)item_holder->item->item_specific_info)->material],m_equipment_type_modifier[((struct I_Armor *)item_holder->item->item_specific_info)->armor_type], " amount: ", item_holder->amount, " ? [y/n/a/d]");
     }
     else{
-      mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s%s%s%s%s", "Pickup ",quality_name_modifier[((struct I_Armor *)item_holder->item->item_specific_info)->quality], material_name_modifier[((struct I_Armor *)item_holder->item->item_specific_info)->material],equipment_type_modifier[((struct I_Armor *)item_holder->item->item_specific_info)->armor_type], " ? [y/n/a/d]");
+      mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s%s%s%s%s", "Pickup ",m_quality_name_modifier[((struct I_Armor *)item_holder->item->item_specific_info)->quality], m_material_name_modifier[((struct I_Armor *)item_holder->item->item_specific_info)->material],m_equipment_type_modifier[((struct I_Armor *)item_holder->item->item_specific_info)->armor_type], " ? [y/n/a/d]");
     }
   }
     
@@ -239,19 +239,19 @@ extern inline void msg_print_item(I_Item_Holder *item_holder, WINDOW *screen, in
   
   else if(item_holder->item->kind == weapon){
     if(item_holder->amount != 1){
-      mvwprintw(screen, y,x, "%s%s%s%s%s%d", quality_name_modifier[((struct I_Weapon *)item_holder->item->item_specific_info)->quality],handed_modifier[((struct I_Weapon *)item_holder->item->item_specific_info)->variant],material_name_modifier[((struct I_Weapon *)item_holder->item->item_specific_info)->material], mele_weapon_name_modifier[((struct I_Weapon *)item_holder->item->item_specific_info)->kind], " X ", item_holder->amount);
+      mvwprintw(screen, y,x, "%s%s%s%s%s%d", m_quality_name_modifier[((struct I_Weapon *)item_holder->item->item_specific_info)->quality],m_handed_modifier[((struct I_Weapon *)item_holder->item->item_specific_info)->variant],m_material_name_modifier[((struct I_Weapon *)item_holder->item->item_specific_info)->material], m_mele_weapon_name_modifier[((struct I_Weapon *)item_holder->item->item_specific_info)->kind], " X ", item_holder->amount);
   }
     else{
-      mvwprintw(screen, y,x, "%s%s%s%s", quality_name_modifier[((struct I_Weapon *)item_holder->item->item_specific_info)->quality],handed_modifier[((struct I_Weapon *)item_holder->item->item_specific_info)->variant],material_name_modifier[((struct I_Weapon *)item_holder->item->item_specific_info)->material], mele_weapon_name_modifier[((struct I_Weapon *)item_holder->item->item_specific_info)->kind]);
+      mvwprintw(screen, y,x, "%s%s%s%s", m_quality_name_modifier[((struct I_Weapon *)item_holder->item->item_specific_info)->quality],m_handed_modifier[((struct I_Weapon *)item_holder->item->item_specific_info)->variant],m_material_name_modifier[((struct I_Weapon *)item_holder->item->item_specific_info)->material], m_mele_weapon_name_modifier[((struct I_Weapon *)item_holder->item->item_specific_info)->kind]);
     }
   }
 
   else if(item_holder->item->kind == armor){
     if(item_holder->amount != 1){
-      mvwprintw(screen, y,x, "%s%s%s%s%d", quality_name_modifier[((struct I_Armor *)item_holder->item->item_specific_info)->quality],material_name_modifier[((struct I_Armor *)item_holder->item->item_specific_info)->material], equipment_type_modifier[((struct I_Armor *)item_holder->item->item_specific_info)->armor_type], " X ", item_holder->amount);
+      mvwprintw(screen, y,x, "%s%s%s%s%d", m_quality_name_modifier[((struct I_Armor *)item_holder->item->item_specific_info)->quality],m_material_name_modifier[((struct I_Armor *)item_holder->item->item_specific_info)->material], m_equipment_type_modifier[((struct I_Armor *)item_holder->item->item_specific_info)->armor_type], " X ", item_holder->amount);
     }
     else{
-      mvwprintw(screen, y,x, "%s%s%s", quality_name_modifier[((struct I_Armor *)item_holder->item->item_specific_info)->quality],material_name_modifier[((struct I_Armor *)item_holder->item->item_specific_info)->material],  equipment_type_modifier[((struct I_Armor *)item_holder->item->item_specific_info)->armor_type]);
+      mvwprintw(screen, y,x, "%s%s%s", m_quality_name_modifier[((struct I_Armor *)item_holder->item->item_specific_info)->quality],m_material_name_modifier[((struct I_Armor *)item_holder->item->item_specific_info)->material],  m_equipment_type_modifier[((struct I_Armor *)item_holder->item->item_specific_info)->armor_type]);
     }
   }
     
@@ -358,11 +358,11 @@ int msg_display_inventory(Game_State *gs,int context, U_Hashtable *merchant){
   MSG_CLEAR_SCREEN(gs->logs[INVENTORY_LOG]);
   INIT_INVENTORY_LOG(gs->logs[INVENTORY_LOG], "Items in inventory");
   I_Item_Holder **item_list = NULL;
-  item_list = malloc(sizeof(I_Item_Holder* ) * (((I_Player_Info * )gs->player->additional_info)->inventory)->item_count);
+  item_list = malloc(sizeof(I_Item_Holder* ) * (((C_Player_Info * )gs->player->additional_info)->inventory)->item_count);
   int column_position = 2;
-  for(int i = 0; i < (((I_Player_Info * )gs->player->additional_info)->inventory)->size; i++ ){
-    if((((I_Player_Info * )gs->player->additional_info)->inventory)->entries[i] != NULL){
-      Entry  *current_entry = (((I_Player_Info * )gs->player->additional_info)->inventory)->entries[i];
+  for(int i = 0; i < (((C_Player_Info * )gs->player->additional_info)->inventory)->size; i++ ){
+    if((((C_Player_Info * )gs->player->additional_info)->inventory)->entries[i] != NULL){
+      U_Entry  *current_entry = (((C_Player_Info * )gs->player->additional_info)->inventory)->entries[i];
       while(current_entry != NULL){
 	msg_print_item(current_entry->item_holder,gs->logs[INVENTORY_LOG],5,column_position);
 	item_list[column_position-2] = current_entry->item_holder;
@@ -420,15 +420,15 @@ int msg_display_inventory_equip_context(Game_State *gs){
   I_Item_Holder **item_list = NULL;
   /*We malloc an itemlist of size item_count to account for the maximal possible items we need to hold and set them to null
    to account for the fact that potentially not all items in the inventory are equipment*/
-  if((((I_Player_Info * )gs->player->additional_info)->inventory)->item_count > 0){
-    item_list = malloc(sizeof(I_Item_Holder* ) * (((I_Player_Info * )gs->player->additional_info)->inventory)->item_count);
+  if((((C_Player_Info * )gs->player->additional_info)->inventory)->item_count > 0){
+    item_list = malloc(sizeof(I_Item_Holder* ) * (((C_Player_Info * )gs->player->additional_info)->inventory)->item_count);
   }
-  for(int i = 0; i < (((I_Player_Info * )gs->player->additional_info)->inventory)->item_count; i++){
+  for(int i = 0; i < (((C_Player_Info * )gs->player->additional_info)->inventory)->item_count; i++){
     item_list[i] = NULL;
   }
-  for(int i = 0; i < (((I_Player_Info * )gs->player->additional_info)->inventory)->size; i++ ){
-    if((((I_Player_Info * )gs->player->additional_info)->inventory)->entries[i] != NULL){
-      Entry  *current_entry = (((I_Player_Info * )gs->player->additional_info)->inventory)->entries[i];
+  for(int i = 0; i < (((C_Player_Info * )gs->player->additional_info)->inventory)->size; i++ ){
+    if((((C_Player_Info * )gs->player->additional_info)->inventory)->entries[i] != NULL){
+      U_Entry  *current_entry = (((C_Player_Info * )gs->player->additional_info)->inventory)->entries[i];
       while(current_entry != NULL){
 	if(current_entry->item_holder->item->kind == weapon || current_entry->item_holder->item->kind == armor ){
 	item_list[column_position-2] =  current_entry->item_holder;  
@@ -568,31 +568,31 @@ int msg_display_equipped_equipment(Game_State *gs){
   item_holder->amount = 1;
   mvwprintw(gs->logs[INVENTORY_LOG],1,25, "Items equipped");
   mvwprintw(gs->logs[INVENTORY_LOG],4,25, "Head slot:");
-  item_holder->item = ((I_Player_Info * )gs->player->additional_info)->equipment_list[head_slot];
+  item_holder->item = ((C_Player_Info * )gs->player->additional_info)->equipment_list[head_slot];
   msg_print_item(item_holder,gs->logs[INVENTORY_LOG],25,5);  
   mvwprintw(gs->logs[INVENTORY_LOG],6,25, "Neck slot:");
-  item_holder->item = ((I_Player_Info * )gs->player->additional_info)->equipment_list[neck_slot];
+  item_holder->item = ((C_Player_Info * )gs->player->additional_info)->equipment_list[neck_slot];
   msg_print_item(item_holder,gs->logs[INVENTORY_LOG],25,7);  
   mvwprintw(gs->logs[INVENTORY_LOG],8,25, "Torso slot:");
-  item_holder->item = ((I_Player_Info * )gs->player->additional_info)->equipment_list[torso_slot];
+  item_holder->item = ((C_Player_Info * )gs->player->additional_info)->equipment_list[torso_slot];
   msg_print_item(item_holder,gs->logs[INVENTORY_LOG],25,9);  
   mvwprintw(gs->logs[INVENTORY_LOG],12,5, "Finger slot:");
-  item_holder->item = ((I_Player_Info * )gs->player->additional_info)->equipment_list[finger_slot];
+  item_holder->item = ((C_Player_Info * )gs->player->additional_info)->equipment_list[finger_slot];
   msg_print_item(item_holder,gs->logs[INVENTORY_LOG],5,13);  
   mvwprintw(gs->logs[INVENTORY_LOG],15,25, "Legs slot:");
-  item_holder->item = ((I_Player_Info * )gs->player->additional_info)->equipment_list[legs_slot];
+  item_holder->item = ((C_Player_Info * )gs->player->additional_info)->equipment_list[legs_slot];
   msg_print_item(item_holder,gs->logs[INVENTORY_LOG],25,16);  
   mvwprintw(gs->logs[INVENTORY_LOG],18,25, "Feet slot:");
-  item_holder->item = ((I_Player_Info * )gs->player->additional_info)->equipment_list[feet_slot];
+  item_holder->item = ((C_Player_Info * )gs->player->additional_info)->equipment_list[feet_slot];
   msg_print_item(item_holder,gs->logs[INVENTORY_LOG],25,19);  
   mvwprintw(gs->logs[INVENTORY_LOG],10,3, "Mainhand slot:");
-  item_holder->item = ((I_Player_Info * )gs->player->additional_info)->equipment_list[mainhand_slot];
+  item_holder->item = ((C_Player_Info * )gs->player->additional_info)->equipment_list[mainhand_slot];
   msg_print_item(item_holder,gs->logs[INVENTORY_LOG],3,11);  
   mvwprintw(gs->logs[INVENTORY_LOG],10,38, "Offhand slot:");
-  item_holder->item = ((I_Player_Info * )gs->player->additional_info)->equipment_list[offhand_slot];
+  item_holder->item = ((C_Player_Info * )gs->player->additional_info)->equipment_list[offhand_slot];
   msg_print_item(item_holder,gs->logs[INVENTORY_LOG],38,11);  
   mvwprintw(gs->logs[INVENTORY_LOG],2,40, "Back slot:");
-  item_holder->item = ((I_Player_Info * )gs->player->additional_info)->equipment_list[back_slot];
+  item_holder->item = ((C_Player_Info * )gs->player->additional_info)->equipment_list[back_slot];
   msg_print_item(item_holder,gs->logs[INVENTORY_LOG],40,3);  
   top_panel(gs->panels[INVENTORY_LOG]);
   UPDATE_PANEL_INFO();
@@ -687,31 +687,31 @@ void msg_redraw_equipped_equipment(Game_State *gs){
   item_holder->amount = 1;
   mvwprintw(gs->logs[INVENTORY_LOG],1,25, "Items equipped");
   mvwprintw(gs->logs[INVENTORY_LOG],4,25, "Head slot:");
-  item_holder->item = ((I_Player_Info * )gs->player->additional_info)->equipment_list[head_slot];
+  item_holder->item = ((C_Player_Info * )gs->player->additional_info)->equipment_list[head_slot];
   msg_print_item(item_holder,gs->logs[INVENTORY_LOG],25,5);  
   mvwprintw(gs->logs[INVENTORY_LOG],6,25, "Neck slot:");
-  item_holder->item = ((I_Player_Info * )gs->player->additional_info)->equipment_list[neck_slot];
+  item_holder->item = ((C_Player_Info * )gs->player->additional_info)->equipment_list[neck_slot];
   msg_print_item(item_holder,gs->logs[INVENTORY_LOG],25,7);  
   mvwprintw(gs->logs[INVENTORY_LOG],8,25, "Torso slot:");
-  item_holder->item = ((I_Player_Info * )gs->player->additional_info)->equipment_list[torso_slot];
+  item_holder->item = ((C_Player_Info * )gs->player->additional_info)->equipment_list[torso_slot];
   msg_print_item(item_holder,gs->logs[INVENTORY_LOG],25,9);  
   mvwprintw(gs->logs[INVENTORY_LOG],12,5, "Finger slot:");
-  item_holder->item = ((I_Player_Info * )gs->player->additional_info)->equipment_list[finger_slot];
+  item_holder->item = ((C_Player_Info * )gs->player->additional_info)->equipment_list[finger_slot];
   msg_print_item(item_holder,gs->logs[INVENTORY_LOG],5,13);  
   mvwprintw(gs->logs[INVENTORY_LOG],15,25, "Legs slot:");
-  item_holder->item = ((I_Player_Info * )gs->player->additional_info)->equipment_list[legs_slot];
+  item_holder->item = ((C_Player_Info * )gs->player->additional_info)->equipment_list[legs_slot];
   msg_print_item(item_holder,gs->logs[INVENTORY_LOG],25,16);  
   mvwprintw(gs->logs[INVENTORY_LOG],18,25, "Feet slot:");
-  item_holder->item = ((I_Player_Info * )gs->player->additional_info)->equipment_list[feet_slot];
+  item_holder->item = ((C_Player_Info * )gs->player->additional_info)->equipment_list[feet_slot];
   msg_print_item(item_holder,gs->logs[INVENTORY_LOG],25,19);  
   mvwprintw(gs->logs[INVENTORY_LOG],10,3, "Mainhand slot:");
-  item_holder->item = ((I_Player_Info * )gs->player->additional_info)->equipment_list[mainhand_slot];
+  item_holder->item = ((C_Player_Info * )gs->player->additional_info)->equipment_list[mainhand_slot];
   msg_print_item(item_holder,gs->logs[INVENTORY_LOG],3,11);  
   mvwprintw(gs->logs[INVENTORY_LOG],10,38, "Offhand slot:");
-  item_holder->item = ((I_Player_Info * )gs->player->additional_info)->equipment_list[offhand_slot];
+  item_holder->item = ((C_Player_Info * )gs->player->additional_info)->equipment_list[offhand_slot];
   msg_print_item(item_holder,gs->logs[INVENTORY_LOG],38,11);  
   mvwprintw(gs->logs[INVENTORY_LOG],2,40, "Back slot:");
-  item_holder->item = ((I_Player_Info * )gs->player->additional_info)->equipment_list[back_slot];
+  item_holder->item = ((C_Player_Info * )gs->player->additional_info)->equipment_list[back_slot];
   msg_print_item(item_holder,gs->logs[INVENTORY_LOG],40,3);  
   top_panel(gs->panels[INVENTORY_LOG]);
   UPDATE_PANEL_INFO();
@@ -729,31 +729,31 @@ void msg_redraw_equipped_equipment(Game_State *gs){
   item_holder->amount = 1;
   mvwprintw(gs->logs[INVENTORY_LOG],1,25, "Items equipped");
   mvwprintw(gs->logs[INVENTORY_LOG],4,25, "Head slot:");
-  item_holder->item = ((I_Player_Info * )gs->player->additional_info)->equipment_list[head_slot];
+  item_holder->item = ((C_Player_Info * )gs->player->additional_info)->equipment_list[head_slot];
   msg_print_item(item_holder,gs->logs[INVENTORY_LOG],25,5);  
   mvwprintw(gs->logs[INVENTORY_LOG],6,25, "Neck slot:");
-  item_holder->item = ((I_Player_Info * )gs->player->additional_info)->equipment_list[neck_slot];
+  item_holder->item = ((C_Player_Info * )gs->player->additional_info)->equipment_list[neck_slot];
   msg_print_item(item_holder,gs->logs[INVENTORY_LOG],25,7);  
   mvwprintw(gs->logs[INVENTORY_LOG],8,25, "Torso slot:");
-  item_holder->item = ((I_Player_Info * )gs->player->additional_info)->equipment_list[torso_slot];
+  item_holder->item = ((C_Player_Info * )gs->player->additional_info)->equipment_list[torso_slot];
   msg_print_item(item_holder,gs->logs[INVENTORY_LOG],25,9);  
   mvwprintw(gs->logs[INVENTORY_LOG],12,5, "Finger slot:");
-  item_holder->item = ((I_Player_Info * )gs->player->additional_info)->equipment_list[finger_slot];
+  item_holder->item = ((C_Player_Info * )gs->player->additional_info)->equipment_list[finger_slot];
   msg_print_item(item_holder,gs->logs[INVENTORY_LOG],5,13);  
   mvwprintw(gs->logs[INVENTORY_LOG],15,25, "Legs slot:");
-  item_holder->item = ((I_Player_Info * )gs->player->additional_info)->equipment_list[legs_slot];
+  item_holder->item = ((C_Player_Info * )gs->player->additional_info)->equipment_list[legs_slot];
   msg_print_item(item_holder,gs->logs[INVENTORY_LOG],25,16);  
   mvwprintw(gs->logs[INVENTORY_LOG],18,25, "Feet slot:");
-  item_holder->item = ((I_Player_Info * )gs->player->additional_info)->equipment_list[feet_slot];
+  item_holder->item = ((C_Player_Info * )gs->player->additional_info)->equipment_list[feet_slot];
   msg_print_item(item_holder,gs->logs[INVENTORY_LOG],25,19);  
   mvwprintw(gs->logs[INVENTORY_LOG],10,3, "Mainhand slot:");
-  item_holder->item = ((I_Player_Info * )gs->player->additional_info)->equipment_list[mainhand_slot];
+  item_holder->item = ((C_Player_Info * )gs->player->additional_info)->equipment_list[mainhand_slot];
   msg_print_item(item_holder,gs->logs[INVENTORY_LOG],3,11);  
   mvwprintw(gs->logs[INVENTORY_LOG],10,38, "Offhand slot:");
-  item_holder->item = ((I_Player_Info * )gs->player->additional_info)->equipment_list[offhand_slot];
+  item_holder->item = ((C_Player_Info * )gs->player->additional_info)->equipment_list[offhand_slot];
   msg_print_item(item_holder,gs->logs[INVENTORY_LOG],38,11);  
   mvwprintw(gs->logs[INVENTORY_LOG],2,40, "Back slot:");
-  item_holder->item = ((I_Player_Info * )gs->player->additional_info)->equipment_list[back_slot];
+  item_holder->item = ((C_Player_Info * )gs->player->additional_info)->equipment_list[back_slot];
   msg_print_item(item_holder,gs->logs[INVENTORY_LOG],40,3);  
   top_panel(gs->panels[INVENTORY_LOG]);
   UPDATE_PANEL_INFO();

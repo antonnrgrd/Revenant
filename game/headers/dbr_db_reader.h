@@ -12,7 +12,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define DB_READER
 #include <sqlite3.h>
 #include "game_state_struct.h"
-#include "db_reader_struct.h"
+#include "dbr_db_reader_struct.h"
 
 Dbr_Selected_Dialogue_Qresult dbr_get_dialogue_response(Game_State *gs,Dia_Dialogue_Manager *manager, int selected_choice);
 Dia_Dialogue_Manager *dbr_readin_dialogue_manager(int np_id);

@@ -15,7 +15,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "mv_move_handler.h"
 
-int mv_check_move_handler(int global_x, int global_y, int local_x, int local_y, Creature *c,Game_State *game_state){
+int mv_check_move_handler(int global_x, int global_y, int local_x, int local_y, C_Creature *c,Game_State *game_state){
   // Before we check the response value from the character, we first need to be assert that position we are trying to make the move to is within bounds of the current zone's dimensionality to avoid invalid index lookups in the game world's tiles (whether negative or too large index values)
   if( (global_x < game_state->current_zone->width  && global_y < game_state->current_zone->height) && (global_x > -1  && global_y > -1 )  ){
     int response = numerical_responses[game_state->current_zone->tiles[global_y][global_x].content[0]];
@@ -28,9 +28,9 @@ int mv_check_move_handler(int global_x, int global_y, int local_x, int local_y, 
 }
 
 
-int (*move_response_handler[6])(int global_x, int global_y, int local_x, int local_y, Creature *c,Game_State *game_state) =  {move_response_move_character,move_response_halt_character,move_response_loot_item, move_response_attack_target , move_response_initiate_trade,move_response_initiate_dialoge };
+int (*move_response_handler[6])(int global_x, int global_y, int local_x, int local_y, C_Creature *c,Game_State *game_state) =  {move_response_move_character,move_response_halt_character,move_response_loot_item, move_response_attack_target , move_response_initiate_trade,move_response_initiate_dialoge };
 
-  int move_response_move_character(int global_x, int global_y, int local_x, int local_y, Creature *c,Game_State *game_state){
+  int move_response_move_character(int global_x, int global_y, int local_x, int local_y, C_Creature *c,Game_State *game_state){
     mvwprintw(game_state->logs[MAIN_SCREEN],c->position.local_y,c->position.local_x, c->standing_on);
     game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0] = c->standing_on[0];
     c->position.global_x = global_x;
@@ -72,7 +72,7 @@ int (*move_response_handler[6])(int global_x, int global_y, int local_x, int loc
   } 
 }
 
-int move_response_halt_character(int global_x, int global_y,int local_x, int local_y, Creature *c,Game_State *game_state){
+int move_response_halt_character(int global_x, int global_y,int local_x, int local_y, C_Creature *c,Game_State *game_state){
   c->curr_ap--;
   if(c->curr_ap == 0){
     return END_TURN;
@@ -84,19 +84,19 @@ int move_response_halt_character(int global_x, int global_y,int local_x, int loc
 
 /*Ignore the fact that the message is not visible on screen until the creature dies because at some point you will rewrite the game to use the entire terminal, but for now, keep in mind you won't see that you are damaging your target until it is dead. oddly enough, it is visible in the event log.*/
 
-int move_response_attack_target(int global_x, int global_y,int local_x, int local_y, Creature *c,Game_State *game_state){
+int move_response_attack_target(int global_x, int global_y,int local_x, int local_y, C_Creature *c,Game_State *game_state){
   if  (1){
     CLEAR_MSG_LINE();
-    MSG_ADD_ATTACK_OPPONENT_EVENT_TO_LOG(((Creature *)game_state->current_zone->tiles[global_y][global_x].foe),  game_state);
+    MSG_ADD_ATTACK_OPPONENT_EVENT_TO_LOG(((C_Creature *)game_state->current_zone->tiles[global_y][global_x].foe),  game_state);
       move(c->position.local_y,c->position.local_x);
      
-    if (((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->curr_health <= 0){
-      mvwprintw(game_state->logs[MAIN_SCREEN],game_state,((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->position.local_y,((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->position.local_x,((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->standing_on[0]);
-           game_state->current_zone->tiles[global_y][global_x].content[0] = ((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->standing_on[0];
+    if (((C_Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->curr_health <= 0){
+      mvwprintw(game_state->logs[MAIN_SCREEN],game_state,((C_Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->position.local_y,((C_Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->position.local_x,((C_Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->standing_on[0]);
+           game_state->current_zone->tiles[global_y][global_x].content[0] = ((C_Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->standing_on[0];
 	   // c_cleanup_creature(c,game_state->current_zone);
       
       // If a creature runs out of health, mark it for deletion s.t when we next go through all the creatures that are to act, we see that it is dead and can therefore be free'd and removed from the list of active creatures  
-	         ((Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->marked_for_deletion = YES;
+	         ((C_Creature *)game_state->current_zone->tiles[global_y][global_x].foe)->marked_for_deletion = YES;
     }
   }
   c->curr_ap--;
@@ -112,7 +112,7 @@ int move_response_attack_target(int global_x, int global_y,int local_x, int loca
 
   
 
-int move_response_loot_item(int global_x, int global_y,int local_x, int local_y, Creature *c,Game_State *game_state){
+int move_response_loot_item(int global_x, int global_y,int local_x, int local_y, C_Creature *c,Game_State *game_state){
   
   c->position.global_x = global_x;
   c->position.global_y = global_y;
@@ -134,13 +134,13 @@ mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s%s%s%d%s", "Pickup ", i_derive_i
   switch(response){
    case 'y':
     result = inv_add_item(game_state->current_zone->tiles[global_y][global_x].entry->item_holder, (struct U_Hashtable *)c->additional_info, c);
-    Item *i = game_state->current_zone->tiles[global_y][global_x].entry->item_holder->item;
+    I_Item *i = game_state->current_zone->tiles[global_y][global_x].entry->item_holder->item;
     if(result == SUCCESS_ADDITION){
       move(0,0);
       clrtoeol();
       move(c->position.local_y,c->position.local_x);
       mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s", "Item(s) successfully added to inventory");
-      Entry *next_in_pile = game_state->current_zone->tiles[global_y][global_x].entry->next_entry;
+      U_Entry *next_in_pile = game_state->current_zone->tiles[global_y][global_x].entry->next_entry;
       free(game_state->current_zone->tiles[global_y][global_x].entry);
       if(next_in_pile != NULL){
 	game_state->current_zone->tiles[global_y][global_x].entry = next_in_pile;
@@ -185,13 +185,13 @@ mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s%s%s%d%s", "Pickup ", i_derive_i
 
 
 
-int move_response_initiate_trade(int global_x, int global_y,int local_x, int local_y, Creature *c,Game_State *game_state){
+int move_response_initiate_trade(int global_x, int global_y,int local_x, int local_y, C_Creature *c,Game_State *game_state){
   msg_trading_session(global_x,global_y,game_state);
   return CONTINUE_TURN;
 }
 
 
-int move_response_initiate_dialoge(int global_x, int global_y,int local_x, int local_y, Creature *c,Game_State *game_state){
+int move_response_initiate_dialoge(int global_x, int global_y,int local_x, int local_y, C_Creature *c,Game_State *game_state){
   dia_loop_dialogue((Dia_Dialogue_Manager *)game_state->current_zone->tiles[global_y][global_x].foe, game_state);
   return CONTINUE_TURN;
 }

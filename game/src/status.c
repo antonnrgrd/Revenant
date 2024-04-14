@@ -9,7 +9,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "status.h"
-void st_status_handler_player(Creature *c){
+void st_status_handler_player(C_Creature *c){
   for(int i = 0; i < 0; i++){
     if(ST_CHECK_FLAG_SET(c,i)){
       ;

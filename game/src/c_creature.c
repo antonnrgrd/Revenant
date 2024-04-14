@@ -16,19 +16,19 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "c_creature.h"
 #include "mv_move_handler.h"
  
-void c_free_creature(Creature *c){
+void c_free_creature(C_Creature *c){
   free(c->representation);
   free(c->standing_on);
-  // We do not free the Creature struct itself because when a creature dies, we mark it for deletion and later on, when going through all active creatures and we see that it is marked for deletion, we remove it from the list of active creatures and only then, can we safely remove. Otherwise, we will have a segementation fault because we pass a null pointer as an argument for the creature behavior function.
+  // We do not free the C_Creature struct itself because when a creature dies, we mark it for deletion and later on, when going through all active creatures and we see that it is marked for deletion, we remove it from the list of active creatures and only then, can we safely remove. Otherwise, we will have a segementation fault because we pass a null pointer as an argument for the creature behavior function.
 }
 
-void c_cleanup_creature(Creature *c,Game_World *world ){
+void c_cleanup_creature(C_Creature *c,Game_World *world ){
   c_free_creature(c);
 }
 
-void (*c_free_creature_body_type[1])(Creature *c) = {};
+void (*c_free_creature_body_type[1])(C_Creature *c) = {};
 
-void c_initialize_humanoid_inf(Creature *c, int id){
+void c_initialize_humanoid_inf(C_Creature *c, int id){
   //  Humanoid_Definition d = humanoid_definitions[id];
   //  c->weight = d.weight;
   // c->height = d.height;
@@ -36,8 +36,8 @@ void c_initialize_humanoid_inf(Creature *c, int id){
   // c->instance.humanoid = c_generate_humanoid_instance(d);
 }
 
-Creature *c_generate_creature(Creature_Kind kind, int id,unsigned x,unsigned y,Game_World *world,Creature *target){
-  Creature *c = malloc(sizeof(Creature));
+C_Creature *c_generate_creature(C_Creature_Kind kind, int id,unsigned x,unsigned y,Game_World *world,C_Creature *target){
+  C_Creature *c = malloc(sizeof(C_Creature));
 
   c->position.global_x=x;
   c->position.global_y=y;
@@ -65,8 +65,8 @@ Creature *c_generate_creature(Creature_Kind kind, int id,unsigned x,unsigned y,G
 
 
 // A tester function to help test cases 
-Creature *c_random_player(int x, int y,Game_State *gs, Game_World *gw){
-  Creature *c = malloc(sizeof(Creature));
+C_Creature *c_random_player(int x, int y,Game_State *gs, Game_World *gw){
+  C_Creature *c = malloc(sizeof(C_Creature));
   c->curr_ap = 1;
   c->max_ap = 1;
   //c->standing_on = malloc(sizeof(char));
@@ -108,15 +108,15 @@ Creature *c_random_player(int x, int y,Game_State *gs, Game_World *gw){
 
   //c->representation = malloc(sizeof(char));
   c->representation[0] = '@';
-  c->color = malloc(sizeof(Color));
+  c->color = malloc(sizeof(C_Color));
   c->standing_on[0] = ' ';
   U_Hashtable *inventory = u_initialize_hashtable(10,gs->twister);
-  Player_Info *player_info = malloc(sizeof(Player_Info));
-  player_info->equipment_list = malloc(sizeof(Item *) * NUM_EQUIPMENT_SLOTS);
+  C_Player_Info *player_info = malloc(sizeof(C_Player_Info));
+  player_info->equipment_list = malloc(sizeof(I_Item *) * I_NUM_EQUIPMENT_SLOTS);
   player_info->inventory = inventory;
   c->additional_info = player_info;
   c->marked_for_deletion = NO;
-  (((Player_Info * )c->additional_info)->inventory)->money = 10000;
+  (((C_Player_Info * )c->additional_info)->inventory)->money = 10000;
   c->max_carry = 0;
   return c;
 
@@ -124,7 +124,7 @@ Creature *c_random_player(int x, int y,Game_State *gs, Game_World *gw){
 
 
 // In order to understand why we compute the coordinates as we do when the distance ebtween player and creature exceeds the scrren boundaries, refer to the game manual
-void c_compute_relative_coords(Creature *creature, Creature *player){
+void c_compute_relative_coords(C_Creature *creature, C_Creature *player){
   if(creature->position.global_x > player->position.global_x){
     if(player->position.local_x + (creature->position.global_x - player->position.global_x) < DEFAULT_MAX_X ){
     creature->position.local_x = (player->position.local_x + (creature->position.global_x - player->position.global_x));

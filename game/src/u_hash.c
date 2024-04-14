@@ -15,7 +15,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "u_hash.h"
 #include "screen_constants.h"
 unsigned long long u_hash(int char_count,U_Hashtable *table, char *strings, ...){
-  return((table->a * s_uint_from_string(char_count,strings) + table->b) % BFP) % table->size;
+  return((table->a * s_uint_from_string(char_count,strings) + table->b) % U_BFP) % table->size;
 }
  
 U_Hashtable *u_initialize_hashtable(int initial_size,Rng_Mersienne_Twister *twister){
@@ -26,8 +26,8 @@ U_Hashtable *u_initialize_hashtable(int initial_size,Rng_Mersienne_Twister *twis
   for(int i = 0; i < initial_size; i++){
     table->entries[i] = NULL;
   }
-  table->a = RNG_GEN_VALUE_RANGE(1,BFP,twister);
-  table->b = RNG_GEN_VALUE_RANGE(0,BFP,twister);
+  table->a = RNG_GEN_VALUE_RANGE(1,U_BFP,twister);
+  table->b = RNG_GEN_VALUE_RANGE(0,U_BFP,twister);
   return table;
 }
  
@@ -133,7 +133,7 @@ U_Item_Weight u_remove_item(I_Item_Holder *item, int amount, U_Hashtable *table)
       item_weight.weight_loss = (table->entries[index]->item_holder->amount * table->entries[index]->item_holder->item->weight); 
        if(amount >= current_entry->item_holder->amount){
 	 previous_entry->next_entry = current_entry->next_entry;
-	 item_weight.deleted = DELETED;
+	 item_weight.deleted = U_DELETED;
 	 current_entry->item_holder->amount = 0;
 	 free(current_entry);
 	 table->item_count--;
@@ -141,7 +141,7 @@ U_Item_Weight u_remove_item(I_Item_Holder *item, int amount, U_Hashtable *table)
       }
       else{   
       item_weight.weight_loss = (current_entry->item_holder->amount * current_entry->item_holder->item->weight);
-      item_weight.deleted = NOT_DELETED;
+      item_weight.deleted = U_NOT_DELETED;
       current_entry->item_holder->amount -= amount;
       }
        return item_weight;
@@ -156,7 +156,7 @@ U_Item_Weight u_remove_item(I_Item_Holder *item, int amount, U_Hashtable *table)
 	item_weight.weight_loss = (table->entries[index]->item_holder->amount * table->entries[index]->item_holder->item->weight); 
 	if(amount >= current_entry->item_holder->amount){
 	 previous_entry->next_entry = current_entry->next_entry;
-	 item_weight.deleted = DELETED;
+	 item_weight.deleted = U_DELETED;
 	 current_entry->item_holder->amount = 0;
 	 free(current_entry);
 	 current_entry = NULL;
@@ -166,7 +166,7 @@ U_Item_Weight u_remove_item(I_Item_Holder *item, int amount, U_Hashtable *table)
 	//printf("fell though here 2");
 	table->entries[index]->item_holder->amount -= amount;
 	item_weight.weight_loss = (amount * current_entry->item_holder->item->weight);
-	item_weight.deleted = NOT_DELETED;
+	item_weight.deleted = U_NOT_DELETED;
 	
 	}
 	return item_weight;

@@ -9,6 +9,6 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "triggers.h"
-void tr_set_creature_location(Game_State *game_state, Creature *c){
+void tr_set_creature_location(Game_State *game_state, C_Creature *c){
 
 }

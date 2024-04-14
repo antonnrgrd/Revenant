@@ -11,7 +11,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #ifndef DB_READER_STRUCT
 #define DB_READER_STRUCT
 
-#include "dialogue_struct.h"
+#include "dia_dialogue_struct.h"
 /*Sqlite 3 needs the number of bytes that the sql statement is. If it is negative, it will simply read the passed sql statement until it 
 encounters a 0 terminator. We use this macro by defualt to instruct it to do so*/
 #define NBYTES -1

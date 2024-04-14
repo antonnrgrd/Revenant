@@ -74,7 +74,7 @@ typedef struct Color{
   unsigned third_color:10;
   unsigned fourth_color:10;
 }C_Color;
-typedef struct Attributes{
+typedef struct C_Attributes{
   uint32_t stamina;
   uint32_t strength;
   uint32_t dexterity;
@@ -118,8 +118,25 @@ typedef struct Humanoid_Definition{
   C_Behavior behavior;
 }C_Humanoid_Definition;
 
+// Code's sidenote. When mixing typedef and recursive structs, one needs a fair bit of care. Because the struct is recursively defined,
+// the name of the struct must be defined, when recursively defining it. So for example
+//
+// typedef struct {
+//  struct my_struct; <----- not valid as name is not defined
+//   } my_struct;
+//
+//  typedef struct somestruct {
+//    struct mystruct; <-------- not valid as struct is named as somestruct and and typedef is not completed yet.
+//     } mystruct;
+//
+//
+//
+//
+//
+//
 
-typedef struct{
+
+typedef struct C_Creature{
   int id;
   unsigned int limb_count:10;
   C_Limb *limbs;
