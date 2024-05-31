@@ -65,7 +65,7 @@ Game_World *g_generate_game_world(int width, int height){
 extern const char *alphabet = "#          ";
 
 U_Hashtable *g_generate_merchant_inventory(int min_amount, int max_amount, Rng_Mersienne_Twister *twister) {
-  int num_items_to_be_generated = GEN_VALUE_RANGE(min_amount, max_amount+1, twister);
+  int num_items_to_be_generated = RNG_GEN_VALUE_RANGE(min_amount, max_amount+1, twister);
   int current_generated = 0;
   U_Hashtable *merchant = u_initialize_hashtable(10, twister);
   merchant->money = 1000;
@@ -84,7 +84,7 @@ void g_generate_trader(int global_x, int global_y ,Rng_Mersienne_Twister *twiste
 }
 
 I_Item_Holder *g_generate_item(Rng_Mersienne_Twister *twister){
-  int item_type = GEN_VALUE_RANGE(4,5,twister); //D4(twister);
+  int item_type = RNG_GEN_VALUE_RANGE(4,5,twister); //D4(twister);
   char *fpath = NULL;
   if(item_type == GENERATE_CONSUMABLE){
     fpath = malloc(sizeof(char) * (strlen("/usr/lib/revenant_files/item_files/consumable_files/")) + 10);
@@ -104,7 +104,7 @@ I_Item_Holder *g_generate_item(Rng_Mersienne_Twister *twister){
     I_Item_Holder *item_holder = malloc(sizeof(I_Item_Holder));
     int valid_materials[] = {12,13,14,15,16};
     int quality = D8_0(twister);
-    I_Item *armor = i_make_armor(quality,valid_materials[GEN_VALUE_RANGE(0,4,twister)],GEN_VALUE_RANGE(0,NUM_DEFINED_EQUIPMENT_TYPES,twister));
+    I_Item *armor = i_make_armor(quality,valid_materials[RNG_GEN_VALUE_RANGE(0,4,twister)],RNG_GEN_VALUE_RANGE(0,NUM_DEFINED_EQUIPMENT_TYPES,twister));
     item_holder->item = armor;
     item_holder->amount = D3(twister);
     return item_holder;
@@ -115,7 +115,7 @@ I_Item_Holder *g_generate_item(Rng_Mersienne_Twister *twister){
     int variant = GEN_VALUE_RANGE(0, 1+1, twister);
     int quality = D8_0(twister);
     int kind = D2_0(twister);
-    I_Item *w = i_make_mele_weapon(quality, valid_materials[GEN_VALUE_RANGE(0,4,twister)], variant,kind);
+    I_Item *w = i_make_mele_weapon(quality, valid_materials[RNG_GEN_VALUE_RANGE(0,4,twister)], variant,kind);
     item_holder->item = w;
     item_holder->item->kind = weapon;
     item_holder->amount = 1;//D3(twister);
