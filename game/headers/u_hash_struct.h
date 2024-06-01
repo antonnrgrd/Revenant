@@ -21,7 +21,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include <string.h>
 #include "rng_rng.h"
 #include "strings.h"
-#include "i_item_struct.h"
+#include "i_item.h"
 #define U_BFP 18446744073709551615ULL //an enormous prime (by 64-bit standards)
 #define U_BFP_2 10089886811898868001ULL
 #define U_NOT_DELETED 0

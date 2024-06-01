@@ -26,7 +26,6 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "generate.h"
 #include "mv_move_handler.h"
 #include "c_creature.h"
-
 #define INITIATED_EXCHANGE 0
 #define NOT_INITIATED_EXCHANGE 1
 #define EXESSIVE_ADDITIONAL_WEIGHT 2

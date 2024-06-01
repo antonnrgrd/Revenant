@@ -113,6 +113,9 @@ C_Creature *c_random_player(int x, int y,Game_State *gs, Game_World *gw){
   U_Hashtable *inventory = u_initialize_hashtable(10,gs->twister);
   C_Player_Info *player_info = malloc(sizeof(C_Player_Info));
   player_info->equipment_list = malloc(sizeof(I_Item *) * I_NUM_EQUIPMENT_SLOTS);
+  for(int i = 0; i < I_NUM_EQUIPMENT_SLOTS; i++){
+    player_info->equipment_list[i] = NULL;
+  }
   player_info->inventory = inventory;
   c->additional_info = player_info;
   c->marked_for_deletion = NO;

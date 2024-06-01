@@ -16,7 +16,6 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "cb_creature_behavior.h"
 #include "c_creature.h"
-/*
 #include "u_hash.h"
 #include <stdlib.h>
 #include <stdint.h>
@@ -38,9 +37,9 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "rng_rng.h"
 #include "ir_information_reader.h"
 #include "dia_dialogue.h"
-*/
+
 int main(int argc, char *argv[]){
-  /*
+  
   initscr();
  start_color();   
    Game_World *game_world = g_generate_game_world(1000,1000);
@@ -53,7 +52,6 @@ int main(int argc, char *argv[]){
   raw();  
   game_loop(gs);
   endwin();  
-  */
 }
   
  

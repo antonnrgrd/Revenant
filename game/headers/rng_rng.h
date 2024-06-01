@@ -14,17 +14,17 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 /* Imitates die rolls, using the mersenne twister under the hood*. Arguement for upper value range is given as  limit+1 since the function for ensuring the value is in the given range
 is [min,max( and therefore use max+1 to ensure that we could also potentially generate the max value */
 #define RNG_GEN_VALUE_RANGE(lower,upper,twister)(rng_extract_number(twister) % (upper-lower) + lower)
-#define RNG_D4(twister)GEN_VALUE_RANGE(1,4+1,twister)
-#define RNG_D3(twister)GEN_VALUE_RANGE(1,3+1,twister)
-#define RNG_D2(twister)GEN_VALUE_RANGE(1,2+1,twister)
-#define RNG_D2_0(twister)GEN_VALUE_RANGE(0,1+1,twister)
-#define RNG_D20(twister)GEN_VALUE_RANGE(1,20+1,twister)
-#define RNG_D100(twister)GEN_VALUE_RANGE(1,100+1,twister)
-#define RNG_D10(twister)GEN_VALUE_RANGE(1,10+1,twister)
-#define RNG_D6(twister)GEN_VALUE_RANGE(1,6+1,twister)
-#define RNG_D8(twister)GEN_VALUE_RANGE(1,8+1,twister)
-#define RNG_D8_0(twister)GEN_VALUE_RANGE(0,8+1,twister)
-#define RNG_D_GENERIC(lower,upper,twister)GEN_VALUE_RANGE(lower, upper+1,twister)
+#define RNG_D4(twister)RNG_GEN_VALUE_RANGE(1,4+1,twister)
+#define RNG_D3(twister)RNG_GEN_VALUE_RANGE(1,3+1,twister)
+#define RNG_D2(twister)RNG_GEN_VALUE_RANGE(1,2+1,twister)
+#define RNG_D2_0(twister)RNG_GEN_VALUE_RANGE(0,1+1,twister)
+#define RNG_D20(twister)RNG_GEN_VALUE_RANGE(1,20+1,twister)
+#define RNG_D100(twister)RNG_GEN_VALUE_RANGE(1,100+1,twister)
+#define RNG_D10(twister)RNG_GEN_VALUE_RANGE(1,10+1,twister)
+#define RNG_D6(twister)RNG_GEN_VALUE_RANGE(1,6+1,twister)
+#define RNG_D8(twister)RNG_GEN_VALUE_RANGE(1,8+1,twister)
+#define RNG_D8_0(twister)RNG_GEN_VALUE_RANGE(0,8+1,twister)
+#define RNG_D_GENERIC(lower,upper,twister)RNG_GEN_VALUE_RANGE(lower, upper+1,twister)
 void rng_seed_mt(int seed, Rng_Mersienne_Twister *twister);
 
 int rng_extract_number(Rng_Mersienne_Twister *twister);
