@@ -39,6 +39,7 @@ void g_generate_trader(int global_x, int global_y ,Rng_Mersienne_Twister *twiste
 
 void g_generate_dialogue(int global_x, int global_y,int dialogue_folder_id, int initial_dialogue_id,int npc_id, Game_State *gs);
 
-
+//A variant that hard codes the generated items for debugging and testing
+U_Hashtable *g_generate_merchant_inventory_hardcoded_items(Rng_Mersienne_Twister *twister);
 #endif
 

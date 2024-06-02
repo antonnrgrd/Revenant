@@ -38,7 +38,7 @@ I_Item_Holder *inv_equip_item(I_Item_Holder *target_item_holder,C_Player_Info *p
     I_Item_Holder *added_item = malloc(sizeof(I_Item_Holder));
     added_item->item = tmp;
     added_item->amount=1;
-    inv_add_item(added_item,player_info->inventory,player);
+    inv_add_item(added_item,player_info->inventory,player,YES);
     return added_item;
   }
   return NULL;
@@ -46,9 +46,17 @@ I_Item_Holder *inv_equip_item(I_Item_Holder *target_item_holder,C_Player_Info *p
 
 
 
-int inv_add_item(I_Item_Holder *item_h, U_Hashtable *inventory, C_Creature *player){
-  
+int inv_add_item(I_Item_Holder *item_h, U_Hashtable *inventory, C_Creature *player,int item_added_as_result_of_unequip){
+  /*
+Per game design, the total weight of what the player is carrying is computed as the sum of what is in their inventory AND what they are wearing. Therefore, if the player is adding an item to their inventory that they have had previously equipped, it should not count towards player's weight because it has already been added to the player's carrying weight previously.
+*/
+  if(item_added_as_result_of_unequip == YES){
+     u_add_item(item_h, item_h->amount, inventory);
+     return SUCCESS_ADDITION;
+  }
+  else{
   if((player->current_carry + (item_h->amount * item_h->item->weight)) > player->max_carry ){
+    printf("weight limit exeeded");
     return WEIGHT_LIMIT_EXCEEDED;
   }
   
@@ -57,6 +65,7 @@ int inv_add_item(I_Item_Holder *item_h, U_Hashtable *inventory, C_Creature *play
     u_add_item(item_h, item_h->amount, inventory);
     player->current_carry += (item_h->amount * item_h->item->weight);
     return SUCCESS_ADDITION;
+  }
   }
 }
 

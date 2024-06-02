@@ -128,3 +128,29 @@ void g_generate_dialogue(int global_x, int global_y,int dialogue_folder_id, int 
   gs->current_zone->tiles[global_y][global_x].content[0] = '!';
   gs->current_zone->tiles[global_y][global_x].foe = manager;
 }
+
+U_Hashtable *g_generate_merchant_inventory_hardcoded_items(Rng_Mersienne_Twister *twister){
+  U_Hashtable *merchant = u_initialize_hashtable(10, twister);
+  merchant->money = 1000;
+  I_Item_Holder *item_holder_1 = malloc(sizeof(I_Item_Holder));
+  I_Item *w_1 = i_make_mele_weapon(epic, runite, one_hand,sword);
+  item_holder_1->item = w_1;
+  item_holder_1->item->kind = weapon;
+  item_holder_1->amount = 1;
+  u_add_item(item_holder_1, item_holder_1, merchant);
+
+  I_Item_Holder *item_holder_2 = malloc(sizeof(I_Item_Holder));
+  I_Item *w_2 = i_make_mele_weapon(poor, bronze, two_hand,axe);
+  item_holder_2->item = w_2;
+  item_holder_2->item->kind = weapon;
+  item_holder_2->amount = 1;
+  u_add_item(item_holder_2, item_holder_2->amount, merchant);
+
+  I_Item_Holder *item_holder_3 = malloc(sizeof(I_Item_Holder));
+  I_Item *w_3 = i_make_mele_weapon(adequate, steel, two_hand,mace);
+  item_holder_3->item = w_3;
+  item_holder_3->item->kind = weapon;
+  item_holder_3->amount = 1;
+  u_add_item(item_holder_3, item_holder_3->amount, merchant);
+  return merchant;
+}

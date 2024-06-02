@@ -133,7 +133,7 @@ mvwprintw(game_state->logs[MAIN_SCREEN],0,0, "%s%s%s%d%s", "Pickup ", i_derive_i
   response = getch();
   switch(response){
    case 'y':
-    result = inv_add_item(game_state->current_zone->tiles[global_y][global_x].entry->item_holder, (struct U_Hashtable *)c->additional_info, c);
+     result = inv_add_item(game_state->current_zone->tiles[global_y][global_x].entry->item_holder, (struct U_Hashtable *)c->additional_info, c,NO);
     I_Item *i = game_state->current_zone->tiles[global_y][global_x].entry->item_holder->item;
     if(result == SUCCESS_ADDITION){
       move(0,0);

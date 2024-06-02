@@ -17,14 +17,14 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define SUCCESS_ADDITION 0
 #define WEIGHT_LIMIT_EXCEEDED 1
 #define BUY 0
-#define SELL 1 
+#define SELL 1
 #include "u_hash.h"
 #include "c_creature_struct.h"
 #include "i_item_struct.h"
 
 I_Item_Holder *inv_equip_item(I_Item_Holder *target_item_holder,C_Player_Info *player_info, C_Creature *player);
 void inv_remove_item(int argcount,char *name, int amount, U_Hashtable *inventory, C_Creature *player);
-int inv_add_item(I_Item_Holder *item_h, U_Hashtable *inventory, C_Creature *player);
+int inv_add_item(I_Item_Holder *item_h, U_Hashtable *inventory, C_Creature *player, int item_added_as_result_of_unequip);
 void inv_exchange_item(I_Item_Holder *item_h, U_Hashtable *merchant_inventory, C_Creature *player, int num);
 #endif
 
