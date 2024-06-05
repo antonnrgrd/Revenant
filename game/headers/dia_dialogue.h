@@ -28,6 +28,8 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "dbr_db_reader.h"
 #include "dia_dialogue_struct.h"
 
+
+#define DIA_PRINT_NEWLINE(current_col_offset,char_offset,gs)for(int col_offset = current_col_offset; col_offset < gs->num_cols -1 ;  col_offset++) mvwprintw(gs->logs[DIALOGUE_LOG], current_col,char_offset, " ");
 /*For exiting the dialogue, returning control to the game world*/
 #define DIA_EXIT_DIALOGUE_MANAGER(manager){\
   manager->next_char_offset = 0; \
@@ -92,5 +94,7 @@ extern int (*dia_selected_dialogue_response_handler[2])(Dia_Dialogue_Manager *ma
 int dia_selected_dialogue_quit(Dia_Dialogue_Manager *manager);
 int dia_selected_dialogue_advance_dialogue(Dia_Dialogue_Manager *manager);
 FILE *dia_extract_next_dialogue_window_info(Game_State *gs, Dbr_Selected_Dialogue_Qresult selected_dialogue_info, FILE *current_dialogue);
+
+void dia_redraw_dialogue_screen(Dia_Dialogue_Manager *manager, Game_State *gs, FILE *text_file);
 #endif
 

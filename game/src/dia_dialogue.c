@@ -313,3 +313,33 @@ FILE *dia_extract_next_dialogue_window_info(Game_State *gs, Dbr_Selected_Dialogu
   FILE *new_dialogue_file = fopen(gs->bfr, "r");
   return new_dialogue_file;
 }
+/*
+void dia_draw_dialogue_screen(Dia_Dialogue_Manager *manager, Game_State *gs, FILE *text_file){
+  fseek(text_file, offset, SEEK_SET);
+  char c = fgetc(fp);
+  int current_col = 3;
+  while(c != EOF && current_col < gs->num_cols -1){
+    int char_offset = 1;
+    while(char_offset < (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 1 && c != EOF ){
+      if(c == LF){
+	DIA_PRINT_NEWLINE(current_col, char_offset,gs);
+	char_offset = 0;
+	current_col++;
+      }
+       else{
+	 mvwprintw(gs->logs[DIALOGUE_LOG], current_col,char_offset, "%c", c);
+       }
+      char_offset++;
+      if(c == EOF){
+	manager->next_char_offset = 0;
+	manager->reached_eof = YES;
+	manager->single_page_file = YES;
+      }
+    }
+    char_offset = 1;
+    current_col++;
+  }
+  DIA_DRAW_DIALOGUE_BORDER(gs->logs[DIALOGUE_LOG],state);
+  UPDATE_PANEL_INFO();
+}
+*/
