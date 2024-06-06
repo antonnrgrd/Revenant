@@ -17,19 +17,9 @@ void dia_loop_dialogue(Dia_Dialogue_Manager *manager, Game_State *gs){
   manager->next_char_offset = (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2 ;
   manager->prev_char_offset = 0;
   manager->set_offset = 0;
-  mvwprintw(gs->logs[DIALOGUE_LOG], 1,(gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) / 3,"Talking to: ");
-  char npc_id[10];
-  chdir("/usr/lib/revenant_files/npc_name_files/");
-  sprintf(npc_id, "%d", manager->npc_id);
-  FILE *fp_2 = fopen(npc_id, "r");
-  char c_2 = fgetc(fp_2);
-  int curr_name_offset = (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) / 3 + 11;
-  while(c_2 != EOF){
-    mvwprintw(gs->logs[DIALOGUE_LOG], 1, curr_name_offset, "%c", c_2);
-  c_2 = fgetc(fp_2);
-  curr_name_offset++;
-  }
-  fclose(fp_2);
+  
+  dia_draw_npc_name(manager, gs);
+  
   chdir("/usr/lib/revenant_files/dialogue_files");
   char dialogue_folder[10];
   char dialogue_id[10];
@@ -312,6 +302,22 @@ FILE *dia_extract_next_dialogue_window_info(Game_State *gs, Dbr_Selected_Dialogu
   sprintf(gs->bfr, "%d", selected_dialogue_qresult.next_dialogue_id);
   FILE *new_dialogue_file = fopen(gs->bfr, "r");
   return new_dialogue_file;
+}
+
+void dia_draw_npc_name(Dia_Dialogue_Manager *manager, Game_State *gs){
+  mvwprintw(gs->logs[DIALOGUE_LOG], 1,(gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) / 3,"Talking to: ");
+  char npc_id[10];
+  chdir("/usr/lib/revenant_files/npc_name_files/");
+  sprintf(npc_id, "%d", manager->npc_id);
+  FILE *fp = fopen(npc_id, "r");
+  char c = fgetc(fp);
+  int curr_name_offset = (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) / 3 + 11;
+  while(c != EOF){
+    mvwprintw(gs->logs[DIALOGUE_LOG], 1, curr_name_offset, "%c", c);
+  c = fgetc(fp);
+  curr_name_offset++;
+  }
+  fclose(fp);
 }
 /*
 void dia_draw_dialogue_screen(Dia_Dialogue_Manager *manager, Game_State *gs, FILE *text_file){

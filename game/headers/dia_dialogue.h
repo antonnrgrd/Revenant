@@ -96,5 +96,7 @@ int dia_selected_dialogue_advance_dialogue(Dia_Dialogue_Manager *manager);
 FILE *dia_extract_next_dialogue_window_info(Game_State *gs, Dbr_Selected_Dialogue_Qresult selected_dialogue_info, FILE *current_dialogue);
 
 void dia_redraw_dialogue_screen(Dia_Dialogue_Manager *manager, Game_State *gs, FILE *text_file);
+
+void dia_draw_npc_name(Dia_Dialogue_Manager *manager, Game_State *gs);
 #endif
 
