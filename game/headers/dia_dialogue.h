@@ -29,24 +29,19 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "dia_dialogue_struct.h"
 
 
-#define DIA_PRINT_NEWLINE(current_col_offset,char_offset,gs)for(int col_offset = current_col_offset; col_offset < gs->num_cols -1 ;  col_offset++) mvwprintw(gs->logs[DIALOGUE_LOG], current_col,char_offset, " ");
+#define DIA_PRINT_NEWLINE(current_col_offset,char_offset,gs)for(int row_offset = char_offset; row_offset < ((gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 1) ;  row_offset++) mvwprintw(gs->logs[DIALOGUE_LOG], current_col,row_offset, " ");
 /*For exiting the dialogue, returning control to the game world*/
 #define DIA_EXIT_DIALOGUE_MANAGER(manager){\
-  manager->next_char_offset = 0; \
-  manager->prev_char_offset = 0; \
+  manager->current_char_offset = 0; \
   manager->set_offset = NO;	 \
   manager->reached_eof = NO;	 \
 }
 
 /*For continuing to the next dialogue screen, ensuring we start with a clean plate*/
 #define DIA_RESET_DIALOGUE_MANAGER_INFO(manager){\
-    FREE_NULL(manager->saved_prev_offsets);	 \
-    manager->next_char_offset = 0;		 \
-    manager->prev_char_offset = 0;		 \
+    manager->current_char_offset = 0;		 \
     manager->num_dialogue_options = 0;		 \
     manager->current_dialogue_id = 0;		 \
-    manager->current_saved_offset_index = 0;	 \
-    manager->encountered_double_lf = NO;	 \
     manager->set_offset = NO;			 \
     manager->reached_eof = NO;			 \
     manager->single_page_file = NO;		 \
@@ -59,17 +54,12 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 /*Normally, we'd be content using the box function to draw a border around the wndow, but we want an ultra specific bordering set, you we have to do it manually */
 #define DIA_DRAW_DIALOGUE_BORDER(dia_dialogue_screen,gs) mvwhline(dia_dialogue_screen, 0, 0, 0, (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -1); mvwhline(dia_dialogue_screen, 2, 1, 0, (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -2 ); mvwvline(dia_dialogue_screen, 0, 0, 0, gs->num_cols); mvwvline(dia_dialogue_screen, 1, (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -1, 0, gs->num_cols);  mvwaddch(dia_dialogue_screen,0, 0, ACS_ULCORNER); mvwaddch(dia_dialogue_screen,0, (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -1, ACS_URCORNER);
 
-#define DIA_SET_OFFSET(offset, dia_dia_manager) dia_manager->set_offset == NO ? dia_manager->next_char_offset = offset : ;
+#define DIA_SET_OFFSET(offset, dia_dia_manager) dia_manager->set_offset == NO ? dia_manager->current_char_offset = offset : ;
 
 /*No fucking idea why, but the decrement substracts an offset of 4 too many, so we offset this by adding 4. No idea if this is by how macro evaluted the expression or what. I fucking hate this so much*/
-#define DIA_SAFE_DECREMENT_NEXT(manager,gs) (manager->next_char_offset - (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2) <= 0 ? (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2  : (manager->next_char_offset - (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2) + 4
+#define DIA_SAFE_DECREMENT_NEXT(manager,gs) (manager->current_char_offset - (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2) <= 0 ? (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2  : (manager->current_char_offset - (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2) + 4
 
-#define DIA_SAFE_INCREMENT_NEXT(manager,gs,maximum_bytes) manager->next_char_offset + (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) >= maximum_bytes ? maximum_bytes - (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) : (manager->next_char_offset + (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2)
-
-
-#define DIA_SAFE_DECREMENT_PREV(manager,gs) (manager->prev_char_offset - (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2) <= 0 ? manager->prev_char_offset = 0 : (manager->prev_char_offset - (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2) + 4
-
-#define DIA_SAFE_INCREMENT_PREV(manager,gs,maximum_bytes) manager->prev_char_offset + (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) >= maximum_bytes ? maximum_bytes - (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) : (manager->prev_char_offset + (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -2)
+#define DIA_SAFE_INCREMENT_NEXT(manager,gs,maximum_bytes) manager->current_char_offset + (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) >= maximum_bytes ? maximum_bytes - (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) : (manager->current_char_offset + (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2)
 
 void dia_loop_dialogue(Dia_Dialogue_Manager *manager, Game_State *gs);
 
@@ -95,8 +85,12 @@ int dia_selected_dialogue_quit(Dia_Dialogue_Manager *manager);
 int dia_selected_dialogue_advance_dialogue(Dia_Dialogue_Manager *manager);
 FILE *dia_extract_next_dialogue_window_info(Game_State *gs, Dbr_Selected_Dialogue_Qresult selected_dialogue_info, FILE *current_dialogue);
 
-void dia_redraw_dialogue_screen(Dia_Dialogue_Manager *manager, Game_State *gs, FILE *text_file);
+void dia_redraw_dialogue_screen(Dia_Dialogue_Manager *manager, Game_State *gs, FILE *dialogue_file);
 
 void dia_draw_npc_name(Dia_Dialogue_Manager *manager, Game_State *gs);
+
+extern inline int dia_recompute_char_offset_forwards(Dia_Dialogue_Manager *manager, Game_State *gs, int maximum_bytes, FILE *dialogue_file);
+
+extern inline int dia_recompute_char_offset_backwards(Dia_Dialogue_Manager *manager, Game_State *gs, FILE *dialogue_file);
 #endif
 

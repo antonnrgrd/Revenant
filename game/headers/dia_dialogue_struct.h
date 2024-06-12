@@ -25,15 +25,11 @@ typedef struct {
   int dialogue_folder_id;
   /*The id of the initial dialogue file the player should see upon engaging conversation*/
   int initial_dialogue_id;
+  int current_char_offset;
   /**/
   int npc_id;
   int num_dialogue_options;
   int current_dialogue_id;
-  int next_char_offset;
-  int prev_char_offset;
-  int *saved_prev_offsets;
-  int current_saved_offset_index;
-  int encountered_double_lf;
   int set_offset;
   /*Note: if using single bit, bit-packed values, you need to use an unsigned int. If you use a regular signed int, you need at least two bits worth, in order to be able to differentiate between positive and negative numbers, otherwise, you get unusual behavior */
   unsigned int reached_eof : 1;
