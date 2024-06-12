@@ -211,14 +211,25 @@ extern inline int dia_recompute_char_offset_forwards(Dia_Dialogue_Manager *manag
 extern inline int dia_recompute_char_offset_backwards(Dia_Dialogue_Manager *manager, Game_State *gs, FILE *dialogue_file){
   int next_current_char_offset;
   fseek(dialogue_file, manager->current_char_offset-1, SEEK_SET);
-  char c = fgetc(dialogue_file);
-  for(int char_offset = ((gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 1); char_offset < 1; char_offset++){
-    fseek(dialogue_file, char_offset, SEEK_SET);
-    c = fgetc(dialogue_file);
-    if(c == LF){
-      return char_offset;
+  char c_1 = fgetc(dialogue_file);
+  fseek(dialogue_file, manager->current_char_offset-2, SEEK_SET);
+  char c_2 = fgetc(dialogue_file);
+  fseek(dialogue_file, manager->current_char_offset-3, SEEK_SET);
+  char c_3 = fgetc(dialogue_file);
+  if(c_1 == LF && c_2 == LF){
+    return manager->current_char_offset-1;
+  }
+  else if(c_1 == LF && c_2 != LF){
+    next_current_char_offset = manager->current_char_offset-2;
+    while(next_current_char_offset % ((gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2) != 0){
+      next_current_char_offset--;
+      fseek(dialogue_file, next_current_char_offset, SEEK_SET);
+      char c = fgetc(dialogue_file);
+      if(c == LF){
+	return manager->current_char_offset-2;;
       }
-    c = fgetc(dialogue_file);
+    }
+    return next_current_char_offset;
   }
   next_current_char_offset = DIA_SAFE_DECREMENT_NEXT(manager,gs);
   return next_current_char_offset;
