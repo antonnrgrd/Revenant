@@ -199,7 +199,7 @@ extern inline int dia_recompute_char_offset_forwards(Dia_Dialogue_Manager *manag
     if(c == LF){
       fseek(dialogue_file, manager->current_char_offset+(char_offset+2), SEEK_SET);
       if(c == LF){
-	return manager->current_char_offset + char_offset+1;
+	return manager->current_char_offset + char_offset;
       }
     }
     c = fgetc(dialogue_file);
