@@ -33,8 +33,8 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 /*For exiting the dialogue, returning control to the game world*/
 #define DIA_EXIT_DIALOGUE_MANAGER(manager){\
   manager->current_char_offset = 0; \
-  manager->set_offset = NO;	 \
   manager->reached_eof = NO;	 \
+  manager->expected_char_offset = 0;		\
 }
 
 /*For continuing to the next dialogue screen, ensuring we start with a clean plate*/
@@ -42,9 +42,9 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
     manager->current_char_offset = 0;		 \
     manager->num_dialogue_options = 0;		 \
     manager->current_dialogue_id = 0;		 \
-    manager->set_offset = NO;			 \
     manager->reached_eof = NO;			 \
     manager->single_page_file = NO;		 \
+    manager->expected_char_offset = 0;		 \
 }
 
 

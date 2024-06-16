@@ -14,7 +14,6 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "dia_dialogue.h"
 void dia_loop_dialogue(Dia_Dialogue_Manager *manager, Game_State *gs){
-  manager->set_offset = 0;
   
   dia_draw_npc_name(manager, gs);
   
@@ -45,24 +44,14 @@ void dia_loop_dialogue(Dia_Dialogue_Manager *manager, Game_State *gs){
       }
       else if(ch == KEY_DOWN && manager->single_page_file == NO){
 	manager->current_char_offset = dia_recompute_char_offset_forwards(manager,gs,num_bytes,fp);//DIA_SAFE_INCREMENT_NEXT(manager,gs,num_bytes);
+	manager->expected_char_offset = DIA_SAFE_INCREMENT_NEXT(manager,gs,num_bytes);
 	dia_draw_dialogue_screen(manager,gs,fp);
-	/*
-	  The previous and next fp offset are somewhat askew. It is not until
-	  we move beyond the first line that we need to keep track of what the previous line is.
-	  until then, the previous offset is 1 and this is what we keep track of
-	*/
-	manager->set_offset++;
-	if(manager->set_offset >= 2){
-	  ;
-	}
       }
       else if(ch == KEY_UP && manager->single_page_file == NO){
 	manager->current_char_offset = dia_recompute_char_offset_backwards(manager, gs, fp);
+	manager->expected_char_offset = DIA_SAFE_DECREMENT_NEXT(manager,gs);
 	dia_draw_dialogue_screen(manager,gs,fp);
 	manager->reached_eof = NO;
-	if(manager->set_offset > 0){
-	  manager->set_offset --;
-	 }
       }
       else if(isdigit(ch) == 0){
 	if(ch - '0' < manager->num_dialogue_options){
@@ -229,7 +218,9 @@ extern inline int dia_recompute_char_offset_backwards(Dia_Dialogue_Manager *mana
 	return manager->current_char_offset-2;;
       }
     }
-    return next_current_char_offset;
+    int difference = manager->expected_char_offset - manager->current_char_offset;
+    printf(" current_char_offset: %d expected_char_offset: %d ",manager->current_char_offset, manager->expected_char_offset);
+    return manager->current_char_offset - difference;
   }
   next_current_char_offset = DIA_SAFE_DECREMENT_NEXT(manager,gs);
   return next_current_char_offset;
