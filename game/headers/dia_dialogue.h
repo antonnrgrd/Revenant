@@ -57,9 +57,9 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define DIA_SET_OFFSET(offset, dia_dia_manager) dia_manager->set_offset == NO ? dia_manager->current_char_offset = offset : ;
 
 /*No fucking idea why, but the decrement substracts an offset of 4 too many, so we offset this by adding 4. No idea if this is by how macro evaluted the expression or what. I fucking hate this so much*/
-#define DIA_SAFE_DECREMENT_NEXT(manager,gs) (manager->current_char_offset - (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2) <= 0 ? (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2  : (manager->current_char_offset - (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2) + 4
+#define DIA_SAFE_DECREMENT_NEXT(manager,gs,offset) (offset - (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2) <= 0 ? (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2  : (offset - (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2) + 4
 
-#define DIA_SAFE_INCREMENT_NEXT(manager,gs,maximum_bytes) manager->current_char_offset + (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) >= maximum_bytes ? maximum_bytes - (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) : (manager->current_char_offset + (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2)
+#define DIA_SAFE_INCREMENT_NEXT(manager,gs,maximum_bytes,offset) offset + (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) >= maximum_bytes ? maximum_bytes - (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) : (offset + (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2)
 
 void dia_loop_dialogue(Dia_Dialogue_Manager *manager, Game_State *gs);
 

@@ -43,13 +43,13 @@ void dia_loop_dialogue(Dia_Dialogue_Manager *manager, Game_State *gs){
 	return;
       }
       else if(ch == KEY_DOWN && manager->single_page_file == NO){
+	manager->expected_char_offset = DIA_SAFE_INCREMENT_NEXT(manager,gs,num_bytes,manager->expected_char_offset);
 	manager->current_char_offset = dia_recompute_char_offset_forwards(manager,gs,num_bytes,fp);//DIA_SAFE_INCREMENT_NEXT(manager,gs,num_bytes);
-	manager->expected_char_offset = DIA_SAFE_INCREMENT_NEXT(manager,gs,num_bytes);
 	dia_draw_dialogue_screen(manager,gs,fp);
       }
       else if(ch == KEY_UP && manager->single_page_file == NO){
+	manager->expected_char_offset = DIA_SAFE_DECREMENT_NEXT(manager,gs,manager->expected_char_offset);
 	manager->current_char_offset = dia_recompute_char_offset_backwards(manager, gs, fp);
-	manager->expected_char_offset = DIA_SAFE_DECREMENT_NEXT(manager,gs);
 	dia_draw_dialogue_screen(manager,gs,fp);
 	manager->reached_eof = NO;
       }
@@ -193,7 +193,7 @@ extern inline int dia_recompute_char_offset_forwards(Dia_Dialogue_Manager *manag
     }
     c = fgetc(dialogue_file);
   }
-  next_current_char_offset = DIA_SAFE_INCREMENT_NEXT(manager,gs,maximum_bytes);
+  next_current_char_offset = DIA_SAFE_INCREMENT_NEXT(manager,gs,maximum_bytes, manager->current_char_offset);
   return next_current_char_offset;
 }
 
@@ -222,6 +222,6 @@ extern inline int dia_recompute_char_offset_backwards(Dia_Dialogue_Manager *mana
     printf(" current_char_offset: %d expected_char_offset: %d ",manager->current_char_offset, manager->expected_char_offset);
     return manager->current_char_offset - difference;
   }
-  next_current_char_offset = DIA_SAFE_DECREMENT_NEXT(manager,gs);
+  next_current_char_offset = DIA_SAFE_DECREMENT_NEXT(manager,gs, manager->current_char_offset);
   return next_current_char_offset;
 }
