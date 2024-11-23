@@ -37,7 +37,6 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "rng_rng.h"
 #include "ir_information_reader.h"
 #include "dia_dialogue.h"
-
 int main(int argc, char *argv[]){
   
   initscr();

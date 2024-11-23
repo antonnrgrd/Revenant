@@ -13,6 +13,7 @@ You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "dia_dialogue.h"
+#include "l_log.h"
 void dia_loop_dialogue(Dia_Dialogue_Manager *manager, Game_State *gs){
   
   dia_draw_npc_name(manager, gs);
@@ -188,11 +189,13 @@ extern inline int dia_recompute_char_offset_forwards(Dia_Dialogue_Manager *manag
     if(c == LF){
       fseek(dialogue_file, manager->current_char_offset+(char_offset+2), SEEK_SET);
       if(c == LF){
+	//printf("%d"," Updating special case ",manager->current_char_offset + char_offset);
 	return manager->current_char_offset + char_offset;
       }
     }
     c = fgetc(dialogue_file);
   }
+  //printf("%d" " updating normally ", DIA_SAFE_INCREMENT_NEXT(manager,gs,maximum_bytes, manager->current_char_offset));
   next_current_char_offset = DIA_SAFE_INCREMENT_NEXT(manager,gs,maximum_bytes, manager->current_char_offset);
   return next_current_char_offset;
 }
@@ -218,8 +221,8 @@ extern inline int dia_recompute_char_offset_backwards(Dia_Dialogue_Manager *mana
 	return manager->current_char_offset-2;;
       }
     }
+    printf("print true");
     int difference = manager->expected_char_offset - manager->current_char_offset;
-    printf(" current_char_offset: %d expected_char_offset: %d ",manager->current_char_offset, manager->expected_char_offset);
     return manager->current_char_offset - difference;
   }
   next_current_char_offset = DIA_SAFE_DECREMENT_NEXT(manager,gs, manager->current_char_offset);
