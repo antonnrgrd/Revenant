@@ -10,12 +10,24 @@ You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "l_log.h"
-void l_write_log(char *bfr, char *msg , char *debug_lvl, char *fpath){
+void l_add_metadata_to_msg(char *msg, char *debug_lvl){
   time_t now;
   time(&now);
-  sprintf(bfr, "%s: %s - %s", ctime(&now), debug_lvl, msg);
+  //prepend hyphen padding
+  msg = s_append_to_string(msg, " - ");
+  //prepend debug level
+  msg = s_append_to_string(msg, debug_lvl);
+  //prepend timestmap
+  msg = s_append_to_string(msg, ctime(&now));
+
+  return msg;
+}
+// Assumes msg to be written is already defined and has sufficient space for prepending the timestamp + debugging lvl.
+void l_write_log(char *msg , char *debug_lvl, char *fpath){
+
+  char *msg_with_metadata = l_add_metadata_to_msg(msg,debug_lvl);
   FILE *fp = fopen(DEFAULT_LOGGING_FILE, "a");
-  fprintf(fp,bfr);
+  fprintf(fp,msg_with_metadata);
   fclose(fp);
   if(debug_lvl == L_ERR){
     endwin();
@@ -23,3 +35,5 @@ void l_write_log(char *bfr, char *msg , char *debug_lvl, char *fpath){
     printf(bfr);
   }
 }
+
+

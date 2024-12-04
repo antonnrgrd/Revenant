@@ -203,28 +203,49 @@ extern inline int dia_recompute_char_offset_forwards(Dia_Dialogue_Manager *manag
 extern inline int dia_recompute_char_offset_backwards(Dia_Dialogue_Manager *manager, Game_State *gs, FILE *dialogue_file){
   int next_current_char_offset;
   fseek(dialogue_file, manager->current_char_offset-1, SEEK_SET);
-  char c_1 = fgetc(dialogue_file);
+  char char_current_minus_1 = fgetc(dialogue_file);
   fseek(dialogue_file, manager->current_char_offset-2, SEEK_SET);
-  char c_2 = fgetc(dialogue_file);
-  fseek(dialogue_file, manager->current_char_offset-3, SEEK_SET);
-  char c_3 = fgetc(dialogue_file);
-  if(c_1 == LF && c_2 == LF){
-    return manager->current_char_offset-1;
+  char char_current_minus_2 = fgetc(dialogue_file);
+  fseek(dialogue_file, manager->current_char_offset, SEEK_SET);
+  char char_current = fgetc(dialogue_file);
+  // Case next line will be a page break
+  if(char_current != LF && char_current_minus_1 == LF){
+    next_current_char_offset = manager->current_char_offset - 1;
   }
-  else if(c_1 == LF && c_2 != LF){
-    next_current_char_offset = manager->current_char_offset-2;
-    while(next_current_char_offset % ((gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2) != 0){
-      next_current_char_offset--;
-      fseek(dialogue_file, next_current_char_offset, SEEK_SET);
-      char c = fgetc(dialogue_file);
-      if(c == LF){
-	return manager->current_char_offset-2;;
-      }
+  // Case we are currently on a line break and there are multiple line breaks in succession
+  else if(char_current == LF && char_current_minus_1 == LF && char_current_minus_2 == LF){
+    next_current_char_offset = manager->current_char_offset - 1;
+  }
+  //Case we are on a line break and the next line, visually is not a line break i.e an actual line
+  else if(char_current == LF && char_current_minus_1 == LF && char_current_minus_2 != LF){
+    fseek(dialogue_file, manager->current_char_offset-2, SEEK_SET);
+    char current_char_in_lookback = fgetc(dialogue_file);
+    int current_offset = manager->current_char_offset-2;
+    int encountered_chars = 0;
+    while(current_char_in_lookback != LF && current_offset != 0){
+      current_offset--;
+      fseek(dialogue_file, manager->current_offset, SEEK_SET);
+      current_char_in_lookback = fgetc(dialogue_file);
+      encountered_chars++;
     }
-    printf("print true");
-    int difference = manager->expected_char_offset - manager->current_char_offset;
-    return manager->current_char_offset - difference;
+    //Provided the remaining numbers of chars are exactly zero, it must be the 
+    int remaining_chars = encountered_chars % (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH);
+    if(remaining_chars == 0){
+      l_write_log(gs->bfr, INFO,DEFAULT_LOGGING_FILE);
+      sprintf(gs->bfr, "npc id %d with dialogue id %d at offset %d was found to have next offset when looking backwards to be an eact ",manager->npc_id, manager->dialogue_id,manager->current_char_offset);
+      l_write_log(gs->bfr, L_INFO,DEFAULT_LOGGING_FILE);
+    }
+    else{
+      l_write_log(gs->bfr, L_INFO,DEFAULT_LOGGING_FILE);
+      return manager->current_char_offset - remaining_chars;
+    }
+    if(encountered_chars > 512){
+      sprintf(gs->bfr, "npc id %d with dialogue id %d has line exceeding 512 chars. This causes slow scrolling of text",manager->npc_id, manager->dialogue_id);
+      l_write_log(gs->bfr, L_WARN,DEFAULT_LOGGING_FILE);
+    }
   }
+  else{
   next_current_char_offset = DIA_SAFE_DECREMENT_NEXT(manager,gs, manager->current_char_offset);
   return next_current_char_offset;
+  }
 }

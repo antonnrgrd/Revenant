@@ -18,4 +18,5 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define DEFAULT_LOGGING_FILE "/usr/lib/revenant_files/logs/revenant.log"
 #include <stdio.h>
 #include <time.h>
+#include "strings.h"
 #endif

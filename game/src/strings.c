@@ -87,3 +87,9 @@ uint64_t s_uint_from_string(int argcount, ...){
   return value;
 }
 
+char *s_append_to_string(char *target_string, char *string_to_append){
+   int length = strlen(string_to_append);
+   memmove(target_string + length, target_string, strlen(target_string) + 1);
+   memcpy(target_string, string_to_append, length);
+   return target_string;
+}
