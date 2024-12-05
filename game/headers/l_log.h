@@ -12,6 +12,6 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #ifndef L_LOG
 #define L_LOG
 #include "l_log_struct.h"
-void l_add_metadata_to_msg(char *msg, char *debug_lvl);
+char *l_add_metadata_to_msg(char *msg, char *debug_lvl);
 void l_write_log(char *msg, char *debug_lvl, char *fpath);
 #endif

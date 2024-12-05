@@ -35,5 +35,7 @@ uint64_t s_uint_from_string(int argcount, ...);
 #define S_ALLOC_FOR_CPY(bfr,to_be_copied)
 
 char *s_append_to_string(char *target_string, char *string_to_append);
+
+char *s_replace_all_char_occurences(char *target_string, char *character_to_replace, char *replacement_char);
 #endif
 

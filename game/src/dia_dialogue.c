@@ -224,15 +224,15 @@ extern inline int dia_recompute_char_offset_backwards(Dia_Dialogue_Manager *mana
     int encountered_chars = 0;
     while(current_char_in_lookback != LF && current_offset != 0){
       current_offset--;
-      fseek(dialogue_file, manager->current_offset, SEEK_SET);
+      fseek(dialogue_file, manager->current_char_offset, SEEK_SET);
       current_char_in_lookback = fgetc(dialogue_file);
       encountered_chars++;
     }
     //Provided the remaining numbers of chars are exactly zero, it must be the 
     int remaining_chars = encountered_chars % (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH);
     if(remaining_chars == 0){
-      l_write_log(gs->bfr, INFO,DEFAULT_LOGGING_FILE);
-      sprintf(gs->bfr, "npc id %d with dialogue id %d at offset %d was found to have next offset when looking backwards to be an eact ",manager->npc_id, manager->dialogue_id,manager->current_char_offset);
+      l_write_log(gs->bfr, L_INFO,DEFAULT_LOGGING_FILE);
+      sprintf(gs->bfr, "npc id %d with dialogue id %d at offset %d was found to have next offset when looking backwards to be an eact ",manager->npc_id, manager->current_dialogue_id,manager->current_char_offset);
       l_write_log(gs->bfr, L_INFO,DEFAULT_LOGGING_FILE);
     }
     else{
@@ -240,7 +240,7 @@ extern inline int dia_recompute_char_offset_backwards(Dia_Dialogue_Manager *mana
       return manager->current_char_offset - remaining_chars;
     }
     if(encountered_chars > 512){
-      sprintf(gs->bfr, "npc id %d with dialogue id %d has line exceeding 512 chars. This causes slow scrolling of text",manager->npc_id, manager->dialogue_id);
+      sprintf(gs->bfr, "npc id %d with dialogue id %d has line exceeding 512 chars. This causes slow scrolling of text",manager->npc_id, manager->current_dialogue_id);
       l_write_log(gs->bfr, L_WARN,DEFAULT_LOGGING_FILE);
     }
   }

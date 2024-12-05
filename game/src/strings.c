@@ -93,3 +93,12 @@ char *s_append_to_string(char *target_string, char *string_to_append){
    memcpy(target_string, string_to_append, length);
    return target_string;
 }
+
+char *s_replace_all_char_occurences(char *target_string, char *character_to_replace, char *replacement_char){
+  char *current_string = strchr(target_string,character_to_replace);
+    while (current_string != NULL) {
+        *current_string = replacement_char;
+        current_string = strchr(current_string,character_to_replace);
+    }
+    return target_string;
+}

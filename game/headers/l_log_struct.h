@@ -15,8 +15,9 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define L_DEBUG "DEBUG"
 #define L_WARN "WANRING"
 #define L_ERR "ERROR"
-#define DEFAULT_LOGGING_FILE "/usr/lib/revenant_files/logs/revenant.log"
+#define DEFAULT_LOGGING_FILE "/var/log/revenant.log"
 #include <stdio.h>
 #include <time.h>
 #include "strings.h"
+#include "generic_macros.h"
 #endif
