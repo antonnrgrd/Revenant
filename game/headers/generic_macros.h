@@ -23,6 +23,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define MIN(num_1, num_2) num_1 < num_2 ? num_1 : num_2
 #define LF 10
 #define SPACE 32
+#define NEWLINE 13
 // Some errors are not an unexpected game state but rather occur at the os level, for these kind of errors
 //we want in addition to get the stderror
 #define L_WRITE_OS_LEVEL_ERROR(msg){			\

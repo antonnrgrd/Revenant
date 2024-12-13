@@ -39,7 +39,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "dia_dialogue.h"
 #include "l_log.h"
 int main(int argc, char *argv[]){
-  
+
   initscr();
   start_color();   
   Game_World *game_world = g_generate_game_world(1000,1000);
@@ -52,6 +52,7 @@ int main(int argc, char *argv[]){
   raw();
   game_loop(gs);
   endwin();  
+
 }
   
  

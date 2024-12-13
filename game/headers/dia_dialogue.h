@@ -61,6 +61,8 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 #define DIA_SAFE_INCREMENT_NEXT(manager,gs,maximum_bytes,offset) offset + (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) >= maximum_bytes ? maximum_bytes - (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) : (offset + (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) - 2)
 
+#define DIA_BOTH_LFS(current_char, previous_char) current_char == LF && previous_char == LF ? YES : NO
+int dia_both_lfs(char current_char, char previous_char);
 void dia_loop_dialogue(Dia_Dialogue_Manager *manager, Game_State *gs);
 
 int dia_compute_num_bytes(FILE *fp);

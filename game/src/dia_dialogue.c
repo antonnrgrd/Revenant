@@ -219,17 +219,29 @@ extern inline int dia_recompute_char_offset_backwards(Dia_Dialogue_Manager *mana
   //Case we are on a line break and the next line, visually is not a line break i.e an actual line
   else if(char_current == LF && char_current_minus_1 == LF && char_current_minus_2 != LF){
     fseek(dialogue_file, manager->current_char_offset-2, SEEK_SET);
-    char current_char_in_lookback = fgetc(dialogue_file);
     int current_offset = manager->current_char_offset-2;
-    int encountered_chars = 1;
-    while(current_char_in_lookback != LF && current_offset != 0){
+    int encountered_chars = 0;
+    char current_char_in_lookback = fgetc(dialogue_file);
+    char previous_char_in_lookback = -1;
+    while(DIA_BOTH_LFS(current_char_in_lookback,previous_char_in_lookback) == NO && current_offset != 0){
       current_offset--;
       fseek(dialogue_file, current_offset, SEEK_SET);
+      previous_char_in_lookback = current_char_in_lookback;
       current_char_in_lookback = fgetc(dialogue_file);
       encountered_chars++;
     }
+    //
+    int current_lookback_with_chars =  current_offset -  encountered_chars;
+    for(int i = 0; i < 10; i++){
+      fseek(dialogue_file, current_lookback_with_chars, SEEK_SET);
+      char cccc = fgetc(dialogue_file);
+      current_lookback_with_chars++;
+      printf("%c", cccc);
+    }
+
+    //
     //Provided the remaining numbers of chars are exactly zero, it must be the 
-    int remaining_chars = encountered_chars % (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH);
+    int remaining_chars = (encountered_chars -1) % (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH);
     if(remaining_chars == 0){
       sprintf(gs->bfr, "npc id %d with dialogue id %d at offset %d was found to have next offset when looking backwards to be an eact ",manager->npc_id, manager->current_dialogue_id,manager->current_char_offset);
       l_write_log(gs->bfr, L_INFO,DEFAULT_LOGGING_FILE);
@@ -248,4 +260,11 @@ extern inline int dia_recompute_char_offset_backwards(Dia_Dialogue_Manager *mana
   next_current_char_offset = DIA_SAFE_DECREMENT_NEXT(manager,gs, manager->current_char_offset);
   return next_current_char_offset;
   }
+}
+
+int dia_both_lfs(char current_char, char previous_char){
+  if(current_char == LF && previous_char == LF){
+    return YES;
+  }
+  return NO;
 }
