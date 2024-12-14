@@ -223,7 +223,7 @@ extern inline int dia_recompute_char_offset_backwards(Dia_Dialogue_Manager *mana
     int encountered_chars = 0;
     char current_char_in_lookback = fgetc(dialogue_file);
     char previous_char_in_lookback = -1;
-    while(DIA_BOTH_LFS(current_char_in_lookback,previous_char_in_lookback) == NO && current_offset != 0){
+    while(DIA_BOTH_LFS(current_char_in_lookback,previous_char_in_lookback) == NO && current_offset > 0){
       current_offset--;
       fseek(dialogue_file, current_offset, SEEK_SET);
       previous_char_in_lookback = current_char_in_lookback;
@@ -231,14 +231,13 @@ extern inline int dia_recompute_char_offset_backwards(Dia_Dialogue_Manager *mana
       encountered_chars++;
     }
     //
-    int current_lookback_with_chars =  current_offset -  encountered_chars;
+    int current_lookback_with_chars =  current_offset -  (encountered_chars-2);
     for(int i = 0; i < 10; i++){
       fseek(dialogue_file, current_lookback_with_chars, SEEK_SET);
       char cccc = fgetc(dialogue_file);
       current_lookback_with_chars++;
       printf("%c", cccc);
     }
-
     //
     //Provided the remaining numbers of chars are exactly zero, it must be the 
     int remaining_chars = (encountered_chars -1) % (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH);
