@@ -220,7 +220,8 @@ extern inline int dia_recompute_char_offset_backwards(Dia_Dialogue_Manager *mana
   else if(char_current == LF && char_current_minus_1 == LF && char_current_minus_2 != LF){
     fseek(dialogue_file, manager->current_char_offset-2, SEEK_SET);
     int current_offset = manager->current_char_offset-2;
-    int encountered_chars = 0;
+    //An awful lots of off by one errors here, but TRUST ME, it HAS to be -1
+    int encountered_chars = -1;
     char current_char_in_lookback = fgetc(dialogue_file);
     char previous_char_in_lookback = -1;
     while(DIA_BOTH_LFS(current_char_in_lookback,previous_char_in_lookback) == NO && current_offset > 0){
@@ -240,7 +241,11 @@ extern inline int dia_recompute_char_offset_backwards(Dia_Dialogue_Manager *mana
     }
     //
     //Provided the remaining numbers of chars are exactly zero, it must be the 
-    int remaining_chars = (encountered_chars -1) % (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH);
+    int remaining_chars = (encountered_chars) % ((gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH)-2);
+    printf(" Current offset: %d ", manager->current_char_offset);
+    printf(" Offset after looking back: %d ", current_offset);
+    printf(" The line length is: %d ", ((gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH)-2));
+    printf(" We encountered %d chars", encountered_chars);
     if(remaining_chars == 0){
       sprintf(gs->bfr, "npc id %d with dialogue id %d at offset %d was found to have next offset when looking backwards to be an eact ",manager->npc_id, manager->current_dialogue_id,manager->current_char_offset);
       l_write_log(gs->bfr, L_INFO,DEFAULT_LOGGING_FILE);
@@ -248,7 +253,7 @@ extern inline int dia_recompute_char_offset_backwards(Dia_Dialogue_Manager *mana
     else{
        sprintf(gs->bfr, "npc id %d with dialogue id %d at offset %d was found to have next offset when looking backwards to be nonzero",manager->npc_id, manager->current_dialogue_id,manager->current_char_offset);
       l_write_log(gs->bfr, L_INFO,DEFAULT_LOGGING_FILE);
-      return (manager->current_char_offset-2) - remaining_chars;
+      return (manager->current_char_offset-2) - (remaining_chars -1);
     }
     if(encountered_chars > 512){
       sprintf(gs->bfr, "npc id %d with dialogue id %d has line exceeding 512 chars. This causes slow scrolling of text",manager->npc_id, manager->current_dialogue_id);

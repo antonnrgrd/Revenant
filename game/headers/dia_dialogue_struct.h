@@ -19,7 +19,10 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define DIA_NO_SKILLCHECK -1
 #define DIA_NO_SKILL_ID -1
 #define DIA_NULL_AMOUNT_DIALOGUE_OPTIONS -1
-
+/*
+Note to self, due to game logic for drawing text, a wide screen could potentially result in very long lines on the screen. If this is ever reported, we could try hard-coding the line length. 127 characters visually seems to be a sweet-spot
+*/
+#define MAX_LINE_LENGTH 127
 typedef struct {
   /*the id of the folder we should look in for the dialogue files*/
   int dialogue_folder_id;
