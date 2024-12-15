@@ -231,6 +231,7 @@ extern inline int dia_recompute_char_offset_backwards(Dia_Dialogue_Manager *mana
       previous_char_in_lookback = current_char_in_lookback;
       current_char_in_lookback = fgetc(dialogue_file);
       encountered_chars++;
+      
     }
     //
     int current_lookback_with_chars =  current_offset -  (encountered_chars-2);
