@@ -43,7 +43,7 @@ void dia_loop_dialogue(Dia_Dialogue_Manager *manager, Game_State *gs){
 	UPDATE_PANEL_INFO();
 	return;
       }
-      else if(ch == KEY_DOWN && manager->single_page_file == NO){
+      else if(ch == KEY_DOWN && manager->single_page_file == NO && manager->reached_eof == NO){
 	manager->expected_char_offset = DIA_SAFE_INCREMENT_NEXT(manager,gs,num_bytes,manager->expected_char_offset);
 	manager->current_char_offset = dia_recompute_char_offset_forwards(manager,gs,num_bytes,fp);//DIA_SAFE_INCREMENT_NEXT(manager,gs,num_bytes);
 	dia_draw_dialogue_screen(manager,gs,fp);
@@ -168,9 +168,11 @@ void dia_draw_dialogue_screen(Dia_Dialogue_Manager *manager, Game_State *gs, FIL
       c = fgetc(dialogue_file);
       char_offset++;
       if(c == EOF){
-	manager->current_char_offset = 0;
+	if(manager->current_char_offset == 0){
+	  //relies on drawing the screen first before doing any updating of the char offset
+	  manager->single_page_file = YES;
+	}
 	manager->reached_eof = YES;
-	manager->single_page_file = YES;
       }
     }
     char_offset = 1;
@@ -244,17 +246,16 @@ extern inline int dia_recompute_char_offset_backwards(Dia_Dialogue_Manager *mana
     //
     //Provided the remaining numbers of chars are exactly zero, it must be the 
     int remaining_chars = (encountered_chars) % ((gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH)-2);
-    printf(" Current offset: %d ", manager->current_char_offset);
-    printf(" Offset after looking back: %d ", current_offset);
-    printf(" The line length is: %d ", ((gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH)-2));
-    printf(" We encountered %d chars", encountered_chars);
+    // printf(" Current offset: %d ", manager->current_char_offset);
+    //printf(" Offset after looking back: %d ", current_offset);
+    //printf(" The line length is: %d ", ((gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH)-2));
+    //printf(" We encountered %d chars", encountered_chars);
     if(remaining_chars == 0){
-      sprintf(gs->bfr, "npc id %d with dialogue id %d at offset %d was found to have next offset when looking backwards to be an eact ",manager->npc_id, manager->current_dialogue_id,manager->current_char_offset);
-      l_write_log(gs->bfr, L_INFO,DEFAULT_LOGGING_FILE);
+      sprintf(gs->bfr, "npc id %d with dialogue id %d at offset %d was found to have exactly zero characters left when computing the modulo!",manager->npc_id, manager->current_dialogue_id,manager->current_char_offset);
+      l_write_log(gs->bfr, L_DEBUG,DEFAULT_LOGGING_FILE);
+      return (manager->current_char_offset-2) - (((gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH)-2) -1);
     }
     else{
-       sprintf(gs->bfr, "npc id %d with dialogue id %d at offset %d was found to have next offset when looking backwards to be nonzero",manager->npc_id, manager->current_dialogue_id,manager->current_char_offset);
-      l_write_log(gs->bfr, L_INFO,DEFAULT_LOGGING_FILE);
       return (manager->current_char_offset-2) - (remaining_chars -1);
     }
     if(encountered_chars > 512){
