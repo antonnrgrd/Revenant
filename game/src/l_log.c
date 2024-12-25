@@ -25,7 +25,7 @@ char *l_add_metadata_to_msg(char *msg, char *debug_lvl){
   return msg;
 }
 // Assumes msg to be written is already defined and has sufficient space for prepending the timestamp + debugging lvl.
-void l_write_log(char *msg , char *debug_lvl, char *fpath){
+void l_write_log(char *msg , char *debug_lvl, int verbosity_flag){
 
   char *msg_with_metadata = l_add_metadata_to_msg(msg,debug_lvl);
   FILE *fp = fopen(DEFAULT_LOGGING_FILE, "a");
@@ -38,6 +38,9 @@ void l_write_log(char *msg , char *debug_lvl, char *fpath){
   //Hacky, but ensures we never have to consider adding newlines to the messages directly
   fprintf(fp,"\n");
   fclose(fp);
+  if(verbosity_flag == L_LOG_VERBOSELY && strcmp(debug_lvl,L_ERR) != YES){
+    printf(msg);
+  }
   if(strcmp(debug_lvl,L_ERR) == YES){
     // Note - it is important to call endwin first to get the desired behavior
     endwin();

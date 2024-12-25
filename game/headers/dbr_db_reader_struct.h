@@ -12,6 +12,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define DB_READER_STRUCT
 
 #include "dia_dialogue_struct.h"
+#include "l_log.h"
 /*Sqlite 3 needs the number of bytes that the sql statement is. If it is negative, it will simply read the passed sql statement until it 
 encounters a 0 terminator. We use this macro by defualt to instruct it to do so*/
 #define NBYTES -1
@@ -37,4 +38,7 @@ typedef struct{
   int selected_dialogue_consequence;
   int next_dialogue_screen_num_options;
 }Dbr_Selected_Dialogue_Qresult;
+#define DBR_DATABASE_PATH "/usr/lib/revenant_files/database/revenant.db"
+#define DBR_CONTINUE_DIALOGUE 0
+#define DBR_EXIT_DIALOGUE 0
 #endif

@@ -13,5 +13,9 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define L_LOG
 #include "l_log_struct.h"
 char *l_add_metadata_to_msg(char *msg, char *debug_lvl);
-void l_write_log(char *msg, char *debug_lvl, char *fpath);
+void l_write_log(char *msg, char *debug_lvl, int verbosity_flag);
+#define L_WRITE_OS_LEVEL_ERROR(bfr){ \
+    perror("Game encountered an unrecoverable OS-level error. See the message after the colon for a hint as to what the issue is:"); \
+    l_write_log(bfr, L_ERROR);						\
+  }
 #endif

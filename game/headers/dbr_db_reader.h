@@ -16,4 +16,9 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 Dbr_Selected_Dialogue_Qresult dbr_get_dialogue_response(Game_State *gs,Dia_Dialogue_Manager *manager, int selected_choice);
 Dia_Dialogue_Manager *dbr_readin_dialogue_manager(int np_id);
+void dbr_add_dialogue_to_db(int dialogue_folder_id, int current_dialogue_id,int consequence,int num_options);
+void dbr_create_db_all_content(Game_State *gs);
+void dbr_create_all_tables(Game_State *gs);
+void dbr_create_dialogue_tables(Game_State *gs,sqlite3 *db);
+int dbr_does_table_exist(char *table,sqlite3 *db);
 #endif

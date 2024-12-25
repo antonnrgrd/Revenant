@@ -252,7 +252,7 @@ extern inline int dia_recompute_char_offset_backwards(Dia_Dialogue_Manager *mana
     //printf(" We encountered %d chars", encountered_chars);
     if(remaining_chars == 0){
       sprintf(gs->bfr, "npc id %d with dialogue id %d at offset %d was found to have exactly zero characters left when computing the modulo!",manager->npc_id, manager->current_dialogue_id,manager->current_char_offset);
-      l_write_log(gs->bfr, L_DEBUG,DEFAULT_LOGGING_FILE);
+      l_write_log(gs->bfr, L_DEBUG,NO);
       return (manager->current_char_offset-2) - (((gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH)-2) -1);
     }
     else{
@@ -260,7 +260,7 @@ extern inline int dia_recompute_char_offset_backwards(Dia_Dialogue_Manager *mana
     }
     if(encountered_chars > 512){
       sprintf(gs->bfr, "npc id %d with dialogue id %d has line exceeding 512 chars. This causes slow scrolling of text",manager->npc_id, manager->current_dialogue_id);
-      l_write_log(gs->bfr, L_WARN,DEFAULT_LOGGING_FILE);
+      l_write_log(gs->bfr, L_WARN,NO);
     }
   }
   else{

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.6.3)  11 MAR 2024 19:29
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2024.3.17)  25 DEC 2024 23:38
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -733,47 +733,52 @@ Underfull \hbox (badness 10000) in paragraph at lines 201--202
 
  []
 
-[8]
-Underfull \hbox (badness 10000) in paragraph at lines 224--225
+
+Underfull \hbox (badness 10000) in paragraph at lines 203--204
 
  []
 
-
+[8]
 Underfull \hbox (badness 10000) in paragraph at lines 226--227
 
  []
 
 
-Overfull \hbox (99.10454pt too wide) detected at line 233
+Underfull \hbox (badness 10000) in paragraph at lines 228--229
+
+ []
+
+
+Overfull \hbox (99.10454pt too wide) detected at line 235
 \OML/cmm/m/it/10 Creature[] \OT1/cmr/m/n/10 = \OML/cmm/m/it/10 max[]local \OMS/
 cmsy/m/n/10 ^^@ \OT1/cmr/m/n/10 (\OML/cmm/m/it/10 Player[] \OMS/cmsy/m/n/10 ^^@
  \OML/cmm/m/it/10 Creature[]\OT1/cmr/m/n/10 )[]  \OML/cmm/m/it/10 max[]moves
  []
 
 
-Overfull \hbox (96.4511pt too wide) detected at line 241
+Overfull \hbox (96.4511pt too wide) detected at line 243
 \OML/cmm/m/it/10 Creature[] \OT1/cmr/m/n/10 = \OML/cmm/m/it/10 min[]local \OT1/
 cmr/m/n/10 + (\OML/cmm/m/it/10 Player[] \OMS/cmsy/m/n/10 ^^@ \OML/cmm/m/it/10 C
 reature[]\OT1/cmr/m/n/10 )[]  \OML/cmm/m/it/10 max[]moves
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 243--244
+[9]
+Underfull \hbox (badness 10000) in paragraph at lines 245--246
 
  []
 
-[9]
-Overfull \hbox (69.07733pt too wide) in paragraph at lines 254--273
+
+Overfull \hbox (69.07733pt too wide) in paragraph at lines 256--275
  [][] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 299--299
+Underfull \hbox (badness 10000) in paragraph at lines 301--301
 []\T1/cmr/m/n/10 ESC - Quit
  []
 
 
-Overfull \hbox (59.99474pt too wide) in paragraph at lines 283--302
+Overfull \hbox (59.99474pt too wide) in paragraph at lines 285--304
 [][] 
  []
 
@@ -781,12 +786,7 @@ Overfull \hbox (59.99474pt too wide) in paragraph at lines 283--302
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [10]
-Underfull \hbox (badness 10000) in paragraph at lines 315--316
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 318--319
+Underfull \hbox (badness 10000) in paragraph at lines 317--318
 
  []
 
@@ -795,12 +795,22 @@ Underfull \hbox (badness 10000) in paragraph at lines 320--321
 
  []
 
-[11]
-Underfull \hbox (badness 10000) in paragraph at lines 342--343
+
+Underfull \hbox (badness 10000) in paragraph at lines 322--323
 
  []
 
-[12] [13] [14
+[11]
+Underfull \hbox (badness 10000) in paragraph at lines 344--345
+
+ []
+
+[12]
+Underfull \hbox (badness 1005) in paragraph at lines 374--375
+[]\T1/cmr/m/n/10 Data type & and
+ []
+
+[13] [14
 
 ] (./CyberRevenantUltraFuture.aux)
 
@@ -811,9 +821,9 @@ d.
 (rerunfilecheck)             Checksum: 444B1E9A0F22753C2AE0C38CE1DD011B;580.
  ) 
 Here is how much of TeX's memory you used:
- 22950 strings out of 480204
- 434082 string characters out of 5895011
- 702535 words of memory out of 5000000
+ 22951 strings out of 480204
+ 434093 string characters out of 5895010
+ 702568 words of memory out of 5000000
  40445 multiletter control sequences out of 15000+600000
  484477 words of font info for 58 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
@@ -833,10 +843,10 @@ rm1728.600pk></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi
 10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb>
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/s
 hare/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on CyberRevenantUltraFuture.pdf (15 pages, 185357 bytes).
+Output written on CyberRevenantUltraFuture.pdf (15 pages, 187747 bytes).
 PDF statistics:
- 530 PDF objects out of 1000 (max. 8388607)
- 212 compressed objects within 3 object streams
- 81 named destinations out of 1000 (max. 500000)
+ 535 PDF objects out of 1000 (max. 8388607)
+ 213 compressed objects within 3 object streams
+ 82 named destinations out of 1000 (max. 500000)
  42 words of extra memory for PDF output out of 10000 (max. 10000000)
 

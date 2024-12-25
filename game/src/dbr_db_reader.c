@@ -46,3 +46,41 @@ Dia_Dialogue_Manager *dbr_readin_dialogue_manager(int np_id){
   Dia_Dialogue_Manager *manager = malloc(sizeof(Dia_Dialogue_Manager));
 }
 
+void dbr_create_db_all_content(Game_state *gs){
+  sqlite3 *db;
+  int success = sqlite3_open(DBR_DATABASE_PATH, &db);
+  if(success != YES){
+    sprintf(gs->bfr, "Couldn\'t open the database for database creation");
+    l_write_log(gs->bfr, L_ERR,NO);
+  }
+  
+  sqlite3_close(db);
+}
+
+void dbr_create_dialogue_tables(Game_State *gs,sqlite3 *db){
+  int create_table_statement = sqlite3_exec(db, "CREATE TABLE IF NOT EXISTS dialogue_interactions(dialogue_folder_id int,current_dialogue_id int, selected_option int, consequence int, num_dialogue_options int,  PRIMARY KEY () );", NULL,gs->bfr);
+  if(create_table_statement != SQLITE_OK){
+    l_write_log(gs->bfr, L_WARN,L_LOG_VERBOSELY);
+    // A bit tacky, but the alternative would be have two seperate buffers to maintain
+    sprintf(gs->bfr, "An error occured in the dbr_create_dialogue_tables function when attempting to create the table dialogue_interactions, receiving the error code %d. See the message above for hints as to what went wrong",create_table_statement);
+    l_write_log(gs->bfr, L_ERR,L_LOG_SILENTLY);
+  }
+  int add_row_statement;
+  add_row_statement = sqlite3_exec(db,"INSERT INTO dialogue_interactions() ");
+  
+}
+
+void dbr_print_rows(char *query){
+  int select_table_statement = sqlite3_exec(db, query, dbr_print_rows_from_query,gs->bfr);
+  if(select_table_statement != SQLITE_OK){
+    sprintf(gs->bfr, "An error occurec when running the debug query %s - See the message preceeding this message for a hint as to what went wrong", query);
+    l_write_log(gs->bfr, L_ERR,L_LOG_SILENTLY);
+  }
+}
+
+int dbr_print_rows_from_query(void *data, int argc, char **argv, char **colNames){
+    for (int i = 0; i < argc; i++) {
+        printf("%s = %s\n", colNames[i], argv[i] ? argv[i] : "NULL");
+    }
+    return 0;
+}

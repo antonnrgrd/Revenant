@@ -363,6 +363,24 @@ Each new declaration is to be separated using a dividing line, made from \#\#\#\
 At convenience and as needed, each declaration can have elaborating comments
 \paragraph*{Declaration order for the db\_reader.c \& db\_reader.h}
 By design, the db\_reader functionality will \textit{not} include header information from other revenant components. Instead, any components the need information read in from the DB will include db\_reader in its header files. By doing so, it reduces db\_reader's dependency on the fields contained in the structs of the components that use db\_reader, allowing it to be agnostic wrt. the type and amount of information returned from the queries. 
+
+\subsubsection*{Database schema}
+In this subsection, we will list all the 
+\[ 
+\begin{tabular}{ |p{5cm}|p{3cm}|  }
+\hline
+ \multicolumn{2}{|c|}{dialogue\_interactions} \\
+ \hline
+ Column name & Data type \& and constraints\\
+  \hline
+ dialogue\_folder\_id & int\\
+ current\_dialogue\_id & int\\
+ selected\_option & int\\
+ consequence & int\\
+ num\_dialogue\_options & int\\
+ \hline
+\end{tabular}
+\]
 \chapter*{The world of Revenant}
 
 \section*{Places of Revenant}

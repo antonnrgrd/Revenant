@@ -30,10 +30,8 @@ typedef struct {
   int initial_dialogue_id;
   int current_char_offset;
   /**/
-  int npc_id;
   int num_dialogue_options;
   int current_dialogue_id;
-  int expected_char_offset;
   /*Note: if using single bit, bit-packed values, you need to use an unsigned int. If you use a regular signed int, you need at least two bits worth, in order to be able to differentiate between positive and negative numbers, otherwise, you get unusual behavior */
   unsigned int reached_eof : 1;
   /*In the event that the text file fits into a single window, we need to keep extra track of this to avoid unecessarily updating the next and prev char offsets. I don't know if we already store sufficient logic to check this but at this point i am too lazy and have spendt too much time to bother coming up with a more clever solution */

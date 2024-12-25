@@ -26,10 +26,5 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define NEWLINE 13
 // Some errors are not an unexpected game state but rather occur at the os level, for these kind of errors
 //we want in addition to get the stderror
-#define L_WRITE_OS_LEVEL_ERROR(msg){			\
-    endwin();						\
-    fprintf(stderr,"The game encountered the following unrecoverable OS-level issue and was forced to terminate:\n%s\nPlease note down what you were doing when you saw this message and hand over the log file at /var/log/revenant.log", msg); \
-    perror("In addition, see the message that comes after the colon for further hints as to what went wrong"); \
-   exit(EXIT_FAILURE); \
-  }
+FILE *gnrc_read_in_file(char *fp);
 #endif
