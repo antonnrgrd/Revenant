@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2024.3.17)  25 DEC 2024 23:38
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2024.3.17)  27 DEC 2024 12:53
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -810,7 +810,208 @@ Underfull \hbox (badness 1005) in paragraph at lines 374--375
 []\T1/cmr/m/n/10 Data type & and
  []
 
-[13] [14
+
+Underfull \hbox (badness 10000) in paragraph at lines 382--382
+[]\T1/cmr/m/n/10 PRIMARY
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 382--382
+\T1/cmr/m/n/10 KEY(dialogue_folder_id,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 382--382
+\T1/cmr/m/n/10 cur-rent_dialogue_id,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 383--383
+[]\T1/cmr/m/n/10 CREATE UNIQUE IN-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 383--383
+\T1/cmr/m/n/10 DEX IF NOT EX-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 383--383
+\T1/cmr/m/n/10 ISTS(dialogue_folder_id,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 383--383
+\T1/cmr/m/n/10 cur-rent_dialogue_id,
+ []
+
+
+Underfull \hbox (badness 1466) in paragraph at lines 391--392
+[]\T1/cmr/m/n/10 If any checks are
+ []
+
+
+Underfull \hbox (badness 1281) in paragraph at lines 391--392
+\T1/cmr/m/n/10 to be made as a
+ []
+
+
+Underfull \hbox (badness 5316) in paragraph at lines 391--392
+\T1/cmr/m/n/10 con-se-quence of a
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--392
+\T1/cmr/m/n/10 se-lected di-a-logue
+ []
+
+
+Underfull \hbox (badness 5696) in paragraph at lines 391--392
+\T1/cmr/m/n/10 op-tions, e.g skill
+ []
+
+
+Underfull \hbox (badness 4328) in paragraph at lines 391--392
+\T1/cmr/m/n/10 have to be read
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 400--401
+[]\T1/cmr/m/n/10 Data type, con-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 402--403
+[]\T1/cmr/m/n/10 int - di-a-logue
+ []
+
+
+Underfull \hbox (badness 6725) in paragraph at lines 402--403
+\T1/cmr/m/n/10 folder id of the
+ []
+
+
+Overfull \hbox (21.86555pt too wide) in paragraph at lines 402--403
+\T1/cmr/m/n/10 Dia_Dialogue_Manager
+ []
+
+
+Underfull \hbox (badness 1472) in paragraph at lines 404--405
+[]\T1/cmr/m/n/10 int - the se-lected
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 404--405
+\T1/cmr/m/n/10 di-a-logue op-tion
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 404--405
+\T1/cmr/m/n/10 for the cur-rent
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 404--405
+\T1/cmr/m/n/10 di-a-logue_folder_id
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 404--405
+\T1/cmr/m/n/10 and cur-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 404--405
+\T1/cmr/m/n/10 rent_dialogue_id
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 405--406
+[]\T1/cmr/m/n/10 int - the con-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 405--406
+\T1/cmr/m/n/10 se-quence for
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 405--406
+\T1/cmr/m/n/10 pick-ing the se-
+ []
+
+
+Underfull \hbox (badness 1466) in paragraph at lines 413--414
+[]\T1/cmr/m/n/10 If any checks are
+ []
+
+
+Underfull \hbox (badness 1281) in paragraph at lines 413--414
+\T1/cmr/m/n/10 to be made as a
+ []
+
+
+Underfull \hbox (badness 5316) in paragraph at lines 413--414
+\T1/cmr/m/n/10 con-se-quence of a
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 413--414
+\T1/cmr/m/n/10 se-lected di-a-logue
+ []
+
+
+Underfull \hbox (badness 5696) in paragraph at lines 413--414
+\T1/cmr/m/n/10 op-tions, e.g skill
+ []
+
+
+Underfull \hbox (badness 4328) in paragraph at lines 413--414
+\T1/cmr/m/n/10 have to be read
+ []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 424--425
+[]\T1/cmr/m/n/10 int - di-a-logue
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 424--425
+\T1/cmr/m/n/10 folder id of the
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 424--425
+\T1/cmr/m/n/10 Dia_Dialogue_Manager
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 424--425
+\T1/cmr/m/n/10 used for the cur-rent
+ []
+
+
+Underfull \hbox (badness 4217) in paragraph at lines 425--426
+[]\T1/cmr/m/n/10 int - the cur-rent di-a-
+ []
+
+
+Overfull \hbox (18.49pt too wide) in paragraph at lines 435--435
+[]\T1/cmr/m/n/10 dialogue_consequence_checks| 
+ []
+
+
+Underfull \hbox (badness 1939) in paragraph at lines 435--436
+\T1/cmr/m/n/10 made as a con-se-quence
+ []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[13] [14] [15] [16
 
 ] (./CyberRevenantUltraFuture.aux)
 
@@ -821,13 +1022,13 @@ d.
 (rerunfilecheck)             Checksum: 444B1E9A0F22753C2AE0C38CE1DD011B;580.
  ) 
 Here is how much of TeX's memory you used:
- 22951 strings out of 480204
- 434093 string characters out of 5895010
+ 22953 strings out of 480204
+ 434107 string characters out of 5895010
  702568 words of memory out of 5000000
  40445 multiletter control sequences out of 15000+600000
  484477 words of font info for 58 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
- 84i,10n,89p,579b,1029s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 84i,11n,89p,579b,1029s stack positions out of 5000i,500n,10000p,200000b,80000s
  </home/anton/.texlive2021/texmf-var/fonts/pk/ljfour/jknappen/ec/ecti1000.600
 pk> </home/anton/.texlive2021/texmf-var/fonts/pk/ljfour/jknappen/ec/ectt1000.60
 0pk> </home/anton/.texlive2021/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1000.6
@@ -843,10 +1044,10 @@ rm1728.600pk></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi
 10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb>
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/s
 hare/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on CyberRevenantUltraFuture.pdf (15 pages, 187747 bytes).
+Output written on CyberRevenantUltraFuture.pdf (17 pages, 191520 bytes).
 PDF statistics:
- 535 PDF objects out of 1000 (max. 8388607)
- 213 compressed objects within 3 object streams
- 82 named destinations out of 1000 (max. 500000)
+ 546 PDF objects out of 1000 (max. 8388607)
+ 219 compressed objects within 3 object streams
+ 84 named destinations out of 1000 (max. 500000)
  42 words of extra memory for PDF output out of 10000 (max. 10000000)
 
