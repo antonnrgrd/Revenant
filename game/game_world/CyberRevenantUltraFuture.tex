@@ -369,7 +369,7 @@ In this subsection, we will list all the
 \begin{table}[h]
 \begin{tabular}{ |p{5cm}|p{3cm}|  }
 \hline
- \multicolumn{2}{|c|}{\textbf{Table:dialogue\_interactions}} \\
+ \multicolumn{2}{|c|}{\textbf{Table:dia\_dialogue\_interactions}} \\
  \hline
  Column name & Data type \& and constraints\\
   \hline
@@ -379,8 +379,8 @@ In this subsection, we will list all the
  \hline
   \multicolumn{2}{|c|}{\textbf{Indexes, keys and constraints}} \\
    \hline
-   \multicolumn{2}{|p{5cm}|}{PRIMARY KEY(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id, num{\_}dialogue{\_}options)} \\
-      \multicolumn{2}{|p{5cm}|}{CREATE UNIQUE INDEX IF NOT EXISTS(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id, num{\_}dialogue{\_}options)} \\
+   \multicolumn{2}{|p{5cm}|}{PRIMARY KEY(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id} \\
+      \multicolumn{2}{|p{5cm}|}{CREATE UNIQUE INDEX IF NOT EXISTS(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id} \\
  \hline
 \multicolumn{2}{|c|}{\textbf{Dependencies of dialogue\_interactions}}  \\
 \hline
@@ -388,14 +388,15 @@ In this subsection, we will list all the
 \hline
 Table name & Role \\
 \hline
-dialogue\_consequence\_checks & If any checks are to be made as a consequence of a selected dialogue options, e.g skill check, trigger check this table will also have to be read from.
+dia\_dialogue\_selected\_option\_consequence\_handler - \ref{Tab:diadialogueselectedoptionconsequencehandler} & If any checks are to be made as a consequence of a selected dialogue options, e.g skill check, trigger check this table will also have to be read from. \\
+\hline
 \end{tabular}
 \end{table}
 
 \begin{table}[h]
-\begin{tabular}{ |p{5cm}|p{3cm}|  }
+\begin{tabular}{ |p{5.7cm}|p{3.7cm}|  }
 \hline
- \multicolumn{2}{|c|}{\textbf{Table:dialogue\_consequence\_checks}} \\
+ \multicolumn{2}{|c|}{\textbf{Table:dia\_dialogue\_selected\_option\_consequence\_handler}} \\
  \hline
  Column name & Data type, constraints \& description\\
   \hline
@@ -403,38 +404,23 @@ dialogue\_consequence\_checks & If any checks are to be made as a consequence of
  current\_dialogue\_id & int - the current dialogue\_id file being read from the dialogue folder.\\
  selected\_option & int - the selected dialogue option for the current dialogue\_folder\_id and current\_dialogue\_id context \\
  consequence & int - the consequence for picking the selected\_option  \\
+ next\_current\_dialogue\_if\_successful & int - the next current dialogue to read in, provided the passed the checks, if any. \\
  \hline
-\multicolumn{2}{|c|}{\textbf{Dependencies of dialogue\_interactions}}  \\
+\multicolumn{2}{|c|}{\textbf{Indexes, keys and constraints}}  \\
 \hline
-\multicolumn{2}{|c|}{Table dependencies of dialogue\_interactions}  \\
-\hline
+   \multicolumn{2}{|p{5cm}|}{PRIMARY KEY(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id, selected\_option} \\
+      \multicolumn{2}{|p{5cm}|}{CREATE UNIQUE INDEX IF NOT EXISTS(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id, selected{\_option}} \\ 
+   \hline
+   \multicolumn{2}{|p{5cm}|}{FOREIGN KEY(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id REFERENCES dia\_dialogue\_interactions(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id)} \\      
+ \hline
 Table name & Role \\
 \hline
-selected\_dialogue\_option & If any checks are to be made as a consequence of a selected dialogue options, e.g skill check, trigger check this table will also have to be read from.
+selected\_dialogue\_option & If any checks are to be made as a consequence of a selected dialogue options, e.g skill check, trigger check this table will also have to be read from. \\
+\hline
 \end{tabular}
+\label{Tab:diadialogueselectedoptionconsequencehandler}
 \end{table}
 
-\begin{table}[h]
-\begin{tabular}{ |p{4cm}|p{4cm}|  }
-\hline
- \multicolumn{2}{|c|}{\textbf{Table:selected\_dialogue\_option }} \\
- \hline
- Column name & Data type, constraints \& description\\
-  \hline
- dialogue\_folder\_id & int - dialogue folder id of the Dia\_Dialogue\_Manager used for the current dialogue session.\\
- current\_dialogue\_id & int - the current dialogue\_id file being read from the dialogue folder.\\
- selected\_option & int - the dialogue option the\\
- check\_type & int - The type of check in question to be made e.g skill check, trigger check, etc..\\
- \hline
-\multicolumn{2}{|c|}{\textbf{Dependencies of dialogue\_interactions}}  \\
-\hline
-\multicolumn{2}{|c|}{Table dependencies of dialogue\_interactions}  \\
-\hline
-Table name & Role \\
-\hline
-dialogue\_consequence\_checks & If any checks are to be made as a consequence of a selected dialogue options, e.g skill check, trigger check this table will also have to be read from.
-\end{tabular}
-\end{table}
 
 \chapter*{The world of Revenant}
 
