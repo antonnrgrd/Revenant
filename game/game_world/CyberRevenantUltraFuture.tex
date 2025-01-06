@@ -376,28 +376,28 @@ F1 & G1 & H1 \\ \hline
 \end{tabular}
 In this subsection, we will list all the 
 \begin{table}[h]
-\begin{tabular}{ |p{4cm}|p{1cm}|p{3cm}|  }
+\begin{tabular}{ |p{4cm}|p{1cm}|p{3cm}|p{3cm}|  }
 \hline
- \multicolumn{3}{|c|}{\textbf{Table:dia\_dialogue\_interactions}} \\
+ \multicolumn{4}{|c|}{\textbf{Table:dia\_dialogue\_interactions}} \\
  \hline
- Column name & Index & Data type \\
+ Column name & Index & Data type & Description \\
   \hline
- dialogue\_folder\_id & 0 & int\\
- current\_dialogue\_id & 1 & int\\
- num\_dialogue\_options & 2 & int\\
+ dialogue\_folder\_id & 0 & int & N/A\\
+ current\_dialogue\_id & 1 & int & N/A\\
+ num\_dialogue\_options & 2 & int & The number of dialogue options available for the dialogue\_folder\_id + current\_dialogue\_id \\
  \hline
-  \multicolumn{3}{|c|}{\textbf{Indexes, keys and constraints}} \\
+  \multicolumn{4}{|c|}{\textbf{Indexes, keys and constraints}} \\
    \hline
-   \multicolumn{3}{|p{5cm}|}{PRIMARY KEY(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id} \\
-      \multicolumn{3}{|p{5cm}|}{CREATE UNIQUE INDEX IF NOT EXISTS(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id} \\
+   \multicolumn{4}{|p{5cm}|}{PRIMARY KEY(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id} \\
+      \multicolumn{4}{|p{5cm}|}{CREATE UNIQUE INDEX IF NOT EXISTS(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id} \\
  \hline
-\multicolumn{3}{|c|}{\textbf{Dependencies of dia\_dialogue\_interactions}}  \\
+\multicolumn{4}{|c|}{\textbf{Dependencies of dia\_dialogue\_interactions}}  \\
 \hline
-\multicolumn{3}{|c|}{Table dependencies of dia\_dialogue\_interactions}  \\
+\multicolumn{4}{|c|}{Table dependencies of dia\_dialogue\_interactions}  \\
 \hline
-\multicolumn{2}{|c|}{Table name} & Role \\%Table name & Role \\
+\multicolumn{3}{|c|}{Table name} & Role \\%Table name & Role \\
 \hline
-\multicolumn{2}{|c|}{dia\_dialogue\_selected\_option\_consequence\_handler - \ref{Tab:diadialogueselectedoptionconsequencehandler}} & If any checks are to be made as a consequence of a selected dialogue options, e.g skill check, trigger check this table will also have to be read from. \\
+\multicolumn{3}{|c|}{dia\_dialogue\_selected\_option\_consequence\_handler - \ref{Tab:diadialogueselectedoptionconsequencehandler}} & If any checks are to be made as a consequence of a selected dialogue options, e.g skill check, trigger check this table will also have to be read from. \\
 \hline
 \end{tabular}
 \end{table}
