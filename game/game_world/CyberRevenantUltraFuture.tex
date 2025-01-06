@@ -395,7 +395,7 @@ In this subsection, we will list all the
 \hline
 \multicolumn{4}{|c|}{Table dependencies of dia\_dialogue\_interactions}  \\
 \hline
-\multicolumn{3}{|c|}{Table name} & Role \\%Table name & Role \\
+\multicolumn{3}{|c|}{Table name} & Role \\
 \hline
 \multicolumn{3}{|c|}{dia\_dialogue\_selected\_option\_consequence\_handler - \ref{Tab:diadialogueselectedoptionconsequencehandler}} & If any checks are to be made as a consequence of a selected dialogue options, e.g skill check, trigger check this table will also have to be read from. \\
 \hline
@@ -403,28 +403,28 @@ In this subsection, we will list all the
 \end{table}
 
 \begin{table}[h]
-\begin{tabular}{ |p{5.7cm}|p{3.7cm}|  }
+\begin{tabular}{ |p{6cm}|p{1.2cm}|p{3cm}|p{3.6cm}|  }
 \hline
- \multicolumn{2}{|c|}{\textbf{Table:dia\_dialogue\_selected\_option\_consequence\_handler}} \\
+ \multicolumn{4}{|c|}{\textbf{Table:dia\_dialogue\_selected\_option\_consequence\_handler}} \\
  \hline
- Column name & Data type, constraints \& description\\
+ Column name & Column index & Data type & Description \\
   \hline
- dialogue\_folder\_id & int - dialogue folder id of the Dia\_Dialogue\_Manager used for the current dialogue session.\\
- current\_dialogue\_id & int - the current dialogue\_id file being read from the dialogue folder.\\
- selected\_option & int - the selected dialogue option for the current dialogue\_folder\_id and current\_dialogue\_id context \\
- consequence & int - the consequence for picking the selected\_option  \\
- next\_current\_dialogue\_if\_successful & int - the next current dialogue to read in, provided the passed the checks, if any. \\
+ dialogue\_folder\_id & 0 & int & dialogue folder id of the Dia\_Dialogue\_Manager used for the current dialogue session.\\
+ current\_dialogue\_id & 1 & int & The current dialogue\_id file being read from the dialogue folder.\\
+ selected\_option & 2 & int & The selected dialogue option for the current dialogue\_folder\_id and current\_dialogue\_id context \\
+ consequence & 3 & int & The consequence for picking the selected\_option  \\
+ next\_current\_dialogue\_if\_successful & 4 & int & The next current dialogue to read in, provided the passed the checks, if any. \\
  \hline
-\multicolumn{2}{|c|}{\textbf{Indexes, keys and constraints}}  \\
+\multicolumn{4}{|c|}{\textbf{Indexes, keys and constraints}}  \\
 \hline
-   \multicolumn{2}{|p{5cm}|}{PRIMARY KEY(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id, selected\_option} \\
-      \multicolumn{2}{|p{5cm}|}{CREATE UNIQUE INDEX IF NOT EXISTS(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id, selected{\_option}} \\ 
+   \multicolumn{4}{|p{5cm}|}{PRIMARY KEY(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id, selected\_option} \\
+      \multicolumn{4}{|p{5cm}|}{CREATE UNIQUE INDEX IF NOT EXISTS(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id, selected{\_option}} \\ 
    \hline
-   \multicolumn{2}{|p{5cm}|}{FOREIGN KEY(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id REFERENCES dia\_dialogue\_interactions(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id)} \\      
+   \multicolumn{4}{|p{5cm}|}{FOREIGN KEY(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id REFERENCES dia\_dialogue\_interactions(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id)} \\      
  \hline
-Table name & Role \\
+\multicolumn{3}{|c|}{Table name} & Role \\
 \hline
-selected\_dialogue\_option & If any checks are to be made as a consequence of a selected dialogue options, e.g skill check, trigger check this table will also have to be read from. \\
+\multicolumn{3}{|c|}{selected\_dialogue\_option} & If any checks are to be made as a consequence of a selected dialogue options, e.g skill check, trigger check this table will also have to be read from. \\
 \hline
 \end{tabular}
 \label{Tab:diadialogueselectedoptionconsequencehandler}

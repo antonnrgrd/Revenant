@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2024.3.17)  6 JAN 2025 20:51
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2024.3.17)  6 JAN 2025 21:25
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -894,33 +894,33 @@ Overfull \hbox (21.67076pt too wide) in paragraph at lines 379--403
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 412--413
-[]\T1/cmr/m/n/10 int - di-a-logue
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 412--413
-\T1/cmr/m/n/10 folder id of the
- []
-
-
-Overfull \hbox (1.94872pt too wide) in paragraph at lines 412--413
+Overfull \hbox (4.79373pt too wide) in paragraph at lines 412--413
 \T1/cmr/m/n/10 Dia_Dialogue_Manager
  []
 
 
-Underfull \hbox (badness 1067) in paragraph at lines 413--414
-[]\T1/cmr/m/n/10 int - the cur-rent di-a-
+Underfull \hbox (badness 3058) in paragraph at lines 412--413
+\T1/cmr/m/n/10 used for the cur-rent
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 413--414
+[]\T1/cmr/m/n/10 The cur-rent di-a-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 413--414
+\T1/cmr/m/n/10 logue_id file be-ing
  []
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 414--415
-[]\T1/cmr/m/n/10 int - the se-lected
+[]\T1/cmr/m/n/10 The se-lected di-
  []
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 414--415
-\T1/cmr/m/n/10 di-a-logue op-tion for
+\T1/cmr/m/n/10 a-logue op-tion for
  []
 
 
@@ -939,8 +939,8 @@ Underfull \hbox (badness 10000) in paragraph at lines 414--415
  []
 
 
-Underfull \hbox (badness 1762) in paragraph at lines 415--416
-[]\T1/cmr/m/n/10 int - the con-se-quence
+Underfull \hbox (badness 10000) in paragraph at lines 415--416
+[]\T1/cmr/m/n/10 The con-se-quence
  []
 
 
@@ -949,12 +949,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 415--416
  []
 
 
-Overfull \hbox (3.55669pt too wide) in paragraph at lines 416--416
-[]\T1/cmr/m/n/10 next_current_dialogue_if_successful| 
- []
-
-
-Underfull \hbox (badness 2951) in paragraph at lines 416--417
+Underfull \hbox (badness 1603) in paragraph at lines 416--417
 \T1/cmr/m/n/10 vided the passed the
  []
 
@@ -1019,12 +1014,12 @@ Overfull \hbox (65.01894pt too wide) in paragraph at lines 423--423
  []
 
 
-Underfull \hbox (badness 1448) in paragraph at lines 427--428
-\T1/cmr/m/n/10 of a se-lected di-a-logue
+Overfull \hbox (95.64809pt too wide) in paragraph at lines 406--431
+[][]
  []
 
 
-LaTeX Warning: Float too large for page by 29.59995pt on input line 431.
+LaTeX Warning: Float too large for page by 30.59995pt on input line 431.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
@@ -1062,9 +1057,9 @@ rm1728.600pk></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi
 10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb>
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/s
 hare/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on CyberRevenantUltraFuture.pdf (17 pages, 190892 bytes).
+Output written on CyberRevenantUltraFuture.pdf (17 pages, 190584 bytes).
 PDF statistics:
- 545 PDF objects out of 1000 (max. 8388607)
+ 544 PDF objects out of 1000 (max. 8388607)
  220 compressed objects within 3 object streams
  84 named destinations out of 1000 (max. 500000)
  42 words of extra memory for PDF output out of 10000 (max. 10000000)
