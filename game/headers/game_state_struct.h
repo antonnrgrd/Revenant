@@ -67,6 +67,7 @@ typedef struct Game_State{
   int notification_log_height_size;
   int notification_log_width_size;
   struct C_Creature *player;
+  struct Dbr_Query_Manager *query_manager;
   Game_World *current_zone;
   Ll_Linked_List *active_creatures;
   PANEL *panels[8];

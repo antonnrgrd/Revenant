@@ -367,24 +367,24 @@ By design, the db\_reader functionality will \textit{not} include header informa
 \subsubsection*{Database schema}
 In this subsection, we will list all the 
 \begin{table}[h]
-\begin{tabular}{ |p{5cm}|p{3cm}|  }
+\begin{tabular}{ |p{5cm}|p{3cm}|p{3cm}|  }
 \hline
- \multicolumn{2}{|c|}{\textbf{Table:dia\_dialogue\_interactions}} \\
+ \multicolumn{3}{|c|}{\textbf{Table:dia\_dialogue\_interactions}} \\
  \hline
- Column name & Data type \& and constraints\\
+ Column name & Index & Data type \\
   \hline
- dialogue\_folder\_id & int\\
- current\_dialogue\_id & int\\
- num\_dialogue\_options & int\\
+ dialogue\_folder\_id & 0 & int\\
+ current\_dialogue\_id & 1 & int\\
+ num\_dialogue\_options & 2 & int\\
  \hline
-  \multicolumn{2}{|c|}{\textbf{Indexes, keys and constraints}} \\
+  \multicolumn{3}{|c|}{\textbf{Indexes, keys and constraints}} \\
    \hline
-   \multicolumn{2}{|p{5cm}|}{PRIMARY KEY(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id} \\
-      \multicolumn{2}{|p{5cm}|}{CREATE UNIQUE INDEX IF NOT EXISTS(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id} \\
+   \multicolumn{3}{|p{5cm}|}{PRIMARY KEY(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id} \\
+      \multicolumn{3}{|p{5cm}|}{CREATE UNIQUE INDEX IF NOT EXISTS(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id} \\
  \hline
-\multicolumn{2}{|c|}{\textbf{Dependencies of dialogue\_interactions}}  \\
+\multicolumn{3}{|c|}{\textbf{Dependencies of dialogue\_interactions}}  \\
 \hline
-\multicolumn{2}{|c|}{Table dependencies of dialogue\_interactions}  \\
+\multicolumn{3}{|c|}{Table dependencies of dialogue\_interactions}  \\
 \hline
 Table name & Role \\
 \hline

@@ -34,6 +34,15 @@ If it has the name format *_QUERY, it is intended to be used in a query (1-index
 #define GENERIC_ISSLOG_MALE_NPC 0
 
 typedef struct{
+  int current_row_index;
+  int num_rows_encountered;
+  /*Quite annoyingly, sqlite manages memory *slightly* differently than standard C, hence we need a seperate buffer that it can write to */
+  char *sqlite_bfr;
+  //Generic holder for data
+  void *data;
+}Dbr_Query_Manager;
+
+typedef struct{
   int next_dialogue_id;
   int selected_dialogue_consequence;
   int next_dialogue_screen_num_options;
