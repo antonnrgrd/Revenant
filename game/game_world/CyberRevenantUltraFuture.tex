@@ -365,6 +365,15 @@ At convenience and as needed, each declaration can have elaborating comments
 By design, the db\_reader functionality will \textit{not} include header information from other revenant components. Instead, any components the need information read in from the DB will include db\_reader in its header files. By doing so, it reduces db\_reader's dependency on the fields contained in the structs of the components that use db\_reader, allowing it to be agnostic wrt. the type and amount of information returned from the queries. 
 
 \subsubsection*{Database schema}
+\begin{tabular}{|c|c|c|}
+\hline
+Column 1 & Column 2 & Column 3 \\ \hline
+A1 & B1 & C1 \\ \hline
+\multicolumn{2}{|c|}{Merged Columns} & C3 \\ \hline
+D1 & D2 & D3 \\ \hline
+\multicolumn{3}{|c|}{All Columns Merged} \\ \hline
+F1 & G1 & H1 \\ \hline
+\end{tabular}
 In this subsection, we will list all the 
 \begin{table}[h]
 \begin{tabular}{ |p{5cm}|p{3cm}|p{3cm}|  }
@@ -386,9 +395,9 @@ In this subsection, we will list all the
 \hline
 \multicolumn{3}{|c|}{Table dependencies of dialogue\_interactions}  \\
 \hline
-Table name & Role \\
+\multicolumn{2}{|c|}{Table name} & Role \\%Table name & Role \\
 \hline
-dia\_dialogue\_selected\_option\_consequence\_handler - \ref{Tab:diadialogueselectedoptionconsequencehandler} & If any checks are to be made as a consequence of a selected dialogue options, e.g skill check, trigger check this table will also have to be read from. \\
+\multicolumn{2}{|c|}{dia\_dialogue\_selected\_option\_consequence\_handler - \ref{Tab:diadialogueselectedoptionconsequencehandler}} & If any checks are to be made as a consequence of a selected dialogue options, e.g skill check, trigger check this table will also have to be read from. \\
 \hline
 \end{tabular}
 \end{table}
