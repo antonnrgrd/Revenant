@@ -376,14 +376,14 @@ F1 & G1 & H1 \\ \hline
 \end{tabular}
 In this subsection, we will list all the 
 \begin{table}[h]
-\begin{tabular}{ |p{4cm}|p{1cm}|p{3cm}|p{3cm}|  }
+\begin{tabular}{ |p{4cm}|p{1.2cm}|p{3cm}|p{3cm}|  }
 \hline
  \multicolumn{4}{|c|}{\textbf{Table:dia\_dialogue\_interactions}} \\
  \hline
- Column name & Index & Data type & Description \\
+ Column name & Column index & Data type & Description \\
   \hline
- dialogue\_folder\_id & 0 & int & N/A\\
- current\_dialogue\_id & 1 & int & N/A\\
+ dialogue\_folder\_id & 0 & int & The id of the dialogue folder \\
+ current\_dialogue\_id & 1 & int & A dialogue file in the dialogue folder in question. Identified by an id\\
  num\_dialogue\_options & 2 & int & The number of dialogue options available for the dialogue\_folder\_id + current\_dialogue\_id \\
  \hline
   \multicolumn{4}{|c|}{\textbf{Indexes, keys and constraints}} \\
