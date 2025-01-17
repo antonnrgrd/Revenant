@@ -44,6 +44,7 @@ void rng_twist(Rng_Mersienne_Twister *twister){
 
 Rng_Mersienne_Twister *rng_generate_twister(){
   Rng_Mersienne_Twister *twister = malloc(sizeof(Rng_Mersienne_Twister));
+  /* TODO, mt is a pointer, but since the size is hard-coded, maybe not have it be a pointer?*/
   twister->mt =  malloc(NN * sizeof(int));
   twister->index = NN+1;
   twister->lower_mask = (1 << R) - 1;

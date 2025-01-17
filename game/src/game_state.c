@@ -80,6 +80,8 @@ Game_State *gs_create_game_state(Game_World *game_world){
 
   sqlite3 *db_connection;
   Game_State *state = malloc(sizeof(Game_State));
+  state->query_manager = malloc(sizeof(Dbr_Query_Manager));
+  DBR_INITIALIZE_QUERY_MANAGER(state->query_manager);
   sqlite3_open(DB_LOCATION,&db_connection);
    state->db = db_connection;
   state->ingame_log = malloc(sizeof(char *) * NUM_EVENTS);
@@ -154,4 +156,15 @@ void gs_recompute_creature_local_coords(Ll_Linked_List *list){
     current_node = current_node->next;
   }
 }
-  
+
+void gs_free_game_state(Game_State *gs){
+  FREE_NULL(gs->bfr);
+  for(int i = 0; i < NUM_EVENTS; i++){
+    FREE_NULL(state->ingame_log[i]);
+}
+  FREE_NULL(state->ingame_log);
+  c_free_creature(gs->player);
+  ll_free_linked_list_as_creatures(gs->active_creatures);
+  del_panel(gs->panels);
+  delwin(gs->logs);
+  RNG_FREE_TWISTER(gs->twister);

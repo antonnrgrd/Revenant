@@ -14,4 +14,12 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define LL_APPEND_NODE_CREATURE(list, c) Ll_Node *node = malloc(sizeof(Ll_Node)); node->value = c; ( list->initial_node == NULL) ? (list->initial_node = node),(list->last_node = node) : (list->last_node->next = node), (list->last_node = node)
 
 Ll_Linked_List *ll_initialize_linked_list();
+
+/* 08/01/2025 verified it frees all data */
+#define LL_FREE_NODE_AS_CREATURE(node){\
+  c_free_creature((C_Creature *)node->value); \
+  FREE_NULL(node);\
+  }
+
+void ll_free_linked_list_as_creatures(Ll_Linked_List *list);
 #endif

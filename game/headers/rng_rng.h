@@ -32,4 +32,10 @@ int rng_extract_number(Rng_Mersienne_Twister *twister);
 void rng_twist(Rng_Mersienne_Twister *twister);
 
 Rng_Mersienne_Twister *rng_generate_twister();
+
+/* 08/01/2025 verified it frees all data*/
+#define RNG_FREE_TWISTER(twister){ \
+    FREE_NULL(twister->mt);	    \
+    FREE_NULL(twister);		    \
+  }
 #endif

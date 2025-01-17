@@ -37,5 +37,7 @@ void gs_print_foes(Game_State *game_state);
 void gs_recompute_creature_local_coords(Ll_Linked_List *list);
 
 void gs_update_screen_resize(Game_State *gs);
+
+void gs_free_game_state(Game_State *gs);
 #endif
 

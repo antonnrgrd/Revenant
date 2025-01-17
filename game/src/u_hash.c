@@ -183,17 +183,32 @@ U_Item_Weight u_remove_item(I_Item_Holder *item, int amount, U_Hashtable *table)
   return item_weight;
   
 }
-  
-
-
-
-
-/*
-char *faku(){
-  char *val = malloc(sizeof(char));
-  return val;
+/*08/01/2035 verified it frees all*/
+void u_free_hashtable(U_Hashtable *hashtable, char *bfr){
+  /* We keep track of the number of unique items we free, compared to
+     the number of unique items present in the table. If there is a mismatch, log a warning as there is a logic error somewhere.
+  NOTE - we log at warning level, not error because we call this function already as part of an exit cleanup when logging at error level,
+  so we cannot log at error level, because that would likely cause infinite recursion */
+  int num_unique_freed_items = 0;
+  for(int i = 0; i < hashtable->size; i++){
+    if(hashtable->entries[i] != NULL){
+      U_Entry *current_entry = hashtable->entries[i];
+      U_Entry *tmp;
+      while(current_entry != NULL){
+	tmp = current_entry;
+	current_entry = current_entry->next_entry;
+	U_FREE_ENTRY(tmp);
+	freed_items++;
+      }
+    }
+    if(num_unique_freed_items != hashtable->item_count){
+      sprintf(bfr, "The number of items freed does not match the number of items in the table - this indicates a logic error somewhere");
+      l_write_log(bfr, L_WARN, L_LOG_VERBOSELY);
+    }
+    FREE_NULL(hashtable->entries);
+  }
+  FREE_NULL(hashtable);
 }
-*/
 
 
 

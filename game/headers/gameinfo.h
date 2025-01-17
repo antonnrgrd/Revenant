@@ -28,7 +28,11 @@ typedef struct Position{
 }Position;
 
 typedef struct Tile{
-  char *content;
+  /*Unsigned as it should guarantees [0, 255] range, removing the compiler warning about potentially using negative indexes because
+   normals chars could potentially be negative.
+   TODO: As it is a single char, maybe just have it be one char instead of a pointer? eg unsigned char content instead?
+*/
+  unsigned char *content;
   U_Entry *entry;
   //Instead of specifying that the tile can contain a creature struct, we use a void pointer instead because otherwise I would have to
   // re-structure the organization of the header files due to how certain structs are defined in certain header files 
@@ -50,6 +54,8 @@ extern int numerical_responses[256];
 
 #define GAMEINFO_PLACE_TRADER(trader, global_x,global_y, gamle_world) gs->current_zone->tiles[global_y][global_x].foe = trader; gs->current_zone->tiles[global_y][global_x].content[0] = 't';
 
+void gm_free_game_wolrd(Game_World *current_zone);
+void gm_free_tile(Tile *tile);
 #endif
 
 

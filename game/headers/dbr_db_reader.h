@@ -25,4 +25,9 @@ int dbr_does_table_exist(char *table,sqlite3 *db);
   query_manager->current_row_index = 0;	       \
   query_manager->num_rows_encountered = 0;     \
   }
+#define DBR_INITIALIZE_QUERY_MANAGER(query_manager){\
+  query_manager->current_row_index = 0;	       \
+  query_manager->num_rows_encountered = 0;     \
+  query_manager->sqlite_bfr = NULL;     \
+  }
 #endif

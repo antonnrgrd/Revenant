@@ -17,8 +17,11 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "mv_move_handler.h"
  
 void c_free_creature(C_Creature *c){
-  free(c->representation);
-  free(c->standing_on);
+  FREE_NULL(c->representation);
+  FREE_NULL(c->standing_on);
+  FREE_NULL(c->limbs);
+  if(c->creature_type == player_character){
+  }
   // We do not free the C_Creature struct itself because when a creature dies, we mark it for deletion and later on, when going through all active creatures and we see that it is marked for deletion, we remove it from the list of active creatures and only then, can we safely remove. Otherwise, we will have a segementation fault because we pass a null pointer as an argument for the creature behavior function.
 }
 

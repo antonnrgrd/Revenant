@@ -142,7 +142,7 @@ typedef struct C_Creature{
   C_Limb *limbs;
   float weight;
   float height;
-  C_Creature_Kind species;
+  C_Creature_Kind creature_type;
   C_Disposition disposition;
   C_Attributes attributes;
   uint32_t max_health;

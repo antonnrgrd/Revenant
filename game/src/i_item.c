@@ -321,3 +321,9 @@ extern void (*i_item_holder_copy_handler[4])(I_Item_Holder *source_item,I_Item_H
 void i_free_weapon(I_Item_Holder *item){
   free((I_Weapon *)item->item->item_specific_info);
 }
+
+/*07/01/2025 - verified it free's all pointers*/
+void i_free_item_holder(I_Item_Holder *item_holder){
+  (*i_free_item_handler[item_holder->item->kind])(item_holder);
+  FREE_NULL(item_holder);
+}

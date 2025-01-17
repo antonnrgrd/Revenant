@@ -111,5 +111,7 @@ void i_copy_consumable(I_Item_Holder *source_item,I_Item_Holder *target_item);
 void i_copy_weapon(I_Item_Holder *source_item,I_Item_Holder *target_item);
 
 void i_copy_armor(I_Item_Holder *source_item,I_Item_Holder *target_item);
-//Item_Holder *i_readin_reagent(char *reagent_file_path);
+
+void i_free_item_holder(I_Item_Holder *item_holder);
+
 #endif

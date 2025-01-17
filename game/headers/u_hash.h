@@ -15,6 +15,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #ifndef UHASH
 #define UHASH
 #include "u_hash_struct.h"
+#include "l_log.h"
 #define U_GET_AVAILABLE(amount, available)(amount>available? available:amount)
 #define U_HASH_ITEM_NONEQ(item_holder,table)({unsigned long long hash; char *filepath  = I_GET_FILEPATH(item_holder->item); hash = ir_hash_string(filepath, "name",table); free(filepath); hash;})
 #define U_HAS_ITEM_WEAPON(item_holder,table)({unsigned long long hash; hash = u_hash(2,table, m_quality_name_modifier[(( I_Weapon*)item_holder->item->item_specific_info)->quality] , m_material_name_modifier[(( I_Weapon*)item_holder->item->item_specific_info)->material] , m_handed_modifier[(( I_Weapon*)item_holder->item->item_specific_info)->variant], m_mele_weapon_name_modifier[(( I_Weapon*)item_holder->item->item_specific_info)->kind] ); hash;})
@@ -37,6 +38,10 @@ char *u_readin_char(char *file_path, char *variable);
 #define U_GET_ITEMNAME_REAGENT(item)({char *name = NULL; char *bfr = malloc(sizeof(char) * (strlen("/usr/lib/revenant_files/item_files/reagent_files/")) + 5); sprintf(bfr,"/usr/lib/revenant_files/item_files/reagent_files/%d",item->id); name = u_readin_char(bfr,"name"); free(bfr); name; })
 #define U_GET_ITEMNAME_NONEQUIPPABLE(item)(item->kind == reagent ? (U_GET_ITEMNAME_REAGENT(item)) : (U_GET_ITEMNAME_CONSUMABLE(item)))
 
-//#define U_DECIDE_FILEPATH(item)({char *file_path; item->kind == reagent ? (file_path = malloc(sizeof(char) * strlen("/usr/lib/revenant_files/item_files/reagent_files/") +5); sprintf(file_path,"/usr/lib/revenant_files/item_files/reagent_files/%d",item->id);) :(file_path = malloc(sizeof(char) * strlen("/usr/lib/revenant_files/item_files/reagent_files/") +5); sprintf(file_path,"/usr/lib/revenant_files/item_files/reagent_files/%d",item->id);) file_path;  })
-
+/* 07/01/2025 verified that it frees all pointers */
+#define U_FREE_ENTRY(entry){				\
+    i_free_item_holder(entry->item_holder);		\
+    FREE_NULL(entry);					\
+  }
+void u_free_hashtable(U_Hashtable *hashtable, char *bfr);
 #endif

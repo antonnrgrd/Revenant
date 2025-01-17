@@ -50,17 +50,16 @@ void dbr_create_db_all_content(Game_state *gs){
   sqlite3 *db;
   int success = sqlite3_open(DBR_DATABASE_PATH, &db);
   if(success != YES){
+    sqlite3_close(db);
     sprintf(gs->bfr, "Couldn\'t open the database for database creation");
     l_write_log(gs->bfr, L_ERR,NO);
   }
-  
-  sqlite3_close(db);
 }
 
 void dbr_create_dialogue_tables(Game_State *gs,sqlite3 *db){
-  int create_table_statement = sqlite3_exec(db, "CREATE TABLE IF NOT EXISTS dialogue_interactions(dialogue_folder_id int,current_dialogue_id int, selected_option int, consequence int, num_dialogue_options int,  PRIMARY KEY () );", NULL,gs->bfr);
+  int create_table_statement = sqlite3_exec(db, "CREATE TABLE IF NOT EXISTS dialogue_interactions(dialogue_folder_id int,current_dialogue_id int, selected_option int, consequence int, num_dialogue_options int,  PRIMARY KEY () );", NULL,gs->query_manager->sqlite_bfr);
   if(create_table_statement != SQLITE_OK){
-    l_write_log(gs->bfr, L_WARN,L_LOG_VERBOSELY);
+    l_write_log(gs->query_manager->sqlite_bfr, L_WARN,L_LOG_VERBOSELY);
     // A bit tacky, but the alternative would be have two seperate buffers to maintain
     sprintf(gs->bfr, "An error occured in the dbr_create_dialogue_tables function when attempting to create the table dialogue_interactions, receiving the error code %d. See the message above for hints as to what went wrong",create_table_statement);
     l_write_log(gs->bfr, L_ERR,L_LOG_SILENTLY);
@@ -71,7 +70,7 @@ void dbr_create_dialogue_tables(Game_State *gs,sqlite3 *db){
 }
 
 void dbr_print_rows(char *query){
-  int select_table_statement = sqlite3_exec(db, query, dbr_print_rows_from_query,gs->bfr);
+  int select_table_statement = sqlite3_exec(db, query, dbr_print_rows_from_query,gs->query_manager->sqlite_bfr);
   if(select_table_statement != SQLITE_OK){
     sprintf(gs->bfr, "An error occurec when running the debug query %s - See the message preceeding this message for a hint as to what went wrong", query);
     l_write_log(gs->bfr, L_ERR,L_LOG_SILENTLY);
