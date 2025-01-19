@@ -38,4 +38,5 @@ void c_cleanup_creature(C_Creature *c,Game_World *world);
 
 char  *c_retrieve_creature_name(C_Creature *c);
 
+void c_free_player_info(C_Player_Info *player_info);
 #endif

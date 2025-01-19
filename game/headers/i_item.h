@@ -61,9 +61,9 @@ char *i_variant_name(I_Variant v);
 char *i_quality_name(I_Quality_Level q);
 I_Item *i_make_weapon(I_Quality_Level q, I_Material material, I_Variant v);
 
-void i_free_weapon(I_Item_Holder *item);
-void i_free_reagent(I_Item_Holder *item);
-void i_free_consumable(I_Item_Holder *item);
+void i_free_weapon(I_Item *item);
+void i_free_reagent(I_Item *item);
+void i_free_consumable(I_Item *item);
 I_Item *i_copy_item(I_Item_Holder *item);
 
 
@@ -101,7 +101,7 @@ void i_print_equippable_name(I_Item *i, WINDOW *inv_screen,int x, int y);
 #define I_GET_FILEPATH(item)(item->kind == reagent ? (I_GET_FILEPATH_REAGNET(item)) : (I_GET_FILEPATH_CONSUMABLE(item)))
 
 extern void (*i_item_holder_copy_handler[4])(I_Item_Holder *source_item,I_Item_Holder *target_item);
-extern void (*i_free_item_handler[4])(I_Item_Holder *item);
+extern void (*i_free_item_specific_info_handler[4])(I_Item *item);
 
 
 void i_copy_reagent(I_Item_Holder *source_item,I_Item_Holder *target_item);
@@ -113,5 +113,9 @@ void i_copy_weapon(I_Item_Holder *source_item,I_Item_Holder *target_item);
 void i_copy_armor(I_Item_Holder *source_item,I_Item_Holder *target_item);
 
 void i_free_item_holder(I_Item_Holder *item_holder);
-
+/*19-01-2025 verified it frees all data */
+#define I_FREE_ITEM(item){					       \
+    (*i_free_item_specific_info_handler[item->kind])(item);	       \
+    FREE_NULL(item);						       \
+  }
 #endif

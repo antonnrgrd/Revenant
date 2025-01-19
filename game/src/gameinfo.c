@@ -23,4 +23,8 @@ I need to rewrite the logic almost entirely  for the Tile struct to make cleanin
 */
 gm_free_tile(Tile *tile){
   FREE_NULL(tile->content);
+  U_FREE_ENTRY(tile->entry);
+  FREE_NULL(tile);
+  /* freeing the creature here could potentially be dangerous as we might have free'd it earlier on  */
+  c_free_creature((C_Creature *)tile->foe);
 }

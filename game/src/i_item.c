@@ -134,21 +134,21 @@ I_Item *i_make_mele_weapon(I_Quality_Level q, I_Material material, I_Variant v, 
 
 
 
-void i_free_interactable(I_Item_Holder *item){
+void i_free_interactable(I_Item *item){
   ;
 }
-void i_free_valuable(I_Item_Holder *item){
+void i_free_valuable(I_Item *item){
   ;
 }
-void i_free_reagent(I_Item_Holder *item){
-  free((I_Reagent *)item->item->item_specific_info);
+void i_free_reagent(I_Item *item){
+  free((I_Reagent *)item->item_specific_info);
 }
-void i_free_consumable(I_Item_Holder *item){
-  free((I_Consumable *)item->item->item_specific_info);
+void i_free_consumable(I_Item *item){
+  free((I_Consumable *)item->item_specific_info);
 }
 
-void i_free_armor(I_Item_Holder *item){
-  free((I_Armor *)item->item->item_specific_info);
+void i_free_armor(I_Item *item){
+  free((I_Armor *)item->item_specific_info);
 }
 
 
@@ -314,16 +314,16 @@ void i_copy_weapon(Item *source_item,Item_Holder *target_item){
 }
 */
 
-extern void (*i_free_item_handler[4])(I_Item_Holder *item) = {i_free_reagent,i_free_consumable , i_free_weapon,i_free_armor};
+extern void (*i_free_item_specific_info_handler[4])(I_Item *item) = {i_free_reagent,i_free_consumable , i_free_weapon,i_free_armor};
 
 extern void (*i_item_holder_copy_handler[4])(I_Item_Holder *source_item,I_Item_Holder *target_item) = {i_copy_reagent, i_copy_consumable, i_copy_weapon,i_copy_armor};
 
-void i_free_weapon(I_Item_Holder *item){
-  free((I_Weapon *)item->item->item_specific_info);
+void i_free_weapon(I_Item *item){
+  free((I_Weapon *)item->item_specific_info);
 }
 
-/*07/01/2025 - verified it free's all pointers*/
+/* 19-01-2025 verified it frees all data */
 void i_free_item_holder(I_Item_Holder *item_holder){
-  (*i_free_item_handler[item_holder->item->kind])(item_holder);
+  I_FREE_ITEM(item_holder->item);
   FREE_NULL(item_holder);
 }

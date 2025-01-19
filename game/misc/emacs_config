@@ -1,6 +1,3 @@
-
-COPY PASTE ALL BELOW THE BAR TO SET UP YOUR EMACS ENVIRONMENT
-##############################################################
 ;; -*- mode: elisp -*-
 
 ;;Disable splash screen (to enable it again, replace t with 0)
@@ -25,6 +22,6 @@ COPY PASTE ALL BELOW THE BAR TO SET UP YOUR EMACS ENVIRONMENT
 ;;; As much as this leaves me vulnerable to crashes it just seems evey other approach is a recipe for headaches
 (setq make-backup-files nil)
 
-
-
-
+;;; Enables the ability to jump to specific windows in emacs, using shift+direction arrow
+;;; Note, this feature might not work on all systems - keep this in mind
+(windmove-default-keybindings)

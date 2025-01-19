@@ -12,7 +12,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
-#include "generate.h"
+#include "g_generate.h"
 #include <ncurses.h>
 int gen_int(int min,int max){
   
@@ -52,6 +52,7 @@ Game_World *g_generate_game_world(int width, int height){
     for(int k = 0; k < width; k++){
       world->tiles[j][k].content = malloc(sizeof(char));
       world->tiles[j][k].content[0] = alphabet[gen_int(0,10)];
+      world->tiles->entry = NULL;
     }
    }
   for(int a = 100; a < 200; a++){
