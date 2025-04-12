@@ -25,3 +25,11 @@
 ;;; Enables the ability to jump to specific windows in emacs, using shift+direction arrow
 ;;; Note, this feature might not work on all systems - keep this in mind
 (windmove-default-keybindings)
+
+;; Show line numbers
+(global-display-line-numbers-mode)
+
+
+;; Overwite keybind for kill whole line
+;; for some reason, the default C-S-backspace does not work
+(global-set-key "\C-cd" 'kill-whole-line) 

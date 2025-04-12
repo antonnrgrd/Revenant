@@ -23,7 +23,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "game_state.h"
 #include "ir_information_reader.h"
 #include "i_item.h"
-#include "generate.h"
+#include "g_generate.h"
 #include "mv_move_handler.h"
 #include "c_creature.h"
 #define INITIATED_EXCHANGE 0

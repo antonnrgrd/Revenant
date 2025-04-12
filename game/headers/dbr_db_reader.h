@@ -21,6 +21,7 @@ void dbr_create_db_all_content(Game_State *gs);
 void dbr_create_all_tables(Game_State *gs);
 void dbr_create_dialogue_tables(Game_State *gs,sqlite3 *db);
 int dbr_does_table_exist(char *table,sqlite3 *db);
+void dbr_print_rows(Game_State *gs, char *query);
 #define DBR_RESET_QUERY_MANAGER(query_manager){\
   query_manager->current_row_index = 0;	       \
   query_manager->num_rows_encountered = 0;     \
@@ -30,4 +31,5 @@ int dbr_does_table_exist(char *table,sqlite3 *db);
   query_manager->num_rows_encountered = 0;     \
   query_manager->sqlite_bfr = NULL;     \
   }
+void dbr_close_db_connection(sqlite3 *db);
 #endif

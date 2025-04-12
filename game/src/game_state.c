@@ -160,7 +160,7 @@ void gs_recompute_creature_local_coords(Ll_Linked_List *list){
 void gs_free_game_state(Game_State *gs){
   FREE_NULL(gs->bfr);
   for(int i = 0; i < NUM_EVENTS; i++){
-    FREE_NULL(state->ingame_log[i]);
+    FREE_NULL(gs->ingame_log[i]);
 }
   FREE_NULL(state->ingame_log);
   c_free_creature(gs->player);
@@ -168,3 +168,5 @@ void gs_free_game_state(Game_State *gs){
   del_panel(gs->panels);
   delwin(gs->logs);
   RNG_FREE_TWISTER(gs->twister);
+  
+  dbr_close_db_connection(gs->db);

@@ -55,7 +55,7 @@ C_Creature *c_generate_creature(C_Creature_Kind kind, int id,unsigned x,unsigned
 
   c->target=target;
   
-  c->species = kind;
+  c->creature_type = kind;
   c->id = id;
   //  c->standing_on = malloc(sizeof(char));
   c->standing_on[0] = world->tiles[c->position.global_y][c->position.global_x].content[0];
@@ -76,7 +76,7 @@ C_Creature *c_random_player(int x, int y,Game_State *gs, Game_World *gw){
   //c->standing_on = malloc(sizeof(char));
   c->weight = 80.5;
   c->height = 1.80;
-  c->species = player_character;
+  c->creature_type = player_character;
   c->max_carry = 5000.0;
   c->current_carry = 0.0;
   c->curr_health = 5000;

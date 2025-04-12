@@ -44,12 +44,10 @@ void dia_loop_dialogue(Dia_Dialogue_Manager *manager, Game_State *gs){
 	return;
       }
       else if(ch == KEY_DOWN && manager->single_page_file == NO && manager->reached_eof == NO){
-	manager->expected_char_offset = DIA_SAFE_INCREMENT_NEXT(manager,gs,num_bytes,manager->expected_char_offset);
 	manager->current_char_offset = dia_recompute_char_offset_forwards(manager,gs,num_bytes,fp);//DIA_SAFE_INCREMENT_NEXT(manager,gs,num_bytes);
 	dia_draw_dialogue_screen(manager,gs,fp);
       }
       else if(ch == KEY_UP && manager->single_page_file == NO){
-	manager->expected_char_offset = DIA_SAFE_DECREMENT_NEXT(manager,gs,manager->expected_char_offset);
 	manager->current_char_offset = dia_recompute_char_offset_backwards(manager, gs, fp);
 	dia_draw_dialogue_screen(manager,gs,fp);
 	manager->reached_eof = NO;

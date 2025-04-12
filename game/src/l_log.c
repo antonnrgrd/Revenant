@@ -28,7 +28,7 @@ char *l_add_metadata_to_msg(char *msg, char *debug_lvl){
 void l_write_log(char *msg , char *debug_lvl, int verbosity_flag){
 
   char *msg_with_metadata = l_add_metadata_to_msg(msg,debug_lvl);
-  FILE *fp = fopen(DEFAULT_LOGGING_FILE, "a");
+  FILE *fp = fopen(L_DEFAULT_LOGGING_FILE, "a");
   if(fp == NULL){
     endwin();
     perror("Error when trying to access the log file for writing, see the message that comes after the colon for a hint as to what's the issue");

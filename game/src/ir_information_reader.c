@@ -63,7 +63,7 @@ get it to work*/
   
    //strcpy(c->representation, representation);
    //free(representation);
-  c->species=ir_readin_int(creature_file_path, "species");
+  c->creature_type=ir_readin_int(creature_file_path, "creature_type");
   c->id=ir_readin_int(creature_file_path, "id");
   c->limb_count = ir_readin_int(creature_file_path, "limb_count");
   c->weight = ir_readin_float(creature_file_path, "weight");
@@ -532,7 +532,7 @@ Removing this bit of logic will definetly result in a hard to debug segfualt. Th
 //game_state->logs[MAIN_SCREEN]
 void ir_add_damage_to_creature_to_log(Game_State *gs, C_Creature *c, C_Creature *target){
   char *creature_name;
-  if(c->id == target->id && c->species == target->species ){
+  if(c->id == target->id && c->creature_type == target->creature_type ){
   char *file_path = NULL;
   file_path = malloc(sizeof(char) * strlen(IR_COMMON_CREATURE_FILEPATH) + 5);
   sprintf(file_path, "/usr/lib/revenant_files/creature_files/%d", c->id);
@@ -553,7 +553,7 @@ void ir_add_damage_to_creature_to_log(Game_State *gs, C_Creature *c, C_Creature 
     fclose(fp);
   }
   free(file_path);
-  } else if(c->species != target->species && target->species == player_character){
+  } else if(c->creature_type != target->creature_type && target->creature_type == player_character){
    char *file_path = NULL;
   file_path = malloc(sizeof(char) * strlen(IR_COMMON_CREATURE_FILEPATH) + 5);
   sprintf(file_path, "/usr/lib/revenant_files/creature_files/%d", c->id);
@@ -576,7 +576,7 @@ void ir_add_damage_to_creature_to_log(Game_State *gs, C_Creature *c, C_Creature 
   }
   free(file_path);
 
-   } else if(c->species == player_character){
+   } else if(c->creature_type == player_character){
    char *file_path = NULL;
   file_path = malloc(sizeof(char) * strlen(IR_COMMON_CREATURE_FILEPATH) + 5);
   sprintf(file_path, "/usr/lib/revenant_files/creature_files/%d", target->id);

@@ -46,7 +46,7 @@ Dia_Dialogue_Manager *dbr_readin_dialogue_manager(int np_id){
   Dia_Dialogue_Manager *manager = malloc(sizeof(Dia_Dialogue_Manager));
 }
 
-void dbr_create_db_all_content(Game_state *gs){
+void dbr_create_db_all_content(Game_State *gs){
   sqlite3 *db;
   int success = sqlite3_open(DBR_DATABASE_PATH, &db);
   if(success != YES){
@@ -69,10 +69,10 @@ void dbr_create_dialogue_tables(Game_State *gs,sqlite3 *db){
   
 }
 
-void dbr_print_rows(char *query){
-  int select_table_statement = sqlite3_exec(db, query, dbr_print_rows_from_query,gs->query_manager->sqlite_bfr);
+void dbr_print_rows(Game_State *gs, char *query){
+  int select_table_statement = sqlite3_exec(gs->db, query, dbr_print_rows_from_query,gs->query_manager->sqlite_bfr);
   if(select_table_statement != SQLITE_OK){
-    sprintf(gs->bfr, "An error occurec when running the debug query %s - See the message preceeding this message for a hint as to what went wrong", query);
+    sprintf(gs->bfr, "An error occured when running the debug query %s - See the message preceeding this message for a hint as to what went wrong", query);
     l_write_log(gs->bfr, L_ERR,L_LOG_SILENTLY);
   }
 }
@@ -82,4 +82,16 @@ int dbr_print_rows_from_query(void *data, int argc, char **argv, char **colNames
         printf("%s = %s\n", colNames[i], argv[i] ? argv[i] : "NULL");
     }
     return 0;
+}
+void dbr_close_db_connection(sqlite3 *db){
+  int result = sqlite3_close(db);
+  /* If the result is not ok, the most likely error is a an unfinished backup, unfinalized prepared sql statement or
+   unclosed BLOB handle. We won't be running backups, won't be using BLOBS and we use the sqlite3 wrapper for sql statements so this should ideally not be possible */
+  if (result != SQLITE_OK){
+    /*Log WARNING level only as call to function could stem from hard error and we wan't to avoid recursion loops.*/
+    l_write_log("Couldn\'t close the db connection as it had a hanging database operation. See preceeding messages for hints as to what it could be",L_WARN,L_LOG_VERBOSELY);
+  }
+  else{
+    db = NULL;
+  }
 }

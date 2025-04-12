@@ -34,7 +34,6 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define DIA_EXIT_DIALOGUE_MANAGER(manager){\
   manager->current_char_offset = 0; \
   manager->reached_eof = NO;	 \
-  manager->expected_char_offset = 0;		\
 }
 
 /*For continuing to the next dialogue screen, ensuring we start with a clean plate*/
@@ -44,7 +43,6 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
     manager->current_dialogue_id = 0;		 \
     manager->reached_eof = NO;			 \
     manager->single_page_file = NO;		 \
-    manager->expected_char_offset = 0;		 \
 }
 
 

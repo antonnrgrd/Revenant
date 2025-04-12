@@ -17,7 +17,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define PLACEHOLDER
 #include "u_hash.h"
 #include "ll_linked_list.h"
-
+#include "c_creature_struct.h"
 typedef struct Position{
   // Each creature will have two coordinate types, local and global. Global indicates where they are globally on the map, local
   // refers to where they are on the screen

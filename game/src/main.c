@@ -26,7 +26,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "strings.h"
 #include "gameinfo.h"
 #include "m_modifier.h"
-#include "generate.h"
+#include "g_generate.h"
 #include "game_state.h"
 #include "gameinfo.h"
 #include <time.h>
