@@ -17,13 +17,9 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define CREATURE_STRUCT
 #include <inttypes.h>
 #include "strings.h"
-#include "u_hash.h"
 #include <ncurses.h>
-#include "gameinfo.h"
+#include "gameinfo_struct.h"
 #include "creature_macros.h"
-#include "rng_rng.h"
-#include "screen_constants.h"
-#include "game_state_struct.h"
 #include "i_item_struct.h"
 #define COPY_LIMB(creature_limb, source_limb){\
   creature_limb.kind = source_limb.kind; \

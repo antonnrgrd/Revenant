@@ -10,10 +10,12 @@ You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "state_manager.h"
+#include "c_creature_struct.h"
+#include "mv_move_handler.h"
 void game_loop(Game_State *game_state){
   int ch;
   int player_turn = CONTINUE_TURN;
-  REDRAW_MAP(game_state,game_state->player,game_state->current_zone,game_state->logs[MAIN_SCREEN], game_state->player->position.global_x,game_state->player->position.global_y,rows, cols);
+  REDRAW_MAP(game_state,game_state->player,game_state->current_zone,game_state->logs[MAIN_SCREEN], game_state->player->position.global_x,game_state->player->position.global_y);
   wrefresh(game_state->logs[MAIN_SCREEN]);
   while(1){
     while(player_turn == CONTINUE_TURN ){
@@ -30,7 +32,7 @@ void game_loop(Game_State *game_state){
     */
     switch(ch){
     case KEY_RESIZE:
-       REDRAW_MAP(game_state,game_state->player,game_state->current_zone,game_state->logs[MAIN_SCREEN], game_state->player->position.global_x,game_state->player->position.global_y,rows, cols);
+       REDRAW_MAP(game_state,game_state->player,game_state->current_zone,game_state->logs[MAIN_SCREEN], game_state->player->position.global_x,game_state->player->position.global_y);
       break;
     case KEY_UP:
     player_turn = mv_check_move_handler(game_state->player->position.global_x, game_state->player->position.global_y-1,game_state->player->position.local_x, game_state->player->position.local_y-1, game_state->player,game_state);
@@ -59,7 +61,7 @@ void game_loop(Game_State *game_state){
       msg_display_equipped_equipment(game_state);
       break;
     case 'R':
-      REDRAW_MAP(game_state,game_state->player,game_state->current_zone,game_state->logs[MAIN_SCREEN], game_state->player->position.global_x,game_state->player->position.global_y,rows, cols);
+      REDRAW_MAP(game_state,game_state->player,game_state->current_zone,game_state->logs[MAIN_SCREEN], game_state->player->position.global_x,game_state->player->position.global_y);
       break;
     default:
       break;

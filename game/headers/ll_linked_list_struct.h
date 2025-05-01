@@ -12,7 +12,6 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 #ifndef LINKED_LIST_STRUCT
 #define LINKED_LIST_STRUCT
-#include <stdlib.h>
 typedef struct{
   struct Ll_Node *next;
   void *value;

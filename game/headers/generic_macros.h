@@ -11,13 +11,14 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #ifndef GENERIC_MACROS
 #define GENERIC_MACROS
 #include <stdlib.h>
+#include <stdio.h>
 #define YES 0
 #define NO 1
 #define END_TURN 0
 #define CONTINUE_TURN 1
 #define FREE_NULL(ptr){\
     free(ptr);					\
-    (ptr) = NULL;				\
+    ptr = NULL;				\
 }
 #define MAX(num_1, num_2) num_1 > num_2 ? num_1 : num_2
 #define MIN(num_1, num_2) num_1 < num_2 ? num_1 : num_2
@@ -26,5 +27,5 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define NEWLINE 13
 // Some errors are not an unexpected game state but rather occur at the os level, for these kind of errors
 //we want in addition to get the stderror
-FILE *gnrc_read_in_file(char *fp);
+FILE *gnrc_read_in_file(char *filepath);
 #endif

@@ -12,7 +12,6 @@ You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
  
 #include "game_state.h"
-#include "mv_move_handler.h"
 #include "dia_dialogue.h"
 void gs_iter_list_as_creature(Ll_Linked_List *list, Game_State *game_state){
   /*We have to keep track of where we are in the position of the linked ist
@@ -162,11 +161,12 @@ void gs_free_game_state(Game_State *gs){
   for(int i = 0; i < NUM_EVENTS; i++){
     FREE_NULL(gs->ingame_log[i]);
 }
-  FREE_NULL(state->ingame_log);
-  c_free_creature(gs->player);
-  ll_free_linked_list_as_creatures(gs->active_creatures);
+  FREE_NULL(gs->ingame_log);
+  c_free_creature(gs,gs->player);
+  ll_free_linked_list_as_creatures(gs,gs->active_creatures);
   del_panel(gs->panels);
   delwin(gs->logs);
   RNG_FREE_TWISTER(gs->twister);
   
   dbr_close_db_connection(gs->db);
+}

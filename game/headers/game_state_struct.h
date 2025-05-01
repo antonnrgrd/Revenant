@@ -15,11 +15,13 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 
 #include <panel.h>
-#include "gameinfo.h"
+#include "gameinfo_struct.h"
 #include "ll_linked_list_struct.h"
 #include "screen_constants.h"
-#include "rng_rng.h"
+#include "rng_rng_struct.h"
 #include <sqlite3.h>
+#include "dbr_db_reader_struct.h"
+#include "c_creature_struct.h"
 #define DB_LOCATION "/usr/lib/revenant_files/db_folder/revenant_database.db"
 #define BFR_LENGTH 1024
 #define NUM_EVENTS 10
@@ -67,7 +69,7 @@ typedef struct Game_State{
   int notification_log_height_size;
   int notification_log_width_size;
   struct C_Creature *player;
-  struct Dbr_Query_Manager *query_manager;
+  Dbr_Query_Manager *query_manager;
   Game_World *current_zone;
   Ll_Linked_List *active_creatures;
   PANEL *panels[8];

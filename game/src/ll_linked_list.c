@@ -12,6 +12,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "ll_linked_list.h"
 #include "c_creature.h"
+#include "generic_macros.h"
 void ll_prepend_node_creature(Ll_Linked_List *ll, C_Creature *c){
   Ll_Node *node = malloc(sizeof(Ll_Node));
   node->next = NULL;
@@ -37,13 +38,13 @@ Ll_Linked_List *ll_initialize_linked_list(){
 }
 
 /* 08/01/2025 verified it frees all data*/
-void ll_free_linked_list_as_creatures(Ll_Linked_List *list){
+void ll_free_linked_list_as_creatures(Game_State *gs,Ll_Linked_List *list){
   Ll_Node *tmp;
   Ll_Node *current_node = list->initial_node;
   while(current_node != NULL){
     tmp = current_node;
     current_node = current_node->next;
-    LL_FREE_NODE_AS_CREATURE(tmp);
+    LL_FREE_NODE_AS_CREATURE(gs,tmp);
   }
   FREE_NULL(list);
 }

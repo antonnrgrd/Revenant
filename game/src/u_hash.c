@@ -198,7 +198,7 @@ void u_free_hashtable(U_Hashtable *hashtable, char *bfr){
 	tmp = current_entry;
 	current_entry = current_entry->next_entry;
 	U_FREE_ENTRY(tmp);
-	freed_items++;
+        num_unique_freed_items++;
       }
     }
     if(num_unique_freed_items != hashtable->item_count){

@@ -14,12 +14,8 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 #ifndef GAME_STATE
 #define GAME_STATE
-#include "mv_move_handler.h"
-#include "ll_linked_list.h"
-#include "cb_creature_behavior.h"
+#include "ll_linked_list_struct.h"
 #include "game_state_struct.h"
-#include "generic_macros.h"
-#include "ir_information_reader.h"
 #define INIT_GAME_STATE(game_state)
 #define GS_PLACE_MERCHANT(hashtable)
 #define UPDATE_STATE(game_state) ll_iter_list_as_creature(game_state->player,game_state->current_zone,game_state->active_creatures);

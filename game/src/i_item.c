@@ -14,7 +14,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "i_item.h"
 #include "m_modifier.h"
 #include <math.h>
- 
+#include "generic_macros.h"
 I_Armor *i_gen_armor(I_Quality_Level q, I_Material material,I_Equipment_Kind armor_type){
   I_Armor *arm = malloc(sizeof(I_Armor));
   arm->quality =q;

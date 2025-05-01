@@ -9,10 +9,12 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "dbr_db_reader.h"
+#include "l_log.h"
 /*
 Programmers note here, when binding variables, to SQL statements, The leftmost SQL parameter has an index of 1 whereas 
 when running a query,  the leftmost column of the result set has the index 0
 */
+/*
 Dbr_Selected_Dialogue_Qresult dbr_get_dialogue_response(Game_State *gs,Dia_Dialogue_Manager *manager, int selected_choice){
   Dbr_Selected_Dialogue_Qresult selected_dialogue_info;
   sqlite3_stmt* stmt;
@@ -41,7 +43,7 @@ Dbr_Selected_Dialogue_Qresult dbr_get_dialogue_response(Game_State *gs,Dia_Dialo
   sqlite3_finalize(stmt);
   return selected_dialogue_info;
 }
-
+*/
 Dia_Dialogue_Manager *dbr_readin_dialogue_manager(int np_id){
   Dia_Dialogue_Manager *manager = malloc(sizeof(Dia_Dialogue_Manager));
 }
@@ -57,7 +59,7 @@ void dbr_create_db_all_content(Game_State *gs){
 }
 
 void dbr_create_dialogue_tables(Game_State *gs,sqlite3 *db){
-  int create_table_statement = sqlite3_exec(db, "CREATE TABLE IF NOT EXISTS dialogue_interactions(dialogue_folder_id int,current_dialogue_id int, selected_option int, consequence int, num_dialogue_options int,  PRIMARY KEY () );", NULL,gs->query_manager->sqlite_bfr);
+  int create_table_statement = sqlite3_exec(db, "CREATE TABLE IF NOT EXISTS dialogue_interactions(dialogue_folder_id int,current_dialogue_id int, selected_option int, consequence int, num_dialogue_options int,  PRIMARY KEY () );", NULL,NULL, &gs->query_manager->sqlite_bfr);
   if(create_table_statement != SQLITE_OK){
     l_write_log(gs->query_manager->sqlite_bfr, L_WARN,L_LOG_VERBOSELY);
     // A bit tacky, but the alternative would be have two seperate buffers to maintain
@@ -65,12 +67,12 @@ void dbr_create_dialogue_tables(Game_State *gs,sqlite3 *db){
     l_write_log(gs->bfr, L_ERR,L_LOG_SILENTLY);
   }
   int add_row_statement;
-  add_row_statement = sqlite3_exec(db,"INSERT INTO dialogue_interactions() ");
+  add_row_statement = sqlite3_exec(db,"INSERT INTO dialogue_interactions() ",NULL,NULL,&gs->query_manager->sqlite_bfr);
   
 }
 
 void dbr_print_rows(Game_State *gs, char *query){
-  int select_table_statement = sqlite3_exec(gs->db, query, dbr_print_rows_from_query,gs->query_manager->sqlite_bfr);
+  int select_table_statement = sqlite3_exec(gs->db, query, dbr_print_rows_from_query,NULL,&gs->query_manager->sqlite_bfr);
   if(select_table_statement != SQLITE_OK){
     sprintf(gs->bfr, "An error occured when running the debug query %s - See the message preceeding this message for a hint as to what went wrong", query);
     l_write_log(gs->bfr, L_ERR,L_LOG_SILENTLY);

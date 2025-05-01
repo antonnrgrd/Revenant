@@ -37,23 +37,23 @@ int (*move_response_handler[6])(int global_x, int global_y, int local_x, int loc
     c->position.global_y = global_y;
     if(local_y  <  0){
       c->position.local_y = game_state->num_cols - 1;
-      REDRAW_MAP(game_state,c,game_state->current_zone,game_state->logs[MAIN_SCREEN], c->position.global_x,c->position.global_y,x_max, y_max);
+      REDRAW_MAP(game_state,c,game_state->current_zone,game_state->logs[MAIN_SCREEN], c->position.global_x,c->position.global_y);
     }
 
     else if(local_y  >  game_state->num_cols - 1){
       c->position.local_y = 0;
-      REDRAW_MAP(game_state,c,game_state->current_zone,game_state->logs[MAIN_SCREEN], c->position.global_x,c->position.global_y,x_max, y_max);
+      REDRAW_MAP(game_state,c,game_state->current_zone,game_state->logs[MAIN_SCREEN], c->position.global_x,c->position.global_y);
       
     }
 
     else if(local_x  <  DEFAULT_MAX_INFOBAR_WIDTH - 1){
       c->position.local_x = game_state->num_rows - 1; //DEFAULT_MAX_X - 1;
-      REDRAW_MAP(game_state,c,game_state->current_zone,game_state->logs[MAIN_SCREEN], c->position.global_x,c->position.global_y,x_max, y_max);
+      REDRAW_MAP(game_state,c,game_state->current_zone,game_state->logs[MAIN_SCREEN], c->position.global_x,c->position.global_y);
     }
 
     else if(local_x  >  game_state->num_rows - 1){
       c->position.local_x = DEFAULT_MAX_INFOBAR_WIDTH - 1 ;
-      REDRAW_MAP(game_state,c,game_state->current_zone,game_state->logs[MAIN_SCREEN], c->position.global_x,c->position.global_y,x_max, y_max);
+      REDRAW_MAP(game_state,c,game_state->current_zone,game_state->logs[MAIN_SCREEN], c->position.global_x,c->position.global_y);
     }
     else{        
       c->standing_on[0] = game_state->current_zone->tiles[c->position.global_y][c->position.global_x].content[0];

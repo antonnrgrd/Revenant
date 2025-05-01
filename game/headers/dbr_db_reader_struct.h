@@ -8,11 +8,9 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
-#ifndef DB_READER_STRUCT
-#define DB_READER_STRUCT
+#ifndef DBR_READER_STRUCT
+#define DBR_READER_STRUCT
 
-#include "dia_dialogue_struct.h"
-#include "l_log.h"
 /*Sqlite 3 needs the number of bytes that the sql statement is. If it is negative, it will simply read the passed sql statement until it 
 encounters a 0 terminator. We use this macro by defualt to instruct it to do so*/
 #define NBYTES -1

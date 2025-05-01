@@ -1,6 +1,6 @@
-#include "generic_marcros.h"
+#include "generic_macros.h"
 
-FILE *gnrc_read_in_file(char *fp){
-  FILE *fp = 
-    return fp:
+FILE *gnrc_read_in_file(char *filepath){
+  FILE *fp = NULL;
+  return fp;
 }

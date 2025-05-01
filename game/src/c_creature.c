@@ -16,18 +16,17 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "c_creature.h"
 #include "mv_move_handler.h"
  
-void c_free_creature(C_Creature *c){
-  FREE_NULL(c->representation);
-  FREE_NULL(c->standing_on);
+void c_free_creature(Game_State *gs, C_Creature *c){
   FREE_NULL(c->limbs);
   if(c->creature_type == player_character){
-    c_free_player_info((C_Player_Info *)creature->additional_info);
+    c_free_player_info(gs,(C_Player_Info *)c->additional_info);
   }
   // We do not free the C_Creature struct itself because when a creature dies, we mark it for deletion and later on, when going through all active creatures and we see that it is marked for deletion, we remove it from the list of active creatures and only then, can we safely remove. Otherwise, we will have a segementation fault because we pass a null pointer as an argument for the creature behavior function.
 }
 
 void c_cleanup_creature(C_Creature *c,Game_World *world ){
-  c_free_creature(c);
+  /* Ignore for now*/
+  //c_free_creature(c);
 }
 
 void (*c_free_creature_body_type[1])(C_Creature *c) = {};
@@ -172,12 +171,12 @@ void c_compute_relative_coords(C_Creature *creature, C_Creature *player){
 }
 
 /*19-01-2025 verified it frees all data*/
-void c_free_player_info(C_Player_Info *player_info){
+void c_free_player_info(Game_State *gs, C_Player_Info *player_info){
   for(int i = 0; i < I_NUM_EQUIPMENT_SLOTS; i++){
     I_FREE_ITEM(player_info->equipment_list[i]);
   }
   FREE_NULL(player_info->equipment_list);
-  u_free_hashtable(player_info->inventory);
+  u_free_hashtable(player_info->inventory, gs->bfr);
   FREE_NULL(player_info);
 }
 

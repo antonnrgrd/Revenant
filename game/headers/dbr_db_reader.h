@@ -8,12 +8,12 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
-#ifndef DB_READER
-#define DB_READER
+#ifndef DBR_READER
+#define DBR_READER
 #include <sqlite3.h>
 #include "game_state_struct.h"
 #include "dbr_db_reader_struct.h"
-
+#include "dia_dialogue_struct.h"
 Dbr_Selected_Dialogue_Qresult dbr_get_dialogue_response(Game_State *gs,Dia_Dialogue_Manager *manager, int selected_choice);
 Dia_Dialogue_Manager *dbr_readin_dialogue_manager(int np_id);
 void dbr_add_dialogue_to_db(int dialogue_folder_id, int current_dialogue_id,int consequence,int num_options);
@@ -32,4 +32,5 @@ void dbr_print_rows(Game_State *gs, char *query);
   query_manager->sqlite_bfr = NULL;     \
   }
 void dbr_close_db_connection(sqlite3 *db);
+dbr_print_rows_from_query(void *data, int argc, char **argv, char **colNames);
 #endif

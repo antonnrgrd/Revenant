@@ -16,6 +16,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #ifndef CREATURE
 #define CREATURE
 #include "c_creature_struct.h"
+#include "game_state_struct.h"
 extern void (*c_free_creature_body_type[1])(C_Creature *c);
 void c_free_animal(C_Creature *c);
 
@@ -38,5 +39,7 @@ void c_cleanup_creature(C_Creature *c,Game_World *world);
 
 char  *c_retrieve_creature_name(C_Creature *c);
 
-void c_free_player_info(C_Player_Info *player_info);
+void c_free_player_info(Game_State *gs, C_Player_Info *player_info);
+
+void c_free_creature(Game_State *gs, C_Creature *c);
 #endif

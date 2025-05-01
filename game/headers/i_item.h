@@ -29,8 +29,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 
 #define I_FREE_ITEM_HOLDER(item_holder) \
-  (*i_free_item_handler[item_holder->item->kind])(item_holder);	\
-  free(item_holder->item); \
+  I_FREE_ITEM(item_holder->item);	\
   free(item_holder); \
   item_holder = NULL; \
 

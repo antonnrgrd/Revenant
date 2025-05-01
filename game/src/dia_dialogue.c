@@ -52,6 +52,7 @@ void dia_loop_dialogue(Dia_Dialogue_Manager *manager, Game_State *gs){
 	dia_draw_dialogue_screen(manager,gs,fp);
 	manager->reached_eof = NO;
       }
+      /*
       else if(isdigit(ch) == 0){
 	if(ch - '0' < manager->num_dialogue_options){
 	  Dbr_Selected_Dialogue_Qresult selected_dialogue_qresult = dbr_get_dialogue_response(gs,manager,ch - '0');
@@ -64,6 +65,7 @@ void dia_loop_dialogue(Dia_Dialogue_Manager *manager, Game_State *gs){
 	  }
 	}
       }
+      */
     }
 }
 Dia_Dialogue_Manager *dia_init_dialogue_manager(int dialogue_folder_id, int initial_dialogue_id, int npc_id, Game_State *gs){
@@ -132,10 +134,10 @@ FILE *dia_extract_next_dialogue_window_info(Game_State *gs, Dbr_Selected_Dialogu
 
 void dia_draw_npc_name(Dia_Dialogue_Manager *manager, Game_State *gs){
   mvwprintw(gs->logs[DIALOGUE_LOG], 1,(gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) / 3,"Talking to: ");
-  char npc_id[10];
+  char dialogue_folder_id[10];
   chdir("/usr/lib/revenant_files/npc_name_files/");
-  sprintf(npc_id, "%d", manager->npc_id);
-  FILE *fp = fopen(npc_id, "r");
+  sprintf(dialogue_folder_id, "%d", manager->dialogue_folder_id);
+  FILE *fp = fopen(dialogue_folder_id, "r");
   char c = fgetc(fp);
   int curr_name_offset = (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) / 3 + 11;
   while(c != EOF){
@@ -249,7 +251,7 @@ extern inline int dia_recompute_char_offset_backwards(Dia_Dialogue_Manager *mana
     //printf(" The line length is: %d ", ((gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH)-2));
     //printf(" We encountered %d chars", encountered_chars);
     if(remaining_chars == 0){
-      sprintf(gs->bfr, "npc id %d with dialogue id %d at offset %d was found to have exactly zero characters left when computing the modulo!",manager->npc_id, manager->current_dialogue_id,manager->current_char_offset);
+      sprintf(gs->bfr, "npc id %d with dialogue id %d at offset %d was found to have exactly zero characters left when computing the modulo!",manager->dialogue_folder_id, manager->current_dialogue_id,manager->current_char_offset);
       l_write_log(gs->bfr, L_DEBUG,NO);
       return (manager->current_char_offset-2) - (((gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH)-2) -1);
     }
@@ -257,7 +259,7 @@ extern inline int dia_recompute_char_offset_backwards(Dia_Dialogue_Manager *mana
       return (manager->current_char_offset-2) - (remaining_chars -1);
     }
     if(encountered_chars > 512){
-      sprintf(gs->bfr, "npc id %d with dialogue id %d has line exceeding 512 chars. This causes slow scrolling of text",manager->npc_id, manager->current_dialogue_id);
+      sprintf(gs->bfr, "npc id %d with dialogue id %d has line exceeding 512 chars. This causes slow scrolling of text",manager->dialogue_folder_id, manager->current_dialogue_id);
       l_write_log(gs->bfr, L_WARN,NO);
     }
   }

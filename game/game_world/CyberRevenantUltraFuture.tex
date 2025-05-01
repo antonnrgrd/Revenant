@@ -189,6 +189,18 @@ Which brings us to
 \end{tikzpicture}
 \end{center}
 
+\subsection{Policy on when to include header files}
+When a header file is to be included in either a source code file or a header file i.e when we make a statement of the type
+\begin{lstlisting}
+#include "some_header.h"
+\end{lstlisting}
+Then it is to be included only \textit{exactly} the momenet when it become relevant, that is to say, when the code first refers to functionality/a declaration, made in the header it is including.  \\
+
+This is because 
+\begin{enumerate}
+\item It makes it transparent why the include statement was made.
+\item Furthermore, avoids cluttering with unecessary include statements, potentially causing compiling errors and makes it more easy in reasoning what has been defined in which parts of the code.
+\end{enumerate}
 \section*{Naming conventions for the header files}
 \subsection*{Naming conventions for the files themselves}
 As specified in "Setup of header files and forward declaration and the db\_reader ", there are header files that define only structs and constants and user files, that in some way or another uses said structs. They shall have the name the following name formats

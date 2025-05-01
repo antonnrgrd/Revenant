@@ -627,7 +627,7 @@ void msg_redraw_inventory(Game_State *gs, I_Item_Holder **item_list, int context
     gs->panels[INVENTORY_LOG] = new_panel(gs->logs[INVENTORY_LOG]);
       MSG_CLEAR_SCREEN(gs->logs[INVENTORY_LOG]);
       top_panel(gs->panels[INVENTORY_LOG]);
-       REDRAW_MAP(gs,gs->player,gs->current_zone,gs->logs[MAIN_SCREEN], gs->player->position.global_x,gs->player->position.global_y,rows, cols);
+       REDRAW_MAP(gs,gs->player,gs->current_zone,gs->logs[MAIN_SCREEN], gs->player->position.global_x,gs->player->position.global_y);
       if(context == CONTEXT_INSPECTING){
     INIT_INVENTORY_LOG(gs->logs[INVENTORY_LOG], "Items in inventory");
   }
@@ -648,7 +648,7 @@ void msg_redraw_inventory(Game_State *gs, I_Item_Holder **item_list, int context
   //the entire screen
   wresize(gs->logs[INVENTORY_LOG],LOG_Y_SIZE,LOG_X_SIZE);
   MSG_CLEAR_SCREEN(gs->logs[INVENTORY_LOG]);
-  REDRAW_MAP(gs,gs->player,gs->current_zone,gs->logs[MAIN_SCREEN], gs->player->position.global_x,gs->player->position.global_y,rows, cols);
+  REDRAW_MAP(gs,gs->player,gs->current_zone,gs->logs[MAIN_SCREEN], gs->player->position.global_x,gs->player->position.global_y);
   if(context == CONTEXT_INSPECTING){
     INIT_INVENTORY_LOG(gs->logs[INVENTORY_LOG], "Items in inventory");
   }
@@ -682,7 +682,7 @@ void msg_redraw_equipped_equipment(Game_State *gs){
     gs->panels[INVENTORY_LOG] = new_panel(gs->logs[INVENTORY_LOG]);
       MSG_CLEAR_SCREEN(gs->logs[INVENTORY_LOG]);
       top_panel(gs->panels[INVENTORY_LOG]);
-       REDRAW_MAP(gs,gs->player,gs->current_zone,gs->logs[MAIN_SCREEN], gs->player->position.global_x,gs->player->position.global_y,rows, cols);
+       REDRAW_MAP(gs,gs->player,gs->current_zone,gs->logs[MAIN_SCREEN], gs->player->position.global_x,gs->player->position.global_y);
   I_Item_Holder *item_holder = malloc(sizeof(I_Item_Holder));
   item_holder->amount = 1;
   mvwprintw(gs->logs[INVENTORY_LOG],1,25, "Items equipped");
@@ -724,7 +724,7 @@ void msg_redraw_equipped_equipment(Game_State *gs){
   //the entire screen
   wresize(gs->logs[INVENTORY_LOG],LOG_Y_SIZE,LOG_X_SIZE);
   MSG_CLEAR_SCREEN(gs->logs[INVENTORY_LOG]);
-  REDRAW_MAP(gs,gs->player,gs->current_zone,gs->logs[MAIN_SCREEN], gs->player->position.global_x,gs->player->position.global_y,rows, cols);
+  REDRAW_MAP(gs,gs->player,gs->current_zone,gs->logs[MAIN_SCREEN], gs->player->position.global_x,gs->player->position.global_y);
   I_Item_Holder *item_holder = malloc(sizeof(I_Item_Holder));
   item_holder->amount = 1;
   mvwprintw(gs->logs[INVENTORY_LOG],1,25, "Items equipped");
@@ -778,7 +778,7 @@ void msg_redraw_inventory_equip_context(Game_State *gs, I_Item_Holder **item_lis
     INIT_INVENTORY_LOG(gs->logs[INVENTORY_LOG], "Available equipment");
       MSG_CLEAR_SCREEN(gs->logs[INVENTORY_LOG]);
       top_panel(gs->panels[INVENTORY_LOG]);
-       REDRAW_MAP(gs,gs->player,gs->current_zone,gs->logs[MAIN_SCREEN], gs->player->position.global_x,gs->player->position.global_y,rows, cols);
+       REDRAW_MAP(gs,gs->player,gs->current_zone,gs->logs[MAIN_SCREEN], gs->player->position.global_x,gs->player->position.global_y);
   for(int i = 0; i < num_items; i++){
     msg_print_item(item_list[i],gs->logs[INVENTORY_LOG],5,row_position);
     row_position++;
@@ -794,7 +794,7 @@ void msg_redraw_inventory_equip_context(Game_State *gs, I_Item_Holder **item_lis
   wresize(gs->logs[INVENTORY_LOG],LOG_Y_SIZE,LOG_X_SIZE);
   MSG_CLEAR_SCREEN(gs->logs[INVENTORY_LOG]);
   INIT_INVENTORY_LOG(gs->logs[INVENTORY_LOG], "Available equipment");
-  REDRAW_MAP(gs,gs->player,gs->current_zone,gs->logs[MAIN_SCREEN], gs->player->position.global_x,gs->player->position.global_y,rows, cols);
+  REDRAW_MAP(gs,gs->player,gs->current_zone,gs->logs[MAIN_SCREEN], gs->player->position.global_x,gs->player->position.global_y);
   for(int i = 0; i < num_items; i++){
     msg_print_item(item_list[i],gs->logs[INVENTORY_LOG],5,row_position);
     row_position++;
@@ -818,7 +818,7 @@ void msg_redraw_log(Game_State *gs){
     gs->panels[EVENT_LOG] = new_panel(gs->logs[EVENT_LOG]);
     box(gs->logs[EVENT_LOG],0,0);
     INIT_EVENT_LOG(gs->logs[EVENT_LOG]);
-    REDRAW_MAP(gs,gs->player,gs->current_zone,gs->logs[MAIN_SCREEN], gs->player->position.global_x,gs->player->position.global_y,rows, cols);
+    REDRAW_MAP(gs,gs->player,gs->current_zone,gs->logs[MAIN_SCREEN], gs->player->position.global_x,gs->player->position.global_y);
     for(int i = 0; i < NUM_EVENTS -1 ; i++){
       mvwprintw(gs->logs[EVENT_LOG], i+3, 12, gs->ingame_log[i]);
     }
@@ -827,7 +827,7 @@ void msg_redraw_log(Game_State *gs){
     INIT_EVENT_LOG(gs->logs[EVENT_LOG]);
     wresize(gs->logs[EVENT_LOG],LOG_Y_SIZE,LOG_X_SIZE);
     box(gs->logs[EVENT_LOG],0,0);
-    REDRAW_MAP(gs,gs->player,gs->current_zone,gs->logs[MAIN_SCREEN], gs->player->position.global_x,gs->player->position.global_y,rows, cols);
+    REDRAW_MAP(gs,gs->player,gs->current_zone,gs->logs[MAIN_SCREEN], gs->player->position.global_x,gs->player->position.global_y);
     for(int i = 0; i < NUM_EVENTS -1 ; i++){
       mvwprintw(gs->logs[EVENT_LOG], i+3, 12, gs->ingame_log[i]);
     }
@@ -868,7 +868,7 @@ void msg_redraw_trading_session(Game_State *gs,I_Item_Holder **item_list,int num
      
      
   wresize(gs->logs[TRADING_LOG],LOG_Y_SIZE,LOG_X_SIZE);
-  REDRAW_MAP(gs,gs->player,gs->current_zone,gs->logs[MAIN_SCREEN], gs->player->position.global_x,gs->player->position.global_y,rows, cols);
+  REDRAW_MAP(gs,gs->player,gs->current_zone,gs->logs[MAIN_SCREEN], gs->player->position.global_x,gs->player->position.global_y);
   MSG_CLEAR_SCREEN(gs->logs[TRADING_LOG]);
   INIT_INVENTORY_LOG(gs->logs[TRADING_LOG], "Merchant\'s wares");
   for(int i = 0; i < num_items; i++){
