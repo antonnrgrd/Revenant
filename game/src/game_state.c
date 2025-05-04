@@ -13,6 +13,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
  
 #include "game_state.h"
 #include "dia_dialogue.h"
+#include "ll_linked_list.h"
 void gs_iter_list_as_creature(Ll_Linked_List *list, Game_State *game_state){
   /*We have to keep track of where we are in the position of the linked ist
 because depending on where we are in the list, we have to perform different steps to remove the node */

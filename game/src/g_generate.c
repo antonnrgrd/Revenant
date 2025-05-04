@@ -50,16 +50,18 @@ Game_World *g_generate_game_world(int width, int height){
   }
   for(int j = 0; j < height; j++){
     for(int k = 0; k < width; k++){
-      world->tiles[j][k].content = malloc(sizeof(char));
+      world->tiles[j][k].content = malloc(sizeof(unsigned char));
       world->tiles[j][k].content[0] = alphabet[gen_int(0,10)];
       world->tiles[j][k].entry = NULL;
     }
    }
+  /*
   for(int a = 100; a < 200; a++){
     for(int b = 100; b < 200; b++){
       world->tiles[a][b].content[0] = ' ';
     }
    }
+  */
   return world;
   }
 
