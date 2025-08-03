@@ -37,5 +37,6 @@ uint64_t s_uint_from_string(int argcount, ...);
 char *s_append_to_string(char *target_string, char *string_to_append);
 
 char *s_replace_all_char_occurences(char *target_string, char *character_to_replace, char *replacement_char);
+int s_is_valid_sql_statement(char *fileline);
 #endif
 

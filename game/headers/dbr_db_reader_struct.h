@@ -11,25 +11,62 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #ifndef DBR_READER_STRUCT
 #define DBR_READER_STRUCT
 
-/*Sqlite 3 needs the number of bytes that the sql statement is. If it is negative, it will simply read the passed sql statement until it 
-encounters a 0 terminator. We use this macro by defualt to instruct it to do so*/
-#define NBYTES -1
-/*
-Programmers note here, when binding variables, to SQL statements, The leftmost SQL parameter has an index of 1 whereas 
-when running a query,  the leftmost column of the result set has the index 0, hence the inconsistent assignment of values here.
-If it has the name format *_QUERY, it is intended to be used in a query (1-indexed) but if it is has the name format
-*_QRESULT, it intended to be used to extract the value from the query (0-indexed)
-*/
-#define DBR_DIALOGUE_OPTION_RESPONSES_NPC_ID_INDEX_QUERY 1
-#define DBR_DIALOGUE_OPTION_RESPONSES_CURENT_DIALOGUE_ID_INDEX_QUERY 2
-#define DBR_DIALOGUE_OPTION_RESPONSES_SELECTED_DIALOGUE_ID_INDEX_QUERY 3
 
-#define DBR_NEXT_DIALOGUE_ID_INDEX_QRESULT 3
-#define DBR_SELECTED_DIALOGUE_CONSEQUENCE_INDEX_QRESULT 4
-#define DBR_NEXT_DIALOGUE_SCREEN_NUM_OPTIONS_INDEX_QRESULT 5
+/*C has some constraints wrt. the length of the variable/macro names. As much as i want to make it ultra clear where a
+ macro/ variable fits tn, i will have to limit the names' length and instead use comments to group related values together*/
 
-/*npc id's*/
-#define GENERIC_ISSLOG_MALE_NPC 0
+/* dia_dialogue check flags outcomes definitions BEGIN */
+
+#define DBR_CHECK_SUCCESS 0
+#define DBR_CHECK_FAILURE 1
+
+/* */
+
+/* Generic DBR values BEGIN */
+#define DBR_UNDEF -1
+/* Generic DBR values END */
+
+/*dia_dialogue_selected_option_handler definitions BEGIN  */
+
+#define DBR_END_DIALOGUE 0
+
+#define DBR_CONTINUE_DIALOGUE 1
+
+#define DBR_CHECK_SKILL 2
+
+#define DBR_CHECK_SKILL 3
+
+/*dia_dialogue_selected_option_consequence_handler definitions END  */
+
+/* dia_dialogue_interactions definitions BEGIN */
+#define DBR_ISSLOG_GENERIC_NPC 0
+/* dia_dialogue_interactions definitions END */
+
+
+/* Creature ID's BEGIN */
+#define DBR_SHORT_FACED_BEAR 0
+#define DBR_CROCODILE 1
+/* Creature ID's END */
+
+/* dia_dialogue_option_triggers definitions BEGIn*/
+#define DBR_SET_INITIAL_DIALOGUE 0
+
+#define DBR_SET_NPC_BEHAVIOR 1
+
+#define DBR_DO_SKILLCHECK 2
+
+#define DBR_DO_ITEMCHECK 3
+
+#define DBR_SET_NPC_BEHAVIOR 4
+
+#define DBR_MODIFY_PC_MONEY 5
+
+#define DBR_MODIFY_PC_INVENTORY 6
+
+#define DBR_UPDATE_PC_QUEST_STATUS 7
+
+/* dia_dialogue_option_triggers definitions BEGIn*/
+
 
 typedef struct{
   int current_row_index;
@@ -38,12 +75,14 @@ typedef struct{
   char *sqlite_bfr;
   //Generic holder for data
   void *data;
+  unsigned int check_status : 1;
 }Dbr_Query_Manager;
 
 typedef struct{
   int next_dialogue_id;
   int selected_dialogue_consequence;
   int next_dialogue_screen_num_options;
+  int consequence;
 }Dbr_Selected_Dialogue_Qresult;
 #define DBR_DATABASE_PATH "/usr/lib/revenant_files/database/revenant.db"
 #define DBR_CONTINUE_DIALOGUE 0

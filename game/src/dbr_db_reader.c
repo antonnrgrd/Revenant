@@ -10,40 +10,18 @@ You should have received a copy of the GNU General Public License
 along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "dbr_db_reader.h"
 #include "l_log.h"
+#include <stdlib.h>
+#include "dia_dialogue_struct.h"
 /*
 Programmers note here, when binding variables, to SQL statements, The leftmost SQL parameter has an index of 1 whereas 
 when running a query,  the leftmost column of the result set has the index 0
 */
-/*
-Dbr_Selected_Dialogue_Qresult dbr_get_dialogue_response(Game_State *gs,Dia_Dialogue_Manager *manager, int selected_choice){
-  Dbr_Selected_Dialogue_Qresult selected_dialogue_info;
-  sqlite3_stmt* stmt;
-  char *err_msg = 0;
-  strcpy(gs->bfr,"SELECT next_dialogue_id, choice_consequence FROM dialogue_option_reponses \n\
-         WHERE npc_id = ? AND current_dialogue_id = ? AND selected_dialogue_id = ?;");
-  int result_statement = sqlite3_prepare_v2(gs->db,gs->bfr, NBYTES, &stmt, NULL);
-  sqlite3_bind_int(stmt, DBR_DIALOGUE_OPTION_RESPONSES_NPC_ID_INDEX_QUERY, manager->npc_id);
-  sqlite3_bind_int(stmt, DBR_DIALOGUE_OPTION_RESPONSES_CURENT_DIALOGUE_ID_INDEX_QUERY, manager->current_dialogue_id);
-  sqlite3_bind_int(stmt, DBR_DIALOGUE_OPTION_RESPONSES_SELECTED_DIALOGUE_ID_INDEX_QUERY, selected_choice);
 
-  int result = sqlite3_step(stmt);
-  if(result != SQLITE_ROW){
-    time_t rawtime;
-    struct tm * timeinfo;
-    time ( &rawtime );
-    timeinfo = localtime ( &rawtime );
-    sprintf("%s - when running dbr_get_dialogue_response. Expected %d, got %d ", asctime (timeinfo), SQLITE_ROW, result );
-    err_append_err(gs->bfr);
-    sqlite3_finalize(stmt);
-    exit(1);
-  }
-  selected_dialogue_info.next_dialogue_id = sqlite3_column_int(stmt, DBR_NEXT_DIALOGUE_ID_INDEX_QRESULT);
-  selected_dialogue_info.selected_dialogue_consequence = sqlite3_column_int(stmt, DBR_SELECTED_DIALOGUE_CONSEQUENCE_INDEX_QRESULT);
-  selected_dialogue_info.next_dialogue_screen_num_options = sqlite3_column_int(stmt, DBR_NEXT_DIALOGUE_SCREEN_NUM_OPTIONS_INDEX_QRESULT);
-  sqlite3_finalize(stmt);
-  return selected_dialogue_info;
+Dbr_Selected_Dialogue_Qresult dbr_get_dialogue_response(Game_State *gs,Dia_Dialogue_Manager *manager, int selected_choice){
+  Dbr_Selected_Dialogue_Qresult qresult;
+  sqlite3_exec(gs->db, gs->bfr, dbr_print_rows_from_query,NULL,&gs->query_manager->sqlite_bfr);
 }
-*/
+
 Dia_Dialogue_Manager *dbr_readin_dialogue_manager(int np_id){
   Dia_Dialogue_Manager *manager = malloc(sizeof(Dia_Dialogue_Manager));
 }
@@ -95,5 +73,47 @@ void dbr_close_db_connection(sqlite3 *db){
   }
   else{
     db = NULL;
+  }
+}
+
+void dbr_execute_statement(char *statement, char *log_level ,sqlite3 *db, Game_State *gs){
+  int statement_return_value = sqlite3_exec(gs->db, statement, dbr_print_rows_from_query,NULL,&gs->query_manager->sqlite_bfr);
+  if(statement_return_value != SQLITE_OK){
+    sprintf(gs->bfr, "An error occured when attempting to execute the statement %s, caused by the issue: %s, resulting in the errorcode %d", statement,gs->query_manager->sqlite_bfr, statement_return_value);
+    /*We parameterize the log level because in some instances, we are interested in seeing any and all errors in the logs and in other cases, we want to give up immediately
+     because in that case, the database is most likely in an inconsistent state*/
+    l_write_log(gs->bfr, log_level,L_LOG_SILENTLY);
+  }
+}
+
+int dbr_pass_inf_to_dialogue_qresult(void *passed_struct, int num_cols, char **column_value, char **column_name){
+  Dia_Dialogue_Manager *manager = (Dia_Dialogue_Manager *)passed_struct;
+  manager->current_dialogue_id = atoi(column_value[4]);
+  manager->num_dialogue_options = atoi(column_value[2]);
+  return 0;
+}
+
+int dbr_get_next_dialogue_id(void *game_state, int num_cols, char **column_value, char **column_name){
+  Game_State *gs = (Game_State *)game_state;
+  int next_dialogue_id_decision = 42;
+  /*Next dialogue id has no checks to decide it, trivially
+   set the next dialogue id to be the dialogue id in the "successful check" column*/
+  if(next_dialogue_id_decision == DBR_CONTINUE_DIALOGUE){
+  }
+  /*If the next dialogue has its */
+  else if(next_dialogue_id_decision == DBR_END_DIALOGUE){
+    gs->dialogue_manager->current_dialogue_id = DBR_END_DIALOGUE;
+  }
+  /* Otherwise, assume some kind of conditional check is required to decide next dialogue id. Maybe implement  */
+  else if (next_dialogue_id_decision >= && <=){
+    /*Logic for check here */
+    if (gs->query_manager->check_status == DBR_CHECK_SUCCESS){
+      gs->dialogue_manager->current_dialogue_id =;
+    }
+    else if (gs->query_manager->check_status == DBR_CHECK_FAILURE){
+      gs->dialogue_manager->current_dialogue_id =;
+    }
+    else{
+    }
   }
 }

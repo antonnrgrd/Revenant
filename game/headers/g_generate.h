@@ -26,6 +26,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "rng_rng.h"
 #include "i_item_struct.h"
 #include "dia_dialogue.h"
+#include <sqlite3.h>
 #define PLACE_MERCHANT(game_state,merchant, global_x,global_y)(game_state)
 extern const char *alphabet;
 
@@ -41,5 +42,13 @@ void g_generate_dialogue(int global_x, int global_y,int dialogue_folder_id, int 
 
 //A variant that hard codes the generated items for debugging and testing
 U_Hashtable *g_generate_merchant_inventory_hardcoded_items(Rng_Mersienne_Twister *twister);
+
+void g_generate_database_tables(sqlite3 *db, Game_State *gs);
+
+void g_generate_database_contents(sqlite3 *db);
+
+void g_generate_all_database_content(sqlite3 *db, Game_State *gs);
+
+void g_generate_entire_game_state(Game_State *gs);
 #endif
 

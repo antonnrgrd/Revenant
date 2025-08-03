@@ -14,6 +14,8 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "g_generate.h"
 #include <ncurses.h>
+#include "dbr_db_reader.h"
+#include "l_log_struct.h"
 int gen_int(int min,int max){
   
   return rand() % (max - min + 1) + min;
@@ -128,6 +130,7 @@ I_Item_Holder *g_generate_item(Rng_Mersienne_Twister *twister){
 
 void g_generate_dialogue(int global_x, int global_y,int dialogue_folder_id, int initial_dialogue_id,int npc_id, Game_State *gs){
   Dia_Dialogue_Manager *manager = dia_init_dialogue_manager(dialogue_folder_id, initial_dialogue_id, npc_id,gs);
+  manager->num_dialogue_options=4;
   gs->current_zone->tiles[global_y][global_x].content[0] = '!';
   gs->current_zone->tiles[global_y][global_x].foe = manager;
 }
@@ -156,4 +159,29 @@ U_Hashtable *g_generate_merchant_inventory_hardcoded_items(Rng_Mersienne_Twister
   item_holder_3->amount = 1;
   u_add_item(item_holder_3, item_holder_3->amount, merchant);
   return merchant;
+}
+
+void g_generate_entire_game_state(Game_State *gs){
+  g_generate_all_database_content(gs->db,gs);
+}
+void g_generate_all_database_content(sqlite3 *db, Game_State *gs){
+  g_generate_database_tables(db,gs);
+  g_generate_database_tables_contents(db,gs);
+}
+
+void g_generate_database_tables_indexes(sqlite3 *db, Game_State *gs);
+void g_generate_database_tables(sqlite3 *db, Game_State *gs){
+
+  dbr_execute_statement("", L_DEBUG, db, gs);
+}
+
+void g_generate_database_tables_contents(sqlite3 *db, Game_State *gs){
+
+
+
+  
+  
+
+  
+  
 }

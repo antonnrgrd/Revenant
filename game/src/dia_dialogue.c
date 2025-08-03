@@ -14,6 +14,8 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "dia_dialogue.h"
 #include "l_log.h"
+#include "dbr_db_reader.h"
+#include <stdlib.h>
 void dia_loop_dialogue(Dia_Dialogue_Manager *manager, Game_State *gs){
   
   dia_draw_npc_name(manager, gs);
@@ -32,7 +34,6 @@ void dia_loop_dialogue(Dia_Dialogue_Manager *manager, Game_State *gs){
   int num_lines = 0;
   char c = fgetc(fp);
   int processed_bytes;
-  int byte_offset;
   int num_bytes = dia_compute_num_bytes(fp);
   dia_draw_dialogue_screen(manager,gs,fp);
     UPDATE_PANEL_INFO();
@@ -52,20 +53,21 @@ void dia_loop_dialogue(Dia_Dialogue_Manager *manager, Game_State *gs){
 	dia_draw_dialogue_screen(manager,gs,fp);
 	manager->reached_eof = NO;
       }
-      /*
-      else if(isdigit(ch) == 0){
-	if(ch - '0' < manager->num_dialogue_options){
-	  Dbr_Selected_Dialogue_Qresult selected_dialogue_qresult = dbr_get_dialogue_response(gs,manager,ch - '0');
-	  if(selected_dialogue_qresult.selected_dialogue_consequence == DIA_CONTINUE_DIALOGUE){
-	    DIA_RESET_DIALOGUE_MANAGER_INFO(manager);
-	    dia_extract_next_dialogue_window_info(gs,selected_dialogue_qresult,fp);
+      else if(isdigit(ch) != 0){
+	if((ch - '0') <= manager->num_dialogue_options - 1){
+	  sprintf(gs->bfr, "SELECT * FROM dia_dialogue_selected_option_consequence_handler WHERE dialogue_folder_id = %d AND current_dialogue_id = %d AND selected_option = %d;", manager->dialogue_folder_id, manager->current_dialogue_id, (ch - '0'));
+	  int query_code = sqlite3_exec(gs->db, gs->bfr, dbr_pass_inf_to_dialogue_qresult, manager, &gs->query_manager->sqlite_bfr);
+	  DBR_EVAL_SQL_EXECUTION(query_code,gs->bfr,gs);
+	  if (manager->current_dialogue_id != DBR_UNDEF){
+	    DIA_READ_IN_NEXT_DIALOGUE_ID(manager, fp,gs);
 	  }
 	  else{
-	    DIA_EXIT_DIALOGUE_MANAGER(manager);
+	    hide_panel(gs->panels[DIALOGUE_LOG]);
+	    UPDATE_PANEL_INFO();
+	    return;
 	  }
 	}
       }
-      */
     }
 }
 Dia_Dialogue_Manager *dia_init_dialogue_manager(int dialogue_folder_id, int initial_dialogue_id, int npc_id, Game_State *gs){

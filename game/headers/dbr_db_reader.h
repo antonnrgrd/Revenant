@@ -14,6 +14,9 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "game_state_struct.h"
 #include "dbr_db_reader_struct.h"
 #include "dia_dialogue_struct.h"
+#include "l_log.h"
+#include <string.h>
+#include "string.h"
 Dbr_Selected_Dialogue_Qresult dbr_get_dialogue_response(Game_State *gs,Dia_Dialogue_Manager *manager, int selected_choice);
 Dia_Dialogue_Manager *dbr_readin_dialogue_manager(int np_id);
 void dbr_add_dialogue_to_db(int dialogue_folder_id, int current_dialogue_id,int consequence,int num_options);
@@ -22,6 +25,9 @@ void dbr_create_all_tables(Game_State *gs);
 void dbr_create_dialogue_tables(Game_State *gs,sqlite3 *db);
 int dbr_does_table_exist(char *table,sqlite3 *db);
 void dbr_print_rows(Game_State *gs, char *query);
+/* We generate the str to be logged in this unusual fashion because at this point in the execution flow, the game state buffer already has it's contents  */
+#define DBR_EVAL_SQL_EXECUTION(sql_exec_code,statement,gs) sql_exec_code != SQLITE_OK ?  s_append_to_string(gs->bfr, "An error occured when attempting to execute the statement: "), strcat(gs->bfr, ", caused by the sql error "), strcat(gs->bfr, gs->query_manager->sqlite_bfr), l_write_log(gs->bfr, L_WARN,L_LOG_SILENTLY)  : sql_exec_code;
+
 #define DBR_RESET_QUERY_MANAGER(query_manager){\
   query_manager->current_row_index = 0;	       \
   query_manager->num_rows_encountered = 0;     \
@@ -32,5 +38,10 @@ void dbr_print_rows(Game_State *gs, char *query);
   query_manager->sqlite_bfr = NULL;     \
   }
 void dbr_close_db_connection(sqlite3 *db);
-dbr_print_rows_from_query(void *data, int argc, char **argv, char **colNames);
+int dbr_print_rows_from_query(void *data, int argc, char **argv, char **colNames);
+void dbr_execute_statement(char *statement, char *log_level, sqlite3 *db, Game_State *gs);
+
+int dbr_pass_inf_to_dialogue_qresult(void *passed_struct, int num_cols, char **column_value, char **column_name);
 #endif
+
+int dbr_get_next_dialogue_id(void *game_state, int num_cols, char **column_value, char **column_name);

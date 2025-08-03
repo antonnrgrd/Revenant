@@ -39,16 +39,18 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 /*For continuing to the next dialogue screen, ensuring we start with a clean plate*/
 #define DIA_RESET_DIALOGUE_MANAGER_INFO(manager){\
     manager->current_char_offset = 0;		 \
-    manager->num_dialogue_options = 0;		 \
-    manager->current_dialogue_id = 0;		 \
     manager->reached_eof = NO;			 \
     manager->single_page_file = NO;		 \
 }
 
-
-
-
-
+#define DIA_READ_IN_NEXT_DIALOGUE_ID(manager, dialogue_file,gs){	\
+    wclear(gs->logs[DIALOGUE_LOG]) ;					\
+    DIA_RESET_DIALOGUE_MANAGER_INFO(manager);				\
+    fclose(dialogue_file);						\
+    sprintf(gs->bfr, "/usr/lib/revenant_files/dialogue_files/%d/%d", manager->dialogue_folder_id,  manager->current_dialogue_id); \
+    dialogue_file = fopen(gs->bfr, "r");				\
+    dia_draw_dialogue_screen(manager,gs,dialogue_file);			\
+  }
 /*Normally, we'd be content using the box function to draw a border around the wndow, but we want an ultra specific bordering set, you we have to do it manually */
 #define DIA_DRAW_DIALOGUE_BORDER(dia_dialogue_screen,gs) mvwhline(dia_dialogue_screen, 0, 0, 0, (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -1); mvwhline(dia_dialogue_screen, 2, 1, 0, (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -2 ); mvwvline(dia_dialogue_screen, 0, 0, 0, gs->num_cols); mvwvline(dia_dialogue_screen, 1, (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -1, 0, gs->num_cols);  mvwaddch(dia_dialogue_screen,0, 0, ACS_ULCORNER); mvwaddch(dia_dialogue_screen,0, (gs->num_rows - DEFAULT_MAX_INFOBAR_WIDTH) -1, ACS_URCORNER);
 

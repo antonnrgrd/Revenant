@@ -39,20 +39,20 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "dia_dialogue.h"
 #include "l_log.h"
 int main(int argc, char *argv[]){
-
   initscr();
   start_color();   
   Game_World *game_world = g_generate_game_world(1000,1000);
   Game_State *gs =  gs_create_game_state(game_world);
   ((C_Player_Info *)gs->player->additional_info)->inventory = g_generate_merchant_inventory(3,3,gs->twister);
+  g_generate_entire_game_state(gs);
   noecho();
   curs_set(FALSE);
    keypad(stdscr, TRUE);
     srand(time(NULL));
   raw();
   game_loop(gs);
-  endwin();  
-
+  endwin();
+  
 }
   
  

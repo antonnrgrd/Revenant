@@ -18,6 +18,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "generic_macros.h"
 #include "game_state_struct.h"
 #include "i_item.h"
+#include <sqlite3.h>
 #define IR_COMMON_CREATURE_FILEPATH "/usr/lib/revenant_files/creature_files/"
 typedef enum{integer, string, floating,struct_limb,struct_attributes}Return_Type;
 void ir_readin_data(char *file_path, char *variable,Return_Type expected_type, void *value);
@@ -47,6 +48,6 @@ void ir_print_creature_damage();
 I_Item_Holder *ir_readin_consumable(char *consumable_file_path, int amount);
 I_Item_Holder *ir_readin_reagent(char *reagent_file_path, int amount);
 void ir_add_item_purchase_to_log(Game_State *gs,I_Item_Holder *item, int amount);
-
+void ir_execute_sql_statements_from_text_file(char *sql_statements_filepath, sqlite3 *db, Game_State *gs);
 
 #endif

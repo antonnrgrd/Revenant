@@ -22,7 +22,8 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include <sqlite3.h>
 #include "dbr_db_reader_struct.h"
 #include "c_creature_struct.h"
-#define DB_LOCATION "/usr/lib/revenant_files/db_folder/revenant_database.db"
+#include "dia_dialogue_struct.h"
+#define GAME_STATE_DB_LOCATION "/usr/lib/revenant_files/db_folder/revenant_database.db"
 #define BFR_LENGTH 1024
 #define NUM_EVENTS 10
 #define MAX_MSG_LENGTH 100
@@ -75,6 +76,7 @@ typedef struct Game_State{
   PANEL *panels[8];
   WINDOW *logs[8];
   Rng_Mersienne_Twister *twister;
+  Dia_Dialogue_Manager *dialogue_manager;
   /*I am uncertain whether it is best policy to maintain an open db
    connection for the duration of the game session or open, then close it for SQL operations, but for a start, I will start out with having a persistently open connection */
   sqlite3 *db;

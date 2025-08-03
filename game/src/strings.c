@@ -14,7 +14,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 
 #include "strings.h"
-
+#include "generic_macros.h"
 char *s_create_text(char *arg){
   int length = strlen(arg);
   char *text = malloc( length * sizeof(char));
@@ -101,4 +101,32 @@ char *s_replace_all_char_occurences(char *target_string, char *character_to_repl
         current_string = strchr(current_string,character_to_replace);
     }
     return target_string;
+}
+
+int s_is_fileline_all_whitespace(char *fileline){
+  int index = 0;
+  char current_char  = fileline[0];
+  while(current_char != '\0'){
+    /*If it is NOT a whitespace, return no. By behavior of the isspace function, anything 0 is NOT a whitespace character*/
+    if(isspace(current_char) == 0){
+      return NO;
+    }
+  }
+  return YES;
+}
+
+int s_is_a_sql_comment(char *fileline){
+  if(strlen(fileline) >= 2 && fileline[0] == '-' && fileline[1] == '-' ){
+    return YES;
+  }
+  return NO;
+}
+int s_is_valid_sql_statement(char *fileline){
+  /*Provided*/
+  if( s_is_fileline_all_whitespace(fileline) == NO && s_is_a_sql_comment(fileline) == NO){
+    return YES;
+  }
+  else{
+    return NO;
+  }
 }

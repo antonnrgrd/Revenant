@@ -9,7 +9,8 @@ General Public License for more details.  You should have received a
 copy of the GNU General Public License along with Revenant.  If not,
 see <https://www.gnu.org/licenses/>. */
 #include "ir_information_reader.h"
-
+#include "l_log.h"
+#include "game_state_struct.h"
 I_Item_Holder *ir_readin_reagent(char *reagent_file_path, int amount){
   I_Item *i = malloc(sizeof(I_Item));
   I_Reagent *reagent = malloc(sizeof(I_Reagent));
@@ -689,3 +690,16 @@ void ir_add_item_purchase_to_log(Game_State *gs, I_Item_Holder *item, int amount
   }
     }
   }
+void ir_execute_sql_statements_from_text_file(char *sql_statements_filepath, sqlite3 *db, Game_State *gs){
+  FILE *fp = fopen(sql_statements_filepath, "r");
+  char *line = NULL;
+  size_t len = 0;
+  while((getline(&line, &len, fp)) != -1){
+    if(s_is_valid_sql_statement(line) == YES){
+      printf("Found line %s to be a valid SQL statement, executing it", line);
+      dbr_execute_statement(line, L_DEBUG ,db, gs);
+    }
+  }
+  free(line);
+  fclose(fp);
+}

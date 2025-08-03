@@ -272,7 +272,7 @@ This table details all the keyboard bindings for the game. Keyboard bindings wit
  a - N/A & n - N/A & A - N/A & N - N/A \\ 
  b - N/A & o - N/A & B - N/A & O - N/A \\
  c - N/A & p - N/A & C - N/A & P - N/A  \\
- d - N/A & q - N/A & D - N/A & Q - N/A  \\
+ d - N/A & q - quit game / context & D - N/A & Q - N/A  \\
  e - equip item in inventory & r - N/A & E - Show equipped items & R - N/A \\ 
  f - N/A & s - N/A & F - N/A & S - N/A \\
  g - N/A & t - N/A & G - N/A & T - N/A \\
@@ -320,6 +320,30 @@ This table details all the keyboard bindings for the game. Keyboard bindings wit
 \subsection*{Dialogue}
 \subsubsection*{Dialogue screen and interaction, dialogue-wise}
 As unintuitive as it is, dialogue options are \textbf{0-indexed}. This is because it gives a maximum of 10 possible options (0-9), without needing logic for a buffer and instead just accept a single character as player input. As of time of this writing, it is hoped it is never required to have more than 10 options, because it means, as said, we can skimp on buffer logic.
+
+\subsubsection*{Handling of picking dialogue options flow and the subsequent design of the database}
+There are to be defined a total of at least 3 tables 
+
+\begin{itemize}
+\item dia\_dialogue\_interactions - intended to correspond almost directly to a Dia\_Dialogue\_Manager manager, minus meta data about the current state of the dialogue session such as weather the player has reached the end of the current dialogue file, weather the file fits into a single window etc.
+
+\item dia\_dialogue\_selected\_option\_handler - inteded to manage the overall flow of updating the dialogue. When a player selects an option, it will be used to decide what the next dialogue id should be (if any), what checks are to be made, if any and the next dialogue id's provided the player fails or suceeds the checks respectively.
+
+\item dia\_dialogue\_option\_triggers defines the set of triggers to fire 
+\end{itemize}
+
+The general flow of the dialogue flow is to be as follows
+
+\begin{enumerate}
+\item Assuming the player picked a valid dialogue option, query dia\_dialogue\_selected\_option\_handler. In this table, it will check what kind of check to do, if any, to decide what the next dialogue file should be. If the check is to simply continue dialogue, just read in what the next dialogue flag is set to be which will be stored in the success check flag value. If the check is to exit the dialogue, store the exit flag in the current dialogue id, then when the game loop sees, that the current dialogue id is actually an exit flag, it will quit the dialogue session. Provided a check is defined, the success or failure is decided by another query in the current callback for the query to dia\_dialogue\_selected\_option\_handler. The result of the check is in the relevant callback stored in the query manager struct. 
+
+\item In conunction
+\end{enumerate}
+
+\subsubsection*{Design choices for the dialogue flow}
+This dialogue / database design opens op for a hefty bit of redundancy in the dia\_dialogue\_selected\_option\_handler table - in that it stores both the id for the next dialogue file if a check is succesfull and if the check fails, but the failure id will be redundant if there is no check (the dialogue trivially progresses to the next dialogue id) and both will be redundant if there is no check and no next dialogue id (selecting said option culminates in exiting dialogue) But the alternative would be to split it into yet more tables - requireing more indexes, more queries, more logic and more overall management. Hence, we opted to introduce a fair amount of redundancy to skimp design / coding logic. \\
+
+It has by design been decided that when it comes to dynamically deciding what the next dialogue id should be read in, there can only be at most \underline{one} binary check. So it's not possible for there to be multiple checks to decide what the next dialoge id should be and it is to be decided by a successfull check or a failure. The motivation for this is choice is that otherwise, the logical complexity for maintaining all the different checks would be mind boggling to follow and troubleshoot, given they're stored and retried in SQL queries.¨
 
 \section*{Managing, reading, writing and manipulation of the game state}
 \subsection*{The database}
@@ -400,8 +424,8 @@ In this subsection, we will list all the
  \hline
   \multicolumn{4}{|c|}{\textbf{Indexes, keys and constraints}} \\
    \hline
-   \multicolumn{4}{|p{5cm}|}{PRIMARY KEY(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id} \\
-      \multicolumn{4}{|p{5cm}|}{CREATE UNIQUE INDEX IF NOT EXISTS(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id} \\
+   \multicolumn{4}{|p{5cm}|}{PRIMARY KEY(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id)} \\
+      \multicolumn{4}{|p{5cm}|}{CREATE UNIQUE INDEX IF NOT EXISTS(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id)} \\
  \hline
 \multicolumn{4}{|c|}{\textbf{Dependencies of dia\_dialogue\_interactions}}  \\
 \hline
@@ -417,30 +441,87 @@ In this subsection, we will list all the
 \begin{table}[h]
 \begin{tabular}{ |p{6cm}|p{1.2cm}|p{3cm}|p{3.6cm}|  }
 \hline
- \multicolumn{4}{|c|}{\textbf{Table:dia\_dialogue\_selected\_option\_consequence\_handler}} \\
+ \multicolumn{4}{|c|}{\textbf{Table:dia\_dialogue\_selected\_option\_handler}} \\
  \hline
  Column name & Column index & Data type & Description \\
   \hline
  dialogue\_folder\_id & 0 & int & dialogue folder id of the Dia\_Dialogue\_Manager used for the current dialogue session.\\
  current\_dialogue\_id & 1 & int & The current dialogue\_id file being read from the dialogue folder.\\
  selected\_option & 2 & int & The selected dialogue option for the current dialogue\_folder\_id and current\_dialogue\_id context \\
- consequence & 3 & int & The consequence for picking the selected\_option  \\
- next\_current\_dialogue\_if\_successful & 4 & int & The next current dialogue to read in, provided the passed the checks, if any. \\
- \hline
+check\_type & 3 & int & What type of check to commence \\
+ next\_dia\_id\_if\_check\_success & 4 & int & The next current dialogue to read in, provided the passed the checks, if any. \\
+ next\_dia\_id\_if\_check\_fail & 5 & int & The next current dialogue to read in, provided the passed the checks, if any. \\
+\hline 
 \multicolumn{4}{|c|}{\textbf{Indexes, keys and constraints}}  \\
 \hline
    \multicolumn{4}{|p{5cm}|}{PRIMARY KEY(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id, selected\_option} \\
       \multicolumn{4}{|p{5cm}|}{CREATE UNIQUE INDEX IF NOT EXISTS(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id, selected{\_option}} \\ 
    \hline
-   \multicolumn{4}{|p{5cm}|}{FOREIGN KEY(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id REFERENCES dia\_dialogue\_interactions(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id)} \\      
+   \multicolumn{4}{|p{5cm}|}{FOREIGN KEY(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id), REFERENCES dia\_dialogue\_interactions(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id)} \\      
  \hline
 \multicolumn{3}{|c|}{Table name} & Role \\
 \hline
 \multicolumn{3}{|c|}{selected\_dialogue\_option} & If any checks are to be made as a consequence of a selected dialogue options, e.g skill check, trigger check this table will also have to be read from. \\
 \hline
 \end{tabular}
-\label{Tab:diadialogueselectedoptionconsequencehandler}
 \end{table}
+
+\begin{table}[h]
+\begin{tabular}{ |p{6cm}|p{1.2cm}|p{3cm}|p{3.6cm}|p{3.6cm}|  }
+\hline
+ \multicolumn{4}{|c|}{\textbf{Table:dia\_dialogue\_option\_triggers}} \\
+ \hline
+ Column name & Column index & Data type & Description \\
+  \hline
+  Column name & Column index & Data type & Description \\
+  \hline
+ dialogue\_folder\_id & 0 & int & dialogue folder id of the Dia\_Dialogue\_Manager used for the current dialogue session.\\
+ current\_dialogue\_id & 1 & int & The current dialogue\_id file being read from the dialogue folder.\\
+ selected\_option & 2 & int & The selected dialogue option for the current dialogue\_folder\_id and current\_dialogue\_id context \\
+ on\_outcome & 3 & int & Is the trigger applied on a success or failure. \\
+ trigger\_type & 4 & int & what type of trigger to be applied, based on the selected choice of the player \\
+ \hline
+\multicolumn{4}{|c|}{\textbf{Indexes, keys and constraints}}  \\
+\hline
+      \multicolumn{4}{|p{5cm}|}{CREATE UNIQUE INDEX IF NOT EXISTS(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id, selected{\_option}} \\ 
+   \hline
+   \multicolumn{4}{|p{5cm}|}{FOREIGN KEY(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id), REFERENCES dia\_dialogue\_interactions(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id)} \\      
+\multicolumn{3}{|c|}{Table name} & Role \\
+\hline
+\multicolumn{3}{|c|}{selected\_dialogue\_option} & If any checks are to be made as a consequence of a selected dialogue options, e.g skill check, trigger check this table will also have to be read from. \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\begin{tabular}{ |p{6cm}|p{1.2cm}|p{3cm}|p{3.6cm}|p{3.6cm}|  }
+\hline
+ \multicolumn{4}{|c|}{\textbf{Table:dia\_trigger\_set\_initial\_dialogue}} \\
+ \hline
+ Column name & Column index & Data type & Description \\
+  \hline
+ dialogue\_folder\_id & 0 & int & dialogue folder id of the Dia\_Dialogue\_Manager used for the current dialogue session.\\
+ current\_dialogue\_id & 1 & int & The current dialogue\_id file being read from the dialogue folder.\\
+ selected\_option & 2 & int & The selected dialogue option for the current dialogue\_folder\_id and current\_dialogue\_id context \\
+ on\_outcome & 3 & int & Is the initial id set based on the success or failure of the check. \\
+ initial\_id & 4 & int & The next initial id \\
+ \hline
+\multicolumn{4}{|c|}{\textbf{Indexes, keys and constraints}}  \\
+\hline
+   \multicolumn{4}{|p{5cm}|}{PRIMARY KEY(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id, selected\_option, on\_outcome} \\
+      \multicolumn{4}{|p{5cm}|}{CREATE UNIQUE INDEX IF NOT EXISTS(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id, selected{\_option}, on{\_outcome}} \\ 
+   \hline
+   \multicolumn{4}{|p{5cm}|}{FOREIGN KEY(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id), REFERENCES dia\_dialogue\_interactions(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id)} \\      
+\multicolumn{3}{|c|}{Table name} & Role \\
+\hline
+\multicolumn{3}{|c|}{selected\_dialogue\_option} & If any checks are to be made as a consequence of a selected dialogue options, e.g skill check, trigger check this table will also have to be read from. \\
+\hline
+\end{tabular}
+\end{table}
+
+
+
+
 
 
 \chapter*{The world of Revenant}
