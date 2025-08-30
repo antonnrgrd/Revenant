@@ -17,7 +17,6 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #include "dbr_db_reader.h"
 #include <stdlib.h>
 void dia_loop_dialogue(Dia_Dialogue_Manager *manager, Game_State *gs){
-  
   dia_draw_npc_name(manager, gs);
   
   chdir("/usr/lib/revenant_files/dialogue_files");
@@ -55,10 +54,13 @@ void dia_loop_dialogue(Dia_Dialogue_Manager *manager, Game_State *gs){
       }
       else if(isdigit(ch) != 0){
 	if((ch - '0') <= manager->num_dialogue_options - 1){
-	  sprintf(gs->bfr, "SELECT * FROM dia_dialogue_selected_option_consequence_handler WHERE dialogue_folder_id = %d AND current_dialogue_id = %d AND selected_option = %d;", manager->dialogue_folder_id, manager->current_dialogue_id, (ch - '0'));
-	  int query_code = sqlite3_exec(gs->db, gs->bfr, dbr_pass_inf_to_dialogue_qresult, manager, &gs->query_manager->sqlite_bfr);
+	  /* In truth i don't need all the values but it just makes it easier to reason about the indexes of the columsn when i retrieve them all */
+	  sprintf(gs->bfr, "SELECT * FROM dia_dialogue_selected_option_handler WHERE dialogue_folder_id = %d AND current_dialogue_id = %d AND selected_option = %d;", manager->dialogue_folder_id, manager->current_dialogue_id, (ch - '0'));
+	  int query_code = sqlite3_exec(gs->db, gs->bfr, dbr_get_next_dialogue_id, gs, &gs->query_manager->sqlite_bfr);
 	  DBR_EVAL_SQL_EXECUTION(query_code,gs->bfr,gs);
+	  /*Provided the current dialogue id is put to undef, assume it's because the dialogue session is to be stopped */
 	  if (manager->current_dialogue_id != DBR_UNDEF){
+	    DBR_GET_NUM_DIALOGUE_OPTON(gs);
 	    DIA_READ_IN_NEXT_DIALOGUE_ID(manager, fp,gs);
 	  }
 	  else{

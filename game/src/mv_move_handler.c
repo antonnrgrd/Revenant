@@ -192,6 +192,8 @@ int move_response_initiate_trade(int global_x, int global_y,int local_x, int loc
 
 
 int move_response_initiate_dialoge(int global_x, int global_y,int local_x, int local_y, C_Creature *c,Game_State *game_state){
+  game_state->dialogue_manager = (Dia_Dialogue_Manager *)game_state->current_zone->tiles[global_y][global_x].foe;
   dia_loop_dialogue((Dia_Dialogue_Manager *)game_state->current_zone->tiles[global_y][global_x].foe, game_state);
+  game_state->dialogue_manager = NULL;
   return CONTINUE_TURN;
 }

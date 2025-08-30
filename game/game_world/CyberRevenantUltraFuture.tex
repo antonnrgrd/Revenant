@@ -7,6 +7,7 @@
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta, bending, positioning}
 \usetikzlibrary{shapes.geometric, arrows}
+\usepackage{multirow, makecell}
 %Very imporant, to allow using < and > in text mode
 \usepackage[T1]{fontenc}
 \title{Sections and Chapters}
@@ -416,7 +417,7 @@ In this subsection, we will list all the
 \hline
  \multicolumn{4}{|c|}{\textbf{Table:dia\_dialogue\_interactions}} \\
  \hline
- Column name & Column index & Data type & Description \\
+  \multicolumn{3}{|c|}{Purpose} & {Retrieves the number of dialogue options for the current dialogue id.} \\
   \hline
  dialogue\_folder\_id & 0 & int & The id of the dialogue folder \\
  current\_dialogue\_id & 1 & int & A dialogue file in the dialogue folder in question. Identified by an id\\
@@ -425,7 +426,7 @@ In this subsection, we will list all the
   \multicolumn{4}{|c|}{\textbf{Indexes, keys and constraints}} \\
    \hline
    \multicolumn{4}{|p{5cm}|}{PRIMARY KEY(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id)} \\
-      \multicolumn{4}{|p{5cm}|}{CREATE UNIQUE INDEX IF NOT EXISTS(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id)} \\
+      \multicolumn{4}{|p{5cm}|}{CREATE INDEX IF NOT EXISTS(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id)} \\
  \hline
 \multicolumn{4}{|c|}{\textbf{Dependencies of dia\_dialogue\_interactions}}  \\
 \hline
@@ -443,6 +444,8 @@ In this subsection, we will list all the
 \hline
  \multicolumn{4}{|c|}{\textbf{Table:dia\_dialogue\_selected\_option\_handler}} \\
  \hline
+  \multicolumn{3}{|c|}{Purpose} & {Retrieves the next dialogue id screen, based on whether the check was successful or not.} \\
+ \hline
  Column name & Column index & Data type & Description \\
   \hline
  dialogue\_folder\_id & 0 & int & dialogue folder id of the Dia\_Dialogue\_Manager used for the current dialogue session.\\
@@ -455,7 +458,7 @@ check\_type & 3 & int & What type of check to commence \\
 \multicolumn{4}{|c|}{\textbf{Indexes, keys and constraints}}  \\
 \hline
    \multicolumn{4}{|p{5cm}|}{PRIMARY KEY(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id, selected\_option} \\
-      \multicolumn{4}{|p{5cm}|}{CREATE UNIQUE INDEX IF NOT EXISTS(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id, selected{\_option}} \\ 
+      \multicolumn{4}{|p{5cm}|}{CREATE INDEX IF NOT EXISTS(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id, selected{\_option}} \\ 
    \hline
    \multicolumn{4}{|p{5cm}|}{FOREIGN KEY(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id), REFERENCES dia\_dialogue\_interactions(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id)} \\      
  \hline
@@ -470,10 +473,10 @@ check\_type & 3 & int & What type of check to commence \\
 \begin{tabular}{ |p{6cm}|p{1.2cm}|p{3cm}|p{3.6cm}|p{3.6cm}|  }
 \hline
  \multicolumn{4}{|c|}{\textbf{Table:dia\_dialogue\_option\_triggers}} \\
+  \hline
+ \multicolumn{3}{|c|}{Purpose} & {Applies all the triggers applicable to a dialogue option, based on whether the check was successful or not} \\
  \hline
  Column name & Column index & Data type & Description \\
-  \hline
-  Column name & Column index & Data type & Description \\
   \hline
  dialogue\_folder\_id & 0 & int & dialogue folder id of the Dia\_Dialogue\_Manager used for the current dialogue session.\\
  current\_dialogue\_id & 1 & int & The current dialogue\_id file being read from the dialogue folder.\\
@@ -483,7 +486,8 @@ check\_type & 3 & int & What type of check to commence \\
  \hline
 \multicolumn{4}{|c|}{\textbf{Indexes, keys and constraints}}  \\
 \hline
-      \multicolumn{4}{|p{5cm}|}{CREATE UNIQUE INDEX IF NOT EXISTS(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id, selected{\_option}} \\ 
+   \multicolumn{4}{|p{5cm}|}{PRIMARY KEY(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id, selected\_option, on\_outcome, trigger\_type),} \\
+      \multicolumn{4}{|p{5cm}|}{CREATE INDEX IF NOT EXISTS(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id, selected{\_option},on{\_outcome}} \\ 
    \hline
    \multicolumn{4}{|p{5cm}|}{FOREIGN KEY(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id), REFERENCES dia\_dialogue\_interactions(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id)} \\      
 \multicolumn{3}{|c|}{Table name} & Role \\
@@ -498,18 +502,21 @@ check\_type & 3 & int & What type of check to commence \\
 \hline
  \multicolumn{4}{|c|}{\textbf{Table:dia\_trigger\_set\_initial\_dialogue}} \\
  \hline
+ \multicolumn{3}{|c|}{Purpose} & {A trigger table that sets a new  inital dialogue id for the given dialogue manager} \\
+ \hline
  Column name & Column index & Data type & Description \\
   \hline
  dialogue\_folder\_id & 0 & int & dialogue folder id of the Dia\_Dialogue\_Manager used for the current dialogue session.\\
  current\_dialogue\_id & 1 & int & The current dialogue\_id file being read from the dialogue folder.\\
  selected\_option & 2 & int & The selected dialogue option for the current dialogue\_folder\_id and current\_dialogue\_id context \\
  on\_outcome & 3 & int & Is the initial id set based on the success or failure of the check. \\
- initial\_id & 4 & int & The next initial id \\
+ target\_dialogue\_folder\_id & 4 & int & Which dialogue folder is having its initial id set \\
+ new\_initial\_id & 5 & int & The new initial id for the dialogue folder \\
  \hline
 \multicolumn{4}{|c|}{\textbf{Indexes, keys and constraints}}  \\
 \hline
-   \multicolumn{4}{|p{5cm}|}{PRIMARY KEY(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id, selected\_option, on\_outcome} \\
-      \multicolumn{4}{|p{5cm}|}{CREATE UNIQUE INDEX IF NOT EXISTS(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id, selected{\_option}, on{\_outcome}} \\ 
+   \multicolumn{4}{|p{5cm}|}{PRIMARY KEY(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id, selected\_option, on\_outcome, target\_dialogue\_folder\_id),} \\
+      \multicolumn{4}{|p{5cm}|}{CREATE INDEX IF NOT EXISTS(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id, selected{\_option}, on{\_outcome}} \\ 
    \hline
    \multicolumn{4}{|p{5cm}|}{FOREIGN KEY(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id), REFERENCES dia\_dialogue\_interactions(dialogue{\_}folder{\_}id, current{\_}dialogue{\_}id)} \\      
 \multicolumn{3}{|c|}{Table name} & Role \\

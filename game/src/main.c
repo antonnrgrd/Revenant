@@ -52,7 +52,6 @@ int main(int argc, char *argv[]){
   raw();
   game_loop(gs);
   endwin();
-  
 }
   
  

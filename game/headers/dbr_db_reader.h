@@ -45,3 +45,17 @@ int dbr_pass_inf_to_dialogue_qresult(void *passed_struct, int num_cols, char **c
 #endif
 
 int dbr_get_next_dialogue_id(void *game_state, int num_cols, char **column_value, char **column_name);
+
+int dbr_get_num_dialogue_options(void *game_state, int num_cols, char **column_value, char **column_name);
+
+#define DBR_GET_NUM_DIALOGUE_OPTON(gs){\
+  sprintf(gs->bfr, "SELECT num_dialogue_options FROM dia_dialogue_interactions WHERE dialogue_folder_id = %d AND current_dialogue_id = %d;", manager->dialogue_folder_id); \
+  int query_code = sqlite3_exec(gs->db, gs->bfr, dbr_get_num_dialogue_options, manager, &gs->query_manager->sqlite_bfr); \
+  DBR_EVAL_SQL_EXECUTION(query_code,gs->bfr,gs);			\
+  }
+
+int dbr_readin_game_world();
+
+int dbr_apply_triggers(void *game_state, int num_cols, char **column_value, char **column_name);
+
+int dbr_trigger_set_initial_dialogue_id(void *game_state, int num_cols, char **column_value, char **column_name);

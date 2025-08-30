@@ -20,7 +20,7 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define DBR_CHECK_SUCCESS 0
 #define DBR_CHECK_FAILURE 1
 
-/* */
+/* dia_dialogue check flags outcomes definitions END */
 
 /* Generic DBR values BEGIN */
 #define DBR_UNDEF -1
@@ -32,14 +32,16 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 
 #define DBR_CONTINUE_DIALOGUE 1
 
-#define DBR_CHECK_SKILL 2
+#define DBR_CHECK_NPC_HAS_SKILL 2
 
-#define DBR_CHECK_SKILL 3
+#define DBR_CHECK_NPC_HAS_ITEM 3
 
 /*dia_dialogue_selected_option_consequence_handler definitions END  */
 
 /* dia_dialogue_interactions definitions BEGIN */
 #define DBR_ISSLOG_GENERIC_NPC 0
+
+#define DBR_BOOTSTRAP_NPC 1
 /* dia_dialogue_interactions definitions END */
 
 
@@ -48,24 +50,22 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
 #define DBR_CROCODILE 1
 /* Creature ID's END */
 
-/* dia_dialogue_option_triggers definitions BEGIn*/
-#define DBR_SET_INITIAL_DIALOGUE 0
+/* dia_dialogue_option_triggers definitions BEGIN*/
+#define DBR_SET_INITIAL_DIALOGUE_ID 0
 
 #define DBR_SET_NPC_BEHAVIOR 1
 
-#define DBR_DO_SKILLCHECK 2
+#define DBR_SET_NPC_BEHAVIOR 2
 
-#define DBR_DO_ITEMCHECK 3
+#define DBR_MODIFY_PC_MONEY 3
 
-#define DBR_SET_NPC_BEHAVIOR 4
+#define DBR_MODIFY_PC_INVENTORY 4
 
-#define DBR_MODIFY_PC_MONEY 5
+#define DBR_UPDATE_PC_QUEST_STATUS 5
 
-#define DBR_MODIFY_PC_INVENTORY 6
+#define DBR_SET_NPC_LOCATION 6
 
-#define DBR_UPDATE_PC_QUEST_STATUS 7
-
-/* dia_dialogue_option_triggers definitions BEGIn*/
+/* dia_dialogue_option_triggers definitions END*/
 
 
 typedef struct{
@@ -85,6 +85,6 @@ typedef struct{
   int consequence;
 }Dbr_Selected_Dialogue_Qresult;
 #define DBR_DATABASE_PATH "/usr/lib/revenant_files/database/revenant.db"
-#define DBR_CONTINUE_DIALOGUE 0
-#define DBR_EXIT_DIALOGUE 0
+
+extern const char *dbr_map_trigger_type_to_trigger_table[];
 #endif

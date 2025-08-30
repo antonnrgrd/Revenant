@@ -43,12 +43,15 @@ along with Revenant.  If not, see <https://www.gnu.org/licenses/>. */
     manager->single_page_file = NO;		 \
 }
 
+
+
 #define DIA_READ_IN_NEXT_DIALOGUE_ID(manager, dialogue_file,gs){	\
     wclear(gs->logs[DIALOGUE_LOG]) ;					\
     DIA_RESET_DIALOGUE_MANAGER_INFO(manager);				\
     fclose(dialogue_file);						\
     sprintf(gs->bfr, "/usr/lib/revenant_files/dialogue_files/%d/%d", manager->dialogue_folder_id,  manager->current_dialogue_id); \
     dialogue_file = fopen(gs->bfr, "r");				\
+    dia_draw_npc_name(manager, gs);					\
     dia_draw_dialogue_screen(manager,gs,dialogue_file);			\
   }
 /*Normally, we'd be content using the box function to draw a border around the wndow, but we want an ultra specific bordering set, you we have to do it manually */

@@ -79,6 +79,7 @@ void gs_print_foes(Game_State *game_state){
 Game_State *gs_create_game_state(Game_World *game_world){
 
   Game_State *state = malloc(sizeof(Game_State));
+  state->dialogue_manager=NULL;
   state->query_manager = malloc(sizeof(Dbr_Query_Manager));
   state->query_manager->sqlite_bfr = NULL;
   DBR_INITIALIZE_QUERY_MANAGER(state->query_manager);

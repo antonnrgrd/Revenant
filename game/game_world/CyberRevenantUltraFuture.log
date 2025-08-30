@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2025.4.8)  3 AUG 2025 19:47
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2025.4.8)  20 AUG 2025 21:24
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -620,13 +620,37 @@ File: tikzlibraryarrows.code.tex 2023-01-15 v3.1.10 (3.1.10)
 tex
 File: pgflibraryarrows.code.tex 2023-01-15 v3.1.10 (3.1.10)
 \arrowsize=\dimen277
-)) (/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty
+)) (/usr/share/texlive/texmf-dist/tex/latex/multirow/multirow.sty
+Package: multirow 2021/03/15 v2.8 Span multiple rows of a table
+\multirow@colwidth=\skip54
+\multirow@cntb=\count315
+\multirow@dima=\skip55
+\bigstrutjot=\dimen278
+)
+(/usr/share/texlive/texmf-dist/tex/latex/makecell/makecell.sty
+Package: makecell 2009/08/03 V0.1e Managing of Tab Column Heads and Cells
+
+(/usr/share/texlive/texmf-dist/tex/latex/tools/array.sty
+Package: array 2023/10/16 v2.5g Tabular extension package (FMi)
+\col@sep=\dimen279
+\ar@mcellbox=\box66
+\extrarowheight=\dimen280
+\NC@list=\toks38
+\extratabsurround=\skip56
+\backup@length=\skip57
+\ar@cellbox=\box67
+)
+\rotheadsize=\dimen281
+\c@nlinenum=\count316
+\TeXr@lab=\toks39
+)
+(/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty
 Package: fontenc 2021/04/29 v2.0v Standard LaTeX package
 )
 (/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2024-01-04 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count315
-\l__pdf_internal_box=\box66
+\l__color_backend_stack_int=\count317
+\l__pdf_internal_box=\box68
 )
 (./CyberRevenantUltraFuture.aux
 
@@ -635,26 +659,26 @@ LaTeX Warning: Label `table:1' multiply defined.
 )
 \openout1 = `CyberRevenantUltraFuture.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-\c@lstlisting=\count316
-Package hyperref Info: Link coloring OFF on input line 16.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+\c@lstlisting=\count318
+Package hyperref Info: Link coloring OFF on input line 17.
  (./CyberRevenantUltraFuture.out) (./CyberRevenantUltraFuture.out)
 \@outlinefile=\write4
 \openout4 = `CyberRevenantUltraFuture.out'.
@@ -662,17 +686,17 @@ Package hyperref Info: Link coloring OFF on input line 16.
 
 (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count317
-\scratchdimen=\dimen278
-\scratchbox=\box67
-\nofMPsegments=\count318
-\nofMParguments=\count319
-\everyMPshowfont=\toks38
-\MPscratchCnt=\count320
-\MPscratchDim=\dimen279
-\MPnumerator=\count321
-\makeMPintoPDFobject=\count322
-\everyMPtoPDFconversion=\toks39
+\scratchcounter=\count319
+\scratchdimen=\dimen282
+\scratchbox=\box69
+\nofMPsegments=\count320
+\nofMParguments=\count321
+\everyMPshowfont=\toks40
+\MPscratchCnt=\count322
+\MPscratchDim=\dimen283
+\MPnumerator=\count323
+\makeMPintoPDFobject=\count324
+\everyMPtoPDFconversion=\toks41
 ) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 
@@ -702,7 +726,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.26 \chapter
+l.27 \chapter
              {Prerequisites for compiling and running the game} [1
 
 ]
@@ -711,22 +735,22 @@ Chapter 1.
 
 ]
 LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 7
-2.
+3.
  (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd
 File: t1cmtt.fd 2023/04/13 v2.5m Standard LaTeX font definitions
 )
 <sqlite.png, id=58, 972.63374pt x 119.69719pt>
 File: sqlite.png Graphic file (type png)
 <use sqlite.png>
-Package pdftex.def Info: sqlite.png  used on input line 74.
+Package pdftex.def Info: sqlite.png  used on input line 75.
 (pdftex.def)             Requested size: 345.0pt x 42.45717pt.
 
-Overfull \hbox (15.0pt too wide) in paragraph at lines 74--76
+Overfull \hbox (15.0pt too wide) in paragraph at lines 75--77
 [][]
  []
 
 
-Overfull \hbox (38.90918pt too wide) in paragraph at lines 77--78
+Overfull \hbox (38.90918pt too wide) in paragraph at lines 78--79
 [][][][][][][][][][][][][][][][][][] 
  []
 
@@ -737,54 +761,54 @@ Chapter 2.
 ] [6]
 
 Package hyperref Warning: Difference (2) between bookmark levels is greater 
-(hyperref)                than one, level fixed on input line 192.
+(hyperref)                than one, level fixed on input line 193.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 197--198
+Underfull \hbox (badness 10000) in paragraph at lines 198--199
 
  []
 
 [7]
-Underfull \hbox (badness 10000) in paragraph at lines 213--214
+Underfull \hbox (badness 10000) in paragraph at lines 214--215
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 215--216
+Underfull \hbox (badness 10000) in paragraph at lines 216--217
 
  []
 
 [8]
-Underfull \hbox (badness 10000) in paragraph at lines 238--239
+Underfull \hbox (badness 10000) in paragraph at lines 239--240
 
  []
 
 [9]
-Underfull \hbox (badness 10000) in paragraph at lines 240--241
+Underfull \hbox (badness 10000) in paragraph at lines 241--242
 
  []
 
 
-Overfull \hbox (99.10454pt too wide) detected at line 247
+Overfull \hbox (99.10454pt too wide) detected at line 248
 \OML/cmm/m/it/10 Creature[] \OT1/cmr/m/n/10 = \OML/cmm/m/it/10 max[]local \OMS/
 cmsy/m/n/10 ^^@ \OT1/cmr/m/n/10 (\OML/cmm/m/it/10 Player[] \OMS/cmsy/m/n/10 ^^@
  \OML/cmm/m/it/10 Creature[]\OT1/cmr/m/n/10 )[]  \OML/cmm/m/it/10 max[]moves
  []
 
 
-Overfull \hbox (96.4511pt too wide) detected at line 255
+Overfull \hbox (96.4511pt too wide) detected at line 256
 \OML/cmm/m/it/10 Creature[] \OT1/cmr/m/n/10 = \OML/cmm/m/it/10 min[]local \OT1/
 cmr/m/n/10 + (\OML/cmm/m/it/10 Player[] \OMS/cmsy/m/n/10 ^^@ \OML/cmm/m/it/10 C
 reature[]\OT1/cmr/m/n/10 )[]  \OML/cmm/m/it/10 max[]moves
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 257--258
+Underfull \hbox (badness 10000) in paragraph at lines 258--259
 
  []
 
 
-Overfull \hbox (134.61688pt too wide) in paragraph at lines 268--287
+Overfull \hbox (136.61685pt too wide) in paragraph at lines 269--288
  [][] 
  []
 
@@ -792,12 +816,12 @@ Overfull \hbox (134.61688pt too wide) in paragraph at lines 268--287
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 313--313
-[]\T1/cmr/m/n/10 ESC - Quit
+Underfull \hbox (badness 10000) in paragraph at lines 314--314
+[]|\T1/cmr/m/n/10 ESC - Quit
  []
 
 
-Overfull \hbox (59.99474pt too wide) in paragraph at lines 297--316
+Overfull \hbox (62.3947pt too wide) in paragraph at lines 298--317
 [][] 
  []
 
@@ -805,222 +829,181 @@ Overfull \hbox (59.99474pt too wide) in paragraph at lines 297--316
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [10]
-Overfull \vbox (10.24646pt too high) has occurred while \output is active []
+Overfull \vbox (5.94196pt too high) has occurred while \output is active []
 
 
 [11]
-Overfull \hbox (105.36838pt too wide) in paragraph at lines 338--339
+Overfull \hbox (105.36838pt too wide) in paragraph at lines 339--340
 []\T1/cmr/m/n/10 Assuming the player picked a valid di-a-logue op-tion, query d
 ia_dialogue_selected_option_handler.
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 344--345
+Underfull \hbox (badness 10000) in paragraph at lines 345--346
 
  []
 
 [12]
-Underfull \hbox (badness 10000) in paragraph at lines 353--354
+Underfull \hbox (badness 10000) in paragraph at lines 354--355
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 356--357
+Underfull \hbox (badness 10000) in paragraph at lines 357--358
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 358--359
+Underfull \hbox (badness 10000) in paragraph at lines 359--360
 
  []
 
 [13]
-Underfull \hbox (badness 10000) in paragraph at lines 380--381
+Underfull \hbox (badness 10000) in paragraph at lines 381--382
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 423--424
-[]\T1/cmr/m/n/10 The num-ber of
+Underfull \hbox (badness 10000) in paragraph at lines 424--425
+[]|\T1/cmr/m/n/10 The num-ber of
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 423--424
+Underfull \hbox (badness 10000) in paragraph at lines 424--425
 \T1/cmr/m/n/10 di-a-logue op-tions
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 423--424
+Underfull \hbox (badness 10000) in paragraph at lines 424--425
 \T1/cmr/m/n/10 avail-able for the
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 423--424
+Underfull \hbox (badness 10000) in paragraph at lines 424--425
 \T1/cmr/m/n/10 di-a-logue_folder_id
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 423--424
+Underfull \hbox (badness 10000) in paragraph at lines 424--425
 \T1/cmr/m/n/10 + cur-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 427--427
-[]\T1/cmr/m/n/10 PRIMARY
+Underfull \hbox (badness 10000) in paragraph at lines 428--428
+[]|\T1/cmr/m/n/10 PRIMARY
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 427--427
+Underfull \hbox (badness 10000) in paragraph at lines 428--428
 \T1/cmr/m/n/10 KEY(dialogue_folder_id,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 428--428
-[]\T1/cmr/m/n/10 CREATE UNIQUE IN-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 428--428
-\T1/cmr/m/n/10 DEX IF NOT EX-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 428--428
-\T1/cmr/m/n/10 ISTS(dialogue_folder_id,
+Underfull \hbox (badness 6428) in paragraph at lines 429--429
+\T1/cmr/m/n/10 ISTS(dialogue_folder_id, cur-
  []
 
 
 LaTeX Warning: Reference `Tab:diadialogueselectedoptionconsequencehandler' on p
-age 14 undefined on input line 436.
+age 14 undefined on input line 437.
 
 
-Underfull \hbox (badness 1466) in paragraph at lines 436--437
-[]\T1/cmr/m/n/10 If any checks are
+Underfull \hbox (badness 1466) in paragraph at lines 437--438
+[]|\T1/cmr/m/n/10 If any checks are
  []
 
 
-Underfull \hbox (badness 1281) in paragraph at lines 436--437
+Underfull \hbox (badness 1281) in paragraph at lines 437--438
 \T1/cmr/m/n/10 to be made as a
  []
 
 
-Underfull \hbox (badness 5316) in paragraph at lines 436--437
+Underfull \hbox (badness 5316) in paragraph at lines 437--438
 \T1/cmr/m/n/10 con-se-quence of a
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 436--437
+Underfull \hbox (badness 10000) in paragraph at lines 437--438
 \T1/cmr/m/n/10 se-lected di-a-logue
  []
 
 
-Underfull \hbox (badness 5696) in paragraph at lines 436--437
+Underfull \hbox (badness 5696) in paragraph at lines 437--438
 \T1/cmr/m/n/10 op-tions, e.g skill
  []
 
 
-Underfull \hbox (badness 4328) in paragraph at lines 436--437
+Underfull \hbox (badness 4328) in paragraph at lines 437--438
 \T1/cmr/m/n/10 have to be read
  []
 
 
-Overfull \hbox (21.67076pt too wide) in paragraph at lines 415--439
+Overfull \hbox (23.67073pt too wide) in paragraph at lines 416--440
 [][] 
  []
 
 [14]
-Overfull \hbox (4.79373pt too wide) in paragraph at lines 448--449
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Overfull \hbox (4.79373pt too wide) in paragraph at lines 451--452
 \T1/cmr/m/n/10 Dia_Dialogue_Manager
  []
 
 
-Underfull \hbox (badness 3058) in paragraph at lines 448--449
+Underfull \hbox (badness 3058) in paragraph at lines 451--452
 \T1/cmr/m/n/10 used for the cur-rent
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 449--450
-[]\T1/cmr/m/n/10 The cur-rent di-a-
+Underfull \hbox (badness 10000) in paragraph at lines 452--453
+[]|\T1/cmr/m/n/10 The cur-rent di-a-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 449--450
+Underfull \hbox (badness 10000) in paragraph at lines 452--453
 \T1/cmr/m/n/10 logue_id file be-ing
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 450--451
-[]\T1/cmr/m/n/10 The se-lected di-
+Underfull \hbox (badness 10000) in paragraph at lines 453--454
+[]|\T1/cmr/m/n/10 The se-lected di-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 450--451
+Underfull \hbox (badness 10000) in paragraph at lines 453--454
 \T1/cmr/m/n/10 a-logue op-tion for
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 450--451
+Underfull \hbox (badness 10000) in paragraph at lines 453--454
 \T1/cmr/m/n/10 the cur-rent di-a-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 450--451
+Underfull \hbox (badness 10000) in paragraph at lines 453--454
 \T1/cmr/m/n/10 logue_folder_id and
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 450--451
+Underfull \hbox (badness 10000) in paragraph at lines 453--454
 \T1/cmr/m/n/10 cur-rent_dialogue_id
  []
 
 
-Underfull \hbox (badness 1603) in paragraph at lines 452--453
+Underfull \hbox (badness 1603) in paragraph at lines 455--456
 \T1/cmr/m/n/10 vided the passed the
  []
 
 
-Underfull \hbox (badness 1603) in paragraph at lines 453--454
+Underfull \hbox (badness 1603) in paragraph at lines 456--457
 \T1/cmr/m/n/10 vided the passed the
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 457--457
-[]\T1/cmr/m/n/10 PRIMARY
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 457--457
-\T1/cmr/m/n/10 KEY(dialogue_folder_id,
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 457--457
-\T1/cmr/m/n/10 cur-rent_dialogue_id, se-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 458--458
-[]\T1/cmr/m/n/10 CREATE UNIQUE IN-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 458--458
-\T1/cmr/m/n/10 DEX IF NOT EX-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 458--458
-\T1/cmr/m/n/10 ISTS(dialogue_folder_id,
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 458--458
-\T1/cmr/m/n/10 cur-rent_dialogue_id, se-
  []
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 460--460
-[]\T1/cmr/m/n/10 FOREIGN
+[]|\T1/cmr/m/n/10 PRIMARY
  []
 
 
@@ -1030,252 +1013,308 @@ Underfull \hbox (badness 10000) in paragraph at lines 460--460
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 460--460
+\T1/cmr/m/n/10 cur-rent_dialogue_id, se-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 461--461
+[]|\T1/cmr/m/n/10 CREATE IN-DEX IF NOT
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 461--461
+\T1/cmr/m/n/10 EX-ISTS(dialogue_folder_id,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 461--461
+\T1/cmr/m/n/10 cur-rent_dialogue_id, se-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 463--463
+[]|\T1/cmr/m/n/10 FOREIGN
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 463--463
+\T1/cmr/m/n/10 KEY(dialogue_folder_id,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 463--463
 \T1/cmr/m/n/10 cur-rent_dialogue_id),
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 460--460
+Underfull \hbox (badness 10000) in paragraph at lines 463--463
 \T1/cmr/m/n/10 REF-ER-ENCES
  []
 
 
-Overfull \hbox (65.01894pt too wide) in paragraph at lines 460--460
+Overfull \hbox (65.01894pt too wide) in paragraph at lines 463--463
 \T1/cmr/m/n/10 dia_dialogue_interactions(dialogue_folder_id,
  []
 
 
-Overfull \hbox (95.64809pt too wide) in paragraph at lines 442--467
+Overfull \hbox (97.64806pt too wide) in paragraph at lines 443--470
 [][] 
  []
 
 
-LaTeX Warning: Float too large for page by 65.59995pt on input line 467.
+LaTeX Warning: Float too large for page by 101.99994pt on input line 470.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Overfull \hbox (4.79373pt too wide) in paragraph at lines 478--479
+Underfull \hbox (badness 3612) in paragraph at lines 477--478
+[]|\T1/cmr/m/n/10 Applies all the trig-
+ []
+
+
+Overfull \hbox (4.79373pt too wide) in paragraph at lines 481--482
 \T1/cmr/m/n/10 Dia_Dialogue_Manager
  []
 
 
-Underfull \hbox (badness 3058) in paragraph at lines 478--479
+Underfull \hbox (badness 3058) in paragraph at lines 481--482
 \T1/cmr/m/n/10 used for the cur-rent
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 479--480
-[]\T1/cmr/m/n/10 The cur-rent di-a-
+Underfull \hbox (badness 10000) in paragraph at lines 482--483
+[]|\T1/cmr/m/n/10 The cur-rent di-a-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 479--480
+Underfull \hbox (badness 10000) in paragraph at lines 482--483
 \T1/cmr/m/n/10 logue_id file be-ing
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 480--481
-[]\T1/cmr/m/n/10 The se-lected di-
+Underfull \hbox (badness 10000) in paragraph at lines 483--484
+[]|\T1/cmr/m/n/10 The se-lected di-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 480--481
+Underfull \hbox (badness 10000) in paragraph at lines 483--484
 \T1/cmr/m/n/10 a-logue op-tion for
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 480--481
+Underfull \hbox (badness 10000) in paragraph at lines 483--484
 \T1/cmr/m/n/10 the cur-rent di-a-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 480--481
+Underfull \hbox (badness 10000) in paragraph at lines 483--484
 \T1/cmr/m/n/10 logue_folder_id and
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 480--481
+Underfull \hbox (badness 10000) in paragraph at lines 483--484
 \T1/cmr/m/n/10 cur-rent_dialogue_id
  []
 
 
-Underfull \hbox (badness 1281) in paragraph at lines 482--483
+Underfull \hbox (badness 1281) in paragraph at lines 485--486
 \T1/cmr/m/n/10 be ap-plied, based on
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 486--486
-[]\T1/cmr/m/n/10 CREATE UNIQUE IN-
+Underfull \hbox (badness 10000) in paragraph at lines 489--489
+[]|\T1/cmr/m/n/10 PRIMARY
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 486--486
-\T1/cmr/m/n/10 DEX IF NOT EX-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 486--486
-\T1/cmr/m/n/10 ISTS(dialogue_folder_id,
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 486--486
-\T1/cmr/m/n/10 cur-rent_dialogue_id, se-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 488--488
-[]\T1/cmr/m/n/10 FOREIGN
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 488--488
+Underfull \hbox (badness 10000) in paragraph at lines 489--489
 \T1/cmr/m/n/10 KEY(dialogue_folder_id,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 488--488
+Underfull \hbox (badness 10000) in paragraph at lines 489--489
+\T1/cmr/m/n/10 cur-rent_dialogue_id, se-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 489--489
+\T1/cmr/m/n/10 lected_option, on_outcome,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 490--490
+[]|\T1/cmr/m/n/10 CREATE IN-DEX IF NOT
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 490--490
+\T1/cmr/m/n/10 EX-ISTS(dialogue_folder_id,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 490--490
+\T1/cmr/m/n/10 cur-rent_dialogue_id, se-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 492--492
+[]|\T1/cmr/m/n/10 FOREIGN
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 492--492
+\T1/cmr/m/n/10 KEY(dialogue_folder_id,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 492--492
 \T1/cmr/m/n/10 cur-rent_dialogue_id),
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 488--488
+Underfull \hbox (badness 10000) in paragraph at lines 492--492
 \T1/cmr/m/n/10 REF-ER-ENCES
  []
 
 
-Overfull \hbox (65.01894pt too wide) in paragraph at lines 488--488
+Overfull \hbox (65.01894pt too wide) in paragraph at lines 492--492
 \T1/cmr/m/n/10 dia_dialogue_interactions(dialogue_folder_id,
  []
 
 
-Overfull \hbox (95.64809pt too wide) in paragraph at lines 470--494
+Overfull \hbox (97.64806pt too wide) in paragraph at lines 473--498
 [][] 
  []
+
+
+LaTeX Warning: Float too large for page by 77.59995pt on input line 498.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Overfull \hbox (4.79373pt too wide) in paragraph at lines 503--504
+Overfull \hbox (4.79373pt too wide) in paragraph at lines 509--510
 \T1/cmr/m/n/10 Dia_Dialogue_Manager
  []
 
 
-Underfull \hbox (badness 3058) in paragraph at lines 503--504
+Underfull \hbox (badness 3058) in paragraph at lines 509--510
 \T1/cmr/m/n/10 used for the cur-rent
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 504--505
-[]\T1/cmr/m/n/10 The cur-rent di-a-
+Underfull \hbox (badness 10000) in paragraph at lines 510--511
+[]|\T1/cmr/m/n/10 The cur-rent di-a-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 504--505
+Underfull \hbox (badness 10000) in paragraph at lines 510--511
 \T1/cmr/m/n/10 logue_id file be-ing
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 505--506
-[]\T1/cmr/m/n/10 The se-lected di-
+Underfull \hbox (badness 10000) in paragraph at lines 511--512
+[]|\T1/cmr/m/n/10 The se-lected di-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 505--506
+Underfull \hbox (badness 10000) in paragraph at lines 511--512
 \T1/cmr/m/n/10 a-logue op-tion for
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 505--506
+Underfull \hbox (badness 10000) in paragraph at lines 511--512
 \T1/cmr/m/n/10 the cur-rent di-a-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 505--506
+Underfull \hbox (badness 10000) in paragraph at lines 511--512
 \T1/cmr/m/n/10 logue_folder_id and
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 505--506
+Underfull \hbox (badness 10000) in paragraph at lines 511--512
 \T1/cmr/m/n/10 cur-rent_dialogue_id
  []
 
 
-Underfull \hbox (badness 3354) in paragraph at lines 506--507
-[]\T1/cmr/m/n/10 Is the ini-tial id set
+Underfull \hbox (badness 3354) in paragraph at lines 512--513
+[]|\T1/cmr/m/n/10 Is the ini-tial id set
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 511--511
-[]\T1/cmr/m/n/10 PRIMARY
+Underfull \hbox (badness 10000) in paragraph at lines 518--518
+[]|\T1/cmr/m/n/10 PRIMARY
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 511--511
+Underfull \hbox (badness 10000) in paragraph at lines 518--518
 \T1/cmr/m/n/10 KEY(dialogue_folder_id,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 511--511
+Underfull \hbox (badness 10000) in paragraph at lines 518--518
 \T1/cmr/m/n/10 cur-rent_dialogue_id, se-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 512--512
-[]\T1/cmr/m/n/10 CREATE UNIQUE IN-
+Underfull \hbox (badness 10000) in paragraph at lines 518--518
+\T1/cmr/m/n/10 lected_option, on_outcome,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 512--512
-\T1/cmr/m/n/10 DEX IF NOT EX-
+Underfull \hbox (badness 10000) in paragraph at lines 519--519
+[]|\T1/cmr/m/n/10 CREATE IN-DEX IF NOT
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 512--512
-\T1/cmr/m/n/10 ISTS(dialogue_folder_id,
+Underfull \hbox (badness 10000) in paragraph at lines 519--519
+\T1/cmr/m/n/10 EX-ISTS(dialogue_folder_id,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 512--512
+Underfull \hbox (badness 10000) in paragraph at lines 519--519
 \T1/cmr/m/n/10 cur-rent_dialogue_id, se-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 514--514
-[]\T1/cmr/m/n/10 FOREIGN
+Underfull \hbox (badness 10000) in paragraph at lines 521--521
+[]|\T1/cmr/m/n/10 FOREIGN
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 514--514
+Underfull \hbox (badness 10000) in paragraph at lines 521--521
 \T1/cmr/m/n/10 KEY(dialogue_folder_id,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 514--514
+Underfull \hbox (badness 10000) in paragraph at lines 521--521
 \T1/cmr/m/n/10 cur-rent_dialogue_id),
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 514--514
+Underfull \hbox (badness 10000) in paragraph at lines 521--521
 \T1/cmr/m/n/10 REF-ER-ENCES
  []
 
 
-Overfull \hbox (65.01894pt too wide) in paragraph at lines 514--514
+Overfull \hbox (65.01894pt too wide) in paragraph at lines 521--521
 \T1/cmr/m/n/10 dia_dialogue_interactions(dialogue_folder_id,
  []
 
 
-Overfull \hbox (95.64809pt too wide) in paragraph at lines 497--520
+Overfull \hbox (97.64806pt too wide) in paragraph at lines 501--527
 [][] 
  []
 
 
+LaTeX Warning: Float too large for page by 89.59995pt on input line 527.
+
+
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[15] [16] [17] [18] [19
+[15] [16] [17] [18] [19] [20
 
 ] (./CyberRevenantUltraFuture.aux)
  ***********
@@ -1294,10 +1333,10 @@ d.
 (rerunfilecheck)             Checksum: 41F1361473D437869E033EF82CA7D2CA;847.
  ) 
 Here is how much of TeX's memory you used:
- 23219 strings out of 476139
- 435898 string characters out of 5794455
- 1954975 words of memory out of 5000000
- 44765 multiletter control sequences out of 15000+600000
+ 23514 strings out of 476139
+ 439962 string characters out of 5794455
+ 1950975 words of memory out of 5000000
+ 45048 multiletter control sequences out of 15000+600000
  573287 words of font info for 66 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
  84i,11n,93p,898b,1030s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -1317,10 +1356,10 @@ ublic/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/
 amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfont
 s/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cm
 sy10.pfb>
-Output written on CyberRevenantUltraFuture.pdf (20 pages, 201592 bytes).
+Output written on CyberRevenantUltraFuture.pdf (21 pages, 202213 bytes).
 PDF statistics:
- 586 PDF objects out of 1000 (max. 8388607)
- 244 compressed objects within 3 object streams
- 96 named destinations out of 1000 (max. 500000)
+ 590 PDF objects out of 1000 (max. 8388607)
+ 248 compressed objects within 3 object streams
+ 97 named destinations out of 1000 (max. 500000)
  50 words of extra memory for PDF output out of 10000 (max. 10000000)
 
